@@ -27,6 +27,7 @@ import { SubZoneGeneratorService } from 'src/app/services/sub-zone-generator/sub
 import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
+import { ZodiacEnum } from 'src/app/models/enums/zodiac-enum.model';
 import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
 import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
 import { EnemyGeneratorService } from 'src/app/services/enemy-generator/enemy-generator.service';
@@ -54,10 +55,13 @@ export class BestiaryViewComponent {
   itemTooltipDirection = DirectionEnum.UpRight;
   trialTooltipDirection = DirectionEnum.Left;
   godEnum = GodEnum;
+  zodiacEnum = ZodiacEnum;
   overlayRef: OverlayRef;
   nameHiddenText = "????";
   shopOptions: ShopOption[] = [];
   selectedTrialGod: GodEnum = GodEnum.None;
+  selectedZodiac: ZodiacEnum = ZodiacEnum.None;
+  selectedZodiacDifficulty = "";
 
   constructor(private globalService: GlobalService, public balladService: BalladService, private deviceDetectorService: DeviceDetectorService,
     private subzoneGeneratorService: SubZoneGeneratorService, private utilityService: UtilityService, public lookupService: LookupService,
@@ -121,31 +125,35 @@ export class BestiaryViewComponent {
     if (this.selectedTrialGod === GodEnum.Athena)
       bestiaryItem = BestiaryEnum.Athena;
     if (this.selectedTrialGod === GodEnum.Artemis)
-    bestiaryItem = BestiaryEnum.Artemis;
+      bestiaryItem = BestiaryEnum.Artemis;
     if (this.selectedTrialGod === GodEnum.Hermes)
-    bestiaryItem = BestiaryEnum.Hermes;
+      bestiaryItem = BestiaryEnum.Hermes;
     if (this.selectedTrialGod === GodEnum.Apollo)
-    bestiaryItem = BestiaryEnum.Apollo;
+      bestiaryItem = BestiaryEnum.Apollo;
     if (this.selectedTrialGod === GodEnum.Hades)
-    bestiaryItem = BestiaryEnum.Hades2;
+      bestiaryItem = BestiaryEnum.Hades2;
     if (this.selectedTrialGod === GodEnum.Ares)
-    bestiaryItem = BestiaryEnum.Ares;
+      bestiaryItem = BestiaryEnum.Ares;
     if (this.selectedTrialGod === GodEnum.Nemesis)
-    bestiaryItem = BestiaryEnum.Nemesis;
+      bestiaryItem = BestiaryEnum.Nemesis;
     if (this.selectedTrialGod === GodEnum.Dionysus)
-    bestiaryItem = BestiaryEnum.Dionysus;
+      bestiaryItem = BestiaryEnum.Dionysus;
     if (this.selectedTrialGod === GodEnum.Zeus)
-    bestiaryItem = BestiaryEnum.Zeus;
+      bestiaryItem = BestiaryEnum.Zeus;
     if (this.selectedTrialGod === GodEnum.Poseidon)
-    bestiaryItem = BestiaryEnum.Poseidon;
+      bestiaryItem = BestiaryEnum.Poseidon;
     if (this.selectedTrialGod === GodEnum.Hera)
-    bestiaryItem = BestiaryEnum.Hera;
+      bestiaryItem = BestiaryEnum.Hera;
     if (this.selectedTrialGod === GodEnum.Aphrodite)
-    bestiaryItem = BestiaryEnum.Aphrodite;
+      bestiaryItem = BestiaryEnum.Aphrodite;
 
     var boss = this.enemyGeneratorService.generateEnemy(bestiaryItem);
     boss = this.trialService.scaleTrialOfSkillBattle(boss);
     return boss;
+  }
+
+  getSelectedZodiacName() {
+    return this.lookupService.getZodiacNameByType(this.selectedZodiac) + " (" + this.selectedZodiacDifficulty + ")";
   }
 
   getSelectedGodName() {
@@ -154,6 +162,41 @@ export class BestiaryViewComponent {
 
   getGodColorClass() {
     return this.lookupService.getGodColorClass(this.selectedTrialGod);
+  }
+
+  showTrialOfStars(zodiac: ZodiacEnum) {
+    this.selectedZodiac = zodiac;
+    this.selectedTrialGod = GodEnum.None;
+  }
+
+  setTrialOfStarsDifficulty(difficulty: string) {
+    this.selectedZodiacDifficulty = difficulty;
+  }
+
+  getTrialOfTheStarsBestiary() {
+    var bestiaryItem = BestiaryEnum.None;
+
+    if (this.selectedZodiacDifficulty === "Normal") {
+      if (this.selectedZodiac === ZodiacEnum.Aries)
+        bestiaryItem = BestiaryEnum.SoaringRamNormal;
+      if (this.selectedZodiac === ZodiacEnum.Capricorn)
+        bestiaryItem = BestiaryEnum.SeaGoatNormal;
+    }
+    else if (this.selectedZodiacDifficulty === "Hard") {
+      if (this.selectedZodiac === ZodiacEnum.Aries)
+        bestiaryItem = BestiaryEnum.SoaringRamHard;
+      if (this.selectedZodiac === ZodiacEnum.Capricorn)
+        bestiaryItem = BestiaryEnum.SeaGoatHard;
+    }
+    else if (this.selectedZodiacDifficulty === "Very Hard") {
+      if (this.selectedZodiac === ZodiacEnum.Aries)
+        bestiaryItem = BestiaryEnum.SoaringRamVeryHard;
+      if (this.selectedZodiac === ZodiacEnum.Aries)
+        bestiaryItem = BestiaryEnum.SeaGoatVeryHard;
+    }
+
+    var boss = this.enemyGeneratorService.generateEnemy(bestiaryItem);
+    return boss;
   }
 
   getTrialGodDefeatCount() {
@@ -170,6 +213,7 @@ export class BestiaryViewComponent {
 
   showTrialOfSkill(god: GodEnum) {
     this.selectedTrialGod = god;
+    this.selectedZodiac = ZodiacEnum.None;
   }
 
   isGodAvailable(godType: GodEnum) {
@@ -187,13 +231,40 @@ export class BestiaryViewComponent {
 
     return this.utilityService.bigNumberReducer(trialType.highestXps);
   }
-  
+
   getHighestDpsForTrialGod() {
     var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfSkill && item.godType === this.selectedTrialGod);
     if (trialType === undefined)
       return 0;
 
     return this.utilityService.bigNumberReducer(trialType.highestDps);
+  }
+
+  getTrialOfTheStarsDefeatCount() {
+
+  }
+
+  //todo: you have to overhaul this a bit -- stars needs to mimic skill where it differentiates by zodiac
+  getHighestXpsForTrialOfTheStars() {
+    /*if (this.selected)
+
+    var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfSkill);
+    if (trialType === undefined)
+      return 0;
+
+    return this.utilityService.bigNumberReducer(trialType.highestXps);*/
+
+    return 0;
+  }
+
+  getHighestDpsForTrialOfTheStars() {
+    /*var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfSkill && item.godType === this.selectedTrialGod);
+    if (trialType === undefined)
+      return 0;
+
+    return this.utilityService.bigNumberReducer(trialType.highestDps);*/
+
+    return 0;
   }
 
   getHighestGodLevelsForTrialGod() {
@@ -496,7 +567,7 @@ export class BestiaryViewComponent {
   getHighestXps(subzone: SubZone) {
     return this.utilityService.bigNumberReducer(subzone.maxXps);
   }
-  
+
   getHighestDps(subzone: SubZone) {
     return this.utilityService.bigNumberReducer(subzone.maxDps);
   }

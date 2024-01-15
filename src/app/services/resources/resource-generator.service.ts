@@ -1666,7 +1666,7 @@ export class ResourceGeneratorService {
       return stats;
     }
 
-    var basePerfectRadiatingStoneValue = .015;
+    var basePerfectRadiatingStoneValue = .15;
     if (item === ItemsEnum.PerfectRadiatingHolyStone) {
       var stats = new CharacterStats(0, 0, 0, 0, 0, 0);
       stats.elementIncrease.holy = basePerfectRadiatingStoneValue;

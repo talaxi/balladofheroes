@@ -265,8 +265,15 @@ export class TimeFragmentViewComponent {
     var dps = "Max DPS Achieved: 0";
 
     if (this.selectedTrial !== undefined) {
-      var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === this.selectedTrial &&
-        item.godType === this.trialService.getGodEnumFromTrialOfSkillBattle());
+      var trialType: TrialDefeatCount | undefined = undefined;
+      if (this.selectedTrial === TrialEnum.TrialOfSkill) {
+        trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === this.selectedTrial &&
+          item.godType === this.trialService.getGodEnumFromTrialOfSkillBattle());
+      }
+      else {
+        trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === this.selectedTrial);        
+      }
+      
       if (trialType === undefined)
         return 0;
 
@@ -423,7 +430,7 @@ export class TimeFragmentViewComponent {
     this.timeFragmentRuns = this.globalService.globalVar.timeFragmentRuns;
   }
 
-  isFragmentAvailableToAdd() {    
+  isFragmentAvailableToAdd() {
     if (this.availableFragments <= this.timeFragmentRuns.length)
       return false;
 

@@ -142,8 +142,23 @@
                             *ngIf="isGodAvailable(godEnum.Aphrodite)"
                             (click)="showTrialOfSkill(godEnum.Aphrodite)">Aphrodite</button>
                         <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader heraColor"
-                            *ngIf="isGodAvailable(godEnum.Hera)" (click)="showTrialOfSkill(godEnum.Hera)">Hera</button>
+                            *ngIf="isGodAvailable(godEnum.Hera)" (click)="showTrialOfSkill(godEnum.Hera)">Hera</button>                            
                     </div>
+                    <!--<div class="flexGods">                        
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                            (click)="showTrialOfStars(zodiacEnum.Aries)"><img class="filtered" src="assets/svg/Aries.svg" /></button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                            (click)="showTrialOfStars(zodiacEnum.Capricorn)"><img class="filtered" src="assets/svg/Capricorn.svg" /></button>
+                            
+                            <div *ngIf="selectedZodiac !== zodiacEnum.None">
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader smallCaps bold"
+                            (click)="setTrialOfStarsDifficulty('Normal')">normal</button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader smallCaps bold"
+                            (click)="setTrialOfStarsDifficulty('Hard')">hard</button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader smallCaps bold"
+                            (click)="setTrialOfStarsDifficulty('Very Hard')">very hard</button>
+                        </div>
+                    </div>-->
                     <div *ngIf="isMobile">
                         <div class="flexGods">
                             <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader athenaColor"
@@ -207,6 +222,20 @@
                         <span>Highest DPS Achieved: {{getHighestDpsForTrialGod()}}</span>
                         <br/>
                         <span>Highest Total God Levels On Defeat: {{getHighestGodLevelsForTrialGod()}}</span>
+                    </div>
+                    <div *ngIf="selectedZodiac !== zodiacEnum.None">
+                        <span class="textCentered bold s4Heading pageHeader" customToolTip
+                        [contentTemplate]="trialEnemyPopover" [tooltipDirection]="trialTooltipDirection">{{getSelectedZodiacName()}}</span>
+                        <ng-template #trialEnemyPopover>
+                            <app-enemy-description-view
+                                [character]="getTrialOfTheStarsBestiary()"></app-enemy-description-view>
+                        </ng-template>
+                        <br/>
+                        <span>Defeat Count: {{getTrialOfTheStarsDefeatCount()}}</span>
+                        <br/>
+                        <span>Highest XPS Achieved: {{getHighestXpsForTrialOfTheStars()}}</span>
+                        <br/>
+                        <span>Highest DPS Achieved: {{getHighestDpsForTrialOfTheStars()}}</span>                        
                     </div>
                 </div>
 

@@ -733,7 +733,7 @@ export class BattleService {
 
       if (effect.type === StatusEffectEnum.OstinatoAfter && effect.duration <= 0) {
         var ostinato = this.lookupService.characterHasAbility("Ostinato", character);
-        if (ostinato !== undefined) {
+        if (ostinato !== undefined && this.battle !== undefined) {
           this.useAbility(true, ostinato, character, targets, party, true, effect.effectiveness, undefined, false);
         }
       }
@@ -2515,14 +2515,14 @@ export class BattleService {
         this.useAbility(true, onslaught, user, targets, party, true, undefined, undefined, false);
 
       var ostinato = this.lookupService.characterHasAbility("Ostinato", user);
-      if (ostinato !== undefined) {
+      if (ostinato !== undefined && this.battle !== undefined) {
         this.useAbility(true, ostinato, user, targets, party, true, undefined, undefined, false);
       }
     }
 
     if (abilityCopy.name === "Passing Judgment") {
       var ostinato = this.lookupService.characterHasAbility("Ostinato", user);
-      if (ostinato !== undefined) {
+      if (ostinato !== undefined && this.battle !== undefined) {
         this.useAbility(true, ostinato, user, targets, party, true, undefined, undefined, false);
 
         var dispenserOfDuesEffect = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DispenserOfDues);
@@ -2967,7 +2967,7 @@ export class BattleService {
 
           if (instantEffect.type === StatusEffectEnum.InstantOstinato) {
             var ostinato = this.lookupService.characterHasAbility("Ostinato", user);
-            if (ostinato !== undefined) {
+            if (ostinato !== undefined && this.battle !== undefined) {
               user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.InstantOstinato);
               this.useAbility(true, ostinato, user, targets, party, true, instantEffect.effectiveness, undefined, false);
             }

@@ -22,6 +22,7 @@ import { ElementalTypeEnum } from '../models/enums/elemental-type-enum.model';
 import { EquipmentQualityEnum } from '../models/enums/equipment-quality-enum.model';
 import { EquipmentTypeEnum } from '../models/enums/equipment-type-enum.model';
 import { GodEnum } from '../models/enums/god-enum.model';
+import { ZodiacEnum } from '../models/enums/zodiac-enum.model';
 import { ItemTypeEnum } from '../models/enums/item-type-enum.model';
 import { ItemsEnum } from '../models/enums/items-enum.model';
 import { LogViewEnum } from '../models/enums/log-view-enum.model';
@@ -290,7 +291,7 @@ export class LookupService {
       type === ItemsEnum.PerfectFlawedEmerald || type === ItemsEnum.PerfectFlawedAquamarine || type === ItemsEnum.LesserFlawedRuby || type === ItemsEnum.LesserFlawedTopaz || type === ItemsEnum.LesserFlawedOpal ||
       type === ItemsEnum.LesserFlawedEmerald || type === ItemsEnum.LesserFlawedAquamarine)
       return EquipmentQualityEnum.Rare;
-      
+
     if (type === ItemsEnum.RutilatedRuby || type === ItemsEnum.RutilatedTopaz || type === ItemsEnum.RutilatedOpal || type === ItemsEnum.RutilatedAmethyst ||
       type === ItemsEnum.RutilatedEmerald || type === ItemsEnum.RutilatedAquamarine || type === ItemsEnum.PerfectRutilatedRuby || type === ItemsEnum.PerfectRutilatedTopaz || type === ItemsEnum.PerfectRutilatedOpal ||
       type === ItemsEnum.PerfectRutilatedEmerald || type === ItemsEnum.PerfectRutilatedAquamarine)
@@ -302,16 +303,16 @@ export class LookupService {
       type === ItemsEnum.PerfectBrilliantEmerald || type === ItemsEnum.PerfectBrilliantAquamarine)
       return EquipmentQualityEnum.Special;
 
-      if (type === ItemsEnum.FlawlessRuby || type === ItemsEnum.FlawlessTopaz || type === ItemsEnum.FlawlessOpal || type === ItemsEnum.FlawlessAmethyst ||
-        type === ItemsEnum.FlawlessEmerald || type === ItemsEnum.FlawlessAquamarine || type === ItemsEnum.PerfectFlawlessRuby || type === ItemsEnum.PerfectFlawlessTopaz || type === ItemsEnum.PerfectFlawlessOpal ||
-        type === ItemsEnum.PerfectFlawlessEmerald || type === ItemsEnum.PerfectFlawlessAquamarine)
-        return EquipmentQualityEnum.Unique;
+    if (type === ItemsEnum.FlawlessRuby || type === ItemsEnum.FlawlessTopaz || type === ItemsEnum.FlawlessOpal || type === ItemsEnum.FlawlessAmethyst ||
+      type === ItemsEnum.FlawlessEmerald || type === ItemsEnum.FlawlessAquamarine || type === ItemsEnum.PerfectFlawlessRuby || type === ItemsEnum.PerfectFlawlessTopaz || type === ItemsEnum.PerfectFlawlessOpal ||
+      type === ItemsEnum.PerfectFlawlessEmerald || type === ItemsEnum.PerfectFlawlessAquamarine)
+      return EquipmentQualityEnum.Unique;
 
-        if (type === ItemsEnum.AdamantineRuby || type === ItemsEnum.AdamantineTopaz || type === ItemsEnum.AdamantineOpal || type === ItemsEnum.AdamantineAmethyst ||
-          type === ItemsEnum.AdamantineEmerald || type === ItemsEnum.AdamantineAquamarine || type === ItemsEnum.PerfectAdamantineRuby || type === ItemsEnum.PerfectAdamantineTopaz || type === ItemsEnum.PerfectAdamantineOpal ||
-          type === ItemsEnum.PerfectAdamantineEmerald || type === ItemsEnum.PerfectAdamantineAquamarine || type === ItemsEnum.MajorWeaponSlotAddition || type === ItemsEnum.MajorRingSlotAddition || type === ItemsEnum.MajorShieldSlotAddition ||
-          type === ItemsEnum.MajorArmorSlotAddition || type === ItemsEnum.MajorNecklaceSlotAddition)
-          return EquipmentQualityEnum.Extraordinary;
+    if (type === ItemsEnum.AdamantineRuby || type === ItemsEnum.AdamantineTopaz || type === ItemsEnum.AdamantineOpal || type === ItemsEnum.AdamantineAmethyst ||
+      type === ItemsEnum.AdamantineEmerald || type === ItemsEnum.AdamantineAquamarine || type === ItemsEnum.PerfectAdamantineRuby || type === ItemsEnum.PerfectAdamantineTopaz || type === ItemsEnum.PerfectAdamantineOpal ||
+      type === ItemsEnum.PerfectAdamantineEmerald || type === ItemsEnum.PerfectAdamantineAquamarine || type === ItemsEnum.MajorWeaponSlotAddition || type === ItemsEnum.MajorRingSlotAddition || type === ItemsEnum.MajorShieldSlotAddition ||
+      type === ItemsEnum.MajorArmorSlotAddition || type === ItemsEnum.MajorNecklaceSlotAddition)
+      return EquipmentQualityEnum.Extraordinary;
 
     return EquipmentQualityEnum.Basic;
   }
@@ -964,7 +965,7 @@ export class LookupService {
       description = "One extra entry to the <strong>Eternal Melee</strong> coliseum battle.";
     else if (item === ItemsEnum.Nectar)
       description = "Can be traded for Ambrosia. Gain from winning trial fights.";
-      else if (item === ItemsEnum.TimeFragment)
+    else if (item === ItemsEnum.TimeFragment)
       description = "Automate one subzone or battle for each Time Fragment.";
     else {
       //description = "Used for crafting.";
@@ -3686,8 +3687,8 @@ export class LookupService {
     if (abilityName === "Palm Strike")
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage and apply a Palm Strike debuff to the target. Every third Palm Strike on a target will increase the effectiveness by <b>" + (secondaryEffectivenessPercent - 100) + "%</b> and hit all targets. " + cooldown + " second cooldown.";
     if (abilityName === "Insight")
-    abilityDescription = "After using an auto attack, heal both party members for <strong>" + this.utilityService.genericRound(effectivenessPercent / 2) + "% of Attack + " + this.utilityService.genericRound(effectivenessPercent / 2) + "% of Resistance</strong> HP. Double this amount if the target has the Palm Strike debuff. Passive.";
-      //abilityDescription = "After using an auto attack, increase ability damage by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for " + relatedUserGainStatusEffectDuration + " seconds. Passive.";
+      abilityDescription = "After using an auto attack, heal both party members for <strong>" + this.utilityService.genericRound(effectivenessPercent / 2) + "% of Attack + " + this.utilityService.genericRound(effectivenessPercent / 2) + "% of Resistance</strong> HP. Double this amount if the target has the Palm Strike debuff. Passive.";
+    //abilityDescription = "After using an auto attack, increase ability damage by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for " + relatedUserGainStatusEffectDuration + " seconds. Passive.";
     if (abilityName === "Spirit Unleashed") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. Rotate between giving your target a debuff to increase their damage taken by <b>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</b>, reduce their damage dealt by <b>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</b>, or reduce their Auto Attack Speed by <b>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</b>. " + cooldown + " second cooldown.";
     }
@@ -4036,7 +4037,7 @@ export class LookupService {
         abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage to a target. Apply a damage over time effect dealing <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for " + relatedTargetGainStatusEffectDuration + " seconds. Freely activate Onslaught.";
       if (abilityName === "Receding Tide")
         abilityDescription = " Apply a damage over time effect to all targets that deals <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "% of Attack Water</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. For " + relatedUserGainStatusEffectDuration + " seconds, any target inflicted with a Damage over Time effect also has their ability cooldown speed reduced by " + this.utilityService.genericRound((relatedUserGainStatusEffectEffectiveness) * 100) + "%.";
-      if (abilityName === "War and Love") {        
+      if (abilityName === "War and Love") {
         abilityDescription = "Increase the damage of the next ability your ally uses by <strong>" + (relatedUserGainStatusEffectEffectivenessPercent) + "%</strong>. When your ally uses their next ability, apply a damage over time effect dealing <strong>" + this.utilityService.genericRound((relatedUserGainMaxCount) * 100) + "%</strong> of the damage dealt every 4 seconds for 16 seconds. Freely activate Onslaught.";
       }
 
@@ -6018,7 +6019,7 @@ export class LookupService {
       description = "Immune to all debuffs.";
     if (statusEffect.type === StatusEffectEnum.Paralyze)
       description = "10% chance every second to be stunned for 2 seconds.";
-      if (statusEffect.type === StatusEffectEnum.CounterStun)
+    if (statusEffect.type === StatusEffectEnum.CounterStun)
       description = "Stun attackers for 3 seconds.";
     if (statusEffect.type === StatusEffectEnum.RecentlyDefeated)
       description = "You have recently been defeated and are still nursing your wounds. Your primary stats are reduced by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
@@ -6187,7 +6188,7 @@ export class LookupService {
     }
     if (statusEffect.type === StatusEffectEnum.HealOverTime)
       description = "Healing " + this.utilityService.bigNumberReducer(statusEffect.effectiveness) + " HP every " + this.utilityService.roundTo(statusEffect.tickFrequency, 2) + " seconds.";
-      if (statusEffect.type === StatusEffectEnum.HealAfterDuration)
+    if (statusEffect.type === StatusEffectEnum.HealAfterDuration)
       description = "Healing " + this.utilityService.bigNumberReducer(statusEffect.effectiveness * 100) + "% of Max HP when this effect expires.";
     if (statusEffect.type === StatusEffectEnum.ScathingBeauty)
       description = "Healing " + this.utilityService.bigNumberReducer(statusEffect.effectiveness) + " HP every " + this.utilityService.roundTo(statusEffect.tickFrequency, 2) + " seconds.";
@@ -6667,6 +6668,37 @@ export class LookupService {
       name = "Hera";
     if (godType === GodEnum.Aphrodite)
       name = "Aphrodite";
+
+    return name;
+  }
+
+  getZodiacNameByType(zodiacType: ZodiacEnum) {
+    var name = "";
+
+    if (zodiacType === ZodiacEnum.Aries)
+      name = "Soaring Ram";
+    if (zodiacType === ZodiacEnum.Taurus)
+      name = "Great Bull";
+    if (zodiacType === ZodiacEnum.Gemini)
+      name = "Castor & Pollux";
+    if (zodiacType === ZodiacEnum.Cancer)
+      name = "Gargantuan Crab";
+    if (zodiacType === ZodiacEnum.Leo)
+      name = "Majestic Lion";
+    if (zodiacType === ZodiacEnum.Virgo)
+      name = "Astraea";
+    if (zodiacType === ZodiacEnum.Libra)
+      name = "Themis";
+    if (zodiacType === ZodiacEnum.Scorpio)
+      name = "Hardened Scorpion";
+    if (zodiacType === ZodiacEnum.Sagittarius)
+      name = "Chiron";
+    if (zodiacType === ZodiacEnum.Capricorn)
+      name = "Sea-Goat";
+    if (zodiacType === ZodiacEnum.Aquarius)
+      name = "Ganymede";
+    if (zodiacType === ZodiacEnum.Pisces)
+      name = "Rainbow-Scaled Fish";
 
     return name;
   }
@@ -7493,32 +7525,53 @@ export class LookupService {
   }
 
   levelUpUnique(unique: Uniques) {
+    var uniqueResource = this.globalService.globalVar.resources.find(item => item.item === unique.type);
     unique.level += 1;
 
     this.globalService.globalVar.characters.forEach(character => {
       if (character.equipmentSet.weapon !== undefined && character.equipmentSet.weapon.itemType === unique.type) {
+        var equipmentPiece = this.getEquipmentPieceByItemType(unique.type);
+        if (equipmentPiece !== undefined) {
         this.globalService.unequipItem(EquipmentTypeEnum.Weapon, character.type);
-        this.globalService.equipItem(this.getEquipmentPieceByItemType(unique.type), character);
+        equipmentPiece.associatedResource = uniqueResource;
+        this.globalService.equipItem(equipmentPiece, character);
+        }
       }
 
       if (character.equipmentSet.armor !== undefined && character.equipmentSet.armor.itemType === unique.type) {
+        var equipmentPiece = this.getEquipmentPieceByItemType(unique.type);
+        if (equipmentPiece !== undefined) {
         this.globalService.unequipItem(EquipmentTypeEnum.Armor, character.type);
-        this.globalService.equipItem(this.getEquipmentPieceByItemType(unique.type), character);
+        equipmentPiece.associatedResource = uniqueResource;
+        this.globalService.equipItem(equipmentPiece, character);
+        }
       }
 
       if (character.equipmentSet.shield !== undefined && character.equipmentSet.shield.itemType === unique.type) {
+        var equipmentPiece = this.getEquipmentPieceByItemType(unique.type);
+        if (equipmentPiece !== undefined) {
         this.globalService.unequipItem(EquipmentTypeEnum.Shield, character.type);
-        this.globalService.equipItem(this.getEquipmentPieceByItemType(unique.type), character);
+        equipmentPiece.associatedResource = uniqueResource;
+        this.globalService.equipItem(equipmentPiece, character);
+        }
       }
 
-      if (character.equipmentSet.ring !== undefined && character.equipmentSet.ring.itemType === unique.type) {
-        this.globalService.unequipItem(EquipmentTypeEnum.Ring, character.type);
-        this.globalService.equipItem(this.getEquipmentPieceByItemType(unique.type), character);
+      if (character.equipmentSet.ring !== undefined && character.equipmentSet.ring.itemType === unique.type) {                
+        var equipmentPiece = this.getEquipmentPieceByItemType(unique.type);
+        if (equipmentPiece !== undefined) {
+          this.globalService.unequipItem(EquipmentTypeEnum.Ring, character.type);
+          equipmentPiece.associatedResource = uniqueResource;
+          this.globalService.equipItem(equipmentPiece, character);
+        }
       }
 
       if (character.equipmentSet.necklace !== undefined && character.equipmentSet.necklace.itemType === unique.type) {
+        var equipmentPiece = this.getEquipmentPieceByItemType(unique.type);
+        if (equipmentPiece !== undefined) {
         this.globalService.unequipItem(EquipmentTypeEnum.Necklace, character.type);
-        this.globalService.equipItem(this.getEquipmentPieceByItemType(unique.type), character);
+        equipmentPiece.associatedResource = uniqueResource;
+        this.globalService.equipItem(equipmentPiece, character);
+        }
       }
     });
   }
@@ -10600,7 +10653,7 @@ export class LookupService {
       breakdown += "Chthonic Power: *" + this.utilityService.roundTo(1 + this.globalService.globalVar.chthonicPowers.getResistanceBoostPercent(), 2) + "<br />";
 
     if (this.equipmentService.getTotalResistanceMultiplierGain(character.equipmentSet) > 0)
-      breakdown += "Gems: *" + 1 + this.utilityService.genericRound(this.equipmentService.getTotalResistanceMultiplierGain(character.equipmentSet)) + "<br/>";
+      breakdown += "Gems: *" + this.utilityService.genericRound(1 + this.equipmentService.getTotalResistanceMultiplierGain(character.equipmentSet)) + "<br/>";
 
     /*if (assignedGod1 !== undefined && assignedGod1.permanentStatMultiplier.resistance > 1)
     breakdown += assignedGod1.name + " Stat Multiplier: *" + this.utilityService.roundTo(assignedGod1.permanentStatMultiplier.resistance, 2) + "<br />";
@@ -12241,7 +12294,7 @@ export class LookupService {
     if (level === 3)
       return BestiaryEnum.RabidJackal;
     //if (level === 4) //TODO: once next ballad is implemented
-      //return BestiaryEnum.Charybdis; //should be able to trade both rough fragments and flawed jewels
+    //return BestiaryEnum.Charybdis; //should be able to trade both rough fragments and flawed jewels
 
     return BestiaryEnum.None;
   }

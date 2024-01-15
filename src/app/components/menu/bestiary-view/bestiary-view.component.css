@@ -85,6 +85,11 @@
     text-align: center;
 }
 
+.filtered {
+    filter: invert(99%) sepia(1%) saturate(297%) hue-rotate(124deg) brightness(112%) contrast(80%);
+}
+
+
 @media (max-width: 800px) {
 
     .balladView {
