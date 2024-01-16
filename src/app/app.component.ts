@@ -146,14 +146,14 @@ export class AppComponent {
 
     //this runs regardless of battle state
     //console.log("originalDeltaTime: " + originalDeltaTime + " New: " + deltaTime);
-    /*this.backgroundService.handleBackgroundTimers(deltaTime, isInTown);
+    this.backgroundService.handleBackgroundTimers(deltaTime, isInTown);
 
     if (isInTown)
       this.backgroundService.handleTown(deltaTime, this.loading);
     else
       this.globalService.globalVar.timers.townHpGainTimer = 0;
 
-    this.battleService.handleBattle(deltaTime, this.loading);*/
+    this.battleService.handleBattle(deltaTime, this.loading);
   }
 
   loadStartup() {

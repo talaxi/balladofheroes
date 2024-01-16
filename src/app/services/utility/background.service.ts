@@ -419,9 +419,8 @@ export class BackgroundService {
       party.forEach(member => {
         if (member.assignedGod1 === GodEnum.Apollo || member.assignedGod2 === GodEnum.Apollo) {          
           var ostinato = this.lookupService.characterHasAbility("Ostinato", member);
-          if (ostinato !== undefined && this.globalService.globalVar.activeBattle !== undefined) {   
-            //todo: fix         
-            //this.battleService.useAbility(true, ostinato, member, enemies === undefined ? [] : enemies, party, true, effect.effectiveness - 1);
+          if (ostinato !== undefined && this.globalService.globalVar.activeBattle !== undefined) {                        
+            this.battleService.useAbility(true, ostinato, member, enemies === undefined ? [] : enemies, party, true, effect.effectiveness - 1);
           }
         }
       });
@@ -815,10 +814,14 @@ export class BackgroundService {
   handleTimeFragments(deltaTime: number) {
     if (this.globalService.globalVar.timeFragmentRuns === undefined || this.globalService.globalVar.timeFragmentRuns.length === 0)
       return;
-
-    this.globalService.globalVar.timeFragmentRuns.forEach(run => {
+      
+    this.globalService.globalVar.timeFragmentRuns.forEach(run => {      
       run.timer += deltaTime;
       var lootInfo: [number, number, [ItemsEnum, number][]] | undefined = undefined;
+      
+      if (run.clearTime === undefined || run.clearTime === null)
+        return;
+
       while (run.timer >= run.clearTime) {
         if (lootInfo === undefined)
           lootInfo = this.getTimeFragmentCondensedRewards(run);
