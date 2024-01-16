@@ -319,8 +319,7 @@ export class BestiaryViewComponent {
 
     return trialType.count;
   }
-
-  //todo: you have to overhaul this a bit -- stars needs to mimic skill where it differentiates by zodiac
+  
   getHighestXpsForTrialOfTheStars() {
     var trialType: TrialDefeatCount | undefined = undefined;
     if (this.selectedZodiacDifficulty === "Normal") {

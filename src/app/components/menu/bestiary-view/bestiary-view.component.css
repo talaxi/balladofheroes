@@ -97,6 +97,14 @@
     color: var(--foreground-secondary);
 }
 
+.zodiacButton {
+    height: 1.5rem;
+}
+
+.zodiacImage {
+    height: 100%;
+}
+
 @media (max-width: 800px) {
 
     .balladView {

@@ -21,6 +21,7 @@ import { SubZoneGeneratorService } from 'src/app/services/sub-zone-generator/sub
 import { AchievementService } from 'src/app/services/achievements/achievement.service';
 import { TrialDefeatCount } from 'src/app/models/battle/trial-defeat-count.model';
 import { BackgroundService } from 'src/app/services/utility/background.service';
+import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 
 @Component({
   selector: 'app-time-fragment-view',
@@ -367,7 +368,6 @@ export class TimeFragmentViewComponent {
   getEstimatedRewards(run: TimeFragmentRun, oneLine: boolean = false) {
     var rewardInfo = this.backgroundService.getTimeFragmentCondensedRewards(run);
     var rewards = "";
-    var enemyOptions: EnemyTeam[] = [];
     var finalLootOptions: [ItemsEnum, number][] = rewardInfo[2];
     var xpGained = rewardInfo[0];
     var coinsGained = rewardInfo[1];
@@ -410,7 +410,13 @@ export class TimeFragmentViewComponent {
       rewards = rewards.substring(0, rewards.length - 2);
 
     finalLootOptions.forEach(loot => {
-      rewards += "<span>" + this.utilityService.genericShortRound(loot[1] * 100) + "%</span> 1x " + this.dictionaryService.getItemName(loot[0]) + ", ";
+      var itemName = this.dictionaryService.getItemName(loot[0]);
+      if (this.lookupService.getItemTypeFromItemEnum(loot[0]) === ItemTypeEnum.Equipment) {
+        var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(loot[0])?.quality);
+        itemName = "<span class='bold " + qualityClass + "'>" + itemName + "</span>";
+      }
+
+      rewards += "<span>" + this.utilityService.genericShortRound(loot[1] * 100) + "%</span> 1x " + itemName + ", ";
     });
 
     if (rewards !== "" && finalLootOptions.length > 0) {

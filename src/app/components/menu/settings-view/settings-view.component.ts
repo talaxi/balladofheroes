@@ -151,7 +151,7 @@ export class SettingsViewComponent implements OnInit {
           this.globalService.globalVar.playerNavigation.currentSubzone = this.balladService.getActiveSubZone(true);
           this.storyService.showStory = false;
           this.globalService.globalVar.isBattlePaused = false;
-
+          
           this.getSettings();
         }
       }

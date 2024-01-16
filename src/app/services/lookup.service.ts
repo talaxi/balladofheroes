@@ -3952,7 +3952,7 @@ export class LookupService {
     //Duos
     if (ability !== undefined) {
       if (abilityName === "Blinding Arrow")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage to a target. If critical, increase damage by <strong>" + this.utilityService.genericRound(secondaryEffectiveAmount * 100) + "%</strong> and 100% Blind the target for 8 seconds.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage to a target. If critical, increase damage by <strong>" + this.utilityService.genericRound((secondaryEffectiveAmount - 1) * 100) + "%</strong> and 100% Blind the target for 8 seconds.";
       if (abilityName === "Divine Speed")
         abilityDescription = "Deal <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage after every auto attack for " + relatedUserGainStatusEffectDuration + " seconds. Heal for 10% of the additional damage dealt.";
       if (abilityName === "Cleansing Rain")
@@ -3977,11 +3977,11 @@ export class LookupService {
       if (abilityName === "Lucky Shots")
         abilityDescription = "Increase Auto Attack Speed by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> for " + relatedUserGainStatusEffectDuration + " seconds. Each auto attack hit is guaranteed to be critical and increases existing debuff duration by " + this.utilityService.genericRound((relatedUserGainMaxCount - 1) * 100) + "%.";
       if (abilityName === "Sun and Moon")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> damage to a target, then deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> damage to all targets.  If critical, increase damage by <strong>" + (secondaryEffectiveAmount * 100) + "%</strong>. Any criticals also trigger a free Ostinato at 20% effectiveness.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> damage to a target, then deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> damage to all targets.  If critical, increase damage by <strong>" + ((secondaryEffectiveAmount - 1) * 100) + "%</strong>. Any criticals also trigger a free Ostinato at 20% effectiveness.";
       if (abilityName === "First Blood")
         abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> damage to a target. Deal <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for " + relatedTargetGainStatusEffectDuration + " seconds. If this is the first ability used in the battle, increase the Damage over Time effect by <strong>" + ((secondaryEffectiveAmount - 1) * 100) + "%</strong>.";
       if (abilityName === "Nature's Fury")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack Earth</strong> damage to all targets.  If critical, increase damage by <strong>" + this.utilityService.genericRound(secondaryEffectiveAmount * 100) + "%</strong>. Any criticals also stun the enemy for 5 seconds.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack Earth</strong> damage to all targets.  If critical, increase damage by <strong>" + this.utilityService.genericRound((secondaryEffectiveAmount - 1) * 100) + "%</strong>. Any criticals also stun the enemy for 5 seconds.";
       if (abilityName === "Sickness")
         abilityDescription = "Reduce all enemys' stats including Max HP by <strong>" + this.utilityService.genericRound((1 - relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds.";
       if (abilityName === "Binding Arrows")
@@ -8239,7 +8239,7 @@ export class LookupService {
       ability.isAvailable = true;
       ability.dealsDirectDamage = true;
       ability.isAoe = false;
-      ability.effectiveness = 25 + primaryEffectivenessBonus;
+      ability.effectiveness = 20 + primaryEffectivenessBonus;
       ability.secondaryEffectiveness = 2 + secondaryEffectivenessBonus * .5;
       ability.elementalType = ElementalTypeEnum.Holy;
     }
@@ -8267,7 +8267,7 @@ export class LookupService {
       ability.isAvailable = true;
       ability.dealsDirectDamage = true;
       ability.isAoe = true;
-      ability.effectiveness = 10 + primaryEffectivenessBonus * 1.5;
+      ability.effectiveness = 8 + primaryEffectivenessBonus * 1.5;
       ability.elementalType = ElementalTypeEnum.Holy;
       ability.targetEffect.push(this.globalService.createDamageOverTimeEffect(12, 3, .75, ability.name, dotTypeEnum.BasedOnDamage, undefined, true));
       ability.targetEffect.push(this.globalService.createDamageOverTimeEffect(12, 3, .2 + secondaryEffectivenessBonus * .5, ability.name, dotTypeEnum.BasedOnAttack, undefined, true));
@@ -8278,7 +8278,7 @@ export class LookupService {
       ability.isAvailable = true;
       ability.dealsDirectDamage = true;
       ability.isAoe = true;
-      ability.effectiveness = 7.5 + (primaryEffectivenessBonus);
+      ability.effectiveness = 5 + (primaryEffectivenessBonus);
       ability.elementalType = ElementalTypeEnum.Holy;
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 16, 1.5 + secondaryEffectivenessBonus * .1, false, true));
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.HolyDamageUp, 16, 1.5 + secondaryEffectivenessBonus * .1, false, true));
@@ -8303,7 +8303,7 @@ export class LookupService {
       ability.isAvailable = true;
       ability.dealsDirectDamage = true;
       ability.isAoe = true;
-      ability.effectiveness = 15 + (primaryEffectivenessBonus * 1.5);
+      ability.effectiveness = 10 + (primaryEffectivenessBonus * 1.5);
       ability.elementalType = ElementalTypeEnum.Holy;
       ability.secondaryEffectiveness = 1 + (secondaryEffectivenessBonus * .1);
       ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Blind, 14, .5, false, false, true, undefined, undefined, undefined, undefined, undefined, undefined, "Fading", 1 + (secondaryEffectivenessBonus * .1)));
@@ -8314,7 +8314,7 @@ export class LookupService {
       ability.isAvailable = true;
       ability.dealsDirectDamage = true;
       ability.isAoe = true;
-      ability.effectiveness = 12.5 + primaryEffectivenessBonus * 1.5;
+      ability.effectiveness = 5 + primaryEffectivenessBonus * 1.5;
       ability.elementalType = ElementalTypeEnum.Holy;
       ability.secondaryEffectiveness = 1;
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Lightning));
@@ -8326,7 +8326,7 @@ export class LookupService {
       ability.isAvailable = true;
       ability.dealsDirectDamage = true;
       ability.isAoe = false;
-      ability.effectiveness = 12.5 + primaryEffectivenessBonus * 1.5;
+      ability.effectiveness = 5 + primaryEffectivenessBonus * 1.5;
       ability.elementalType = ElementalTypeEnum.Holy;
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Water));
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceNextAbilityCooldown, -1, 1.5 + secondaryEffectivenessBonus * .025, false, true));
@@ -8344,7 +8344,7 @@ export class LookupService {
       ability.isAvailable = true;
       ability.dealsDirectDamage = true;
       ability.isAoe = false;
-      ability.effectiveness = 15 + primaryEffectivenessBonus * 3;
+      ability.effectiveness = 10 + primaryEffectivenessBonus * 3;
       ability.secondaryEffectiveness = 5 + secondaryEffectivenessBonus * .5;
       ability.elementalType = ElementalTypeEnum.Air;
       console.log(ability);
@@ -8362,7 +8362,7 @@ export class LookupService {
       ability.isAvailable = true;
       ability.dealsDirectDamage = true;
       ability.isAoe = false;
-      ability.effectiveness = 7.5 + primaryEffectivenessBonus;
+      ability.effectiveness = 5 + primaryEffectivenessBonus;
       ability.secondaryEffectiveness = 1.5 + secondaryEffectivenessBonus * .25;
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false));
     }
@@ -8372,7 +8372,7 @@ export class LookupService {
       ability.isAvailable = true;
       ability.dealsDirectDamage = true;
       ability.isAoe = false;
-      ability.effectiveness = 10 + primaryEffectivenessBonus * 2;
+      ability.effectiveness = 8 + primaryEffectivenessBonus * 2;
       ability.secondaryEffectiveness = 2.5 + secondaryEffectivenessBonus * .5;
       ability.targetEffect.push(this.globalService.createDamageOverTimeEffect(20, 4, .75, ability.name, dotTypeEnum.BasedOnDamage));
     }
@@ -8382,7 +8382,7 @@ export class LookupService {
       ability.isAvailable = true;
       ability.dealsDirectDamage = true;
       ability.isAoe = true;
-      ability.effectiveness = 15 + primaryEffectivenessBonus * 1.5;
+      ability.effectiveness = 5 + primaryEffectivenessBonus * 1.5;
       ability.elementalType = ElementalTypeEnum.Earth;
       ability.secondaryEffectiveness = 1.5 + secondaryEffectivenessBonus * .25;
     }
@@ -8398,7 +8398,7 @@ export class LookupService {
       ability.name = "Chain Shot";
       ability.isAvailable = true;
       ability.dealsDirectDamage = true;
-      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 2.5;
+      ability.effectiveness = 5 + primaryEffectivenessBonus * 2.5;
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
       ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ChainsOfFate, 15, 1, false, false, true));
@@ -8410,7 +8410,7 @@ export class LookupService {
       ability.isAvailable = true;
       ability.dealsDirectDamage = true;
       ability.isAoe = true;
-      ability.effectiveness = 12.5 + primaryEffectivenessBonus * 1.5;
+      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 1.5;
       ability.elementalType = ElementalTypeEnum.Lightning;
       ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 5, 1, false, false, true));
       ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Paralyze, 20 + secondaryEffectivenessBonus, 1, false, false, true));
@@ -8421,7 +8421,7 @@ export class LookupService {
       ability.isAvailable = true;
       ability.dealsDirectDamage = true;
       ability.isAoe = true;
-      ability.effectiveness = 12.5 + primaryEffectivenessBonus * 1.5;
+      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 1.5;
       ability.elementalType = ElementalTypeEnum.Water;
       ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Paralyze, 20 + secondaryEffectivenessBonus, 1, false, false, true, undefined, undefined, undefined, undefined, undefined, undefined, "Uneasy Waters"));
     }
@@ -8480,7 +8480,7 @@ export class LookupService {
       ability.name = "Just Strike";
       ability.isAvailable = true;
       ability.dealsDirectDamage = true;
-      ability.effectiveness = 7.5 + (primaryEffectivenessBonus * 1.25);
+      ability.effectiveness = 5 + (primaryEffectivenessBonus * 1.25);
       ability.secondaryEffectiveness = .05 + secondaryEffectivenessBonus * .01;
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
@@ -8555,7 +8555,7 @@ export class LookupService {
       ability.isAvailable = true;
       ability.dealsDirectDamage = true;
       ability.isAoe = true;
-      ability.effectiveness = 12.5 + primaryEffectivenessBonus * 1.25;
+      ability.effectiveness = 8 + primaryEffectivenessBonus * 1.25;
       ability.elementalType = ElementalTypeEnum.Lightning;
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ThunderousMelody, 25 + secondaryEffectivenessBonus, 3, false, true));
     }
@@ -8587,7 +8587,7 @@ export class LookupService {
       ability.isAvailable = true;
       ability.dealsDirectDamage = true;
       ability.isAoe = true;
-      ability.effectiveness = 10 + primaryEffectivenessBonus * 1.25;
+      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 1.25;
       ability.elementalType = ElementalTypeEnum.Fire;
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Earth));
       ability.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 3, .4 + secondaryEffectivenessBonus * .01, ability.name, dotTypeEnum.BasedOnDamage, undefined, true));
@@ -8614,7 +8614,7 @@ export class LookupService {
       ability.isAvailable = true;
       ability.dealsDirectDamage = true;
       ability.isAoe = false;
-      ability.effectiveness = 15;
+      ability.effectiveness = 7.5 + (primaryEffectivenessBonus * .75);
       ability.elementalType = ElementalTypeEnum.Lightning;
       ability.targetEffect.push(this.globalService.createDamageOverTimeEffect(12, 3, .25 + secondaryEffectivenessBonus * .5, ability.name, dotTypeEnum.BasedOnDamage, undefined, true));
     }
@@ -8647,7 +8647,7 @@ export class LookupService {
       ability.isAvailable = true;
       ability.dealsDirectDamage = true;
       ability.isAoe = true;
-      ability.effectiveness = 15 + primaryEffectivenessBonus * 1.75;
+      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 1.75;
       ability.elementalType = ElementalTypeEnum.Fire;
       ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDownExcludeHp, 30, .75 - secondaryEffectivenessBonus * .01, true, false, true));
     }
@@ -8657,7 +8657,7 @@ export class LookupService {
       ability.isAvailable = true;
       ability.dealsDirectDamage = true;
       ability.isAoe = true;
-      ability.effectiveness = 12.5 + primaryEffectivenessBonus * 1.75;
+      ability.effectiveness = 10 + primaryEffectivenessBonus * 1.75;
       ability.elementalType = ElementalTypeEnum.Fire;
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FieryJudgment, 15 + secondaryEffectivenessBonus * 2, 1, false, true, false));
     }
@@ -8678,7 +8678,7 @@ export class LookupService {
       ability.isAvailable = true;
       ability.dealsDirectDamage = true;
       ability.isAoe = true;
-      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 1;
+      ability.effectiveness = 5 + primaryEffectivenessBonus * 1;
       ability.secondaryEffectiveness = 1.1 + secondaryEffectivenessBonus * .025;
       ability.elementalType = ElementalTypeEnum.Fire;
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Earth));
@@ -8703,7 +8703,7 @@ export class LookupService {
       ability.isAvailable = true;
       ability.dealsDirectDamage = true;
       ability.isAoe = true;
-      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 1.25;
+      ability.effectiveness = 5 + primaryEffectivenessBonus * 1.25;
       ability.elementalType = ElementalTypeEnum.Fire;
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Earth));
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Air));
@@ -8724,7 +8724,7 @@ export class LookupService {
       ability.isAvailable = true;
       ability.dealsDirectDamage = true;
       ability.isAoe = true;
-      ability.effectiveness = 12.5 + primaryEffectivenessBonus * 2.25;
+      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 2.25;
       ability.elementalType = ElementalTypeEnum.Lightning;
       ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 3, 1, false, false, true));
       ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsExcludeHpDown, 20, .75 - secondaryEffectivenessBonus * .01, false, false, true));
@@ -8735,7 +8735,7 @@ export class LookupService {
       ability.isAvailable = true;
       ability.dealsDirectDamage = true;
       ability.isAoe = true;
-      ability.effectiveness = 12.5 + primaryEffectivenessBonus * 2.25;
+      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 2.25;
       ability.elementalType = ElementalTypeEnum.Water;
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceCooldowns, -1, 1.2 + secondaryEffectivenessBonus * .01, true, true, false, ability.name.toString()));
     }
@@ -8783,7 +8783,7 @@ export class LookupService {
       ability.name = "Destruction";
       ability.isAvailable = true;
       ability.dealsDirectDamage = true;
-      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 1.5;
+      ability.effectiveness = 5 + primaryEffectivenessBonus * 1.5;
       ability.elementalType = ElementalTypeEnum.Lightning;
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatDamageAfterDelay, 10, 1, false, true, false));
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Water));
@@ -8802,7 +8802,7 @@ export class LookupService {
       ability.name = "Loving Embrace";
       ability.isAvailable = true;
       ability.dealsDirectDamage = true;
-      ability.effectiveness = 10 + primaryEffectivenessBonus * 2.25;
+      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 2.25;
       ability.elementalType = ElementalTypeEnum.Air;
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LovingEmbrace, 25 + secondaryEffectivenessBonus * 2, 1.1, false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 15));
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Air));
