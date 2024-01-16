@@ -419,8 +419,9 @@ export class BackgroundService {
       party.forEach(member => {
         if (member.assignedGod1 === GodEnum.Apollo || member.assignedGod2 === GodEnum.Apollo) {          
           var ostinato = this.lookupService.characterHasAbility("Ostinato", member);
-          if (ostinato !== undefined && this.globalService.globalVar.activeBattle !== undefined) {            
-            this.battleService.useAbility(true, ostinato, member, enemies === undefined ? [] : enemies, party, true, effect.effectiveness - 1);
+          if (ostinato !== undefined && this.globalService.globalVar.activeBattle !== undefined) {   
+            //todo: fix         
+            //this.battleService.useAbility(true, ostinato, member, enemies === undefined ? [] : enemies, party, true, effect.effectiveness - 1);
           }
         }
       });
