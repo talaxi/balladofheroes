@@ -20,7 +20,7 @@
     </div>
     <div *ngIf="!isStatUpDownEffect(statusEffect) && !isSplitStatUpDownEffect(statusEffect) && !isNumericalEffect(statusEffect)"
         class="flex positiveStatusEffect">
-        <div *ngIf="hasImage(statusEffect)">
+        <div class="maxWidthHeight" *ngIf="hasImage(statusEffect)">
             <img class="image" (contextmenu)="preventRightClick()" [src]="this.getStatusEffectImage(statusEffect)">
         </div>
         <div *ngIf="!hasImage(statusEffect)" class="textDiv onlyText" [ngClass]="{'peacock': statusEffect.type === 188 && statusEffect.count === 1,'crow': statusEffect.type === 188 && statusEffect.count === 2,'lion': statusEffect.type === 188 && statusEffect.count === 3}">{{getStatusEffectText(statusEffect)}}</div>
@@ -49,7 +49,7 @@
     </div>
     <div *ngIf="!isStatUpDownEffect(statusEffect) && !isSplitStatUpDownEffect(statusEffect) && !isNumericalEffect(statusEffect)"
         class="flex negativeStatusEffect">
-        <div *ngIf="hasImage(statusEffect)">
+        <div class="maxWidthHeight" *ngIf="hasImage(statusEffect)">
             <img (contextmenu)="preventRightClick()" class="image" [src]="this.getStatusEffectImage(statusEffect)">
             <strong class="effectCount s3Heading" *ngIf="getEffectCount() > 1">x{{getEffectCount()}}</strong>
         </div>

@@ -185,5 +185,21 @@ export enum SubZoneEnum {
   TheLabyrinthLongPassage1,
   TheLabyrinthLongPassage2,
   TheLabyrinthSolidWall2,
-  TheLabyrinthCloakedStranger
+  TheLabyrinthCloakedStranger,
+  AiaiaUnknownWaters,
+  AiaiaBreezyDays,
+  AiaiaShoreline,
+  AiaiaForestPath,
+  AiaiaCircesHome,
+  AiaiaOpenClearing,
+  AiaiaThornyPath,
+  AiaiaWildThicket,
+  AiaiaFlowerGarden,
+  StraitsOfMessinaIntoTheNarrowStraits,
+  StraitsOfMessinaEdgeOfCharybdis,
+  StraitsOfMessinaIntoTheVortex,
+  StraitsOfMessinaMawOfTheMonster,
+  StraitsOfMessinaCavernOpening,
+  StraitsOfMessinaDarkTunnel,
+  StraitsOfMessinaUnavoidablePath
 }

@@ -22,5 +22,7 @@ export enum ZoneEnum {
   HuntForYarrow,
   WarForTheMountain,
   Crete,
-  Labyrinth
+  Labyrinth,
+  Aiaia,
+  StraitsOfMessina
 }

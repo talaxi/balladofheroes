@@ -478,6 +478,9 @@ export class BattleService {
     if (this.battle.activeTournament.type !== ColiseumTournamentEnum.None) {
       //tournament battles
       //console.log("Get " + this.battle.activeTournament.type + " enemy options for round " + this.battle.activeTournament.currentRound);
+      if (this.battle.activeTournament.type === ColiseumTournamentEnum.FriendlyCompetition)
+      enemyOptions = this.coliseumService.parseFriendlyCompetitionData(this.battle.activeTournament);
+      else
       enemyOptions = this.coliseumService.generateBattleOptions(this.battle.activeTournament.type, this.battle.activeTournament.currentRound);
     }
     else if (this.battle.activeTrial.type !== TrialEnum.None) {
@@ -833,7 +836,7 @@ export class BattleService {
 
     var boundingBandSignificant = character.battleInfo.statusEffects.find(effect => (effect.type === StatusEffectEnum.BoundingBandUnique && effect.count >= 10));
     if (boundingBandSignificant !== undefined) {
-      var durationRemaining = boundingBandSignificant.duration / boundingBandSignificant.maxDuration;
+      var durationRemaining = boundingBandSignificant.duration / boundingBandSignificant.maxCount;      
       var adjustedEffectiveness = (boundingBandSignificant.effectiveness * 2) * durationRemaining;
       if (adjustedEffectiveness < 1)
         adjustedEffectiveness = 1;
@@ -1675,6 +1678,10 @@ export class BattleService {
     if (target === undefined)
       return false;
 
+      if (elementalType === ElementalTypeEnum.Random) {
+        elementalType = this.lookupService.getRandomElement();        
+      }
+
     if (user.battleInfo.lastUsedPoseidonAbility && !fromRepeat && (abilityCopy.name === "Crashing Waves" || abilityCopy.name === "Whirlpool" || abilityCopy.name === "Tsunami")) {
       this.handleExtraPoseidonFunctionality(user, abilityCopy);
     }
@@ -1723,6 +1730,13 @@ export class BattleService {
 
     if (abilityCopy.name === "Sun and Moon" && fromRepeat) {
       abilityCopy.isAoe = true;
+    }
+
+    if (abilityCopy.name === "Warming Brew") {
+      party.forEach(member => {
+        member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Dead);
+        this.gainHp(member, 1);
+      });
     }
 
     if (abilityCopy.name === "Warming Brew" || abilityCopy.name === "Revelry and Blood") {
@@ -1984,7 +1998,7 @@ export class BattleService {
     }
     else if (abilityCopy.heals) {
       if (abilityCopy.isAoe) {
-        party.forEach((potentialTarget, index, array) => {
+        party.filter(character => !character.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead)).forEach(potentialTarget => {          
           var linkEffectivenessBoost = user.battleStats.linkEffectiveness;
           var linkEffectivenessBoostEffect = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.LinkBoost);
           if (linkEffectivenessBoostEffect !== undefined)
@@ -3033,7 +3047,7 @@ export class BattleService {
             user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.isPositive);
           }
 
-          if (instantEffect.type === StatusEffectEnum.Barrier) {
+          if (instantEffect.type === StatusEffectEnum.Barrier) {            
             var barrierAmount = 0;
 
             /*if (originalAbility !== undefined && (originalAbility.name === "Revelry" || originalAbility.name === "Pray"))
@@ -3746,7 +3760,7 @@ export class BattleService {
         effectiveness = .85;
 
       ability.targetEffect[0].effectiveness = effectiveness;
-    }
+    }    
 
     if (ability.name === "Natural Disaster" && (user.name === "Hades" || (user.assignedGod1 === GodEnum.Hades || user.assignedGod2 === GodEnum.Hades))) {
       var elementsUsed = user.battleInfo.elementsUsed === undefined ? 0 : user.battleInfo.elementsUsed.length;
@@ -4313,6 +4327,10 @@ export class BattleService {
       appliedStatusEffect.count = originalAbility.maxCount;
     }
 
+    if (appliedStatusEffect.type === StatusEffectEnum.BoundingBandUnique) {
+      appliedStatusEffect.maxCount = appliedStatusEffect.duration;
+    }
+
     if (appliedStatusEffect.isAoe && potentialTargets !== undefined) {
       potentialTargets.filter(potentialTarget => !(appliedStatusEffect.type === StatusEffectEnum.BlindedByLove && castingCharacter !== undefined && castingCharacter.type === potentialTarget.type)).forEach(enemy => {
 
@@ -4733,7 +4751,7 @@ export class BattleService {
           var damage = this.dealTrueDamage(true, member, this.lookupService.getAdjustedDefense(target) * (this.lookupService.getAdjustedDefense(target) * BucklerOfPerfectHarmony!.effectiveness), undefined, undefined, true);
 
           if (this.globalService.globalVar.gameLogSettings.get("partyEquipmentEffect")) {
-            var gameLogEntry = "<strong>" + member.name + "</strong>" + " takes " + this.utilityService.bigNumberReducer(damage) + " damage from <strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>'s Rainbow Scaled Shield effect.";
+            var gameLogEntry = "<strong>" + member.name + "</strong>" + " takes " + this.utilityService.bigNumberReducer(damage) + " damage from <strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong>'s Buckler of Perfect Harmony effect.";
             this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry, this.globalService.globalVar);
           }
         });
@@ -4753,7 +4771,7 @@ export class BattleService {
             var damage = this.dealTrueDamage(true, member, this.lookupService.getAdjustedDefense(target) * (BucklerOfPerfectHarmony!.effectiveness + (uniqueEffect!.getMinorEffectLevel() / 20)), undefined, undefined, true);
 
             if (this.globalService.globalVar.gameLogSettings.get("partyEquipmentEffect")) {
-              var gameLogEntry = "<strong>" + member.name + "</strong>" + " takes " + this.utilityService.bigNumberReducer(damage) + " damage from <strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong>'s Rainbow Scaled Shield effect.";
+              var gameLogEntry = "<strong>" + member.name + "</strong>" + " takes " + this.utilityService.bigNumberReducer(damage) + " damage from <strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong>'s Buckler of Perfect Harmony effect.";
               this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry, this.globalService.globalVar);
             }
           });
@@ -6244,6 +6262,7 @@ export class BattleService {
     this.useAbility(true, ability, character, this.battle.currentEnemies.enemyList, this.globalService.getActivePartyCharacters(true), true);
 
     character.battleInfo.duoAbilityUsed = true;
+    character.battleInfo.duoAbilityCooldown = this.utilityService.duoAbilityCooldown;
   }
 
   useBattleItem(slotNumber: number) {

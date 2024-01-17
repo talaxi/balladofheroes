@@ -7,5 +7,6 @@ export enum BalladEnum {
   Boar,
   Argo,
   Olympus,
-  Labyrinth
+  Labyrinth,
+  Witch
 }

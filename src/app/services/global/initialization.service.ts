@@ -219,6 +219,7 @@ export class InitializationService {
     this.initializeBalladOfLabors();
     this.initializeBalladOfOlympus();
     this.initializeBalladOfTheLabyrinth();
+    //this.initializeBalladOfTheWitch(); //TODO: do not deploy this yet
   }
 
   initializeSettings() {
@@ -319,6 +320,7 @@ export class InitializationService {
     this.globalService.globalVar.settings.set("autoProgressPauseStory", false);
     this.globalService.globalVar.settings.set("autoProgressIncludeAllAchievements", false);
     this.globalService.globalVar.settings.set("autoProgressRemoveOnDeath", true);
+    this.globalService.globalVar.settings.set("autoProgressCustomVictoryCount", 10);
   }
 
   initializeGameLogSettings() {
@@ -1206,10 +1208,10 @@ export class InitializationService {
       if (resource !== undefined)
         this.lookupService.gainResource(resource);
 
+        this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.BoundingBandUnique));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.ScorpionStingerUnique));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.BucklerOfPerfectHarmonyUnique));
-      this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.CarcanetOfTheCentaurUnique));
-      this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.BoundingBandUnique));
+      this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.CarcanetOfTheCentaurUnique));      
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.ScathingBeautyUnique));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.RainbowScaledPlatingUnique));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.GlowingChokerUnique));
@@ -1217,8 +1219,7 @@ export class InitializationService {
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.EnergyShieldUnique));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.SturdyShellUnique));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.AstralRingUnique));
-      this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.GleamingLoopUnique));
-      //this.globalService.globalVar.uniques[0].level = 2;
+      this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.GleamingLoopUnique));      
 
       this.globalService.globalVar.activePartyMember1 = CharacterEnum.Archer;
       this.globalService.globalVar.characters.forEach(character => { character.isAvailable = true; character.unlockedOverdrives.push(OverdriveNameEnum.Reprisal); character.unlockedOverdrives.push(OverdriveNameEnum.Preservation); character.unlockedOverdrives.push(OverdriveNameEnum.Harmony); character.unlockedOverdrives.push(OverdriveNameEnum.Bullseye); });     //
@@ -1499,11 +1500,197 @@ export class InitializationService {
           this.globalService.levelUpPartyMember(character);
         }
  
+        character.level = 1;
+        character.exp = 0;
+        character.linkInfo.totalLinks = 0;
+        character.linkInfo.remainingLinks = 0;
+        character.baseStats = this.globalService.getCharacterBaseStats(character.type);
+        character.maxLevel = 100;
+      });
+
+      var characterLevel = 54;
+      this.globalService.globalVar.characters.forEach(character => {
+        for (var i = 0; i < characterLevel; i++) {
+          this.globalService.levelUpPartyMember(character);
+        }
+ 
+        character.level = 1;
+        character.exp = 0;
+        character.linkInfo.totalLinks = 0;
+        character.linkInfo.remainingLinks = 0;
+        character.baseStats = this.globalService.getCharacterBaseStats(character.type);
+        character.maxLevel = 100;
+      });
+      
+
+      var characterLevel = 59;
+      this.globalService.globalVar.characters.forEach(character => {
+        for (var i = 0; i < characterLevel; i++) {
+          this.globalService.levelUpPartyMember(character);
+        }
+ 
+        character.level = 1;
+        character.exp = 0;
+        character.linkInfo.totalLinks = 0;
+        character.linkInfo.remainingLinks = 0;
+        character.baseStats = this.globalService.getCharacterBaseStats(character.type);
+        character.maxLevel = 100;
+      });
+      
+      var characterLevel = 64;
+      this.globalService.globalVar.characters.forEach(character => {
+        for (var i = 0; i < characterLevel; i++) {
+          this.globalService.levelUpPartyMember(character);
+        }
+ 
+        character.level = 1;
+        character.exp = 0;
+        character.linkInfo.totalLinks = 0;
+        character.linkInfo.remainingLinks = 0;
+        character.baseStats = this.globalService.getCharacterBaseStats(character.type);
+        character.maxLevel = 100;
+      });
+      
+      var characterLevel = 64;
+      this.globalService.globalVar.characters.forEach(character => {
+        for (var i = 0; i < characterLevel; i++) {
+          this.globalService.levelUpPartyMember(character);
+        }
+ 
+        character.level = 1;
+        character.exp = 0;
+        character.linkInfo.totalLinks = 0;
+        character.linkInfo.remainingLinks = 0;
+        character.baseStats = this.globalService.getCharacterBaseStats(character.type);
+        character.maxLevel = 100;
+      });
+      
+      var characterLevel = 69;
+      this.globalService.globalVar.characters.forEach(character => {
+        for (var i = 0; i < characterLevel; i++) {
+          this.globalService.levelUpPartyMember(character);
+        }
+ 
+        character.level = 1;
+        character.exp = 0;
+        character.linkInfo.totalLinks = 0;
+        character.linkInfo.remainingLinks = 0;
+        character.baseStats = this.globalService.getCharacterBaseStats(character.type);
+        character.maxLevel = 100;
+      });      
+
+      var characterLevel = 74;
+      this.globalService.globalVar.characters.forEach(character => {
+        for (var i = 0; i < characterLevel; i++) {
+          this.globalService.levelUpPartyMember(character);
+        }
+ 
+        character.level = 1;
+        character.exp = 0;
+        character.linkInfo.totalLinks = 0;
+        character.linkInfo.remainingLinks = 0;
+        character.baseStats = this.globalService.getCharacterBaseStats(character.type);
+        character.maxLevel = 100;
+      });
+      
+      var characterLevel = 79;
+      this.globalService.globalVar.characters.forEach(character => {
+        for (var i = 0; i < characterLevel; i++) {
+          this.globalService.levelUpPartyMember(character);
+        }
+ 
+        character.level = 1;
+        character.exp = 0;
+        character.linkInfo.totalLinks = 0;
+        character.linkInfo.remainingLinks = 0;
+        character.baseStats = this.globalService.getCharacterBaseStats(character.type);
+        character.maxLevel = 100;
+      });
+
+      var characterLevel = 84;
+      this.globalService.globalVar.characters.forEach(character => {
+        for (var i = 0; i < characterLevel; i++) {
+          this.globalService.levelUpPartyMember(character);
+        }
+ 
+        character.level = 1;
+        character.exp = 0;
+        character.linkInfo.totalLinks = 0;
+        character.linkInfo.remainingLinks = 0;
+        character.baseStats = this.globalService.getCharacterBaseStats(character.type);
+        character.maxLevel = 100;
+      });
+
+      var characterLevel = 89;
+      this.globalService.globalVar.characters.forEach(character => {
+        for (var i = 0; i < characterLevel; i++) {
+          this.globalService.levelUpPartyMember(character);
+        }
+ 
+        character.level = 1;
+        character.exp = 0;
+        character.linkInfo.totalLinks = 0;
+        character.linkInfo.remainingLinks = 0;
+        character.baseStats = this.globalService.getCharacterBaseStats(character.type);
+        character.maxLevel = 100;
+      });
+      
+      var characterLevel = 89;
+      this.globalService.globalVar.characters.forEach(character => {
+        for (var i = 0; i < characterLevel; i++) {
+          this.globalService.levelUpPartyMember(character);
+        }
+ 
+        character.level = 1;
+        character.exp = 0;
+        character.linkInfo.totalLinks = 0;
+        character.linkInfo.remainingLinks = 0;
+        character.baseStats = this.globalService.getCharacterBaseStats(character.type);
+        character.maxLevel = 100;
+      });
+      
+      var characterLevel = 89;
+      this.globalService.globalVar.characters.forEach(character => {
+        for (var i = 0; i < characterLevel; i++) {
+          this.globalService.levelUpPartyMember(character);
+        }
+ 
+        character.level = 1;
+        character.exp = 0;
+        character.linkInfo.totalLinks = 0;
+        character.linkInfo.remainingLinks = 0;
+        character.baseStats = this.globalService.getCharacterBaseStats(character.type);
+        character.maxLevel = 100;
+      });
+
+      var characterLevel = 89;
+      this.globalService.globalVar.characters.forEach(character => {
+        for (var i = 0; i < characterLevel; i++) {
+          this.globalService.levelUpPartyMember(character);
+        }
+ 
+        character.level = 1;
+        character.exp = 0;
+        character.linkInfo.totalLinks = 0;
+        character.linkInfo.remainingLinks = 0;
+        character.baseStats = this.globalService.getCharacterBaseStats(character.type);
+        character.maxLevel = 100;
+      });
+
+      var characterLevel = 94;
+      this.globalService.globalVar.characters.forEach(character => {
+        for (var i = 0; i < characterLevel; i++) {
+          this.globalService.levelUpPartyMember(character);
+        }
+ 
         //character.level = 1;
-        //character.exp = 0;
+        character.exp = 0;
+        //character.linkInfo.totalLinks = 0;
+        //character.linkInfo.remainingLinks = 0;
         character.baseStats = this.globalService.getCharacterBaseStats(character.type);
         character.maxLevel = 100;
       });*/
+
 
       this.globalService.globalVar.characters.forEach(character => {
         this.globalService.calculateCharacterBattleStats(character);
@@ -1791,5 +1978,39 @@ export class InitializationService {
     labyrinthBallad.zones.push(zone2);
 
     this.globalService.globalVar.ballads.push(labyrinthBallad);
+  }
+  
+  initializeBalladOfTheWitch() {
+    var ballad = new Ballad(BalladEnum.Witch);
+    ballad.displayOrder = 9;
+    var zone1 = new Zone();
+    zone1.type = ZoneEnum.Aiaia;
+    zone1.zoneName = "Aiaia";
+    zone1.subzones.push(new SubZone(SubZoneEnum.AiaiaUnknownWaters));
+    zone1.subzones.push(new SubZone(SubZoneEnum.AiaiaBreezyDays));
+    zone1.subzones.push(new SubZone(SubZoneEnum.AiaiaShoreline));
+    zone1.subzones.push(new SubZone(SubZoneEnum.AiaiaForestPath));
+    zone1.subzones.push(new SubZone(SubZoneEnum.AiaiaCircesHome));
+    zone1.subzones.push(new SubZone(SubZoneEnum.AiaiaOpenClearing));
+    zone1.subzones.push(new SubZone(SubZoneEnum.AiaiaThornyPath));
+    zone1.subzones.push(new SubZone(SubZoneEnum.AiaiaWildThicket));
+    zone1.subzones.push(new SubZone(SubZoneEnum.AiaiaFlowerGarden));
+    zone1.notificationType = zone1.shouldShowSideQuestNotification();
+    ballad.zones.push(zone1);
+
+    var zone2 = new Zone();
+    zone2.type = ZoneEnum.StraitsOfMessina;
+    zone2.zoneName = "Straits of Messina";
+    zone2.subzones.push(new SubZone(SubZoneEnum.StraitsOfMessinaIntoTheNarrowStraits));
+    zone2.subzones.push(new SubZone(SubZoneEnum.StraitsOfMessinaEdgeOfCharybdis));
+    zone2.subzones.push(new SubZone(SubZoneEnum.StraitsOfMessinaCavernOpening));
+    zone2.subzones.push(new SubZone(SubZoneEnum.StraitsOfMessinaDarkTunnel));
+    zone2.subzones.push(new SubZone(SubZoneEnum.StraitsOfMessinaUnavoidablePath));        
+    zone2.subzones.push(new SubZone(SubZoneEnum.StraitsOfMessinaIntoTheVortex));
+    zone2.subzones.push(new SubZone(SubZoneEnum.StraitsOfMessinaMawOfTheMonster));    
+    zone2.notificationType = zone2.shouldShowSideQuestNotification();
+    ballad.zones.push(zone2);
+
+    this.globalService.globalVar.ballads.push(ballad);
   }
 }

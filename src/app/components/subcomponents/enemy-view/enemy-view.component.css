@@ -205,7 +205,7 @@
     }
 
     .boss {
-        grid-template-columns: 81% 1fr;
+        grid-template-columns: 80.25% 1fr;
     }
 
     .hpMpText {

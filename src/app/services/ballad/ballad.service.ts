@@ -389,6 +389,10 @@ export class BalladService {
         shouldChange = this.globalService.getUncompletedAchievementCountBySubZone(subzone.type) === 0;
       }
     }
+    else if (autoProgressType === CompletionStatusEnum.Custom) {
+      var autoProgressCustomVictoryCount = this.globalService.globalVar.settings.get("autoProgressCustomVictoryCount") ?? 10;
+      shouldChange = subzone.victoryCount >= autoProgressCustomVictoryCount;
+    }
     else {
       shouldChange = this.getVictoriesNeededToProceed(subzone.type) - subzone.victoryCount <= 0;
     }
@@ -880,6 +884,40 @@ export class BalladService {
       name = "Solid Wall 4";
     if (type === SubZoneEnum.TheLabyrinthCloakedStranger)
       name = "Cloaked Stranger";
+      if (type === SubZoneEnum.AiaiaUnknownWaters)
+      name = "Unknown Waters";
+      if (type === SubZoneEnum.AiaiaBreezyDays)
+      name = "Breezy Days";
+      if (type === SubZoneEnum.AiaiaShoreline)
+      name = "Shoreline";
+      if (type === SubZoneEnum.AiaiaForestPath)
+      name = "Forest Path";
+      if (type === SubZoneEnum.AiaiaCircesHome)
+      name = "Circe's Home";
+      if (type === SubZoneEnum.AiaiaOpenClearing)
+      name = "Open Clearing";
+      if (type === SubZoneEnum.AiaiaThornyPath)
+      name = "Thorny Path";
+      if (type === SubZoneEnum.AiaiaWildThicket)
+      name = "Wild Thicket";
+      if (type === SubZoneEnum.AiaiaFlowerGarden)
+      name = "Flower Garden";
+      if (type === SubZoneEnum.StraitsOfMessinaIntoTheNarrowStraits)
+      name = "Into the Narrow Straits";
+      if (type === SubZoneEnum.StraitsOfMessinaEdgeOfCharybdis)
+      name = "Edge of Charybdis";
+      if (type === SubZoneEnum.StraitsOfMessinaIntoTheVortex)
+      name = "Into the Vortex";
+      if (type === SubZoneEnum.StraitsOfMessinaMawOfTheMonster)
+      name = "Maw of the Monster";
+      if (type === SubZoneEnum.StraitsOfMessinaCavernOpening)
+      name = "Cavern Opening";
+      if (type === SubZoneEnum.StraitsOfMessinaIntoTheNarrowStraits)
+      name = "Into the Narrow Straits";
+      if (type === SubZoneEnum.StraitsOfMessinaDarkTunnel)
+      name = "Dark Tunnel";
+      if (type === SubZoneEnum.StraitsOfMessinaUnavoidablePath)
+      name = "Unavoidable Path";
 
     return name;
   }
@@ -1085,6 +1123,21 @@ export class BalladService {
 
     if (type === SubZoneEnum.TheLabyrinthLabyrinthCenter)
       victories = bossVictories;
+    
+      if (type === SubZoneEnum.AiaiaUnknownWaters || type === SubZoneEnum.AiaiaBreezyDays || type === SubZoneEnum.AiaiaShoreline ||
+        type === SubZoneEnum.AiaiaForestPath || type === SubZoneEnum.AiaiaOpenClearing || type === SubZoneEnum.AiaiaThornyPath ||
+        type === SubZoneEnum.AiaiaWildThicket)
+        victories = defaultVictories;
+  
+      if (type === SubZoneEnum.AiaiaFlowerGarden)
+        victories = bossVictories;
+      
+    if (type === SubZoneEnum.StraitsOfMessinaIntoTheNarrowStraits || type === SubZoneEnum.StraitsOfMessinaEdgeOfCharybdis || type === SubZoneEnum.StraitsOfMessinaIntoTheVortex ||
+      type === SubZoneEnum.StraitsOfMessinaCavernOpening || type === SubZoneEnum.StraitsOfMessinaDarkTunnel)
+      victories = defaultVictories;
+
+    if (type === SubZoneEnum.StraitsOfMessinaMawOfTheMonster || type === SubZoneEnum.StraitsOfMessinaUnavoidablePath)
+      victories = bossVictories;
 
     return victories;
   }
@@ -1095,7 +1148,8 @@ export class BalladService {
       type === SubZoneEnum.CalydonTownMarket || type === SubZoneEnum.AegeanSeaIolcus || type === SubZoneEnum.AegeanSeaSalmydessus ||
       type === SubZoneEnum.BlackSeaMariandyna || type === SubZoneEnum.ColchisCityCenter || type === SubZoneEnum.NemeaCleonea ||
       type === SubZoneEnum.StymphaliaTiryns || type === SubZoneEnum.CoastOfCreteElis || type === SubZoneEnum.ErytheiaCadiz ||
-      type === SubZoneEnum.MountOlympusOlympus || type === SubZoneEnum.CreteKnossos || type === SubZoneEnum.TheLabyrinthCloakedStranger) {
+      type === SubZoneEnum.MountOlympusOlympus || type === SubZoneEnum.CreteKnossos || type === SubZoneEnum.TheLabyrinthCloakedStranger ||
+      type === SubZoneEnum.AiaiaCircesHome) {
       return true;
     }
 
@@ -1105,7 +1159,8 @@ export class BalladService {
   shouldSubzoneShowSideQuestNotification(type: SubZoneEnum) {
     if (type === SubZoneEnum.ElysiumWindingPaths || type === SubZoneEnum.ElysiumWaterloggedMarsh || type === SubZoneEnum.ElysiumWavesOfOceanus ||
       type === SubZoneEnum.CalydonAltarOfAsclepius || type === SubZoneEnum.TheLetheLetheBasin2 || type === SubZoneEnum.TheLetheFerryRide ||
-      type === SubZoneEnum.TheLetheRiverDivergence || type === SubZoneEnum.TheLetheStillWaters || type === SubZoneEnum.TheLetheHypnosIsland)
+      type === SubZoneEnum.TheLetheRiverDivergence || type === SubZoneEnum.TheLetheStillWaters || type === SubZoneEnum.TheLetheHypnosIsland ||
+      type === SubZoneEnum.StraitsOfMessinaIntoTheVortex || type === SubZoneEnum.StraitsOfMessinaMawOfTheMonster)
       return NotificationTypeEnum.SideQuest;
 
     return NotificationTypeEnum.Story;

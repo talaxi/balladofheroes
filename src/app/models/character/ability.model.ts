@@ -16,8 +16,7 @@ export class Ability {
     dealsDirectDamage: boolean;    
     heals: boolean;
     targetsAllies: boolean;
-    elementalType: ElementalTypeEnum;
-    randomElement: boolean;
+    elementalType: ElementalTypeEnum;    
     @Type(() => StatusEffect)
     userEffect: StatusEffect[];
     @Type(() => StatusEffect)
@@ -46,8 +45,7 @@ export class Ability {
         this.threshold = 0;
         this.targetsAllies = false;
         this.isActivatable = true;
-        this.elementalType = ElementalTypeEnum.None;
-        this.randomElement = false;
+        this.elementalType = ElementalTypeEnum.None;        
 
         this.userEffect = [];
         this.targetEffect = [];
@@ -71,8 +69,7 @@ export class Ability {
         copy.dealsDirectDamage = this.dealsDirectDamage;
         copy.heals = this.heals;
         copy.targetsAllies = this.targetsAllies;
-        copy.elementalType = this.elementalType;
-        copy.randomElement = this.randomElement;
+        copy.elementalType = this.elementalType;        
         copy.userEffect = [];
         this.userEffect.forEach(effect => {
             copy.userEffect.push(effect.makeCopy());

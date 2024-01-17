@@ -15,8 +15,8 @@
                         <div *ngFor="let tournament of standardColiseumTournaments; let i = index"
                             (click)="chooseColiseumTournament(tournament)" class="listItem"
                             [ngClass]='getColiseumNameColor(tournament)' (keydown.enter)="$event.preventDefault()">
-                            <button class="buttonAsText clickableText listItemButton" (keydown.enter)="$event.preventDefault()"
-                                [ngClass]='getColiseumNameColor(tournament)'
+                            <button class="buttonAsText clickableText listItemButton"
+                                (keydown.enter)="$event.preventDefault()" [ngClass]='getColiseumNameColor(tournament)'
                                 [innerHtml]="getTournamentName(tournament)"></button>
                             <hr class="noMargin" />
                         </div>
@@ -28,9 +28,11 @@
                             <hr class="tournamentSectionEnder" />
                         </div>
                         <div *ngFor="let tournament of getSpecialColiseumTournaments(); let i = index"
-                            (click)="chooseColiseumTournament(tournament)" class="listItem" (keydown.enter)="$event.preventDefault()"
+                            (click)="chooseColiseumTournament(tournament)" class="listItem"
+                            (keydown.enter)="$event.preventDefault()"
                             [ngClass]="{'active': selectedTournament !== undefined && selectedTournament.type === tournament}">
-                            <button class="buttonAsText clickableText listItemButton" (keydown.enter)="$event.preventDefault()"
+                            <button class="buttonAsText clickableText listItemButton"
+                                (keydown.enter)="$event.preventDefault()"
                                 [ngClass]="{'active': selectedTournament !== undefined && selectedTournament.type === tournament}"
                                 [innerHtml]="getTournamentName(tournament)"></button>
                             <hr class="noMargin" />
@@ -50,7 +52,7 @@
             <br />
             <span [innerHtml]="getTournamentDescription()"></span>
             <hr />
-            <div *ngIf="!isSelectedTournamentWeeklyMelee()">
+            <div *ngIf="!isSelectedTournamentWeeklyMelee() && !isSelectedTournamentFriendlyCompetition()">
                 <span><strong>DPS Required To Complete:</strong> {{getRequiredDpsForSelectedTournament()}}</span>
                 <hr />
                 <div>
@@ -74,6 +76,24 @@
                     </div>
                 </div>
             </div>
+            <!--<div *ngIf="isSelectedTournamentFriendlyCompetition()">
+                <span><strong>Battle Code</strong></span>
+                <div class="importExportDiv">
+                    <textarea *ngIf="!isMobile()" (focus)="inTextbox()" (blur)="outOfTextbox()" id="importExport"
+                        name="importExport" rows="10" [(ngModel)]="battleData"></textarea>
+                    <textarea *ngIf="isMobile()" (focus)="inTextbox()" (blur)="outOfTextbox()" id="importExport"
+                        name="importExport" rows="5" [(ngModel)]="battleData"></textarea>
+                    <div class="importExportButtons">
+                        <button class="buttonStyled" (click)="startFriendlyCompetition()">
+                            Start Battle
+                        </button>
+                        <button class="buttonStyled" (click)="exportBattleData()">
+                            Export
+                        </button>
+                    </div>
+                    <br />
+                </div>
+            </div>-->
             <div *ngIf="isSelectedTournamentWeeklyMelee()">
                 <span><strong>Entries Remaining:</strong> {{getWeeklyEntries()}} / {{getWeeklyEntryCap()}}</span><br
                     *ngIf="getHighestWeeklyMeleeRoundCompleted() > 0" />
@@ -89,14 +109,15 @@
                     <br />
                     <button class="buttonStyled" [disabled]="!canEnterWeeklyMelee()" (click)="startTournament()">Start
                         Tournament</button>
-                        <br/>
-                    <button *ngIf="!canEnterWeeklyMelee() && transactionEnabled" class="buttonStyled transactionButton" (click)="openTransactionModal()">Purchase Eternal Melee Tickets</button>
+                    <br />
+                    <button *ngIf="!canEnterWeeklyMelee() && transactionEnabled" class="buttonStyled transactionButton"
+                        (click)="openTransactionModal()">Purchase Eternal Melee Tickets</button>
                     <br />
                     <div [ngClass]="{'flexAround': !isMobile()}">
                         <mat-checkbox [(ngModel)]="repeatColiseumFight" (input)="repeatColiseumFightToggle()">
                             Repeat Eternal Melee Until Out Of Tickets
                         </mat-checkbox>
-                        <br/>
+                        <br />
                         <mat-checkbox [(ngModel)]="automateEternalMelee" (input)="automateEternalMeleeToggle()">
                             Automate Eternal Melee
                         </mat-checkbox>
@@ -113,7 +134,7 @@
     <ng-template #confirmationBox>
         <app-confirmation-box [confirmationText]="confirmationText"></app-confirmation-box>
     </ng-template>
-    
+
     <ng-template #purchaseBox>
         <app-confirmation-box [confirmationText]="transactionConfirmationText"></app-confirmation-box>
     </ng-template>

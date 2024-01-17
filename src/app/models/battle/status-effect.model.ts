@@ -8,7 +8,7 @@ import { TargetEnum } from 'src/app/models/enums/target-enum.model';
 export class StatusEffect {
     type: StatusEffectEnum;
     duration: number;
-    maxDuration: number;
+    //maxDuration: number;
     effectiveness: number;
     isPermanent: boolean; //no duration
     isInstant: boolean;    
@@ -40,7 +40,7 @@ export class StatusEffect {
         this.tickTimer = 0;
         this.tickFrequency = 0;
         this.duration = 0;
-        this.maxDuration = 0;
+        //this.maxDuration = 0;
         this.count = 0;
         this.maxCount = 0;
         this.dotType = dotTypeEnum.BasedOnDamage;
@@ -59,7 +59,7 @@ export class StatusEffect {
         var copy = new StatusEffect(this.type);
 
         copy.duration = this.duration;
-        copy.maxDuration = this.duration;
+        //copy.maxDuration = this.duration;
         copy.effectiveness = this.effectiveness;
         copy.isPermanent = this.isPermanent;
         copy.isInstant = this.isInstant;

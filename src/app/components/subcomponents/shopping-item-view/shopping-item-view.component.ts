@@ -251,7 +251,7 @@ export class ShoppingItemViewComponent implements OnInit {
           for (var i = 0; i < this.buyMultiplier; i++) {
             this.globalService.giveCharactersBonusExp(5000);
             this.globalService.globalVar.sidequestData.sparringMatchMultiplier *= 1.1;
-          }
+          }          
           /*this.globalService.globalVar.uniques.forEach(item => {
             item.level += 99;
             this.lookupService.levelUpUnique(item);
@@ -328,8 +328,12 @@ export class ShoppingItemViewComponent implements OnInit {
       return 1;
     if (this.item.shopItem === ItemsEnum.ThaumaturgeClass && this.globalService.globalVar.characters.some(item => item.type === CharacterEnum.Thaumaturge && item.isAvailable))
       return 1;
+    if (this.item.shopItem === ItemsEnum.Nemesis && this.globalService.globalVar.gods.some(item => item.type === GodEnum.Nemesis && item.isAvailable))
+      return 1;
+    if (this.item.shopItem === ItemsEnum.Dionysus && this.globalService.globalVar.gods.some(item => item.type === GodEnum.Dionysus && item.isAvailable))
+      return 1;
 
-    return this.lookupService.getResourceAmount(this.item.shopItem).toLocaleString();
+    return this.lookupService.getResourceAmountIgnoreExtras(this.item.shopItem).toLocaleString();
   }
 
   unlockClass(item: ItemsEnum) {

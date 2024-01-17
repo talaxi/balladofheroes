@@ -415,5 +415,16 @@ export enum BestiaryEnum {
   Euros,
   Notos,
   DivinePeacock,
-  ColchianDragon
+  ColchianDragon,
+  FloatingBlob,
+  DivingRaptor,
+  Hammerhead,
+  BlackWolf,
+  BurrowingMole,
+  OvergrownLizard,
+  WaspSwarm,
+  ExoticDragonfly,
+  MossyColossus,
+  OrangeFloweredColossus,
+  WhiteFloweredColossus
 }

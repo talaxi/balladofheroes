@@ -8,5 +8,6 @@ export enum ColiseumTournamentEnum {
   WeeklyMelee,
   HeroesOfYore1,
   ElementalPressure,
-  HeroesOfYore2
+  HeroesOfYore2,
+  FriendlyCompetition
 }

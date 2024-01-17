@@ -13,6 +13,7 @@ export class ColiseumTournament {
     completionReward: ResourceValue[];
     @Type(() => ResourceValue)
     quickCompletionReward: ResourceValue[];
+    competitionData: string;
 
     constructor() {
         this.type = ColiseumTournamentEnum.None;

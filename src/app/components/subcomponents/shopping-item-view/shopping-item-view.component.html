@@ -23,8 +23,8 @@
     </div>
     <div class="purchaseDescription">
         <br />
-        <div *ngIf="outOfStock">
-            Out of Stock
+        <div *ngIf="outOfStock" class="bold smallCaps accentColor">
+            out of stock
         </div>
         <div *ngIf="!outOfStock">
             <div *ngFor="let resource of item.purchasePrice" [ngClass]="{'shopItemWidth': totalItemsInShop === 1 }">
@@ -34,8 +34,8 @@
         </div>
     </div>
     <div class="purchaseButton">
-        <button (click)="buyItem()" class="buttonStyled" [disabled]="!canBuyItem() || outOfStock">Buy{{buyMultiplier > 1 ? " x" + buyMultiplier : ""}}</button>
-        <br/>
+        <button *ngIf="!outOfStock" (click)="buyItem()" class="buttonStyled" [disabled]="!canBuyItem() || outOfStock">Buy{{buyMultiplier > 1 ? " x" + buyMultiplier : ""}}</button>
+        <br *ngIf="!outOfStock"/>
         <span><i>{{getCurrentlyOwnedAmount()}} owned</i></span>
     </div>
 </div>

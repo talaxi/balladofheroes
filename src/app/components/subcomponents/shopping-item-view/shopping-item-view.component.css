@@ -17,6 +17,10 @@
   grid-area: itemDescription;
 }
 
+.accentColor {
+  color: var(--foreground-accent);
+}
+
 .purchaseDescription {
   grid-area: purchaseDescription;
   align-self: center;

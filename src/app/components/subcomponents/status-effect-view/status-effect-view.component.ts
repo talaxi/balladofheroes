@@ -11,6 +11,7 @@ import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model
 })
 export class StatusEffectViewComponent implements OnInit {
   @Input() character: Character;
+  @Input() isBoss: boolean = false;
   displayCatchAll: StatusEffect;
 
   constructor(private deviceDetectorService: DeviceDetectorService) { }
@@ -30,7 +31,7 @@ export class StatusEffectViewComponent implements OnInit {
       }
 
       if (effect.type === StatusEffectEnum.Thorns)
-      foundThorns = true;
+        foundThorns = true;
 
       return true;
     });
@@ -40,6 +41,9 @@ export class StatusEffectViewComponent implements OnInit {
 
     if (this.deviceDetectorService.isMobile())
       totalVisibleEffects = 4;
+
+    if (this.isBoss)
+      totalVisibleEffects += 5;
 
     var shouldIncludeCatchAll = false;
     positiveEffects = positiveEffects.filter(effect => {
@@ -77,9 +81,12 @@ export class StatusEffectViewComponent implements OnInit {
 
     var totalVisibleEffects = 6;
     var totalVisibleEffectCount = 0;
-    
+
     if (this.deviceDetectorService.isMobile())
       totalVisibleEffects = 4;
+
+    if (this.isBoss)
+      totalVisibleEffects += 5;
 
     var shouldIncludeCatchAll = false;
     negativeEffects = negativeEffects.filter(effect => {

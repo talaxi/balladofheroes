@@ -65,6 +65,10 @@
     opacity: .3;
 }
 
+.characterKod {
+    opacity: .5;
+}
+
 .popoverPlaceholder {   
     height: 100%;
     width: 100%;

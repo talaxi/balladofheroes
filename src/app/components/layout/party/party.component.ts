@@ -736,7 +736,7 @@ export class PartyComponent implements OnInit {
   }
 
   getDuoAbilityRemaining(character: Character) {
-    if (character.battleInfo.duoAbilityUsed)
+    if (character.battleInfo.duoAbilityUsed || character.battleInfo.duoAbilityCooldown > 0)
       return "UNAVAILABLE";
     else
       return "AVAILABLE";
@@ -806,7 +806,7 @@ export class PartyComponent implements OnInit {
     gods.push(character.assignedGod1);
     gods.push(character.assignedGod2);
 
-    if (character.battleInfo.duoAbilityUsed) {
+    if (character.battleInfo.duoAbilityUsed || character.battleInfo.duoAbilityCooldown > 0) {
       src += "inactiveDuo.svg";
       return src;
     }
@@ -1001,7 +1001,7 @@ export class PartyComponent implements OnInit {
   }
 
   triggerDuo(character: Character) {
-    if (!this.isDuoAvailable(character) || character.battleInfo.duoAbilityUsed)
+    if (!this.isDuoAvailable(character) || character.battleInfo.duoAbilityUsed || character.battleInfo.duoAbilityCooldown > 0)
       return;
 
     this.battleService.useDuoAbility(character);

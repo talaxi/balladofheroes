@@ -30,10 +30,7 @@ export class MainComponent implements OnInit {
     public storyService: StoryService, private deviceDetectorService: DeviceDetectorService, private globalService: GlobalService,
     private utilityService: UtilityService, private balladService: BalladService) { }
 
-  ngOnInit(): void {
-    //TODO: remove this on deploy unless complete
-    //this.lookupService.isUIHidden = true;
-
+  ngOnInit(): void {    
     this.isMobile = this.deviceDetectorService.isMobile();
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {

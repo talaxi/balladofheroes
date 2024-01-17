@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ColiseumDefeatCount } from 'src/app/models/battle/coliseum-defeat-count.model';
+import { CompetitionParty } from 'src/app/models/battle/competition-party.model';
 import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
 import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
@@ -22,6 +23,9 @@ import { PrimaryStats } from 'src/app/models/character/primary-stats.model';
 import { Ballad } from 'src/app/models/zone/ballad.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { DictionaryService } from '../utility/dictionary.service';
+import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
+import { plainToInstance } from 'class-transformer';
+declare var LZString: any;
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +43,9 @@ export class ColiseumService {
 
     if (type === ColiseumTournamentEnum.WeeklyMelee)
       return "Complete as many rounds as you can in " + info.tournamentTimerLength + " seconds. Each round is progressively more difficult. Gain one entry per day.";
+
+    if (type === ColiseumTournamentEnum.FriendlyCompetition)
+      return "Do battle with another player's party. Export your data here to give to them, or enter their exported data and begin battling.";
 
     return "Complete " + info.maxRounds + " rounds in " + info.tournamentTimerLength + " seconds.";
   }
@@ -669,7 +676,7 @@ export class ColiseumService {
   }
 
   isTournamentTypeSpecial(type: ColiseumTournamentEnum) {
-    if (type === ColiseumTournamentEnum.WeeklyMelee)
+    if (type === ColiseumTournamentEnum.WeeklyMelee || type === ColiseumTournamentEnum.FriendlyCompetition)
       return true;
 
     return false;
@@ -758,5 +765,64 @@ export class ColiseumService {
     });
 
     return battleOptions;
+  }
+
+  setupCompetitionParty() {
+    var competitionParty = new CompetitionParty();
+
+    var party = this.globalService.getActivePartyCharacters(false);
+    party.forEach(member => {
+      this.globalService.calculateCharacterBattleStats(member);
+      var enemy = new Enemy();
+      enemy.name = member.name;
+      enemy.battleStats = structuredClone(member.battleStats);
+      enemy.baseStats = structuredClone(member.baseStats);
+      enemy.abilityList = structuredClone(member.abilityList);
+      enemy.type = member.type;
+      enemy.equipmentSet = structuredClone(member.equipmentSet);
+      enemy.battleInfo = structuredClone(member.battleInfo);
+      enemy.overdriveInfo = structuredClone(member.overdriveInfo);      
+
+      if (member.assignedGod1 !== undefined && member.assignedGod1 !== GodEnum.None) {
+        var god = this.globalService.globalVar.gods.find(item => item.type === member.assignedGod1);
+        if (god !== undefined) {
+          if (god.abilityList !== undefined && god.abilityList.length > 0)
+            god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
+              enemy.abilityList.push(ability);
+            });
+        }
+      }
+
+      if (member.assignedGod2 !== undefined && member.assignedGod2 !== GodEnum.None) {
+        var god = this.globalService.globalVar.gods.find(item => item.type === member.assignedGod2);
+        if (god !== undefined) {
+          if (god.abilityList !== undefined && god.abilityList.length > 0)
+            god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
+              enemy.abilityList.push(ability);
+            });
+        }
+      }
+
+      competitionParty.party.enemyList.push(enemy);
+    });
+
+
+    return competitionParty;
+  }
+
+  parseFriendlyCompetitionData(tournamentData: ColiseumTournament) {
+    var enemyTeam: EnemyTeam[] = [];
+    if (tournamentData.competitionData === "")
+      return enemyTeam;
+
+    var decompressedData = LZString.decompressFromBase64(tournamentData.competitionData);
+    var enemyTeamParsed = <CompetitionParty>JSON.parse(decompressedData);
+    if (enemyTeamParsed !== null && enemyTeamParsed !== undefined) {
+      var competitionParty = plainToInstance(CompetitionParty, enemyTeamParsed);      
+      if (competitionParty !== undefined)
+        enemyTeam.push(competitionParty.party);
+    }
+
+    return enemyTeam;
   }
 }

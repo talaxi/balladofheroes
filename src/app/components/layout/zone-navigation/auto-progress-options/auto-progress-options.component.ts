@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CompletionStatusEnum } from 'src/app/models/enums/completion-status-enum.model';
 import { GlobalService } from 'src/app/services/global/global.service';
+import { MenuService } from 'src/app/services/menu/menu.service';
 
 @Component({
   selector: 'app-auto-progress-options',
@@ -15,8 +16,9 @@ export class AutoProgressOptionsComponent {
   includeAllAchievements: boolean;
   removeAutoProgressOnDeath: boolean;
   progressFromCurrentSubzone: boolean;
+  customAmount: number = 10;
 
-  constructor(private globalService: GlobalService) {
+  constructor(private globalService: GlobalService, private menuService: MenuService) {
 
   }
 
@@ -26,7 +28,8 @@ export class AutoProgressOptionsComponent {
     this.pauseStory = this.globalService.globalVar.settings.get("autoProgressPauseStory") ?? false;
     this.progressFromCurrentSubzone = this.globalService.globalVar.settings.get("autoProgressProgressFromCurrentSubzone") ?? false;
     this.includeAllAchievements = !this.globalService.globalVar.settings.get("autoProgressIncludeAllAchievements") ?? true;   
-    this.removeAutoProgressOnDeath = this.globalService.globalVar.settings.get("autoProgressRemoveOnDeath") ?? true;    
+    this.removeAutoProgressOnDeath = this.globalService.globalVar.settings.get("autoProgressRemoveOnDeath") ?? true;  
+    this.customAmount = this.globalService.globalVar.settings.get("autoProgressCustomVictoryCount") ?? 10;    
   }
 
   autoProgressTypeToggle() {
@@ -51,5 +54,19 @@ export class AutoProgressOptionsComponent {
 
   progressFromCurrentSubzoneToggle() {
     this.globalService.globalVar.settings.set("autoProgressProgressFromCurrentSubzone", this.progressFromCurrentSubzone);
+  }
+
+  inTextbox() {
+    this.menuService.inTextbox = true;
+  }
+
+  outOfTextbox() {
+    this.menuService.inTextbox = false;
+  }
+
+  useCustomAmount() {
+    if (this.customAmount > 0) {
+      this.globalService.globalVar.settings.set("autoProgressCustomVictoryCount", this.customAmount);
+    }
   }
 }

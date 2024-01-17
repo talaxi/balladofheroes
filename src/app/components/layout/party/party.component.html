@@ -64,7 +64,7 @@
                         <div *ngIf="!notLowPerformanceMode() && isOverdriveAvailable(character)" class="overdriveBar flex lowPerfHpMpText"
                             (click)="manuallyTrigger(character)" (contextmenu)="toggleAuto(character)">
                             <span class="overdriveName bold smallCaps statLabel">overdrive: </span>
-                            <span [ngClass]="{'overdriveActive': isOverdriveActive(character)}" class="statValue">
+                            <span [ngClass]="{'overdriveActive': isOverdriveActive(character), 'kod': character.battleStats.currentHp <= 0}" class="statValue">
                              {{getCharacterOverdrivePercent(character) | number : '1.1-1'}}%
                         </span>
                         </div>
@@ -81,7 +81,7 @@
                         <ng-template #duoAbilityPopover>
                             <div>
                                 <strong><span class="s5Heading bold" [innerHtml]="getDuoAbilityName(character)"></span></strong>
-                                <span *ngIf="verboseMode">{{getDuoAbilityRemaining(character)}}</span>
+                                <span class="marginLeft" *ngIf="verboseMode">{{getDuoAbilityRemaining(character)}}</span>
                                 <hr />
                                 <span [innerHtml]="getDuoAbilityDescription(character)"></span>
                                 <hr />

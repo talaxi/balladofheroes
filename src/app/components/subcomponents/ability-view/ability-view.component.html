@@ -22,7 +22,7 @@
     </div>
 </div>
 
-<div *ngIf="!notLowPerformanceMode()">
+<div [ngClass]="{'characterKod': isCharacterKOd()}" *ngIf="!notLowPerformanceMode()">
     <div class="container">
         <div [ngClass]="{'lowPerformanceCenteredBox': showPercents, 'centeredBox': !showPercents}">
             <div #spinnerDiv class="ability" (click)="manuallyTrigger()" (contextmenu)="toggleAutoWeb()">

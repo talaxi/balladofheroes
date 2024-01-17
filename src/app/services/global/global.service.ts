@@ -3807,6 +3807,9 @@ export class GlobalService {
       timeToAutoAttack *= relevantAltarEffect!.effectiveness;
     }
 
+    if (timeToAutoAttack <= 0)
+      timeToAutoAttack = .001;
+
     return this.utilityService.roundTo(timeToAutoAttack, 4);
   }
 
@@ -4708,7 +4711,7 @@ export class GlobalService {
     var copy = new StatusEffect(effect.type);
 
     copy.duration = effect.duration;
-    copy.maxDuration = effect.duration;
+    //copy.maxDuration = effect.duration;
     copy.effectiveness = effect.effectiveness;
     copy.isPermanent = effect.isPermanent;
     copy.isInstant = effect.isInstant;

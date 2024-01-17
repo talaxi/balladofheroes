@@ -7,6 +7,8 @@
                 <mat-radio-button [value]="completionStatusEnum.Cleared">Auto Progress to <span class="smallCaps bold clearedSubzoneColor">clear</span></mat-radio-button>
                 <br/>
                 <mat-radio-button [value]="completionStatusEnum.Complete">Auto Progress to <span class="smallCaps bold completedSubzoneColor">complete</span></mat-radio-button>                
+                <br/>
+                <mat-radio-button [value]="completionStatusEnum.Custom">Auto Progress to <input class="customNumberWidth" (focus)="inTextbox()" (blur)="outOfTextbox()" (change)="useCustomAmount()" type="text" maxlength="13" [(ngModel)]="customAmount" /> victories</mat-radio-button>                
               </mat-radio-group>
         </div>
         <div class="column2">            
@@ -36,7 +38,11 @@
 
 <ng-template #autoProgressOptionPopover>
     <div>
-        Auto Progressing to Clear will progress only as far as needed to move to the next subzone. Auto Progressing to Complete will stay in a subzone until all achievements have been completed.
+        Auto Progressing to Clear will progress only as far as needed to move to the next subzone. 
+        <br/>
+        Auto Progressing to Complete will stay in a subzone until all achievements have been completed.
+        <br/>
+        Auto Progressing to Custom allows you to set a specific victory count you want to reach before changing subzones.
     </div>
 </ng-template>
 

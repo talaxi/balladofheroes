@@ -13,6 +13,8 @@ import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { KeybindService } from 'src/app/services/utility/keybind.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { MenuService } from 'src/app/services/menu/menu.service';
+declare var LZString: any;
 
 @Component({
   selector: 'app-coliseum-view',
@@ -31,6 +33,7 @@ export class ColiseumViewComponent implements OnInit {
   @ViewChild('purchaseBox') transactionBox: any;
   transactionEnabled: boolean = false; //TODO: make this false for now (done for now)
   transactionConfirmationText = "";
+  battleData = "";
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -52,7 +55,7 @@ export class ColiseumViewComponent implements OnInit {
   constructor(private coliseumService: ColiseumService, private globalService: GlobalService, public dialog: MatDialog,
     private lookupService: LookupService, private utilityService: UtilityService, private dictionaryService: DictionaryService,
     private deviceDetectorService: DeviceDetectorService, private keybindService: KeybindService, private dpsCalculatorService: DpsCalculatorService,
-    private gameLogService: GameLogService) { }
+    private gameLogService: GameLogService, private menuService: MenuService) { }
 
   ngOnInit(): void {
     this.rewardsText = this.setRewardsText();
@@ -110,11 +113,13 @@ export class ColiseumViewComponent implements OnInit {
   getSpecialColiseumTournaments() {
     var tournaments: ColiseumTournamentEnum[] = [];
 
-    var weeklyMelee = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.WeeklyMelee);
-    //console.log((weeklyMelee !== undefined) + " && " + weeklyMelee?.isAvailable);
+    var weeklyMelee = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.WeeklyMelee);    
     if (weeklyMelee !== undefined && weeklyMelee.isAvailable) {
       tournaments.push(weeklyMelee.type);
     }
+
+    //TODO: bring this and the html back when ready
+    //tournaments.push(ColiseumTournamentEnum.FriendlyCompetition);
 
     tournaments.sort((a, b) => this.sortColiseumList(a, b));
 
@@ -282,6 +287,10 @@ export class ColiseumViewComponent implements OnInit {
   isSelectedTournamentWeeklyMelee() {
     return this.selectedTournament.type === ColiseumTournamentEnum.WeeklyMelee;
   }
+  
+  isSelectedTournamentFriendlyCompetition() {
+    return this.selectedTournament.type === ColiseumTournamentEnum.FriendlyCompetition;
+  }
 
   getWeeklyEntries() {
     return this.globalService.globalVar.sidequestData.weeklyMeleeEntries;
@@ -373,5 +382,26 @@ export class ColiseumViewComponent implements OnInit {
 
       this.chooseColiseumTournament(this.specialColiseumTournaments[currentIndex]);
     }
+  }
+  
+  inTextbox() {
+    this.menuService.inTextbox = true;
+  }
+
+  outOfTextbox() {
+    this.menuService.inTextbox = false;
+  }
+
+  startFriendlyCompetition() {
+    this.selectedTournament.competitionData = this.battleData;
+    this.startTournament();
+  }
+
+  exportBattleData() {    
+    var party = this.coliseumService.setupCompetitionParty();
+
+    var battleData = JSON.stringify(party);    
+    var compressedData = LZString.compressToBase64(battleData);
+    this.battleData = compressedData;
   }
 }

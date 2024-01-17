@@ -1278,6 +1278,8 @@ export class DictionaryService {
       return "Heroes of Yore 2";
     else if (type === ColiseumTournamentEnum.WeeklyMelee)
       return "Eternal Melee";
+      else if (type === ColiseumTournamentEnum.FriendlyCompetition)
+      return "Friendly Competition";
     return "";
   }
 

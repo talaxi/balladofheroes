@@ -89,6 +89,16 @@ export class BackgroundService {
           }
         }
 
+        if (partyMember.battleInfo !== undefined && partyMember.battleInfo.duoAbilityCooldown !== undefined && partyMember.battleInfo.duoAbilityCooldown > 0)
+        {
+          if (partyMember.battleInfo.duoAbilityCooldown <= 0) {
+            partyMember.battleInfo.duoAbilityCooldown = 0;
+          }
+          else {
+            partyMember.battleInfo.duoAbilityCooldown -= deltaTime;
+          }
+        }
+
         if (!isInTown) {
           this.battleService.handleAutoAttackTimer(partyMember, deltaTime);
           this.handleAbilityCooldowns(partyMember, deltaTime);

@@ -16,6 +16,9 @@
     overflow-y: auto;
 }
 
+#importExport {
+    width: 80%;
+}
 
 .vrHr {
     margin: 0 1rem;

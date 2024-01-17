@@ -3,7 +3,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { Ability } from 'src/app/models/character/ability.model';
 import { Character } from 'src/app/models/character/character.model';
 import { God } from 'src/app/models/character/god.model';
-import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
+import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
@@ -365,6 +365,10 @@ export class AbilityViewComponent implements OnInit {
 
   notLowPerformanceMode() {
     return this.globalService.globalVar.settings.get("fps") === undefined || this.globalService.globalVar.settings.get("fps") !== this.utilityService.lowFps;
+  }
+
+  isCharacterKOd() {
+    return this.character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead);
   }
 
   ngOnDestroy() {
