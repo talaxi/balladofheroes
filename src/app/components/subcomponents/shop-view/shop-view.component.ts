@@ -171,7 +171,7 @@ export class ShopViewComponent implements OnInit {
 
     if (option.type === ShopTypeEnum.Coliseum || option.type === ShopTypeEnum.Trader) {
       if (this.deviceDetectorService.isMobile())
-        this.dialog.open(content, { width: '95%', height: '85%' });
+        this.dialog.open(content, { width: '95%', height: '90%' });
       else
         this.dialog.open(content, { width: '75%', maxHeight: '85%' });
     }
