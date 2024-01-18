@@ -25,6 +25,7 @@ import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { DictionaryService } from '../utility/dictionary.service';
 import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
 import { plainToInstance } from 'class-transformer';
+import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 declare var LZString: any;
 
 @Injectable({
@@ -129,7 +130,11 @@ export class ColiseumService {
       }
     }
     //then reset
-    this.globalService.globalVar.activeBattle.activeTournament = this.globalService.setNewTournament(true);
+    if (type === ColiseumTournamentEnum.FriendlyCompetition) {      
+      this.globalService.globalVar.activeBattle.activeTournament = this.globalService.setNewTournament(false);
+    }
+    else
+      this.globalService.globalVar.activeBattle.activeTournament = this.globalService.setNewTournament(true);
   }
 
   unlockNextColiseumTournament(type: ColiseumTournamentEnum) {
@@ -781,7 +786,11 @@ export class ColiseumService {
       enemy.type = member.type;
       enemy.equipmentSet = structuredClone(member.equipmentSet);
       enemy.battleInfo = structuredClone(member.battleInfo);
-      enemy.overdriveInfo = structuredClone(member.overdriveInfo);      
+      enemy.overdriveInfo = structuredClone(member.overdriveInfo);
+
+      enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.FriendlyCompetition, -1, this.utilityService.friendlyCompetitionDamageReduction, false, true));
+
+      //TODO: have to run through every ability's permanents
 
       if (member.assignedGod1 !== undefined && member.assignedGod1 !== GodEnum.None) {
         var god = this.globalService.globalVar.gods.find(item => item.type === member.assignedGod1);
@@ -806,6 +815,12 @@ export class ColiseumService {
       competitionParty.party.enemyList.push(enemy);
     });
 
+    if (competitionParty.party.enemyList.length === 1) {
+      competitionParty.party.isBossFight = true;
+    }
+    else if (competitionParty.party.enemyList.length === 2) {
+      competitionParty.party.isDoubleBossFight = true;
+    }
 
     return competitionParty;
   }
@@ -818,7 +833,7 @@ export class ColiseumService {
     var decompressedData = LZString.decompressFromBase64(tournamentData.competitionData);
     var enemyTeamParsed = <CompetitionParty>JSON.parse(decompressedData);
     if (enemyTeamParsed !== null && enemyTeamParsed !== undefined) {
-      var competitionParty = plainToInstance(CompetitionParty, enemyTeamParsed);      
+      var competitionParty = plainToInstance(CompetitionParty, enemyTeamParsed);
       if (competitionParty !== undefined)
         enemyTeam.push(competitionParty.party);
     }

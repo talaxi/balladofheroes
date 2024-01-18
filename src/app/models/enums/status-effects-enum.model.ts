@@ -237,5 +237,6 @@ export enum StatusEffectEnum {
     StaggeringRiposte,
     Protector,
     DefensiveShapeshifting,
-    LovingEmbrace
+    LovingEmbrace,
+    FriendlyCompetition
   }

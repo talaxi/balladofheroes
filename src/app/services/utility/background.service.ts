@@ -89,8 +89,7 @@ export class BackgroundService {
           }
         }
 
-        if (partyMember.battleInfo !== undefined && partyMember.battleInfo.duoAbilityCooldown !== undefined && partyMember.battleInfo.duoAbilityCooldown > 0)
-        {
+        if (partyMember.battleInfo !== undefined && partyMember.battleInfo.duoAbilityCooldown !== undefined && partyMember.battleInfo.duoAbilityCooldown > 0) {
           if (partyMember.battleInfo.duoAbilityCooldown <= 0) {
             partyMember.battleInfo.duoAbilityCooldown = 0;
           }
@@ -427,9 +426,9 @@ export class BackgroundService {
 
     if (effect.type === AltarEffectsEnum.ApolloRareOstinato) {
       party.forEach(member => {
-        if (member.assignedGod1 === GodEnum.Apollo || member.assignedGod2 === GodEnum.Apollo) {          
+        if (member.assignedGod1 === GodEnum.Apollo || member.assignedGod2 === GodEnum.Apollo) {
           var ostinato = this.lookupService.characterHasAbility("Ostinato", member);
-          if (ostinato !== undefined && this.globalService.globalVar.activeBattle !== undefined) {                        
+          if (ostinato !== undefined && this.globalService.globalVar.activeBattle !== undefined) {
             this.battleService.useAbility(true, ostinato, member, enemies === undefined ? [] : enemies, party, true, effect.effectiveness - 1);
           }
         }
@@ -824,13 +823,21 @@ export class BackgroundService {
   handleTimeFragments(deltaTime: number) {
     if (this.globalService.globalVar.timeFragmentRuns === undefined || this.globalService.globalVar.timeFragmentRuns.length === 0)
       return;
-      
-    this.globalService.globalVar.timeFragmentRuns.forEach(run => {      
+
+    this.globalService.globalVar.timeFragmentRuns.forEach(run => {
       run.timer += deltaTime;
       var lootInfo: [number, number, [ItemsEnum, number][]] | undefined = undefined;
-      
+
       if (run.clearTime === undefined || run.clearTime === null)
         return;
+
+      if (run.selectedTrial === TrialEnum.TrialOfSkill) {
+        var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
+          item.godType === this.trialService.getGodEnumFromTrialOfSkillBattle());
+
+        if (trialType === undefined || trialType.count === 0)
+          return;
+      }
 
       while (run.timer >= run.clearTime) {
         if (lootInfo === undefined)
@@ -885,14 +892,14 @@ export class BackgroundService {
     var fragmentEfficiency = .2;
 
     if (run.selectedTrial !== undefined) {
-      var trialType: TrialDefeatCount | undefined;
+      /*var trialType: TrialDefeatCount | undefined;
       if (run.selectedTrial === TrialEnum.TrialOfSkill) {
         trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
           item.godType === this.trialService.getGodEnumFromTrialOfSkillBattle());
       }
       else {
         trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial);
-      }
+      }*/
 
       var trial = this.dictionaryService.getTrialInfoFromType(run.selectedTrial);
       enemyOptions = this.trialService.generateBattleOptions(trial);
@@ -961,11 +968,11 @@ export class BackgroundService {
         xpList.push(teamXp);
         coinList.push(teamCoins);
       });
-      
+
       var treasureChestRewards = this.subzoneGeneratorService.getTreasureChestRewards(run.selectedSubzone);
       if (treasureChestRewards !== undefined && treasureChestRewards.length > 0 && run.selectedSubzone !== SubZoneEnum.AigosthenaUpperCoast
-        && run.selectedSubzone !== SubZoneEnum.AigosthenaBay && run.selectedSubzone !== SubZoneEnum.AigosthenaLowerCoast  && run.selectedSubzone !== SubZoneEnum.DodonaMountainOpening) {
-        var chance = this.subzoneGeneratorService.generateTreasureChestChance(run.selectedSubzone);        
+        && run.selectedSubzone !== SubZoneEnum.AigosthenaBay && run.selectedSubzone !== SubZoneEnum.AigosthenaLowerCoast && run.selectedSubzone !== SubZoneEnum.DodonaMountainOpening) {
+        var chance = this.subzoneGeneratorService.generateTreasureChestChance(run.selectedSubzone);
         treasureChestRewards.forEach(reward => {
           lootOptions.push([reward.item, chance * fragmentEfficiency * reward.amount]);
         });

@@ -13189,6 +13189,387 @@ export class EnemyGeneratorService {
       immortality.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ClearDebuffs, -1, 1, true, true, false));
       enemy.abilityList.push(immortality);
     }
+    if (type === BestiaryEnum.FloatingBlob) {      
+      enemy.name = "Floating Blob";
+      enemy.battleStats = new CharacterStats(1143200, 12250, 23750, 35000, 26250, 30000);        
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 6;
+      enemy.xpGainFromDefeat = 5150;   
+            
+      var shadowBlast = new Ability();
+      shadowBlast.name = "Shadow Blast";
+      shadowBlast.isAvailable = true;
+      shadowBlast.cooldown = shadowBlast.currentCooldown = 18;
+      shadowBlast = this.randomizeCooldown(shadowBlast);
+      shadowBlast.dealsDirectDamage = true;
+      shadowBlast.effectiveness = 12.8;
+      enemy.abilityList.push(shadowBlast);        
+      
+      var lastRites = new Ability();
+      lastRites.name = "Last Rites";
+      lastRites.isAvailable = true;
+      lastRites.cooldown = lastRites.currentCooldown = 19;
+      lastRites = this.randomizeCooldown(lastRites);
+      lastRites.dealsDirectDamage = false;
+      lastRites.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, -1, .25, true, false));
+      enemy.abilityList.push(lastRites);  
+      
+      var nightmare = new Ability();
+      nightmare.name = "Nightmare";
+      nightmare.isAvailable = true;
+      nightmare.cooldown = nightmare.currentCooldown = 15;
+      nightmare = this.randomizeCooldown(nightmare);
+      nightmare.dealsDirectDamage = false;      
+      nightmare.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 12, .7, true, false, false));
+      enemy.abilityList.push(nightmare);      
+    } 
+    if (type === BestiaryEnum.DivingRaptor) {      
+      enemy.name = "Diving Raptor";
+      enemy.battleStats = new CharacterStats(1031500, 12250, 23750, 35000, 26250, 30000);        
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 6;
+      enemy.xpGainFromDefeat = 5150;  
+      enemy.battleInfo.elementalType = ElementalTypeEnum.Air;
+            
+      var dive = new Ability();
+      dive.name = "Dive";
+      dive.isAvailable = true;
+      dive.effectiveness = 3.9;
+      dive.cooldown = dive.currentCooldown = 15;
+      dive = this.randomizeCooldown(dive);
+      dive.dealsDirectDamage = true;
+      dive.elementalType = ElementalTypeEnum.Air;
+      dive.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Dodge, 4, 1, false, true));      
+      enemy.abilityList.push(dive);
+
+      var slash = new Ability();
+      slash.name = "Slash";
+      slash.isAvailable = true;
+      slash.effectiveness = 3.8;
+      slash.dealsDirectDamage = true;
+      slash.cooldown = slash.currentCooldown = 19;
+      slash = this.randomizeCooldown(slash);
+      slash.elementalType = ElementalTypeEnum.Air;
+      slash.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 10, .7, false, false));
+      enemy.abilityList.push(slash);    
+            
+      var bombardment = new Ability();
+      bombardment.name = "Bombardment";
+      bombardment.isAvailable = true;
+      bombardment.effectiveness = 4.9;
+      bombardment.cooldown = bombardment.currentCooldown = 23;
+      bombardment = this.randomizeCooldown(bombardment);
+      bombardment.dealsDirectDamage = true;
+      bombardment.isAoe = true;
+      bombardment.elementalType = ElementalTypeEnum.Air;      
+      enemy.abilityList.push(bombardment);
+    } 
+    if (type === BestiaryEnum.Hammerhead) {      
+      enemy.name = "Hammerhead";
+      enemy.battleStats = new CharacterStats(1143200, 12250, 23750, 35000, 26250, 30000);        
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 6;
+      enemy.xpGainFromDefeat = 5150;   
+            
+      var shadowBlast = new Ability();
+      shadowBlast.name = "Shadow Blast";
+      shadowBlast.isAvailable = true;
+      shadowBlast.cooldown = shadowBlast.currentCooldown = 18;
+      shadowBlast = this.randomizeCooldown(shadowBlast);
+      shadowBlast.dealsDirectDamage = true;
+      shadowBlast.effectiveness = 12.8;
+      enemy.abilityList.push(shadowBlast);        
+      
+      var lastRites = new Ability();
+      lastRites.name = "Last Rites";
+      lastRites.isAvailable = true;
+      lastRites.cooldown = lastRites.currentCooldown = 19;
+      lastRites = this.randomizeCooldown(lastRites);
+      lastRites.dealsDirectDamage = false;
+      lastRites.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, -1, .25, true, false));
+      enemy.abilityList.push(lastRites);  
+      
+      var nightmare = new Ability();
+      nightmare.name = "Nightmare";
+      nightmare.isAvailable = true;
+      nightmare.cooldown = nightmare.currentCooldown = 15;
+      nightmare = this.randomizeCooldown(nightmare);
+      nightmare.dealsDirectDamage = false;      
+      nightmare.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 12, .7, true, false, false));
+      enemy.abilityList.push(nightmare);      
+    } 
+    if (type === BestiaryEnum.BlackWolf) {      
+      enemy.name = "Black Wolf";
+      enemy.battleStats = new CharacterStats(1143200, 12250, 23750, 35000, 26250, 30000);        
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 6;
+      enemy.xpGainFromDefeat = 5150;   
+            
+      var shadowBlast = new Ability();
+      shadowBlast.name = "Shadow Blast";
+      shadowBlast.isAvailable = true;
+      shadowBlast.cooldown = shadowBlast.currentCooldown = 18;
+      shadowBlast = this.randomizeCooldown(shadowBlast);
+      shadowBlast.dealsDirectDamage = true;
+      shadowBlast.effectiveness = 12.8;
+      enemy.abilityList.push(shadowBlast);        
+      
+      var lastRites = new Ability();
+      lastRites.name = "Last Rites";
+      lastRites.isAvailable = true;
+      lastRites.cooldown = lastRites.currentCooldown = 19;
+      lastRites = this.randomizeCooldown(lastRites);
+      lastRites.dealsDirectDamage = false;
+      lastRites.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, -1, .25, true, false));
+      enemy.abilityList.push(lastRites);  
+      
+      var nightmare = new Ability();
+      nightmare.name = "Nightmare";
+      nightmare.isAvailable = true;
+      nightmare.cooldown = nightmare.currentCooldown = 15;
+      nightmare = this.randomizeCooldown(nightmare);
+      nightmare.dealsDirectDamage = false;      
+      nightmare.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 12, .7, true, false, false));
+      enemy.abilityList.push(nightmare);      
+    } 
+    if (type === BestiaryEnum.BurrowingMole) {      
+      enemy.name = "Burrowing Mole";
+      enemy.battleStats = new CharacterStats(1143200, 12250, 23750, 35000, 26250, 30000);        
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 6;
+      enemy.xpGainFromDefeat = 5150;   
+            
+      var shadowBlast = new Ability();
+      shadowBlast.name = "Shadow Blast";
+      shadowBlast.isAvailable = true;
+      shadowBlast.cooldown = shadowBlast.currentCooldown = 18;
+      shadowBlast = this.randomizeCooldown(shadowBlast);
+      shadowBlast.dealsDirectDamage = true;
+      shadowBlast.effectiveness = 12.8;
+      enemy.abilityList.push(shadowBlast);        
+      
+      var lastRites = new Ability();
+      lastRites.name = "Last Rites";
+      lastRites.isAvailable = true;
+      lastRites.cooldown = lastRites.currentCooldown = 19;
+      lastRites = this.randomizeCooldown(lastRites);
+      lastRites.dealsDirectDamage = false;
+      lastRites.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, -1, .25, true, false));
+      enemy.abilityList.push(lastRites);  
+      
+      var nightmare = new Ability();
+      nightmare.name = "Nightmare";
+      nightmare.isAvailable = true;
+      nightmare.cooldown = nightmare.currentCooldown = 15;
+      nightmare = this.randomizeCooldown(nightmare);
+      nightmare.dealsDirectDamage = false;      
+      nightmare.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 12, .7, true, false, false));
+      enemy.abilityList.push(nightmare);      
+    } 
+    if (type === BestiaryEnum.WaspSwarm) {      
+      enemy.name = "Wasp Swarm";
+      enemy.battleStats = new CharacterStats(1143200, 12250, 23750, 35000, 26250, 30000);        
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 6;
+      enemy.xpGainFromDefeat = 5150;   
+            
+      var shadowBlast = new Ability();
+      shadowBlast.name = "Shadow Blast";
+      shadowBlast.isAvailable = true;
+      shadowBlast.cooldown = shadowBlast.currentCooldown = 18;
+      shadowBlast = this.randomizeCooldown(shadowBlast);
+      shadowBlast.dealsDirectDamage = true;
+      shadowBlast.effectiveness = 12.8;
+      enemy.abilityList.push(shadowBlast);        
+      
+      var lastRites = new Ability();
+      lastRites.name = "Last Rites";
+      lastRites.isAvailable = true;
+      lastRites.cooldown = lastRites.currentCooldown = 19;
+      lastRites = this.randomizeCooldown(lastRites);
+      lastRites.dealsDirectDamage = false;
+      lastRites.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, -1, .25, true, false));
+      enemy.abilityList.push(lastRites);  
+      
+      var nightmare = new Ability();
+      nightmare.name = "Nightmare";
+      nightmare.isAvailable = true;
+      nightmare.cooldown = nightmare.currentCooldown = 15;
+      nightmare = this.randomizeCooldown(nightmare);
+      nightmare.dealsDirectDamage = false;      
+      nightmare.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 12, .7, true, false, false));
+      enemy.abilityList.push(nightmare);      
+    } 
+    if (type === BestiaryEnum.OvergrownLizard) {      
+      enemy.name = "Overgrown Lizard";
+      enemy.battleStats = new CharacterStats(1143200, 12250, 23750, 35000, 26250, 30000);        
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 6;
+      enemy.xpGainFromDefeat = 5150;   
+            
+      var shadowBlast = new Ability();
+      shadowBlast.name = "Shadow Blast";
+      shadowBlast.isAvailable = true;
+      shadowBlast.cooldown = shadowBlast.currentCooldown = 18;
+      shadowBlast = this.randomizeCooldown(shadowBlast);
+      shadowBlast.dealsDirectDamage = true;
+      shadowBlast.effectiveness = 12.8;
+      enemy.abilityList.push(shadowBlast);        
+      
+      var lastRites = new Ability();
+      lastRites.name = "Last Rites";
+      lastRites.isAvailable = true;
+      lastRites.cooldown = lastRites.currentCooldown = 19;
+      lastRites = this.randomizeCooldown(lastRites);
+      lastRites.dealsDirectDamage = false;
+      lastRites.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, -1, .25, true, false));
+      enemy.abilityList.push(lastRites);  
+      
+      var nightmare = new Ability();
+      nightmare.name = "Nightmare";
+      nightmare.isAvailable = true;
+      nightmare.cooldown = nightmare.currentCooldown = 15;
+      nightmare = this.randomizeCooldown(nightmare);
+      nightmare.dealsDirectDamage = false;      
+      nightmare.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 12, .7, true, false, false));
+      enemy.abilityList.push(nightmare);      
+    } 
+    if (type === BestiaryEnum.ExoticDragonfly) {      
+      enemy.name = "Exotic Dragonfly";
+      enemy.battleStats = new CharacterStats(1143200, 12250, 23750, 35000, 26250, 30000);        
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 6;
+      enemy.xpGainFromDefeat = 5150;   
+            
+      var shadowBlast = new Ability();
+      shadowBlast.name = "Shadow Blast";
+      shadowBlast.isAvailable = true;
+      shadowBlast.cooldown = shadowBlast.currentCooldown = 18;
+      shadowBlast = this.randomizeCooldown(shadowBlast);
+      shadowBlast.dealsDirectDamage = true;
+      shadowBlast.effectiveness = 12.8;
+      enemy.abilityList.push(shadowBlast);        
+      
+      var lastRites = new Ability();
+      lastRites.name = "Last Rites";
+      lastRites.isAvailable = true;
+      lastRites.cooldown = lastRites.currentCooldown = 19;
+      lastRites = this.randomizeCooldown(lastRites);
+      lastRites.dealsDirectDamage = false;
+      lastRites.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, -1, .25, true, false));
+      enemy.abilityList.push(lastRites);  
+      
+      var nightmare = new Ability();
+      nightmare.name = "Nightmare";
+      nightmare.isAvailable = true;
+      nightmare.cooldown = nightmare.currentCooldown = 15;
+      nightmare = this.randomizeCooldown(nightmare);
+      nightmare.dealsDirectDamage = false;      
+      nightmare.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 12, .7, true, false, false));
+      enemy.abilityList.push(nightmare);      
+    } 
+    if (type === BestiaryEnum.MossyColossus) {      
+      enemy.name = "Mossy Colossus";
+      enemy.battleStats = new CharacterStats(1143200, 12250, 23750, 35000, 26250, 30000);        
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 6;
+      enemy.xpGainFromDefeat = 5150;   
+            
+      var shadowBlast = new Ability();
+      shadowBlast.name = "Shadow Blast";
+      shadowBlast.isAvailable = true;
+      shadowBlast.cooldown = shadowBlast.currentCooldown = 18;
+      shadowBlast = this.randomizeCooldown(shadowBlast);
+      shadowBlast.dealsDirectDamage = true;
+      shadowBlast.effectiveness = 12.8;
+      enemy.abilityList.push(shadowBlast);        
+      
+      var lastRites = new Ability();
+      lastRites.name = "Last Rites";
+      lastRites.isAvailable = true;
+      lastRites.cooldown = lastRites.currentCooldown = 19;
+      lastRites = this.randomizeCooldown(lastRites);
+      lastRites.dealsDirectDamage = false;
+      lastRites.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, -1, .25, true, false));
+      enemy.abilityList.push(lastRites);  
+      
+      var nightmare = new Ability();
+      nightmare.name = "Nightmare";
+      nightmare.isAvailable = true;
+      nightmare.cooldown = nightmare.currentCooldown = 15;
+      nightmare = this.randomizeCooldown(nightmare);
+      nightmare.dealsDirectDamage = false;      
+      nightmare.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 12, .7, true, false, false));
+      enemy.abilityList.push(nightmare);      
+    } 
+    if (type === BestiaryEnum.OrangeFloweredColossus) {      
+      enemy.name = "Orange-Flowered Colossus";
+      enemy.battleStats = new CharacterStats(1143200, 12250, 23750, 35000, 26250, 30000);        
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 6;
+      enemy.xpGainFromDefeat = 5150;   
+            
+      var shadowBlast = new Ability();
+      shadowBlast.name = "Shadow Blast";
+      shadowBlast.isAvailable = true;
+      shadowBlast.cooldown = shadowBlast.currentCooldown = 18;
+      shadowBlast = this.randomizeCooldown(shadowBlast);
+      shadowBlast.dealsDirectDamage = true;
+      shadowBlast.effectiveness = 12.8;
+      enemy.abilityList.push(shadowBlast);        
+      
+      var lastRites = new Ability();
+      lastRites.name = "Last Rites";
+      lastRites.isAvailable = true;
+      lastRites.cooldown = lastRites.currentCooldown = 19;
+      lastRites = this.randomizeCooldown(lastRites);
+      lastRites.dealsDirectDamage = false;
+      lastRites.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, -1, .25, true, false));
+      enemy.abilityList.push(lastRites);  
+      
+      var nightmare = new Ability();
+      nightmare.name = "Nightmare";
+      nightmare.isAvailable = true;
+      nightmare.cooldown = nightmare.currentCooldown = 15;
+      nightmare = this.randomizeCooldown(nightmare);
+      nightmare.dealsDirectDamage = false;      
+      nightmare.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 12, .7, true, false, false));
+      enemy.abilityList.push(nightmare);      
+    } 
+    if (type === BestiaryEnum.WhiteFloweredColossus) {      
+      enemy.name = "White-Flowered Colossus";
+      enemy.battleStats = new CharacterStats(1143200, 12250, 23750, 35000, 26250, 30000);        
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 6;
+      enemy.xpGainFromDefeat = 5150;   
+            
+      var shadowBlast = new Ability();
+      shadowBlast.name = "Shadow Blast";
+      shadowBlast.isAvailable = true;
+      shadowBlast.cooldown = shadowBlast.currentCooldown = 18;
+      shadowBlast = this.randomizeCooldown(shadowBlast);
+      shadowBlast.dealsDirectDamage = true;
+      shadowBlast.effectiveness = 12.8;
+      enemy.abilityList.push(shadowBlast);        
+      
+      var lastRites = new Ability();
+      lastRites.name = "Last Rites";
+      lastRites.isAvailable = true;
+      lastRites.cooldown = lastRites.currentCooldown = 19;
+      lastRites = this.randomizeCooldown(lastRites);
+      lastRites.dealsDirectDamage = false;
+      lastRites.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, -1, .25, true, false));
+      enemy.abilityList.push(lastRites);  
+      
+      var nightmare = new Ability();
+      nightmare.name = "Nightmare";
+      nightmare.isAvailable = true;
+      nightmare.cooldown = nightmare.currentCooldown = 15;
+      nightmare = this.randomizeCooldown(nightmare);
+      nightmare.dealsDirectDamage = false;      
+      nightmare.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 12, .7, true, false, false));
+      enemy.abilityList.push(nightmare);      
+    } 
 
     //probably a better way to do this... these reductions are multiplicative but enemies don't get stats calc'd so otherwise
     //it gets multiplied by 0

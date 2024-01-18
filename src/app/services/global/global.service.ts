@@ -1086,7 +1086,8 @@ export class GlobalService {
       type === StatusEffectEnum.DiscordantMelody || type === StatusEffectEnum.Flood || type === StatusEffectEnum.WildJudgment || type === StatusEffectEnum.StaggeringRiposte || type === StatusEffectEnum.ThunderousRiposte ||
       type === StatusEffectEnum.CaringGaze || type === StatusEffectEnum.MelodicMoves || type === StatusEffectEnum.BlisteringRiposte || type === StatusEffectEnum.RecedingTide ||
       type === StatusEffectEnum.WarAndLove || type === StatusEffectEnum.AllPrimaryStatsDown || type === StatusEffectEnum.AllPrimaryStatsExcludeHpDown || type === StatusEffectEnum.FieryJudgment ||
-      type === StatusEffectEnum.Protector || type === StatusEffectEnum.LovingEmbrace || type === StatusEffectEnum.DefensiveShapeshifting || type === StatusEffectEnum.DamageShield)
+      type === StatusEffectEnum.Protector || type === StatusEffectEnum.LovingEmbrace || type === StatusEffectEnum.DefensiveShapeshifting || type === StatusEffectEnum.DamageShield ||
+      type === StatusEffectEnum.FriendlyCompetition)
       refreshes = true;
 
     return refreshes;
@@ -3854,6 +3855,7 @@ export class GlobalService {
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.PassionateRhythmAutoAttack);
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.PassionateRhythm);
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Onslaught);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.FriendlyCompetition);
 
       var shapeshift = member.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Shapeshift);
       if (shapeshift !== undefined) {
@@ -3870,31 +3872,30 @@ export class GlobalService {
       var dispenserOfDues = member.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DispenserOfDues);
       if (dispenserOfDues !== undefined)
         dispenserOfDues.effectiveness = 0;
+    });
 
-      if (member.abilityList !== undefined && member.abilityList.length > 0)
-        member.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
-          ability.currentCooldown = this.getAbilityCooldown(ability, member, true);
-        });
+    this.globalVar.characters.forEach(character => {
+      if (character.abilityList !== undefined && character.abilityList.length > 0)
+      character.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
+        ability.currentCooldown = this.getAbilityCooldown(ability, character, true);
+      });
+    });
 
-      if (member.assignedGod1 !== undefined && member.assignedGod1 !== GodEnum.None) {
-        var god = this.globalVar.gods.find(item => item.type === member.assignedGod1);
-        if (god !== undefined) {
-          if (god.abilityList !== undefined && god.abilityList.length > 0)
-            god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
-              ability.currentCooldown = this.getAbilityCooldown(ability, member, true);
-            });
-        }
+    this.globalVar.gods.forEach(god => {
+      var equippedCharacterEnum = CharacterEnum.Adventurer;
+      if (party[0].assignedGod1 === god.type || party[0].assignedGod2 === god.type) {
+        equippedCharacterEnum = party[0].type;
       }
-
-      if (member.assignedGod2 !== undefined && member.assignedGod2 !== GodEnum.None) {
-        var god = this.globalVar.gods.find(item => item.type === member.assignedGod2);
-        if (god !== undefined) {
-          if (god.abilityList !== undefined && god.abilityList.length > 0)
-            god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
-              ability.currentCooldown = this.getAbilityCooldown(ability, member, true);
-            });
-        }
+      if (party[1] !== undefined && (party[1].assignedGod1 === god.type || party[1].assignedGod2 === god.type))
+      {
+        equippedCharacterEnum = party[1].type;
       }
+      var equippedCharacter = this.globalVar.characters.find(item => item.type === equippedCharacterEnum);
+
+      if (god.abilityList !== undefined && god.abilityList.length > 0)
+      god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
+        ability.currentCooldown = this.getAbilityCooldown(ability, equippedCharacter !== undefined ? equippedCharacter : new Character(), true);
+      });
     });
   }
 
@@ -4547,11 +4548,12 @@ export class GlobalService {
   setNewTournament(canRepeat: boolean = false) {
     var repeatColiseumFight = this.globalVar.settings.get("repeatColiseumFight") ?? false;
 
-    if (!repeatColiseumFight || !canRepeat)
+    if (!repeatColiseumFight || !canRepeat) {      
       return new ColiseumTournament();
+    }
 
     var type = this.dictionaryService.getColiseumInfoFromType(this.globalVar.activeBattle.activeTournament.type);
-
+    
     return this.startColiseumTournament(type);
   }
 

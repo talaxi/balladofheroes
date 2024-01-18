@@ -219,7 +219,7 @@ export class InitializationService {
     this.initializeBalladOfLabors();
     this.initializeBalladOfOlympus();
     this.initializeBalladOfTheLabyrinth();
-    //this.initializeBalladOfTheWitch(); //TODO: do not deploy this yet
+    this.initializeBalladOfTheWitch(); //TODO: do not deploy this yet
   }
 
   initializeSettings() {
@@ -546,6 +546,8 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.NecklaceSlotAddition, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.JaggedStone, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.DionysussNecklace, 1));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.PoseidonsNecklace, 1));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.MagicToxin, 10));
 
     /* this.lookupService.gainResource(new ResourceValue(ItemsEnum.AthenasScythe, 1));
      this.lookupService.gainResource(new ResourceValue(ItemsEnum.ArtemissBow, 1));

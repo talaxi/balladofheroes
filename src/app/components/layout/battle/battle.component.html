@@ -1,7 +1,7 @@
 <div [ngClass]="{'storyGridContainer': isAtStoryScene() && !isMobile, 'gridContainer': !isAtStoryScene() || isMobile}" class="gridContainer">
     <div class="header">
         <div [ngClass]="{'extraInfoHeaderFlex': doingColiseumOrTrialFight(), 'headerFlex': !doingColiseumOrTrialFight() }">
-            <div class="alignCenter coliseumRound" *ngIf="doingColiseumFight()">
+            <div class="alignCenter coliseumRound" *ngIf="doingColiseumFight(true)">
                 round {{globalService.globalVar.activeBattle.activeTournament.currentRound}} <span *ngIf="globalService.globalVar.activeBattle.activeTournament.maxRounds !== -1">of
                 {{globalService.globalVar.activeBattle.activeTournament.maxRounds}}</span></div>            
                 <button *ngIf="isMobile" class="buttonStyled zoneDropdown"
@@ -18,7 +18,7 @@
                 (click)="goToNextSubzone()">
                 <img class="dropdownIcon" src="assets/svg/rightarrow.svg">
             </button>
-            <div class="alignCenter coliseumTime" *ngIf="doingColiseumOrTrialFight()">{{getTournamentTimeRemaining()}}
+            <div class="alignCenter coliseumTime" *ngIf="doingColiseumOrTrialFight(true)">{{getTournamentTimeRemaining()}}
                 remaining</div>
             <div class="victoryCount" *ngIf="isMobile">
                 {{getSubzoneVictoryCount()}}

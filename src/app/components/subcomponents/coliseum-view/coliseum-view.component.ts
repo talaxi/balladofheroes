@@ -119,7 +119,7 @@ export class ColiseumViewComponent implements OnInit {
     }
 
     //TODO: bring this and the html back when ready
-    //tournaments.push(ColiseumTournamentEnum.FriendlyCompetition);
+    tournaments.push(ColiseumTournamentEnum.FriendlyCompetition);
 
     tournaments.sort((a, b) => this.sortColiseumList(a, b));
 

@@ -76,7 +76,7 @@
                     </div>
                 </div>
             </div>
-            <!--<div *ngIf="isSelectedTournamentFriendlyCompetition()">
+            <div *ngIf="isSelectedTournamentFriendlyCompetition()">
                 <span><strong>Battle Code</strong></span>
                 <div class="importExportDiv">
                     <textarea *ngIf="!isMobile()" (focus)="inTextbox()" (blur)="outOfTextbox()" id="importExport"
@@ -93,7 +93,7 @@
                     </div>
                     <br />
                 </div>
-            </div>-->
+            </div>
             <div *ngIf="isSelectedTournamentWeeklyMelee()">
                 <span><strong>Entries Remaining:</strong> {{getWeeklyEntries()}} / {{getWeeklyEntryCap()}}</span><br
                     *ngIf="getHighestWeeklyMeleeRoundCompleted() > 0" />

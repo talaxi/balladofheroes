@@ -47,6 +47,7 @@ export class ZoneNavigationComponent implements OnInit {
   trackedResourcesColumn1: ItemsEnum[] = [];
   trackedResourcesColumn2: ItemsEnum[] = [];
   tooltipDirection = DirectionEnum.Up;
+  tooltipDirectionDown = DirectionEnum.Down;
   quickLinksUnlocked = false;
   isMobile = false;
 

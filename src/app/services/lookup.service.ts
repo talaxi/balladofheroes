@@ -5598,6 +5598,8 @@ export class LookupService {
       description = "Damage Taken Down";
     if (type === StatusEffectEnum.DivineProtection)
       description = "Divine Protection";
+    if (type === StatusEffectEnum.FriendlyCompetition)
+      description = "Friendly Competition";
     if (type === StatusEffectEnum.GaiasBlessing)
       description = "Gaia's Blessing";
     if (type === StatusEffectEnum.DamageOverTimeTakenDown)
@@ -5934,6 +5936,8 @@ export class LookupService {
       description = "Decrease direct damage taken by " + this.utilityService.genericRound((1 - statusEffect.effectiveness) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.DivineProtection)
       description = "Decrease all damage taken by " + this.utilityService.roundTo(((1 - statusEffect.effectiveness) * 100), 2) + "%.";
+    if (statusEffect.type === StatusEffectEnum.FriendlyCompetition)
+      description = "Decrease all damage taken by " + this.utilityService.roundTo(((1 - statusEffect.effectiveness) * 100), 2) + "%. Increase Max HP by " + this.utilityService.roundTo((2 * 100), 2) + "%."; //Decrease healing received by " + Math.round((1 - (statusEffect.effectiveness * 2)) * 100) + "% from all sources.
     if (statusEffect.type === StatusEffectEnum.GaiasBlessing)
       description = "Decrease all damage taken by " + this.utilityService.roundTo(((1 - statusEffect.effectiveness) * 100), 2) + "% and heal for 5% of HP every 30 seconds.";
     if (statusEffect.type === StatusEffectEnum.DamageOverTimeTakenDown)
@@ -6721,8 +6725,8 @@ export class LookupService {
   getResourceAmountIgnoreExtras(type: ItemsEnum) {
     var allResources = this.globalService.globalVar.resources.filter(item => item.item === type);
     if (allResources === undefined || allResources.length === 0)
-    return 0;    
-    
+      return 0;
+
     var amountTotal = 0;
     allResources.forEach(resource => {
       amountTotal += Math.round(resource.amount);
@@ -7210,13 +7214,18 @@ export class LookupService {
 
     if (character.battleInfo !== undefined && character.battleInfo.statusEffects.length > 0) {
       var relevantStatusEffects = character.battleInfo.statusEffects.filter(effect => effect.type === StatusEffectEnum.MaxHpUp || effect.type === StatusEffectEnum.AllPrimaryStatsUp ||
-        effect.type === StatusEffectEnum.MaxHpDown || effect.type === StatusEffectEnum.RecentlyDefeated || effect.type === StatusEffectEnum.HeroicElixir || effect.type === StatusEffectEnum.AllPrimaryStatsDown);
+        effect.type === StatusEffectEnum.MaxHpDown || effect.type === StatusEffectEnum.RecentlyDefeated || effect.type === StatusEffectEnum.HeroicElixir || effect.type === StatusEffectEnum.AllPrimaryStatsDown ||
+        effect.type === StatusEffectEnum.FriendlyCompetition);
 
       if (relevantStatusEffects.length > 0) {
         relevantStatusEffects.forEach(effect => {
           if (effect.type === StatusEffectEnum.MaxHpUp || effect.type === StatusEffectEnum.MaxHpDown || effect.type === StatusEffectEnum.AllPrimaryStatsUp
-            || effect.type === StatusEffectEnum.RecentlyDefeated || effect.type === StatusEffectEnum.HeroicElixir || effect.type === StatusEffectEnum.AllPrimaryStatsDown) {
+            || effect.type === StatusEffectEnum.RecentlyDefeated || effect.type === StatusEffectEnum.HeroicElixir || effect.type === StatusEffectEnum.AllPrimaryStatsDown ||
+            effect.type === StatusEffectEnum.FriendlyCompetition) {
             var effectiveness = effect.effectiveness;
+            if (effect.type === StatusEffectEnum.FriendlyCompetition)
+              effectiveness = 2;
+
             if (effectiveness < 0)
               effectiveness = 0;
             maxHp *= effectiveness;
@@ -7560,31 +7569,31 @@ export class LookupService {
       if (character.equipmentSet.weapon !== undefined && character.equipmentSet.weapon.itemType === unique.type) {
         var equipmentPiece = this.getEquipmentPieceByItemType(unique.type);
         if (equipmentPiece !== undefined) {
-        this.globalService.unequipItem(EquipmentTypeEnum.Weapon, character.type);
-        equipmentPiece.associatedResource = uniqueResource;
-        this.globalService.equipItem(equipmentPiece, character);
+          this.globalService.unequipItem(EquipmentTypeEnum.Weapon, character.type);
+          equipmentPiece.associatedResource = uniqueResource;
+          this.globalService.equipItem(equipmentPiece, character);
         }
       }
 
       if (character.equipmentSet.armor !== undefined && character.equipmentSet.armor.itemType === unique.type) {
         var equipmentPiece = this.getEquipmentPieceByItemType(unique.type);
         if (equipmentPiece !== undefined) {
-        this.globalService.unequipItem(EquipmentTypeEnum.Armor, character.type);
-        equipmentPiece.associatedResource = uniqueResource;
-        this.globalService.equipItem(equipmentPiece, character);
+          this.globalService.unequipItem(EquipmentTypeEnum.Armor, character.type);
+          equipmentPiece.associatedResource = uniqueResource;
+          this.globalService.equipItem(equipmentPiece, character);
         }
       }
 
       if (character.equipmentSet.shield !== undefined && character.equipmentSet.shield.itemType === unique.type) {
         var equipmentPiece = this.getEquipmentPieceByItemType(unique.type);
         if (equipmentPiece !== undefined) {
-        this.globalService.unequipItem(EquipmentTypeEnum.Shield, character.type);
-        equipmentPiece.associatedResource = uniqueResource;
-        this.globalService.equipItem(equipmentPiece, character);
+          this.globalService.unequipItem(EquipmentTypeEnum.Shield, character.type);
+          equipmentPiece.associatedResource = uniqueResource;
+          this.globalService.equipItem(equipmentPiece, character);
         }
       }
 
-      if (character.equipmentSet.ring !== undefined && character.equipmentSet.ring.itemType === unique.type) {                
+      if (character.equipmentSet.ring !== undefined && character.equipmentSet.ring.itemType === unique.type) {
         var equipmentPiece = this.getEquipmentPieceByItemType(unique.type);
         if (equipmentPiece !== undefined) {
           this.globalService.unequipItem(EquipmentTypeEnum.Ring, character.type);
@@ -7596,9 +7605,9 @@ export class LookupService {
       if (character.equipmentSet.necklace !== undefined && character.equipmentSet.necklace.itemType === unique.type) {
         var equipmentPiece = this.getEquipmentPieceByItemType(unique.type);
         if (equipmentPiece !== undefined) {
-        this.globalService.unequipItem(EquipmentTypeEnum.Necklace, character.type);
-        equipmentPiece.associatedResource = uniqueResource;
-        this.globalService.equipItem(equipmentPiece, character);
+          this.globalService.unequipItem(EquipmentTypeEnum.Necklace, character.type);
+          equipmentPiece.associatedResource = uniqueResource;
+          this.globalService.equipItem(equipmentPiece, character);
         }
       }
     });

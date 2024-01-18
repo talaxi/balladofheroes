@@ -25,6 +25,7 @@ export class UtilityService {
 
   public timeFragmentClearRateMinimumSeconds = 3;
   public duoAbilityCooldown = 1;
+  public friendlyCompetitionDamageReduction = .2;
 
   public lowLoadingAccuracy = 10;
   public averageLoadingAccuracy = 5;

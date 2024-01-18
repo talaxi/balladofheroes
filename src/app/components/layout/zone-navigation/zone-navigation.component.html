@@ -1,9 +1,9 @@
 <div class="navigationGrid">
     <div class="header">
         <div class="balladHeader header">
-            <span class="s4Heading balladTitle mainPageSectionHeader" customToolTip [contentTemplate]="balladPopover">Ballads</span>
+            <span class="s4Heading balladTitle mainPageSectionHeader" customToolTip [contentTemplate]="balladPopover" [tooltipDirection]="tooltipDirectionDown">Ballads</span>
             <span class='flexBalladHeader'>
-                <mat-checkbox class="example-margin smallCaps" [(ngModel)]="autoProgress" (input)="autoProgressToggle()">Auto
+                <mat-checkbox class="example-margin smallCaps bold" [(ngModel)]="autoProgress" (input)="autoProgressToggle()">Auto
                     Progress
                 </mat-checkbox>
                 <button *ngIf="areAltarsAvailable()" (click)="openAutoProgressOptions(autoProgressModal)" class="autoProgressButton buttonStyled"><img

@@ -142,17 +142,26 @@ export class BattleComponent implements OnInit {
     return false;
   }
 
-  doingColiseumFight() {
-    if (this.globalService.globalVar.activeBattle !== undefined)
+  doingColiseumFight(ignoreFriendlyCompetition: boolean = false) {
+    if (this.globalService.globalVar.activeBattle !== undefined) {
+      if (ignoreFriendlyCompetition)
+      return this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.None && this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.FriendlyCompetition;
+      else
       return this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.None;
+    }
 
     return false;
   }
 
-  doingColiseumOrTrialFight() {
-    if (this.globalService.globalVar.activeBattle !== undefined)
+  doingColiseumOrTrialFight(ignoreFriendlyCompetition: boolean = false) {
+    if (this.globalService.globalVar.activeBattle !== undefined) {
+      if (ignoreFriendlyCompetition)
+      return (this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.None && this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.FriendlyCompetition) ||
+        this.globalService.globalVar.activeBattle.activeTrial.type !== TrialEnum.None;
+      else
       return this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.None ||
         this.globalService.globalVar.activeBattle.activeTrial.type !== TrialEnum.None;
+    }
 
     return false;
   }
