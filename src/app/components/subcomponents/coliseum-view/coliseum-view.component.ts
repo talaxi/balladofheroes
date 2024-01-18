@@ -31,7 +31,7 @@ export class ColiseumViewComponent implements OnInit {
   @ViewChild('confirmationBox') confirmationBox: any;
   confirmationText = "You are currently set to automate through the Eternal Melee with all of your tickets. You will not be able to stop part way through to adjust your team. Continue?";
   @ViewChild('purchaseBox') transactionBox: any;
-  transactionEnabled: boolean = false; //TODO: make this false for now (done for now)
+  transactionEnabled: boolean = true;
   transactionConfirmationText = "";
   battleData = "";
 
