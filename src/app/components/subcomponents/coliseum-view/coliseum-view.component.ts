@@ -340,14 +340,14 @@ export class ColiseumViewComponent implements OnInit {
     if (this.globalService.globalVar.isSubscriber)
         ticketMultiplier = 2;
 
-    this.transactionConfirmationText = "For $1, gain a full set of <b>" + (this.utilityService.weeklyMeleeEntryCap * ticketMultiplier) + " Eternal Melee tickets</b>.";
+        this.transactionConfirmationText = "<span class='s4Heading'>For $1, gain a full set of <b>" + (this.utilityService.weeklyMeleeEntryCap * ticketMultiplier) + " Eternal Melee tickets</b></span>.";
 
     var supportArea = " on the footer below ";
     if (this.isMobile())
       supportArea = " in the menu ";
 
     if (ticketMultiplier === 1)
-      this.transactionConfirmationText += "<br/><br/><i>Note that Subscribers gain  " + (this.utilityService.weeklyMeleeEntryCap * 2) + " tickets instead of " + (this.utilityService.weeklyMeleeEntryCap * 2) + ", and gain 2 tickets a day instead of 1. Visit the 'Support' area " + supportArea + " to see how to subscribe for a one time payment of $3.</i>";
+    this.transactionConfirmationText += "<br/><br/><i>Note that Subscribers gain <strong>" + (this.utilityService.weeklyMeleeEntryCap * 2) + "</strong> tickets instead of <strong>" + (this.utilityService.weeklyMeleeEntryCap) + "</strong>, as well as numerous other benefits. Press 'Cancel' and visit the 'Support' area " + supportArea + " to see how to subscribe for a one time payment of $3.</i>";
 
     var dialogRef = this.openPurchaseDialog();
 

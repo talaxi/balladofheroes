@@ -45,6 +45,8 @@ export class BalladService {
       name = "Ballad of Olympus";
     if (type === BalladEnum.Labyrinth)
       name = "Ballad of the Labyrinth";
+      if (type === BalladEnum.Witch)
+      name = "Ballad of the Witch";
 
     return name;
   }
@@ -68,6 +70,8 @@ export class BalladService {
       name = "Olympus";
     if (type === BalladEnum.Labyrinth)
       name = "Labyrinth";
+      if (type === BalladEnum.Witch)
+      name = "Witch";
 
     return name;
   }

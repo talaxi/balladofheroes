@@ -9835,7 +9835,7 @@ export class EnemyGeneratorService {
     } 
     if (type === BestiaryEnum.PoseidonsDolphin) {      
       enemy.name = "Poseidon's Dolphin";      
-      enemy.battleStats = new CharacterStats(1430493, 10150, 21650, 26500, 19500, 30000);  
+      enemy.battleStats = new CharacterStats(1660493, 10150, 21650, 26500, 19500, 30000);  
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 6250;  
@@ -13191,41 +13191,45 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.FloatingBlob) {      
       enemy.name = "Floating Blob";
-      enemy.battleStats = new CharacterStats(1143200, 12250, 23750, 35000, 26250, 30000);        
+      enemy.battleStats = new CharacterStats(1343200, 12250, 30750, 35000, 26250, 30000);        
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
-      enemy.xpGainFromDefeat = 5150;   
+      enemy.xpGainFromDefeat = 5150;
+      enemy.battleInfo.elementalType = ElementalTypeEnum.Water;   
             
-      var shadowBlast = new Ability();
-      shadowBlast.name = "Shadow Blast";
-      shadowBlast.isAvailable = true;
-      shadowBlast.cooldown = shadowBlast.currentCooldown = 18;
-      shadowBlast = this.randomizeCooldown(shadowBlast);
-      shadowBlast.dealsDirectDamage = true;
-      shadowBlast.effectiveness = 12.8;
-      enemy.abilityList.push(shadowBlast);        
+      var slap = new Ability();
+      slap.name = "Slap";
+      slap.isAvailable = true;
+      slap.cooldown = slap.currentCooldown = 18;
+      slap = this.randomizeCooldown(slap);
+      slap.dealsDirectDamage = true;
+      slap.effectiveness = 12.8;
+      slap.elementalType = ElementalTypeEnum.Water;
+      slap.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true,undefined, undefined, undefined, undefined, ElementalTypeEnum.Water));
+      enemy.abilityList.push(slap);        
       
-      var lastRites = new Ability();
-      lastRites.name = "Last Rites";
-      lastRites.isAvailable = true;
-      lastRites.cooldown = lastRites.currentCooldown = 19;
-      lastRites = this.randomizeCooldown(lastRites);
-      lastRites.dealsDirectDamage = false;
-      lastRites.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, -1, .25, true, false));
-      enemy.abilityList.push(lastRites);  
+      var waterSpear = new Ability();
+      waterSpear.name = "Water Spear";
+      waterSpear.isAvailable = true;
+      waterSpear.cooldown = waterSpear.currentCooldown = 18;
+      waterSpear = this.randomizeCooldown(waterSpear);
+      waterSpear.dealsDirectDamage = true;
+      waterSpear.effectiveness = 12.8;
+      waterSpear.elementalType = ElementalTypeEnum.Water;      
+      enemy.abilityList.push(waterSpear);   
       
-      var nightmare = new Ability();
-      nightmare.name = "Nightmare";
-      nightmare.isAvailable = true;
-      nightmare.cooldown = nightmare.currentCooldown = 15;
-      nightmare = this.randomizeCooldown(nightmare);
-      nightmare.dealsDirectDamage = false;      
-      nightmare.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 12, .7, true, false, false));
-      enemy.abilityList.push(nightmare);      
+      var waterDance = new Ability();
+      waterDance.name = "Water Dance";
+      waterDance.isAvailable = true;
+      waterDance.cooldown = waterDance.currentCooldown = 26;
+      waterDance = this.randomizeCooldown(waterDance);
+      waterDance.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityDown, 12, .8, false, false, true));
+      waterDance.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceDown, 12, .8, false, false, true));      
+      enemy.abilityList.push(waterDance);   
     } 
     if (type === BestiaryEnum.DivingRaptor) {      
       enemy.name = "Diving Raptor";
-      enemy.battleStats = new CharacterStats(1031500, 12250, 23750, 35000, 26250, 30000);        
+      enemy.battleStats = new CharacterStats(1231500, 12000, 28750, 38000, 27000, 30800);        
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
       enemy.xpGainFromDefeat = 5150;  
@@ -13266,177 +13270,168 @@ export class EnemyGeneratorService {
     } 
     if (type === BestiaryEnum.Hammerhead) {      
       enemy.name = "Hammerhead";
-      enemy.battleStats = new CharacterStats(1143200, 12250, 23750, 35000, 26250, 30000);        
-      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.battleStats = new CharacterStats(1619750, 11050, 27500, 48000, 24250, 28000);        
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
-      enemy.xpGainFromDefeat = 5150;   
-            
-      var shadowBlast = new Ability();
-      shadowBlast.name = "Shadow Blast";
-      shadowBlast.isAvailable = true;
-      shadowBlast.cooldown = shadowBlast.currentCooldown = 18;
-      shadowBlast = this.randomizeCooldown(shadowBlast);
-      shadowBlast.dealsDirectDamage = true;
-      shadowBlast.effectiveness = 12.8;
-      enemy.abilityList.push(shadowBlast);        
+      enemy.xpGainFromDefeat = 5150;    
+      enemy.battleInfo.elementalType = ElementalTypeEnum.Water;           
       
-      var lastRites = new Ability();
-      lastRites.name = "Last Rites";
-      lastRites.isAvailable = true;
-      lastRites.cooldown = lastRites.currentCooldown = 19;
-      lastRites = this.randomizeCooldown(lastRites);
-      lastRites.dealsDirectDamage = false;
-      lastRites.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, -1, .25, true, false));
-      enemy.abilityList.push(lastRites);  
-      
-      var nightmare = new Ability();
-      nightmare.name = "Nightmare";
-      nightmare.isAvailable = true;
-      nightmare.cooldown = nightmare.currentCooldown = 15;
-      nightmare = this.randomizeCooldown(nightmare);
-      nightmare.dealsDirectDamage = false;      
-      nightmare.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 12, .7, true, false, false));
-      enemy.abilityList.push(nightmare);      
+      var zigzag = new Ability();
+      zigzag.name = "Zigzag";
+      zigzag.isAvailable = true;
+      zigzag.effectiveness = 5.7;
+      zigzag.cooldown = zigzag.currentCooldown = 14;
+      zigzag = this.randomizeCooldown(zigzag);
+      zigzag.dealsDirectDamage = true;
+      zigzag.elementalType = ElementalTypeEnum.Water;
+      zigzag.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 20, 1.5, false, true, undefined, undefined, undefined, true));
+      enemy.abilityList.push(zigzag);
+
+      var hammer = new Ability();
+      hammer.name = "Hammer";
+      hammer.isAvailable = true;
+      hammer.effectiveness = 5.7;
+      hammer.cooldown = hammer.currentCooldown = 14;
+      hammer = this.randomizeCooldown(hammer);
+      hammer.dealsDirectDamage = true;
+      hammer.elementalType = ElementalTypeEnum.Water;
+      hammer.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true,undefined, undefined, undefined, undefined, ElementalTypeEnum.Water));
+      hammer.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true,undefined, undefined, undefined, undefined, ElementalTypeEnum.Water));
+      enemy.abilityList.push(hammer);
+
+      var plunge = new Ability();
+      plunge.name = "Plunge";
+      plunge.isAvailable = true;
+      plunge.cooldown = plunge.currentCooldown = 24;
+      plunge = this.randomizeCooldown(plunge);
+      plunge.dealsDirectDamage = false;
+      plunge.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Untargetable, 6, 1, false, true));      
+      enemy.abilityList.push(plunge);        
     } 
     if (type === BestiaryEnum.BlackWolf) {      
       enemy.name = "Black Wolf";
-      enemy.battleStats = new CharacterStats(1143200, 12250, 23750, 35000, 26250, 30000);        
-      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.battleStats = new CharacterStats(1529800, 10950, 28250, 35000, 26250, 30000);        
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
       enemy.xpGainFromDefeat = 5150;   
-            
-      var shadowBlast = new Ability();
-      shadowBlast.name = "Shadow Blast";
-      shadowBlast.isAvailable = true;
-      shadowBlast.cooldown = shadowBlast.currentCooldown = 18;
-      shadowBlast = this.randomizeCooldown(shadowBlast);
-      shadowBlast.dealsDirectDamage = true;
-      shadowBlast.effectiveness = 12.8;
-      enemy.abilityList.push(shadowBlast);        
       
-      var lastRites = new Ability();
-      lastRites.name = "Last Rites";
-      lastRites.isAvailable = true;
-      lastRites.cooldown = lastRites.currentCooldown = 19;
-      lastRites = this.randomizeCooldown(lastRites);
-      lastRites.dealsDirectDamage = false;
-      lastRites.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, -1, .25, true, false));
-      enemy.abilityList.push(lastRites);  
-      
-      var nightmare = new Ability();
-      nightmare.name = "Nightmare";
-      nightmare.isAvailable = true;
-      nightmare.cooldown = nightmare.currentCooldown = 15;
-      nightmare = this.randomizeCooldown(nightmare);
-      nightmare.dealsDirectDamage = false;      
-      nightmare.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 12, .7, true, false, false));
-      enemy.abilityList.push(nightmare);      
+      var frenzy = new Ability();
+      frenzy.name = "Frenzy";
+      frenzy.isAvailable = true;
+      frenzy.cooldown = frenzy.currentCooldown = 17;
+      frenzy = this.randomizeCooldown(frenzy);
+      frenzy.dealsDirectDamage = false;
+      frenzy.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Sap, -1, .2, true, false));
+      enemy.abilityList.push(frenzy);
+          
+      var crunch = new Ability();
+      crunch.name = "Crunch";
+      crunch.isAvailable = true;
+      crunch.effectiveness = 5.7;
+      crunch.cooldown = crunch.currentCooldown = 19;
+      crunch = this.randomizeCooldown(crunch);
+      crunch.dealsDirectDamage = true;
+      crunch.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 5, .6, false, false, false));
+      enemy.abilityList.push(crunch);
+
+      var howl = new Ability();
+      howl.name = "Howl";
+      howl.isAvailable = true;
+      howl.cooldown = howl.currentCooldown = 16;
+      howl = this.randomizeCooldown(howl);
+      howl.dealsDirectDamage = false;
+      howl.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, 10, 1.5, false, true, false));
+      howl.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 1.5, false, true, false));
+      enemy.abilityList.push(howl);  
     } 
     if (type === BestiaryEnum.BurrowingMole) {      
       enemy.name = "Burrowing Mole";
-      enemy.battleStats = new CharacterStats(1143200, 12250, 23750, 35000, 26250, 30000);        
-      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.battleStats = new CharacterStats(1510600, 14550, 27900, 31000, 24250, 27000);        
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
       enemy.xpGainFromDefeat = 5150;   
             
-      var shadowBlast = new Ability();
-      shadowBlast.name = "Shadow Blast";
-      shadowBlast.isAvailable = true;
-      shadowBlast.cooldown = shadowBlast.currentCooldown = 18;
-      shadowBlast = this.randomizeCooldown(shadowBlast);
-      shadowBlast.dealsDirectDamage = true;
-      shadowBlast.effectiveness = 12.8;
-      enemy.abilityList.push(shadowBlast);        
-      
-      var lastRites = new Ability();
-      lastRites.name = "Last Rites";
-      lastRites.isAvailable = true;
-      lastRites.cooldown = lastRites.currentCooldown = 19;
-      lastRites = this.randomizeCooldown(lastRites);
-      lastRites.dealsDirectDamage = false;
-      lastRites.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, -1, .25, true, false));
-      enemy.abilityList.push(lastRites);  
-      
-      var nightmare = new Ability();
-      nightmare.name = "Nightmare";
-      nightmare.isAvailable = true;
-      nightmare.cooldown = nightmare.currentCooldown = 15;
-      nightmare = this.randomizeCooldown(nightmare);
-      nightmare.dealsDirectDamage = false;      
-      nightmare.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 12, .7, true, false, false));
-      enemy.abilityList.push(nightmare);      
+      //todo more abilities
+      var burrow = new Ability();
+      burrow.name = "Burrow";
+      burrow.isAvailable = true;
+      burrow.cooldown = burrow.currentCooldown = 24;
+      burrow = this.randomizeCooldown(burrow);
+      burrow.dealsDirectDamage = false;
+      burrow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Untargetable, 6, 1, false, true));      
+      enemy.abilityList.push(burrow);           
     } 
     if (type === BestiaryEnum.WaspSwarm) {      
       enemy.name = "Wasp Swarm";
-      enemy.battleStats = new CharacterStats(1143200, 12250, 23750, 35000, 26250, 30000);        
+      enemy.battleStats = new CharacterStats(1661000, 12750, 30100, 36000, 26850, 31500);        
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
       enemy.xpGainFromDefeat = 5150;   
             
-      var shadowBlast = new Ability();
-      shadowBlast.name = "Shadow Blast";
-      shadowBlast.isAvailable = true;
-      shadowBlast.cooldown = shadowBlast.currentCooldown = 18;
-      shadowBlast = this.randomizeCooldown(shadowBlast);
-      shadowBlast.dealsDirectDamage = true;
-      shadowBlast.effectiveness = 12.8;
-      enemy.abilityList.push(shadowBlast);        
+      var swarm = new Ability();
+      swarm.name = "Swarm";
+      swarm.isAvailable = true;
+      swarm.effectiveness = 6.2;
+      swarm.cooldown = swarm.currentCooldown = 14;
+      swarm = this.randomizeCooldown(swarm);
+      swarm.dealsDirectDamage = true;
+      swarm.isAoe = true;
+      swarm.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Blind, 8, .4, false, false, true));
+      enemy.abilityList.push(swarm);       
       
-      var lastRites = new Ability();
-      lastRites.name = "Last Rites";
-      lastRites.isAvailable = true;
-      lastRites.cooldown = lastRites.currentCooldown = 19;
-      lastRites = this.randomizeCooldown(lastRites);
-      lastRites.dealsDirectDamage = false;
-      lastRites.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, -1, .25, true, false));
-      enemy.abilityList.push(lastRites);  
-      
-      var nightmare = new Ability();
-      nightmare.name = "Nightmare";
-      nightmare.isAvailable = true;
-      nightmare.cooldown = nightmare.currentCooldown = 15;
-      nightmare = this.randomizeCooldown(nightmare);
-      nightmare.dealsDirectDamage = false;      
-      nightmare.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 12, .7, true, false, false));
-      enemy.abilityList.push(nightmare);      
+      var tinyBites = new Ability();
+      tinyBites.name = "Tiny Bites";
+      tinyBites.isAvailable = true;
+      tinyBites.effectiveness = 6.2;
+      tinyBites.cooldown = tinyBites.currentCooldown = 14;
+      tinyBites = this.randomizeCooldown(tinyBites);
+      tinyBites.dealsDirectDamage = true;
+      tinyBites.isAoe = true;
+      tinyBites.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
+      enemy.abilityList.push(tinyBites);       
     } 
     if (type === BestiaryEnum.OvergrownLizard) {      
       enemy.name = "Overgrown Lizard";
-      enemy.battleStats = new CharacterStats(1143200, 12250, 23750, 35000, 26250, 30000);        
-      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.battleStats = new CharacterStats(1698750, 11200, 42250, 46500, 25000, 31000);        
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
-      enemy.xpGainFromDefeat = 5150;   
-            
-      var shadowBlast = new Ability();
-      shadowBlast.name = "Shadow Blast";
-      shadowBlast.isAvailable = true;
-      shadowBlast.cooldown = shadowBlast.currentCooldown = 18;
-      shadowBlast = this.randomizeCooldown(shadowBlast);
-      shadowBlast.dealsDirectDamage = true;
-      shadowBlast.effectiveness = 12.8;
-      enemy.abilityList.push(shadowBlast);        
+      enemy.xpGainFromDefeat = 5150;               
       
-      var lastRites = new Ability();
-      lastRites.name = "Last Rites";
-      lastRites.isAvailable = true;
-      lastRites.cooldown = lastRites.currentCooldown = 19;
-      lastRites = this.randomizeCooldown(lastRites);
-      lastRites.dealsDirectDamage = false;
-      lastRites.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, -1, .25, true, false));
-      enemy.abilityList.push(lastRites);  
-      
-      var nightmare = new Ability();
-      nightmare.name = "Nightmare";
-      nightmare.isAvailable = true;
-      nightmare.cooldown = nightmare.currentCooldown = 15;
-      nightmare = this.randomizeCooldown(nightmare);
-      nightmare.dealsDirectDamage = false;      
-      nightmare.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 12, .7, true, false, false));
-      enemy.abilityList.push(nightmare);      
+      var bite = new Ability();
+      bite.name = "Bite";
+      bite.isAvailable = true;
+      bite.effectiveness = 1.5;
+      bite.dealsDirectDamage = true;
+      bite.cooldown = bite.currentCooldown = 22;
+      bite = this.randomizeCooldown(bite);
+      bite.targetEffect.push(this.globalService.createDamageOverTimeEffect(20, 4, .1, bite.name));
+      enemy.abilityList.push(bite);
+
+      var tailSwipe = new Ability();
+      tailSwipe.name = "Tail Swipe";
+      tailSwipe.isAvailable = true;
+      tailSwipe.effectiveness = 5.75;
+      tailSwipe.cooldown = tailSwipe.currentCooldown = 18;
+      tailSwipe = this.randomizeCooldown(tailSwipe);
+      tailSwipe.dealsDirectDamage = true;    
+      tailSwipe.isAoe = true;
+      enemy.abilityList.push(tailSwipe);  
+
+      var regeneration = new Ability();
+      regeneration.name = "Regeneration";
+      regeneration.isAvailable = true;
+      regeneration.cooldown = regeneration.currentCooldown = 35;
+      regeneration = this.randomizeCooldown(regeneration);
+      regeneration.dealsDirectDamage = false;
+      regeneration.heals = true;
+      regeneration.targetType = TargetEnum.Self;
+      regeneration.effectiveness = .6;
+      regeneration.targetsAllies = true;
+      enemy.abilityList.push(regeneration);
     } 
     if (type === BestiaryEnum.ExoticDragonfly) {      
       enemy.name = "Exotic Dragonfly";
-      enemy.battleStats = new CharacterStats(1143200, 12250, 23750, 35000, 26250, 30000);        
+      enemy.battleStats = new CharacterStats(1741600, 12500, 34200, 33500, 28000, 32500);        
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
       enemy.xpGainFromDefeat = 5150;   
@@ -13470,8 +13465,8 @@ export class EnemyGeneratorService {
     } 
     if (type === BestiaryEnum.MossyColossus) {      
       enemy.name = "Mossy Colossus";
-      enemy.battleStats = new CharacterStats(1143200, 12250, 23750, 35000, 26250, 30000);        
-      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.battleStats = new CharacterStats(1885200, 15150, 38350, 32500, 29000, 34000);        
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
       enemy.xpGainFromDefeat = 5150;   
             
@@ -13504,10 +13499,12 @@ export class EnemyGeneratorService {
     } 
     if (type === BestiaryEnum.OrangeFloweredColossus) {      
       enemy.name = "Orange-Flowered Colossus";
-      enemy.battleStats = new CharacterStats(1143200, 12250, 23750, 35000, 26250, 30000);        
-      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.battleStats = new CharacterStats(4299980, 17550, 73350, 30000, 36500, 28000);                  
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
       enemy.xpGainFromDefeat = 5150;   
+      enemy.battleStats.elementResistance.earth = .25;
+      enemy.battleStats.elementResistance.lightning = .25;
             
       var shadowBlast = new Ability();
       shadowBlast.name = "Shadow Blast";
@@ -13538,10 +13535,12 @@ export class EnemyGeneratorService {
     } 
     if (type === BestiaryEnum.WhiteFloweredColossus) {      
       enemy.name = "White-Flowered Colossus";
-      enemy.battleStats = new CharacterStats(1143200, 12250, 23750, 35000, 26250, 30000);        
+      enemy.battleStats = new CharacterStats(4299980, 17550, 55350, 30000, 36500, 48500);             
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
       enemy.xpGainFromDefeat = 5150;   
+      enemy.battleStats.elementResistance.earth = .25;
+      enemy.battleStats.elementResistance.lightning = .25;
             
       var shadowBlast = new Ability();
       shadowBlast.name = "Shadow Blast";

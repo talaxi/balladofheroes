@@ -1488,7 +1488,7 @@ export class LookupService {
 
       var equipmentEffect2 = new UsableItemEffect();
       equipmentEffect2.trigger = EffectTriggerEnum.ChanceOnAbilityUse;
-      equipmentEffect2.chance = (1 / 3);
+      equipmentEffect2.chance = (1 / 4);
       equipmentEffect2.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LightningDamageUp, 15, 1.2, false, true, false, type.toString()));
       equipmentPiece.equipmentEffects.push(equipmentEffect2);
       equipmentPiece.slotCount = 3;

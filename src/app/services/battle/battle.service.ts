@@ -4216,9 +4216,11 @@ export class BattleService {
       appliedStatusEffect.caster = castingCharacter.name;
     }
 
-    var fadingBlind = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Blind && item.abilityName === "Fading");
-    if (fadingBlind !== undefined) {
-      fadingBlind.duration += fadingBlind.maxCount;
+    if (target !== undefined && target.battleInfo !== undefined) {
+      var fadingBlind = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Blind && item.abilityName === "Fading");
+      if (fadingBlind !== undefined) {
+        fadingBlind.duration += fadingBlind.maxCount;
+      }
     }
 
     if (originalAbility !== undefined && originalAbility.name === "Revelry" && appliedStatusEffect.type === StatusEffectEnum.Barrier && castingCharacter !== undefined) {
@@ -4633,10 +4635,12 @@ export class BattleService {
       * elementIncrease * elementalDamageDecrease
       * Math.ceil(((adjustedAttackModifier * Math.pow(adjustedAttack, 2)) + (adjustedAllyAttackModifier * Math.pow(adjustedAllyAttack, 2))) / ((adjustedAttackModifier * adjustedAttack) + (adjustedAllyAttackModifier * adjustedAllyAttack) + adjustedDefense)));
 
-    //if (ability !== undefined)
-    //console.log("Ability name: " + ability.name);
-    //console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementIncrease
-    // + " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttackModifier + " * " + adjustedAttack + " ^2) / (" + adjustedAttackModifier + " * " + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
+    if (ability !== undefined)
+      console.log("Ability name: " + ability.name);
+    else
+      console.log("Auto Attack");
+    console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementIncrease
+      + " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttackModifier + " * " + adjustedAttack + " ^2) / (" + adjustedAttackModifier + " * " + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
     var dispenserOfDuesEffect = attacker.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DispenserOfDues);
     if (dispenserOfDuesEffect !== undefined && ability !== undefined) {
       damage += dispenserOfDuesEffect.effectiveness;
@@ -7302,9 +7306,9 @@ export class BattleService {
 
           var gameLogEntry = "You steal <strong>" + Math.round(enemyType.xpGainFromDefeat * .1) + "</strong>" + " XP from <strong>" + target.name + "</strong>.";
 
-        if (this.globalService.globalVar.gameLogSettings.get("partyStatusEffect")) {
-          this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry, this.globalService.globalVar);
-        }
+          if (this.globalService.globalVar.gameLogSettings.get("partyStatusEffect")) {
+            this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry, this.globalService.globalVar);
+          }
         }
       }
     }

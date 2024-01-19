@@ -1275,7 +1275,7 @@ export class InitializationService {
         if (j < chthonicResetCount - 1)
           godLevel = 2000;
         else
-          godLevel = 2250;
+          godLevel = 1650;
 
         for (var i = 0; i < godLevel; i++) {
           this.globalService.levelUpGod(athena!);
