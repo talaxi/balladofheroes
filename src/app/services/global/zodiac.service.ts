@@ -93,29 +93,29 @@ export class ZodiacService {
     const day = now.getDate();
 
     if (month === 1) {
-      zodiacSign = day <= 20 ? ZodiacEnum.Capricorn : ZodiacEnum.Aquarius;
+      zodiacSign = day < 20 ? ZodiacEnum.Capricorn : ZodiacEnum.Aquarius;
     } else if (month === 2) {
-      zodiacSign = day <= 19 ? ZodiacEnum.Aquarius : ZodiacEnum.Pisces;
+      zodiacSign = day < 19 ? ZodiacEnum.Aquarius : ZodiacEnum.Pisces;
     } else if (month === 3) {
-      zodiacSign = day <= 20 ? ZodiacEnum.Pisces : ZodiacEnum.Aries;
+      zodiacSign = day < 20 ? ZodiacEnum.Pisces : ZodiacEnum.Aries;
     } else if (month === 4) {
-      zodiacSign = day <= 19 ? ZodiacEnum.Aries : ZodiacEnum.Taurus;
+      zodiacSign = day < 19 ? ZodiacEnum.Aries : ZodiacEnum.Taurus;
     } else if (month === 5) {
-      zodiacSign = day <= 20 ? ZodiacEnum.Taurus : ZodiacEnum.Gemini;
+      zodiacSign = day < 20 ? ZodiacEnum.Taurus : ZodiacEnum.Gemini;
     } else if (month === 6) {
-      zodiacSign = day <= 20 ? ZodiacEnum.Gemini : ZodiacEnum.Cancer;
+      zodiacSign = day < 20 ? ZodiacEnum.Gemini : ZodiacEnum.Cancer;
     } else if (month === 7) {
-      zodiacSign = day <= 22 ? ZodiacEnum.Cancer : ZodiacEnum.Leo;
+      zodiacSign = day < 22 ? ZodiacEnum.Cancer : ZodiacEnum.Leo;
     } else if (month === 8) {
-      zodiacSign = day <= 22 ? ZodiacEnum.Leo : ZodiacEnum.Virgo;
+      zodiacSign = day < 22 ? ZodiacEnum.Leo : ZodiacEnum.Virgo;
     } else if (month === 9) {
-      zodiacSign = day <= 22 ? ZodiacEnum.Virgo : ZodiacEnum.Libra;
+      zodiacSign = day < 22 ? ZodiacEnum.Virgo : ZodiacEnum.Libra;
     } else if (month === 10) {
-      zodiacSign = day <= 22 ? ZodiacEnum.Libra : ZodiacEnum.Scorpio; 
+      zodiacSign = day < 22 ? ZodiacEnum.Libra : ZodiacEnum.Scorpio; 
     } else if (month === 11) {
-      zodiacSign = day <= 21 ? ZodiacEnum.Scorpio : ZodiacEnum.Sagittarius; 
+      zodiacSign = day < 21 ? ZodiacEnum.Scorpio : ZodiacEnum.Sagittarius; 
     } else if (month === 12) {
-      zodiacSign = day <= 21 ? ZodiacEnum.Sagittarius : ZodiacEnum.Capricorn;
+      zodiacSign = day < 21 ? ZodiacEnum.Sagittarius : ZodiacEnum.Capricorn;
     }
 
     return zodiacSign;
