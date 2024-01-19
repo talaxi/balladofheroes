@@ -42,7 +42,7 @@ export class ColiseumService {
     var info = this.dictionaryService.getColiseumInfoFromType(type);
 
     if (type === ColiseumTournamentEnum.WeeklyMelee)
-      return "Complete as many rounds as you can in " + info.tournamentTimerLength + " seconds. Each round is progressively more difficult. Gain one entry per day.";
+      return "Complete as many rounds as you can in " + info.tournamentTimerLength + " seconds. Each round is progressively more difficult. Gain one entry per day. (And an extra entry on Saturday and Sunday!)";
 
     if (type === ColiseumTournamentEnum.FriendlyCompetition)
       return "Do battle with another player's party. Export your data here to give to them, or enter their exported data and begin battling.";
