@@ -1275,7 +1275,7 @@ export class InitializationService {
         if (j < chthonicResetCount - 1)
           godLevel = 1500;
         else
-          godLevel = 1500;
+          godLevel = 1750;
 
         for (var i = 0; i < godLevel; i++) {
           this.globalService.levelUpGod(athena!);
@@ -1383,7 +1383,7 @@ export class InitializationService {
         nemesis!.statGainCount = 0;
         nemesis!.expToNextLevel = 200;
         this.globalService.assignGodAbilityInfo(nemesis!);
-        for (var i = 0; i < 3060; i++) {
+        for (var i = 0; i < godLevel; i++) {
           this.globalService.levelUpGod(nemesis!);
         }
         nemesis!.exp = 0;

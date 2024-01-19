@@ -701,9 +701,10 @@ export class TrialService {
 
       var godEnum = this.globalService.globalVar.activeBattle.activeTrial.godEnum;
       var god = this.globalService.globalVar.gods.find(item => item.type === godEnum);
+      
       if (god !== undefined) {
         var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === type && item.godType === godEnum);
-        if (trialType !== undefined) {
+        if (trialType !== undefined) {          
           trialType.count += 1;
           if (xps > trialType.highestXps)
             trialType.highestXps = xps;
@@ -714,7 +715,7 @@ export class TrialService {
           if (this.globalService.globalVar.activeBattle.activeTrial.maxHp > trialType.highestHp)
             trialType.highestHp = this.globalService.globalVar.activeBattle.activeTrial.maxHp;
         }
-        else {
+        else {          
           var trialDefeatCount = new TrialDefeatCount(type, 1, godEnum);
           trialDefeatCount.highestXps = xps;
           trialDefeatCount.highestDps = dps;

@@ -93,7 +93,7 @@ export class ZodiacService {
     const day = now.getDate();
 
     if (month === 1) {
-      zodiacSign = day <= 20 ? ZodiacEnum.Capricorn : ZodiacEnum.Aquarius;
+      zodiacSign = day <= 20 ? ZodiacEnum.Aquarius : ZodiacEnum.Aquarius; //TODO: set first one to capricorn
     } else if (month === 2) {
       zodiacSign = day <= 19 ? ZodiacEnum.Aquarius : ZodiacEnum.Pisces;
     } else if (month === 3) {

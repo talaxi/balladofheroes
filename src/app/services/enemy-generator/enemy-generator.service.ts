@@ -13351,7 +13351,6 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 6;
       enemy.xpGainFromDefeat = 5150;   
             
-      //todo more abilities
       var burrow = new Ability();
       burrow.name = "Burrow";
       burrow.isAvailable = true;
@@ -13360,6 +13359,15 @@ export class EnemyGeneratorService {
       burrow.dealsDirectDamage = false;
       burrow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Untargetable, 6, 1, false, true));      
       enemy.abilityList.push(burrow);           
+
+      var slam = new Ability();
+      slam.name = "Slam";
+      slam.isAvailable = true;
+      slam.cooldown = slam.currentCooldown = 18;
+      slam = this.randomizeCooldown(slam);
+      slam.dealsDirectDamage = true;
+      slam.effectiveness = .8;
+      enemy.abilityList.push(slam);      
     } 
     if (type === BestiaryEnum.WaspSwarm) {      
       enemy.name = "Wasp Swarm";
@@ -13434,7 +13442,26 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(1741600, 12500, 34200, 33500, 28000, 32500);        
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
-      enemy.xpGainFromDefeat = 5150;               
+      enemy.xpGainFromDefeat = 5150;    
+                  
+      var flutter = new Ability();
+      flutter.name = "Flutter";
+      flutter.isAvailable = true;
+      flutter.effectiveness = 1.3;
+      flutter.cooldown = flutter.currentCooldown = 20;
+      flutter = this.randomizeCooldown(flutter);      
+      flutter.targetEffect.push(this.globalService.createDamageOverTimeEffect(12, 4, .35, flutter.name, dotTypeEnum.BasedOnAttack, undefined, true));
+      enemy.abilityList.push(flutter);
+
+      var shimmer = new Ability();
+      shimmer.name = "Shimmer";
+      shimmer.isAvailable = true;
+      shimmer.cooldown = shimmer.currentCooldown = 23;
+      shimmer = this.randomizeCooldown(shimmer);
+      shimmer.dealsDirectDamage = false;
+      shimmer.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackDown, 14, .7, false, false, true));
+      shimmer.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckDown, 14, .7, false, false, true));      
+      enemy.abilityList.push(shimmer);
     } 
     if (type === BestiaryEnum.MossyColossus) {      
       enemy.name = "Mossy Colossus";
@@ -13442,8 +13469,43 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
       enemy.xpGainFromDefeat = 5150;    
+      enemy.battleInfo.elementalType = ElementalTypeEnum.Earth;
       enemy.battleStats.elementResistance.earth = .25;
-      enemy.battleStats.elementResistance.lightning = .25;           
+      enemy.battleStats.elementResistance.lightning = .25;
+      enemy.battleStats.elementIncrease.earth = .25;     
+            
+      var armSwing = new Ability();
+      armSwing.name = "Arm Swing";
+      armSwing.isAvailable = true;
+      armSwing.effectiveness = 11;
+      armSwing.cooldown = armSwing.currentCooldown = 18;
+      armSwing = this.randomizeCooldown(armSwing);
+      armSwing.dealsDirectDamage = true;
+      armSwing.elementalType = ElementalTypeEnum.Earth;
+      armSwing.damageModifierRange = .75;
+      enemy.abilityList.push(armSwing);
+
+      var collide = new Ability();
+      collide.name = "Collide";
+      collide.isAvailable = true;
+      collide.effectiveness = 12.5;
+      collide.cooldown = collide.currentCooldown = 22;
+      collide = this.randomizeCooldown(collide);
+      collide.dealsDirectDamage = true;
+      collide.elementalType = ElementalTypeEnum.Earth;
+      collide.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stagger, 12, .5, false, false));
+      enemy.abilityList.push(collide);
+
+      var root = new Ability();
+      root.name = "Root";
+      root.isAvailable = true;
+      root.cooldown = root.currentCooldown = 25;
+      root = this.randomizeCooldown(root);
+      root.dealsDirectDamage = false;
+      root.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, 12, 2000, false, true));
+      root.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 12, 2, false, true));
+      root.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceUp, 12, 2, false, true));
+      enemy.abilityList.push(root);
     } 
     if (type === BestiaryEnum.OrangeFloweredColossus) {      
       enemy.name = "Orange-Flowered Colossus";

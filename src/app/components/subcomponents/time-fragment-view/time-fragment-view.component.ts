@@ -402,6 +402,10 @@ export class TimeFragmentViewComponent {
 
     clearRate = Math.round(this.getClearTime(run));
     rewards += "<span>" + this.utilityService.bigNumberReducer(xpGained) + "</span>" + " XP" + (oneLine ? ", " : "<br/>");
+  
+    if (trialType !== undefined && trialType.type === TrialEnum.TrialOfSkill) {      
+      rewards += (this.utilityService.timeFragmentEfficiency * this.utilityService.trialAffinityXpGain) + " " + this.lookupService.getGodNameByType(trialType.godType) + " Affinity XP, "
+    }
 
     if (coinsGained > 0)
       rewards += "<span>" + this.utilityService.genericShortRound(coinsGained) + "</span> Coins" + (oneLine ? ", " : "<br/>");

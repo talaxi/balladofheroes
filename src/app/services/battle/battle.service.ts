@@ -553,6 +553,10 @@ export class BattleService {
       god = GodEnum.Zeus;
     if (bestiaryEnum === BestiaryEnum.Poseidon)
       god = GodEnum.Poseidon;
+      if (bestiaryEnum === BestiaryEnum.Aphrodite)
+      god = GodEnum.Aphrodite;
+      if (bestiaryEnum === BestiaryEnum.Hera)
+      god = GodEnum.Hera;
 
     return god;
   }

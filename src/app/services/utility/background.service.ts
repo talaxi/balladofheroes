@@ -35,6 +35,8 @@ import { TrialDefeatCount } from 'src/app/models/battle/trial-defeat-count.model
 import { TimeFragmentRun } from 'src/app/models/utility/time-fragment-run.model';
 import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
 import { SubZoneGeneratorService } from 'src/app/services/sub-zone-generator/sub-zone-generator.service';
+import { AffinityLevelRewardEnum } from 'src/app/models/enums/affinity-level-reward-enum.model';
+import { ZodiacService } from 'src/app/services/global/zodiac.service';
 
 @Injectable({
   providedIn: 'root'
@@ -45,7 +47,7 @@ export class BackgroundService {
     private professionService: ProfessionService, private followerService: FollowersService, private lookupService: LookupService,
     private gameLogService: GameLogService, private balladService: BalladService, private altarService: AltarService,
     private dictionaryService: DictionaryService, private equipmentService: EquipmentService, private trialService: TrialService,
-    private subzoneGeneratorService: SubZoneGeneratorService) { }
+    private subzoneGeneratorService: SubZoneGeneratorService, private zodiacService: ZodiacService) { }
 
   //global -- this occurs even when at a scene or in a town
   handleBackgroundTimers(deltaTime: number, isInTown: boolean) {
@@ -845,6 +847,14 @@ export class BackgroundService {
           return;
       }
 
+      if (run.selectedTrial === TrialEnum.TrialOfTheStarsNormal || run.selectedTrial === TrialEnum.TrialOfTheStarsHard || run.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard) {
+        var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
+          item.zodiacType === this.zodiacService.getCurrentZodiac());
+
+        if (trialType === undefined || trialType.count === 0)
+          return;
+      }
+
       while (run.timer >= run.clearTime) {
         if (lootInfo === undefined)
           lootInfo = this.getTimeFragmentCondensedRewards(run);
@@ -852,6 +862,33 @@ export class BackgroundService {
         //gain xp
         var xpGain = lootInfo[0];
         this.globalService.giveCharactersExp(this.globalService.getActivePartyCharacters(true), xpGain);
+
+        if (run.selectedTrial === TrialEnum.TrialOfSkill) {
+          var affinityXpGain = this.utilityService.trialAffinityXpGain * .2;
+
+          var god = this.globalService.globalVar.gods.find(item => item.type === this.trialService.getGodEnumFromTrialOfSkillBattle());
+          if (god !== undefined) {
+            god.affinityExp += affinityXpGain;
+
+            if (god.affinityExp >= god.affinityExpToNextLevel) {
+              god.affinityExp -= god.affinityExpToNextLevel;
+              god.affinityLevel += 1;
+              god.affinityExpToNextLevel = this.utilityService.getFibonacciValue(god.affinityLevel + 3);
+
+              if (this.globalService.globalVar.gameLogSettings.get("godAffinityLevelUp")) {
+                var gameLogEntry = "<strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> gains Affinity Level " + god.affinityLevel + ".";
+                this.gameLogService.updateGameLog(GameLogEntryEnum.Pray, gameLogEntry, this.globalService.globalVar);
+              }
+
+              if (this.lookupService.getAffinityRewardForLevel(god.affinityLevel) === AffinityLevelRewardEnum.SmallCharm) {
+                this.lookupService.gainResource(new ResourceValue(this.altarService.getSmallCharmOfGod(god.type), 1));
+              }
+              else if (this.lookupService.getAffinityRewardForLevel(god.affinityLevel) === AffinityLevelRewardEnum.LargeCharm) {
+                this.lookupService.gainResource(new ResourceValue(this.altarService.getLargeCharmOfGod(god.type), 1));
+              }
+            }
+          }
+        }
 
         //gain coins
         var coinGain = lootInfo[1];
