@@ -40,9 +40,9 @@ export class ColiseumService {
 
   getTournamentDescription(type: ColiseumTournamentEnum) {
     var info = this.dictionaryService.getColiseumInfoFromType(type);
-
+    
     if (type === ColiseumTournamentEnum.WeeklyMelee)
-      return "Complete as many rounds as you can in " + info.tournamentTimerLength + " seconds. Each round is progressively more difficult. Gain one entry per day. (And an extra entry on Saturday and Sunday!)";
+      return "Complete as many rounds as you can in " + info.tournamentTimerLength + " seconds. Each round is progressively more difficult. Gain " + (this.globalService.globalVar.isSubscriber ? "two entries" : "one entry") + " per day. (And " + (this.globalService.globalVar.isSubscriber ? "two extra entries" : "an extra entry") + " for playing on Saturday or Sunday!)";
 
     if (type === ColiseumTournamentEnum.FriendlyCompetition)
       return "Do battle with another player's party. Export your data here to give to them, or enter their exported data and begin battling.";
