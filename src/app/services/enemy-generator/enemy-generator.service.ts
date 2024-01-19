@@ -8282,7 +8282,7 @@ export class EnemyGeneratorService {
       crushingBlow = this.randomizeCooldown(crushingBlow);
       crushingBlow.dealsDirectDamage = true;
       crushingBlow.elementalType = ElementalTypeEnum.Earth;         
-      crushingBlow.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenUp, 10, .75, true, true));
+      crushingBlow.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenUp, 10, 1.25, false, false));
       enemy.abilityList.push(crushingBlow);
 
       var earthenSpeed = new Ability();
@@ -13434,140 +13434,154 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(1741600, 12500, 34200, 33500, 28000, 32500);        
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
-      enemy.xpGainFromDefeat = 5150;   
-            
-      var shadowBlast = new Ability();
-      shadowBlast.name = "Shadow Blast";
-      shadowBlast.isAvailable = true;
-      shadowBlast.cooldown = shadowBlast.currentCooldown = 18;
-      shadowBlast = this.randomizeCooldown(shadowBlast);
-      shadowBlast.dealsDirectDamage = true;
-      shadowBlast.effectiveness = 12.8;
-      enemy.abilityList.push(shadowBlast);        
-      
-      var lastRites = new Ability();
-      lastRites.name = "Last Rites";
-      lastRites.isAvailable = true;
-      lastRites.cooldown = lastRites.currentCooldown = 19;
-      lastRites = this.randomizeCooldown(lastRites);
-      lastRites.dealsDirectDamage = false;
-      lastRites.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, -1, .25, true, false));
-      enemy.abilityList.push(lastRites);  
-      
-      var nightmare = new Ability();
-      nightmare.name = "Nightmare";
-      nightmare.isAvailable = true;
-      nightmare.cooldown = nightmare.currentCooldown = 15;
-      nightmare = this.randomizeCooldown(nightmare);
-      nightmare.dealsDirectDamage = false;      
-      nightmare.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 12, .7, true, false, false));
-      enemy.abilityList.push(nightmare);      
+      enemy.xpGainFromDefeat = 5150;               
     } 
     if (type === BestiaryEnum.MossyColossus) {      
       enemy.name = "Mossy Colossus";
       enemy.battleStats = new CharacterStats(1885200, 15150, 38350, 32500, 29000, 34000);        
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
-      enemy.xpGainFromDefeat = 5150;   
-            
-      var shadowBlast = new Ability();
-      shadowBlast.name = "Shadow Blast";
-      shadowBlast.isAvailable = true;
-      shadowBlast.cooldown = shadowBlast.currentCooldown = 18;
-      shadowBlast = this.randomizeCooldown(shadowBlast);
-      shadowBlast.dealsDirectDamage = true;
-      shadowBlast.effectiveness = 12.8;
-      enemy.abilityList.push(shadowBlast);        
-      
-      var lastRites = new Ability();
-      lastRites.name = "Last Rites";
-      lastRites.isAvailable = true;
-      lastRites.cooldown = lastRites.currentCooldown = 19;
-      lastRites = this.randomizeCooldown(lastRites);
-      lastRites.dealsDirectDamage = false;
-      lastRites.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, -1, .25, true, false));
-      enemy.abilityList.push(lastRites);  
-      
-      var nightmare = new Ability();
-      nightmare.name = "Nightmare";
-      nightmare.isAvailable = true;
-      nightmare.cooldown = nightmare.currentCooldown = 15;
-      nightmare = this.randomizeCooldown(nightmare);
-      nightmare.dealsDirectDamage = false;      
-      nightmare.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 12, .7, true, false, false));
-      enemy.abilityList.push(nightmare);      
+      enemy.xpGainFromDefeat = 5150;    
+      enemy.battleStats.elementResistance.earth = .25;
+      enemy.battleStats.elementResistance.lightning = .25;           
     } 
     if (type === BestiaryEnum.OrangeFloweredColossus) {      
       enemy.name = "Orange-Flowered Colossus";
-      enemy.battleStats = new CharacterStats(4299980, 17550, 73350, 30000, 36500, 28000);                  
+      enemy.battleStats = new CharacterStats(4799980, 17550, 73350, 30000, 36500, 35000);                  
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
       enemy.xpGainFromDefeat = 5150;   
+      enemy.battleInfo.elementalType = ElementalTypeEnum.Earth;
       enemy.battleStats.elementResistance.earth = .25;
       enemy.battleStats.elementResistance.lightning = .25;
-            
-      var shadowBlast = new Ability();
-      shadowBlast.name = "Shadow Blast";
-      shadowBlast.isAvailable = true;
-      shadowBlast.cooldown = shadowBlast.currentCooldown = 18;
-      shadowBlast = this.randomizeCooldown(shadowBlast);
-      shadowBlast.dealsDirectDamage = true;
-      shadowBlast.effectiveness = 12.8;
-      enemy.abilityList.push(shadowBlast);        
+      enemy.battleStats.elementIncrease.earth = .25;                 
+
+      var focus = new Ability();
+      focus.name = "Colossal Focus";
+      focus.isAvailable = true;
+      focus.cooldown = 100000000;
+      focus.currentCooldown = 0;
+      focus.dealsDirectDamage = false;
+      focus.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Focus, -1, 1, false, false, false, "Orange-Flowered Colossus"));
+      enemy.abilityList.push(focus);
       
-      var lastRites = new Ability();
-      lastRites.name = "Last Rites";
-      lastRites.isAvailable = true;
-      lastRites.cooldown = lastRites.currentCooldown = 19;
-      lastRites = this.randomizeCooldown(lastRites);
-      lastRites.dealsDirectDamage = false;
-      lastRites.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, -1, .25, true, false));
-      enemy.abilityList.push(lastRites);  
+      var armSwing = new Ability();
+      armSwing.name = "Arm Swing";
+      armSwing.isAvailable = true;
+      armSwing.effectiveness = 11;
+      armSwing.cooldown = armSwing.currentCooldown = 18;
+      armSwing = this.randomizeCooldown(armSwing);
+      armSwing.dealsDirectDamage = true;
+      armSwing.elementalType = ElementalTypeEnum.Earth;
+      armSwing.damageModifierRange = .75;
+      enemy.abilityList.push(armSwing);
       
-      var nightmare = new Ability();
-      nightmare.name = "Nightmare";
-      nightmare.isAvailable = true;
-      nightmare.cooldown = nightmare.currentCooldown = 15;
-      nightmare = this.randomizeCooldown(nightmare);
-      nightmare.dealsDirectDamage = false;      
-      nightmare.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 12, .7, true, false, false));
-      enemy.abilityList.push(nightmare);      
+      var collide = new Ability();
+      collide.name = "Collide";
+      collide.isAvailable = true;
+      collide.effectiveness = 12.5;
+      collide.cooldown = collide.currentCooldown = 22;
+      collide = this.randomizeCooldown(collide);
+      collide.dealsDirectDamage = true;
+      collide.elementalType = ElementalTypeEnum.Earth;
+      collide.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stagger, 12, .5, false, false));
+      enemy.abilityList.push(collide);
+
+      var root = new Ability();
+      root.name = "Root";
+      root.isAvailable = true;
+      root.cooldown = root.currentCooldown = 25;
+      root = this.randomizeCooldown(root);
+      root.dealsDirectDamage = false;
+      root.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, 12, 2000, false, true));
+      root.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 12, 2, false, true));
+      root.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceUp, 12, 2, false, true));
+      enemy.abilityList.push(root);
+
+      var orangeBloom = new Ability();
+      orangeBloom.name = "Orange Bloom";
+      orangeBloom.isAvailable = true;
+      orangeBloom.cooldown = orangeBloom.currentCooldown = 10;      
+      orangeBloom.dealsDirectDamage = false;          
+      orangeBloom.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenUp, -1, 1.05, false, false, false, undefined, undefined, true));
+      enemy.abilityList.push(orangeBloom);  
+      
+      var enrage = new Ability();
+      enrage.name = "Enrage";
+      enrage.isAvailable = true;
+      enrage.cooldown = enrage.currentCooldown = 30;      
+      enrage.dealsDirectDamage = false;
+      enrage.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsExcludeHpUp, -1, 1.2, false, true, false, undefined, undefined, true));      
+      enemy.abilityList.push(enrage);        
     } 
     if (type === BestiaryEnum.WhiteFloweredColossus) {      
       enemy.name = "White-Flowered Colossus";
-      enemy.battleStats = new CharacterStats(4299980, 17550, 55350, 30000, 36500, 48500);             
+      enemy.battleStats = new CharacterStats(4799980, 17550, 55350, 30000, 36500, 50000);             
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
       enemy.xpGainFromDefeat = 5150;   
+      enemy.battleInfo.elementalType = ElementalTypeEnum.Earth;
       enemy.battleStats.elementResistance.earth = .25;
-      enemy.battleStats.elementResistance.lightning = .25;
-            
-      var shadowBlast = new Ability();
-      shadowBlast.name = "Shadow Blast";
-      shadowBlast.isAvailable = true;
-      shadowBlast.cooldown = shadowBlast.currentCooldown = 18;
-      shadowBlast = this.randomizeCooldown(shadowBlast);
-      shadowBlast.dealsDirectDamage = true;
-      shadowBlast.effectiveness = 12.8;
-      enemy.abilityList.push(shadowBlast);        
+      enemy.battleStats.elementResistance.lightning = .25;   
+      enemy.battleStats.elementIncrease.earth = .25;
       
-      var lastRites = new Ability();
-      lastRites.name = "Last Rites";
-      lastRites.isAvailable = true;
-      lastRites.cooldown = lastRites.currentCooldown = 19;
-      lastRites = this.randomizeCooldown(lastRites);
-      lastRites.dealsDirectDamage = false;
-      lastRites.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, -1, .25, true, false));
-      enemy.abilityList.push(lastRites);  
+      var focus = new Ability();
+      focus.name = "Colossal Focus";
+      focus.isAvailable = true;
+      focus.cooldown = 100000000;
+      focus.currentCooldown = 0;
+      focus.dealsDirectDamage = false;
+      focus.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Focus, -1, 1, false, false, false, "White-Flowered Colossus"));
+      enemy.abilityList.push(focus);       
       
-      var nightmare = new Ability();
-      nightmare.name = "Nightmare";
-      nightmare.isAvailable = true;
-      nightmare.cooldown = nightmare.currentCooldown = 15;
-      nightmare = this.randomizeCooldown(nightmare);
-      nightmare.dealsDirectDamage = false;      
-      nightmare.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 12, .7, true, false, false));
-      enemy.abilityList.push(nightmare);      
+      var armSwing = new Ability();
+      armSwing.name = "Arm Swing";
+      armSwing.isAvailable = true;
+      armSwing.effectiveness = 11;
+      armSwing.cooldown = armSwing.currentCooldown = 18;
+      armSwing = this.randomizeCooldown(armSwing);
+      armSwing.dealsDirectDamage = true;
+      armSwing.elementalType = ElementalTypeEnum.Earth;
+      armSwing.damageModifierRange = .75;
+      enemy.abilityList.push(armSwing);
+
+      var collide = new Ability();
+      collide.name = "Collide";
+      collide.isAvailable = true;
+      collide.effectiveness = 12.5;
+      collide.cooldown = collide.currentCooldown = 22;
+      collide = this.randomizeCooldown(collide);
+      collide.dealsDirectDamage = true;
+      collide.elementalType = ElementalTypeEnum.Earth;
+      collide.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stagger, 12, .5, false, false));
+      enemy.abilityList.push(collide);
+
+      var root = new Ability();
+      root.name = "Root";
+      root.isAvailable = true;
+      root.cooldown = root.currentCooldown = 25;
+      root = this.randomizeCooldown(root);
+      root.dealsDirectDamage = false;
+      root.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, 12, 2000, false, true));
+      root.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 12, 2, false, true));
+      root.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceUp, 12, 2, false, true));
+      enemy.abilityList.push(root);
+      
+      var whiteBloom = new Ability();
+      whiteBloom.name = "White Bloom";
+      whiteBloom.isAvailable = true;
+      whiteBloom.cooldown = whiteBloom.currentCooldown = 10;      
+      whiteBloom.dealsDirectDamage = false;          
+      whiteBloom.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtDown, -1, .95, false, false, false, undefined, undefined, true));
+      enemy.abilityList.push(whiteBloom);   
+      
+      var enrage = new Ability();
+      enrage.name = "Enrage";
+      enrage.isAvailable = true;
+      enrage.cooldown = enrage.currentCooldown = 30;      
+      enrage.dealsDirectDamage = false;
+      enrage.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsExcludeHpUp, -1, 1.2, false, true, false, undefined, undefined, true));      
+      enemy.abilityList.push(enrage);        
     } 
 
     //probably a better way to do this... these reductions are multiplicative but enemies don't get stats calc'd so otherwise

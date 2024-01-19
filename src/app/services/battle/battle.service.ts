@@ -1699,6 +1699,15 @@ export class BattleService {
       this.handleExtraPoseidonFunctionality(user, abilityCopy);
     }
 
+    if (abilityCopy.name === "Colossal Focus") {
+      if (targets.some(item => item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Focus)))
+      {
+        var otherTarget = targets.find(item => !item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Focus));
+        if (otherTarget !== undefined)
+          target = otherTarget;
+      }
+    }
+
     //console.log(ability.name + ": " + (!ability.heals || ability.heals === undefined) + " + " + (!ability.dealsDirectDamage || ability.dealsDirectDamage === undefined) + " + " + ability.manuallyTriggered);
     if ((!ability.heals || ability.heals === undefined) && (!ability.dealsDirectDamage || ability.dealsDirectDamage === undefined) && ability.manuallyTriggered &&
       user.linkInfo.cooldown <= 0) {
@@ -4460,7 +4469,7 @@ export class BattleService {
       var chainsOfFateAttacker = user.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.ChainsOfFate);
       potentialTargets.forEach(item => {
         var chainsOfFateEnemy = item.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.ChainsOfFate);
-        var focus = item.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.Focus);
+        var focus = item.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.Focus && effect.caster === user.name);
 
         //messenger takes priority
         if (chainsOfFateEnemy !== undefined && chainsOfFateAttacker !== undefined)
@@ -4477,7 +4486,7 @@ export class BattleService {
         //override target and target whoever you are focused on. might need to expand this beyond random target type
         potentialTargets.forEach(item => {
           var chainsOfFateEnemy = item.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.ChainsOfFate);
-          var focus = item.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.Focus);
+          var focus = item.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.Focus && effect.caster === user.name);
 
           //messenger takes priority
           if (chainsOfFateEnemy !== undefined && chainsOfFateAttacker !== undefined) {
@@ -4635,12 +4644,12 @@ export class BattleService {
       * elementIncrease * elementalDamageDecrease
       * Math.ceil(((adjustedAttackModifier * Math.pow(adjustedAttack, 2)) + (adjustedAllyAttackModifier * Math.pow(adjustedAllyAttack, 2))) / ((adjustedAttackModifier * adjustedAttack) + (adjustedAllyAttackModifier * adjustedAllyAttack) + adjustedDefense)));
 
-    if (ability !== undefined)
-      console.log("Ability name: " + ability.name);
-    else
-      console.log("Auto Attack");
-    console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementIncrease
-      + " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttackModifier + " * " + adjustedAttack + " ^2) / (" + adjustedAttackModifier + " * " + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
+    //if (ability !== undefined)
+      //console.log("Ability name: " + ability.name);
+    //else
+      //console.log("Auto Attack");
+    //console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementIncrease
+//      + " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttackModifier + " * " + adjustedAttack + " ^2) / (" + adjustedAttackModifier + " * " + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
     var dispenserOfDuesEffect = attacker.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DispenserOfDues);
     if (dispenserOfDuesEffect !== undefined && ability !== undefined) {
       damage += dispenserOfDuesEffect.effectiveness;
@@ -5221,6 +5230,12 @@ export class BattleService {
       var effect = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DamageOverTimeTakenDown)!;
       statusEffectDamageReduction *= effect.effectiveness;
     }
+    
+    if (isDamageOverTime && attacker !== undefined &&
+      attacker.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DamageDealtDown)) {
+      var effect = attacker.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DamageDealtDown)!;
+      statusEffectDamageReduction *= effect.effectiveness;
+    }
 
     if (isDamageOverTime && target !== undefined &&
       target.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Mark)) {
@@ -5773,7 +5788,7 @@ export class BattleService {
     if (this.areCharactersDefeated(enemies)) {
       stateChanged = true;
       enemiesDefeated = true;
-      this.moveToNextBattle();
+      this.moveToNextBattle(enemies);
     }
 
     if (stateChanged) {
@@ -5954,7 +5969,7 @@ export class BattleService {
     this.applyStatusEffect(recentlyDefeatedDebuff, party[0], party);
   }
 
-  moveToNextBattle() {
+  moveToNextBattle(enemies: Character[]) {
     this.showNewEnemyGroup = true;
     if (this.globalService.globalVar.gameLogSettings.get("battleUpdates")) {
       this.gameLogService.updateGameLog(GameLogEntryEnum.BattleUpdate, "The enemy party has been defeated.", this.globalService.globalVar);
@@ -5988,6 +6003,12 @@ export class BattleService {
           shapeshift.effectiveness = 1;
           shapeshift.count = 0;
         }
+      }
+
+      if (enemies.some(item => item.name === "Orange-Flowered Colossus")) {
+        member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Focus);
+        member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DamageTakenUp);
+        member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DamageDealtDown);
       }
     });
 

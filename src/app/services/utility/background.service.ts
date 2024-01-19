@@ -740,11 +740,17 @@ export class BackgroundService {
       if (this.globalService.globalVar.isSubscriber)
         ticketMultiplier = 2;
 
+      var bonusTicket = false;
       if (todaysDate.getDay() === 6 || todaysDate.getDay() === 0) {
-        ticketMultiplier += 2;
+        bonusTicket = true;
       }
 
       this.globalService.globalVar.sidequestData.weeklyMeleeEntries += diffDays * ticketMultiplier;
+
+      if (bonusTicket) {
+        this.globalService.globalVar.sidequestData.weeklyMeleeEntries += ticketMultiplier;
+      }
+
       if (this.globalService.globalVar.sidequestData.weeklyMeleeEntries > (this.utilityService.weeklyMeleeEntryCap * ticketMultiplier))
         this.globalService.globalVar.sidequestData.weeklyMeleeEntries = (this.utilityService.weeklyMeleeEntryCap * ticketMultiplier);
     }

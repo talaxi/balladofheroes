@@ -1,6 +1,22 @@
 .info {
-    display: flex;
-    justify-content: space-between;
+    /*display: flex;
+    justify-content: space-between;*/
+    display: grid;
+    height: 100%;
+    width: 100%;
+    grid-template-columns: 33.3% 33.3% 33.3%;
+    grid-template-rows: 1fr;
+    justify-content: stretch;
+    grid-template-areas:
+        ". heading swapCheckbox";
+}
+
+.heading {
+    grid-area: heading;
+}
+
+.swapCheckbox {
+    grid-area: swapCheckbox;
 }
 
 .loadoutItem {
@@ -50,7 +66,7 @@
     opacity: .6;
 }
 
-@media (max-width: 800px) {     
+@media (max-width: 800px) {
     .loadoutItem {
         width: 96%;
         height: 30vh;

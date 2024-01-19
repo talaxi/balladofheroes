@@ -3088,7 +3088,8 @@ export class LookupService {
     if (type === ItemsEnum.SafeRing) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Epic);
       equipmentPiece.stats = new CharacterStats(0, 0, 350, 0, 0, 350);
-      equipmentPiece.stats.abilityCooldownReduction = .1;
+      equipmentPiece.stats.abilityCooldownReduction = .05;
+      equipmentPiece.stats.healingReceived = .05;
       equipmentPiece.slotCount = 2;
     }
     if (type === ItemsEnum.GiantRing) {
@@ -4032,7 +4033,7 @@ export class LookupService {
       if (abilityName === "Revelry and Blood")
         abilityDescription = "For " + relatedUserGainStatusEffectDuration + " seconds, your party gains <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> to all stats. Apply a damage over time effect to a target that deals <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "% of Attack</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
       if (abilityName === "Blistering Riposte")
-        abilityDescription = "Apply Chains of Fate to all targets for " + relatedTargetGainStatusEffectDuration + " seconds. When countering, also apply a damage over time effect dealing <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness / 3) * 100) + "%</strong> of the damage dealt every 3 seconds for 9 seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Apply Chains of Fate to all targets for " + relatedUserGainStatusEffectDuration + " seconds. When countering, also apply a damage over time effect dealing <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness / 3) * 100) + "%</strong> of the damage dealt every 3 seconds for 9 seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
       if (abilityName === "Lightning Barrage")
         abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage to a target. Apply a damage over time effect dealing <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for " + relatedTargetGainStatusEffectDuration + " seconds. Freely activate Onslaught. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
       if (abilityName === "Receding Tide")
@@ -8623,7 +8624,7 @@ export class LookupService {
       ability.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 3, .2 + secondaryEffectivenessBonus * .5, ability.name, dotTypeEnum.BasedOnAttack, undefined, true));
     }
 
-    if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Nemesis)) {
+    if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Nemesis)) {      
       ability.name = "Blistering Riposte";
       ability.isAvailable = true;
       ability.dealsDirectDamage = false;

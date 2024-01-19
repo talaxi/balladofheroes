@@ -1240,11 +1240,11 @@ export class InitializationService {
       if (character1 !== undefined) {
         character1.assignedGod1 = GodEnum.Apollo;
         character1.assignedGod2 = GodEnum.Artemis;
-        character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.HarpyTalon);
-        character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.BloodyShield);
-        character1.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.GiantArmor);
-        character1.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.GiantRing);
-        character1.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.GiantNecklace);
+        character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShadowSpear);
+        character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShadowShield);
+        character1.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShadowArmor);
+        character1.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShadowRing);
+        character1.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShadowNecklace);
       }
 
       var character2 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember2);
@@ -1258,7 +1258,7 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.GiantNecklace);
       }
 
-      var chthonicResetCount = 1;
+      var chthonicResetCount = 3;
       var godLevel = 500;
 
       for (var j = 0; j < chthonicResetCount; j++) {
@@ -1273,9 +1273,9 @@ export class InitializationService {
         this.globalService.assignGodAbilityInfo(athena!);
 
         if (j < chthonicResetCount - 1)
-          godLevel = 2000;
+          godLevel = 1500;
         else
-          godLevel = 1650;
+          godLevel = 1500;
 
         for (var i = 0; i < godLevel; i++) {
           this.globalService.levelUpGod(athena!);
@@ -1383,7 +1383,7 @@ export class InitializationService {
         nemesis!.statGainCount = 0;
         nemesis!.expToNextLevel = 200;
         this.globalService.assignGodAbilityInfo(nemesis!);
-        for (var i = 0; i < godLevel; i++) {
+        for (var i = 0; i < 3060; i++) {
           this.globalService.levelUpGod(nemesis!);
         }
         nemesis!.exp = 0;
