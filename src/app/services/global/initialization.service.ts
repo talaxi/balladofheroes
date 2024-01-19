@@ -1247,7 +1247,7 @@ export class InitializationService {
 
       var character2 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember2);
       if (character2 !== undefined) {
-        character2.assignedGod1 = GodEnum.Zeus;
+        character2.assignedGod1 = GodEnum.Nemesis;
         character2.assignedGod2 = GodEnum.Ares;
         character2.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.GiantSword);
         character2.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.GiantShield);
@@ -1381,7 +1381,7 @@ export class InitializationService {
         nemesis!.statGainCount = 0;
         nemesis!.expToNextLevel = 200;
         this.globalService.assignGodAbilityInfo(nemesis!);
-        for (var i = 0; i < godLevel; i++) {
+        for (var i = 0; i < 3060; i++) {
           this.globalService.levelUpGod(nemesis!);
         }
         nemesis!.exp = 0;
