@@ -238,5 +238,6 @@ export enum StatusEffectEnum {
     Protector,
     DefensiveShapeshifting,
     LovingEmbrace,
-    FriendlyCompetition
+    FriendlyCompetition,
+    BuzzingReminder
   }

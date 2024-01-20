@@ -13645,6 +13645,122 @@ export class EnemyGeneratorService {
       enrage.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsExcludeHpUp, -1, 1.2, false, true, false, undefined, undefined, true));      
       enemy.abilityList.push(enrage);        
     } 
+    if (type === BestiaryEnum.Rhoecus) {
+      enemy.name = "Rhoecus";
+      enemy.battleStats = new CharacterStats(300000, 2600, 12000, 16500, 6450, 15500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 15;
+      enemy.xpGainFromDefeat = 6550;   
+      enemy.patron = "bluebowls";         
+      
+      var discusThrow = new Ability();
+      discusThrow.name = "Discus Throw";
+      discusThrow.isAvailable = true;
+      discusThrow.effectiveness = 8;
+      discusThrow.cooldown = discusThrow.currentCooldown = 17;
+      discusThrow = this.randomizeCooldown(discusThrow);
+      discusThrow.dealsDirectDamage = true;      
+      discusThrow.damageModifierRange = .5;
+      enemy.abilityList.push(discusThrow);    
+      
+      var swiftStrike = new Ability();
+      swiftStrike.name = "Swift Strike";
+      swiftStrike.isAvailable = true;
+      swiftStrike.cooldown = swiftStrike.currentCooldown = 15;
+      swiftStrike = this.randomizeCooldown(swiftStrike);
+      swiftStrike.dealsDirectDamage = false;            
+      swiftStrike.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, 0, 1.5, true, true));
+      swiftStrike.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 8, 1.5, false, true));
+      swiftStrike.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, 0, 1.5, true, true));            
+      enemy.abilityList.push(swiftStrike);    
+      
+      var showoff = new Ability();
+      showoff.name = "Show Off";
+      showoff.isAvailable = true;      
+      showoff.cooldown = 15;
+      showoff.currentCooldown = 0;
+      showoff.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Taunt, 15, 1, false, false, true, enemy.name));
+      enemy.abilityList.push(showoff);
+      
+      //just for description purposes
+      //deal big dmg when dieing first
+      var vengeanceOfTheWoods = new Ability();
+      vengeanceOfTheWoods.name = "Vengeance of the Woods";
+      vengeanceOfTheWoods.isAvailable = true;
+      vengeanceOfTheWoods.dealsDirectDamage = false;
+      vengeanceOfTheWoods.cooldown = vengeanceOfTheWoods.currentCooldown = 100000;
+      vengeanceOfTheWoods.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, -1, .2, true, false, true));
+      enemy.abilityList.push(vengeanceOfTheWoods);
+      
+      var enrage = new Ability();
+      enrage.name = "Enrage";
+      enrage.isAvailable = true;
+      enrage.cooldown = enrage.currentCooldown = 30;      
+      enrage.dealsDirectDamage = false;
+      enrage.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsExcludeHpUp, -1, 1.1, false, true, false, undefined, undefined, true));      
+      enemy.abilityList.push(enrage);        
+    }
+    if (type === BestiaryEnum.TheBee) {
+      enemy.name = "The Bee";
+      enemy.battleStats = new CharacterStats(200000, 3000, 9000, 12500, 7050, 14500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 15;
+      enemy.xpGainFromDefeat = 6550;   
+      enemy.patron = "bluebowls";      
+      enemy.battleInfo.elementalType = ElementalTypeEnum.Air;
+      enemy.battleStats.elementResistance.earth = .25;
+      enemy.battleStats.elementResistance.air = .25;   
+            
+      var stingerAssault = new Ability();
+      stingerAssault.name = "Stinger Assault";
+      stingerAssault.isAvailable = true;
+      stingerAssault.effectiveness = 6.85;
+      stingerAssault.dealsDirectDamage = true;
+      stingerAssault.cooldown = stingerAssault.currentCooldown = 21;
+      stingerAssault = this.randomizeCooldown(stingerAssault);
+      stingerAssault.elementalType = ElementalTypeEnum.Air;
+      stingerAssault.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Air));
+      enemy.abilityList.push(stingerAssault);
+
+      var sting = new Ability();
+      sting.name = "Sting";
+      sting.isAvailable = true;
+      sting.effectiveness = 8.25;
+      sting.dealsDirectDamage = true;
+      sting.cooldown = sting.currentCooldown = 17;
+      sting = this.randomizeCooldown(sting);
+      sting.elementalType = ElementalTypeEnum.Air;
+      sting.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Blind, 8, .75, false, false));
+      enemy.abilityList.push(sting);
+      
+      //Increase Defense, Resistance of Rhoecus significantly while active. Removed after dealing dmg to the bee
+      var buzzingReminder = new Ability();
+      buzzingReminder.name = "Buzzing Reminder";
+      buzzingReminder.isAvailable = true;
+      buzzingReminder.cooldown = buzzingReminder.currentCooldown = 20;
+      buzzingReminder = this.randomizeCooldown(buzzingReminder);
+      buzzingReminder.dealsDirectDamage = false;    
+      buzzingReminder.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.BuzzingReminder, -1, 2.5, false, true, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 25000));      
+      enemy.abilityList.push(buzzingReminder);         
+      
+      //just for description purposes
+      //blind rhoecus when dieing first
+      var forgottenPromise = new Ability();
+      forgottenPromise.name = "Forgotten Promise";
+      forgottenPromise.isAvailable = true;
+      forgottenPromise.dealsDirectDamage = false;
+      forgottenPromise.cooldown = forgottenPromise.currentCooldown = 100000;
+      forgottenPromise.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Blind, -1, .75, false, false, true));
+      enemy.abilityList.push(forgottenPromise);
+      
+      var enrage = new Ability();
+      enrage.name = "Enrage";
+      enrage.isAvailable = true;
+      enrage.cooldown = enrage.currentCooldown = 30;      
+      enrage.dealsDirectDamage = false;
+      enrage.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsExcludeHpUp, -1, 1.1, false, true, false, undefined, undefined, true));      
+      enemy.abilityList.push(enrage);        
+    }
 
     //probably a better way to do this... these reductions are multiplicative but enemies don't get stats calc'd so otherwise
     //it gets multiplied by 0

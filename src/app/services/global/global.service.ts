@@ -1087,7 +1087,7 @@ export class GlobalService {
       type === StatusEffectEnum.CaringGaze || type === StatusEffectEnum.MelodicMoves || type === StatusEffectEnum.BlisteringRiposte || type === StatusEffectEnum.RecedingTide ||
       type === StatusEffectEnum.WarAndLove || type === StatusEffectEnum.AllPrimaryStatsDown || type === StatusEffectEnum.AllPrimaryStatsExcludeHpDown || type === StatusEffectEnum.FieryJudgment ||
       type === StatusEffectEnum.Protector || type === StatusEffectEnum.LovingEmbrace || type === StatusEffectEnum.DefensiveShapeshifting || type === StatusEffectEnum.DamageShield ||
-      type === StatusEffectEnum.FriendlyCompetition || type === StatusEffectEnum.Focus)
+      type === StatusEffectEnum.FriendlyCompetition || type === StatusEffectEnum.Focus || type === StatusEffectEnum.BuzzingReminder)
       refreshes = true;
 
     return refreshes;

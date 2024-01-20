@@ -553,9 +553,9 @@ export class BattleService {
       god = GodEnum.Zeus;
     if (bestiaryEnum === BestiaryEnum.Poseidon)
       god = GodEnum.Poseidon;
-      if (bestiaryEnum === BestiaryEnum.Aphrodite)
+    if (bestiaryEnum === BestiaryEnum.Aphrodite)
       god = GodEnum.Aphrodite;
-      if (bestiaryEnum === BestiaryEnum.Hera)
+    if (bestiaryEnum === BestiaryEnum.Hera)
       god = GodEnum.Hera;
 
     return god;
@@ -1704,8 +1704,7 @@ export class BattleService {
     }
 
     if (abilityCopy.name === "Colossal Focus") {
-      if (targets.some(item => item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Focus)))
-      {
+      if (targets.some(item => item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Focus))) {
         var otherTarget = targets.find(item => !item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Focus));
         if (otherTarget !== undefined)
           target = otherTarget;
@@ -4330,6 +4329,14 @@ export class BattleService {
       }
     }
 
+    if (appliedStatusEffect.type === StatusEffectEnum.BuzzingReminder) {
+      var rhoecus = this.battle.currentEnemies.enemyList.find(item => item.name === "Rhoecus");
+      if (rhoecus !== undefined && !rhoecus.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead)) {
+        this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, -1, 2.5, false, true, false), rhoecus, undefined, undefined, undefined, false);
+        this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceUp, -1, 2.5, false, true, false), rhoecus, undefined, undefined, undefined, false);
+      }
+    }
+
     //this is used by Melampus from the Forgotten Kings trial
     if (target !== undefined) {
       var blessingOfDionysus = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.BlessingOfDionysus);
@@ -4649,11 +4656,11 @@ export class BattleService {
       * Math.ceil(((adjustedAttackModifier * Math.pow(adjustedAttack, 2)) + (adjustedAllyAttackModifier * Math.pow(adjustedAllyAttack, 2))) / ((adjustedAttackModifier * adjustedAttack) + (adjustedAllyAttackModifier * adjustedAllyAttack) + adjustedDefense)));
 
     //if (ability !== undefined)
-      //console.log("Ability name: " + ability.name);
+    //console.log("Ability name: " + ability.name);
     //else
-      //console.log("Auto Attack");
+    //console.log("Auto Attack");
     //console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementIncrease
-//      + " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttackModifier + " * " + adjustedAttack + " ^2) / (" + adjustedAttackModifier + " * " + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
+    //      + " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttackModifier + " * " + adjustedAttack + " ^2) / (" + adjustedAttackModifier + " * " + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
     var dispenserOfDuesEffect = attacker.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DispenserOfDues);
     if (dispenserOfDuesEffect !== undefined && ability !== undefined) {
       damage += dispenserOfDuesEffect.effectiveness;
@@ -4984,6 +4991,22 @@ export class BattleService {
       }
     }
 
+    var buzzingReminder = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.BuzzingReminder);
+    if (buzzingReminder !== undefined) {
+      buzzingReminder.count += totalDamageDealt;
+
+      if (buzzingReminder.count > buzzingReminder.maxCount) {
+        target.battleInfo.statusEffects = target.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.BuzzingReminder);
+        buzzingReminder.count = 0;
+
+        var rhoecus = this.battle.currentEnemies.enemyList.find(item => item.name === "Rhoecus");
+        if (rhoecus !== undefined) {
+          rhoecus.battleInfo.statusEffects = rhoecus.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DefenseUp);
+          rhoecus.battleInfo.statusEffects = rhoecus.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.ResistanceUp);
+        }
+      }
+    }
+
     var submergeEffect = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Submerge);
     if (submergeEffect !== undefined) {
       submergeEffect.count += totalDamageDealt;
@@ -5234,7 +5257,7 @@ export class BattleService {
       var effect = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DamageOverTimeTakenDown)!;
       statusEffectDamageReduction *= effect.effectiveness;
     }
-    
+
     if (isDamageOverTime && attacker !== undefined &&
       attacker.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DamageDealtDown)) {
       var effect = attacker.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DamageDealtDown)!;
@@ -5347,6 +5370,22 @@ export class BattleService {
         if (highTide.count > highTide.maxCount) {
           target.battleInfo.statusEffects = target.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.HighTide);
           highTide.count = 0;
+        }
+      }
+
+      var buzzingReminder = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.BuzzingReminder);
+      if (buzzingReminder !== undefined) {
+        buzzingReminder.count += totalDamageDealt;
+
+        if (buzzingReminder.count > buzzingReminder.maxCount) {
+          target.battleInfo.statusEffects = target.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.BuzzingReminder);
+          buzzingReminder.count = 0;
+
+          var rhoecus = this.battle.currentEnemies.enemyList.find(item => item.name === "Rhoecus");
+          if (rhoecus !== undefined) {
+            rhoecus.battleInfo.statusEffects = rhoecus.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DefenseUp);
+            rhoecus.battleInfo.statusEffects = rhoecus.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.ResistanceUp);
+          }
         }
       }
 
@@ -5734,6 +5773,42 @@ export class BattleService {
 
           if (teammate !== undefined) {
             this.applyStatusEffect(lastGasp.userEffect[0], teammate, undefined);
+          }
+        }
+
+        var forgottenPromise = this.lookupService.characterHasAbility("Forgotten Promise", character);
+        if (forgottenPromise !== undefined) //this is assumed to be The Bee from the Eternal Melee
+        {
+          var teammate = this.battle.currentEnemies.enemyList.find(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead));
+          if (teammate !== undefined) {
+            this.applyStatusEffect(forgottenPromise.userEffect[0], teammate, undefined);
+          }
+        }
+
+        var vengeanceOfTheWoods = this.lookupService.characterHasAbility("Vengeance of the Woods", character);
+        if (vengeanceOfTheWoods !== undefined) //this is assumed to be Rhoecus from the Eternal Melee
+        {
+          var party = this.globalService.getActivePartyCharacters(true);
+          var potentialTargets = party.filter(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead));
+
+          if (potentialTargets.length > 0) {
+            potentialTargets.forEach(potentialTarget => {
+              var effectiveness = this.lookupService.getAdjustedMaxHp(potentialTarget, false) * vengeanceOfTheWoods;
+
+              var trueDamageDealt = this.dealTrueDamage(false, potentialTarget, effectiveness, character, undefined, true);
+
+              if (totalHits === 1) {
+                var gameLogEntry = "<strong>" + potentialTarget.name + "</strong>" + " takes " + this.utilityService.bigNumberReducer(Math.round(trueDamageDealt)) + " damage";
+                if (instantEffect.caster === "")
+                  gameLogEntry += ".";
+                else
+                  gameLogEntry += " from " + instantEffect.caster + "'s effect.";
+
+                if (this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse")) {
+                  this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry, this.globalService.globalVar);
+                }
+              }              
+            });
           }
         }
 
