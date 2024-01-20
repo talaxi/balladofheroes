@@ -439,6 +439,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.RepeatDamageAfterDelay) {
       src += "chainLightning.svg";
     }
+    if (effect.type === StatusEffectEnum.BuzzingReminder) {
+      src += "buzzingReminder.svg";
+    }				
     if (effect.type === StatusEffectEnum.DivineProtection) {
       src += "divineProtection.svg";
     }

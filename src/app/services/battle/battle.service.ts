@@ -5793,21 +5793,16 @@ export class BattleService {
 
           if (potentialTargets.length > 0) {
             potentialTargets.forEach(potentialTarget => {
-              var effectiveness = this.lookupService.getAdjustedMaxHp(potentialTarget, false) * vengeanceOfTheWoods;
+              var effectiveness = this.lookupService.getAdjustedMaxHp(potentialTarget, false) * vengeanceOfTheWoods!.effectiveness;
 
               var trueDamageDealt = this.dealTrueDamage(false, potentialTarget, effectiveness, character, undefined, true);
-
-              if (totalHits === 1) {
-                var gameLogEntry = "<strong>" + potentialTarget.name + "</strong>" + " takes " + this.utilityService.bigNumberReducer(Math.round(trueDamageDealt)) + " damage";
-                if (instantEffect.caster === "")
-                  gameLogEntry += ".";
-                else
-                  gameLogEntry += " from " + instantEffect.caster + "'s effect.";
+              
+                var gameLogEntry = "<strong>" + potentialTarget.name + "</strong>" + " takes " + this.utilityService.bigNumberReducer(Math.round(trueDamageDealt)) + " damage";                
+                  gameLogEntry += " from Vegeance of the Wood's effect.";
 
                 if (this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse")) {
                   this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry, this.globalService.globalVar);
-                }
-              }              
+                }            
             });
           }
         }
