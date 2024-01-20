@@ -426,5 +426,7 @@ export enum BestiaryEnum {
   ExoticDragonfly,
   MossyColossus,
   OrangeFloweredColossus,
-  WhiteFloweredColossus
+  WhiteFloweredColossus,
+  Rhoecus,
+  TheBee
 }

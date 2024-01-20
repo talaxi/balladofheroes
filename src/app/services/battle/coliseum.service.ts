@@ -671,6 +671,14 @@ export class ColiseumService {
         enemy.battleStats.maxHp = Math.round(enemy.battleStats.maxHp * .6);
       }
 
+      if (enemy.bestiaryType === BestiaryEnum.TheBee) {
+        var buzzingReminder = enemy.abilityList.find(item => item.name === "Buzzing Reminder");        
+        if (buzzingReminder !== undefined)
+        {          
+          buzzingReminder.maxCount = Math.round(enemy.battleStats.maxHp * .1);
+        }
+      }
+
       enemy.battleStats.currentHp = enemy.battleStats.maxHp;
     });
   }
@@ -727,6 +735,15 @@ export class ColiseumService {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.isBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ColchianDragon));
+      battleOptions.push(enemyTeam);
+    }
+    
+    //provided by Bluebowls
+    if (round >= 30) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isDoubleBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Rhoecus));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.TheBee));
       battleOptions.push(enemyTeam);
     }
     //End of list

@@ -1372,6 +1372,67 @@ export class AchievementService {
 
     zone.subzones.forEach(subzone => {
       achievements.filter(item => item.subzone === subzone.type).forEach(achievement => {
+        if ((this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena) === undefined ||
+          !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena)?.isAvailable) &&
+          achievement.type === AchievementTypeEnum.TenVictoriesAthena) {
+          return;
+        }
+        if ((this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis) === undefined ||
+          !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis)?.isAvailable) &&
+          achievement.type === AchievementTypeEnum.TenVictoriesArtemis) {
+          return;
+        }
+        if ((this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes) === undefined ||
+          !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes)?.isAvailable) &&
+          achievement.type === AchievementTypeEnum.TenVictoriesHermes) {
+          return;
+        }
+        if ((this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo) === undefined ||
+          !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo)?.isAvailable) &&
+          achievement.type === AchievementTypeEnum.TenVictoriesApollo) {
+          return;
+        }        
+        if ((this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades) === undefined ||
+          !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades)?.isAvailable) &&
+          achievement.type === AchievementTypeEnum.TenVictoriesHades) {
+          return;
+        }
+        if ((this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares) === undefined ||
+          !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares)?.isAvailable) &&
+          achievement.type === AchievementTypeEnum.TenVictoriesAres) {
+          return;
+        }
+        if ((this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus) === undefined ||
+          !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus)?.isAvailable) &&
+          achievement.type === AchievementTypeEnum.TenVictoriesDionysus) {
+          return;
+        }
+        if ((this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis) === undefined ||
+          !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis)?.isAvailable) &&
+          achievement.type === AchievementTypeEnum.TenVictoriesNemesis) {
+          return;
+        }
+        if ((this.globalService.globalVar.gods.find(item => item.type === GodEnum.Zeus) === undefined ||
+          !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Zeus)?.isAvailable) &&
+          achievement.type === AchievementTypeEnum.TenVictoriesZeus) {
+          return;
+        }
+        if ((this.globalService.globalVar.gods.find(item => item.type === GodEnum.Poseidon) === undefined ||
+          !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Poseidon)?.isAvailable) &&
+          achievement.type === AchievementTypeEnum.TenVictoriesPoseidon) {
+          return;
+        }
+        if ((this.globalService.globalVar.gods.find(item => item.type === GodEnum.Aphrodite) === undefined ||
+          !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Aphrodite)?.isAvailable) &&
+          achievement.type === AchievementTypeEnum.TenVictoriesAphrodite) {
+            return;
+        }
+        if ((this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hera) === undefined ||
+          !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hera)?.isAvailable) &&
+          achievement.type === AchievementTypeEnum.TenVictoriesHera) {
+            return;
+        }
+        
         relatedAchievements.push(achievement);
       });
     });

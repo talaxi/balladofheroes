@@ -1256,7 +1256,7 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.GiantNecklace);
       }
 
-      var chthonicResetCount = 10;
+      var chthonicResetCount = 1;
       var godLevel = 500;
 
       for (var j = 0; j < chthonicResetCount; j++) {

@@ -5540,6 +5540,28 @@ export class LookupService {
     if (ability.name === "Tail Swipe" && character.bestiaryType === BestiaryEnum.ColchianDragon) {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all target. " + cooldown + " second cooldown.";
     }
+    if (ability.name === "Stinger Assault") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack Air</strong> damage to a target twice. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Discus Throw") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + ((1 - damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Swift Strike")
+    abilityDescription = "Immediately perform two auto attacks. Their damage is increased by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong>. Increase Agility by <strong>" + secondaryRelatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + secondaryRelatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    if (ability.name === "Show Off") {
+      abilityDescription = "Cast Taunt on all targets, forcing them to direct all attacks onto you for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Vengeance of the Woods") {
+      abilityDescription = "If Rhoecus dies first, instantly deal true damage equal to " + relatedTargetGainStatusEffectEffectivenessPercent + "% of the target's Max HP to all targets.";
+    }
+    if (ability.name === "Forgotten Promise") {
+      abilityDescription = "If The Bee dies first, apply a <strong>" + (Math.round((relatedUserGainStatusEffectEffectiveness) * 100)) + "%</strong> Blind to Rhoecus permanently.";
+    }
+    if (ability.name === "Sting")
+    abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Air</span> damage to a target and apply a <strong>" + (Math.round((relatedTargetGainStatusEffectEffectiveness) * 100)) + "%</strong> Blind for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    if (ability.name === "Buzzing Reminder") {
+      abilityDescription = "While active, increase Rhoecus's Defense and Resistance by <strong>150%</strong>. This effect can be removed by dealing " + this.utilityService.bigNumberReducer(character.battleStats.maxHp * .1) + " damage to the user. " + cooldown + " second cooldown.";
+    }
 
     return abilityDescription;
   }
@@ -6158,6 +6180,8 @@ export class LookupService {
       description = "Immune to all damage.";
     if (statusEffect.type === StatusEffectEnum.AutoAttackInvulnerable)
       description = "Immune to all auto attack damage.";
+      if (statusEffect.type === StatusEffectEnum.BuzzingReminder)
+      description = "Increasing Rhoecus's Defense and Resistance until " + this.utilityService.bigNumberReducer(statusEffect.maxCount) + " damage is taken. Damage taken: " + this.utilityService.bigNumberReducer(statusEffect.count);
     if (statusEffect.type === StatusEffectEnum.Immobilize)
       description = "Auto attack and ability cooldowns are not charging until immobilize is cancelled by enemy.";
     if (statusEffect.type === StatusEffectEnum.CastingImmobilize)

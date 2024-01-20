@@ -445,6 +445,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.FastDebuffs) {
       src += "boonOfDionysus.svg";
     }
+    if (effect.type === StatusEffectEnum.BuzzingReminder) {
+      src += "buzzingReminder.svg";
+    }
     if (effect.type === StatusEffectEnum.OstinatoAfter) {
       src += "ostinato.svg";
     }

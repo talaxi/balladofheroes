@@ -1086,7 +1086,8 @@ export class GlobalService {
       type === StatusEffectEnum.DiscordantMelody || type === StatusEffectEnum.Flood || type === StatusEffectEnum.WildJudgment || type === StatusEffectEnum.StaggeringRiposte || type === StatusEffectEnum.ThunderousRiposte ||
       type === StatusEffectEnum.CaringGaze || type === StatusEffectEnum.MelodicMoves || type === StatusEffectEnum.BlisteringRiposte || type === StatusEffectEnum.RecedingTide ||
       type === StatusEffectEnum.WarAndLove || type === StatusEffectEnum.AllPrimaryStatsDown || type === StatusEffectEnum.AllPrimaryStatsExcludeHpDown || type === StatusEffectEnum.FieryJudgment ||
-      type === StatusEffectEnum.Protector || type === StatusEffectEnum.LovingEmbrace || type === StatusEffectEnum.DefensiveShapeshifting || type === StatusEffectEnum.DamageShield)
+      type === StatusEffectEnum.Protector || type === StatusEffectEnum.LovingEmbrace || type === StatusEffectEnum.DefensiveShapeshifting || type === StatusEffectEnum.DamageShield ||
+      type === StatusEffectEnum.BuzzingReminder)
       refreshes = true;
 
     return refreshes;
