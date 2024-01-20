@@ -955,7 +955,7 @@ export class EnemyGeneratorService {
       divinity.cooldown = divinity.currentCooldown = 12;
       divinity = this.randomizeCooldown(divinity);
       divinity.dealsDirectDamage = false;
-      divinity.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, .45, true, true, true, enemy.name, .5));
+      divinity.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, .65, true, true, true, enemy.name, .5));
       enemy.abilityList.push(divinity);
 
       var firePower = new Ability();
@@ -1754,7 +1754,7 @@ export class EnemyGeneratorService {
       spiritOfTheForest = this.randomizeCooldown(spiritOfTheForest);
       spiritOfTheForest.dealsDirectDamage = false;
       spiritOfTheForest.heals = true;
-      spiritOfTheForest.effectiveness = .8;
+      spiritOfTheForest.effectiveness = .85;
       spiritOfTheForest.targetsAllies = true;
       spiritOfTheForest.targetType = TargetEnum.Self;
       spiritOfTheForest.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckUp, 10, 1.25, false, true, false));
@@ -2105,7 +2105,7 @@ export class EnemyGeneratorService {
       scavenge = this.randomizeCooldown(scavenge);
       scavenge.dealsDirectDamage = false;
       scavenge.heals = true;
-      scavenge.effectiveness = .8;
+      scavenge.effectiveness = 1.25;
       scavenge.targetsAllies = true;
       scavenge.targetType = TargetEnum.Self;
       scavenge.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, 10, 1.25, false, true, false));
@@ -2191,7 +2191,7 @@ export class EnemyGeneratorService {
       coil = this.randomizeCooldown(coil);
       coil.dealsDirectDamage = false;
       coil.heals = true;
-      coil.effectiveness = .6;
+      coil.effectiveness = .65;
       coil.targetsAllies = true;
       coil.targetType = TargetEnum.Self;
       coil.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 12, 1.35, false, true, false));
@@ -2694,7 +2694,7 @@ export class EnemyGeneratorService {
       rest = this.randomizeCooldown(rest);
       rest.dealsDirectDamage = false;
       rest.heals = true;
-      rest.effectiveness = 5;
+      rest.effectiveness = 4.25;
       rest.targetsAllies = true;
       rest.targetType = TargetEnum.Self;
       enemy.abilityList.push(rest);
@@ -3367,7 +3367,7 @@ export class EnemyGeneratorService {
       roost = this.randomizeCooldown(roost);
       roost.dealsDirectDamage = false;
       roost.heals = true;
-      roost.effectiveness = 1.8;
+      roost.effectiveness = 1;
       roost.targetsAllies = true;
       roost.targetType = TargetEnum.Self;
       roost.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 10, 1.25, false, true, false));
@@ -3780,7 +3780,7 @@ export class EnemyGeneratorService {
       foundDinner = this.randomizeCooldown(foundDinner);
       foundDinner.dealsDirectDamage = false;
       foundDinner.heals = true;
-      foundDinner.effectiveness = 3.5;
+      foundDinner.effectiveness = 1.25;
       foundDinner.targetsAllies = true;
       foundDinner.targetType = TargetEnum.Self;
       foundDinner.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 22, 1.35, false, true, false));
@@ -4010,7 +4010,7 @@ export class EnemyGeneratorService {
       roost = this.randomizeCooldown(roost);
       roost.dealsDirectDamage = false;
       roost.heals = true;
-      roost.effectiveness = 3.5;
+      roost.effectiveness = 1.2;
       roost.targetsAllies = true;
       roost.targetType = TargetEnum.Self;
       roost.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 10, 1.25, false, true, false));
@@ -4085,7 +4085,7 @@ export class EnemyGeneratorService {
       roost = this.randomizeCooldown(roost);
       roost.dealsDirectDamage = false;
       roost.heals = true;
-      roost.effectiveness = 4.8;
+      roost.effectiveness = 1.6;
       roost.targetsAllies = true;
       roost.targetType = TargetEnum.Self;
       roost.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 10, 1.3, false, true, false));
@@ -4851,7 +4851,7 @@ export class EnemyGeneratorService {
       spiritOfTheRiver = this.randomizeCooldown(spiritOfTheRiver);
       spiritOfTheRiver.dealsDirectDamage = false;
       spiritOfTheRiver.heals = true;
-      spiritOfTheRiver.effectiveness = .8;
+      spiritOfTheRiver.effectiveness = .6;
       spiritOfTheRiver.targetsAllies = true;
       spiritOfTheRiver.targetType = TargetEnum.Self;
       spiritOfTheRiver.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 1.25, false, true, false));
@@ -4902,7 +4902,7 @@ export class EnemyGeneratorService {
       coil = this.randomizeCooldown(coil);
       coil.dealsDirectDamage = false;
       coil.heals = true;
-      coil.effectiveness = 8.6;
+      coil.effectiveness = 2.25;
       coil.targetsAllies = true;
       coil.targetType = TargetEnum.Self;
       coil.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 12, 1.35, false, true, false));
@@ -5110,7 +5110,7 @@ export class EnemyGeneratorService {
       roost = this.randomizeCooldown(roost);
       roost.dealsDirectDamage = false;
       roost.heals = true;
-      roost.effectiveness = 6.8;
+      roost.effectiveness = 3.25;
       roost.targetsAllies = true;
       roost.targetType = TargetEnum.Self;
       roost.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 10, 1.25, false, true, false));
@@ -5203,7 +5203,7 @@ export class EnemyGeneratorService {
       nurseWounds = this.randomizeCooldown(nurseWounds);
       nurseWounds.dealsDirectDamage = false;
       nurseWounds.heals = true;
-      nurseWounds.effectiveness = 9.8;
+      nurseWounds.effectiveness = 2.5;
       nurseWounds.targetsAllies = true;
       nurseWounds.targetType = TargetEnum.Self;
       nurseWounds.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 1.25, false, true, false));
@@ -5366,7 +5366,7 @@ export class EnemyGeneratorService {
       healingSpirits.name = "Healing Spirits";
       healingSpirits.targetType = TargetEnum.LowestHpPercent;
       healingSpirits.isAvailable = true;
-      healingSpirits.effectiveness = 8.75;
+      healingSpirits.effectiveness = 3.15;
       healingSpirits.heals = true;
       healingSpirits.targetsAllies = true;
       healingSpirits.dealsDirectDamage = false;
@@ -5697,7 +5697,7 @@ export class EnemyGeneratorService {
       nap = this.randomizeCooldown(nap);
       nap.dealsDirectDamage = false;
       nap.heals = true;
-      nap.effectiveness = 8.8;
+      nap.effectiveness = 2.75;
       nap.targetsAllies = true;
       nap.targetType = TargetEnum.Self;
       enemy.abilityList.push(nap);      
@@ -5923,7 +5923,7 @@ export class EnemyGeneratorService {
       coil = this.randomizeCooldown(coil);
       coil.dealsDirectDamage = false;
       coil.heals = true;
-      coil.effectiveness = 7.6;
+      coil.effectiveness = 2.5;
       coil.targetsAllies = true;
       coil.targetType = TargetEnum.Self;
       coil.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 12, 1.35, false, true, false));
@@ -5963,7 +5963,7 @@ export class EnemyGeneratorService {
       coil = this.randomizeCooldown(coil);
       coil.dealsDirectDamage = false;
       coil.heals = true;
-      coil.effectiveness = 8.6;
+      coil.effectiveness = 2.35;
       coil.targetsAllies = true;
       coil.targetType = TargetEnum.Self;
       coil.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 12, 1.35, false, true, false));
@@ -6031,7 +6031,7 @@ export class EnemyGeneratorService {
       coil = this.randomizeCooldown(coil);
       coil.dealsDirectDamage = false;
       coil.heals = true;
-      coil.effectiveness = 10.6;
+      coil.effectiveness = 4;
       coil.targetsAllies = true;
       coil.targetType = TargetEnum.Self;
       coil.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 12, 1.35, false, true, false));
@@ -6203,7 +6203,7 @@ export class EnemyGeneratorService {
       coil = this.randomizeCooldown(coil);
       coil.dealsDirectDamage = false;
       coil.heals = true;
-      coil.effectiveness = 9.6;
+      coil.effectiveness = 3;
       coil.targetsAllies = true;
       coil.targetType = TargetEnum.Self;
       coil.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 12, 1.35, false, true, false));
@@ -6319,7 +6319,7 @@ export class EnemyGeneratorService {
       shedSkin = this.randomizeCooldown(shedSkin);
       shedSkin.dealsDirectDamage = false;
       shedSkin.heals = true;
-      shedSkin.effectiveness = 10.5;
+      shedSkin.effectiveness = 3.5;
       shedSkin.targetsAllies = true;
       shedSkin.targetType = TargetEnum.Self;
       shedSkin.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ClearDebuffs, -1, 1, true, true, false));
@@ -6387,7 +6387,7 @@ export class EnemyGeneratorService {
       coil = this.randomizeCooldown(coil);
       coil.dealsDirectDamage = false;
       coil.heals = true;
-      coil.effectiveness = 9.6;
+      coil.effectiveness = 2.25;
       coil.targetsAllies = true;
       coil.targetType = TargetEnum.Self;
       coil.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 12, 1.35, false, true, false));
@@ -6431,7 +6431,7 @@ export class EnemyGeneratorService {
       roost = this.randomizeCooldown(roost);
       roost.dealsDirectDamage = false;
       roost.heals = true;
-      roost.effectiveness = 8.8;
+      roost.effectiveness = 2.6;
       roost.targetsAllies = true;
       roost.targetType = TargetEnum.Self;
       roost.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 10, 1.25, false, true, false));
@@ -6564,7 +6564,7 @@ export class EnemyGeneratorService {
       protection.cooldown = protection.currentCooldown = 19;
       protection = this.randomizeCooldown(protection);
       protection.dealsDirectDamage = false;
-      protection.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 7.5, true, true, true, enemy.name, .5));
+      protection.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 2, true, true, true, enemy.name, .5));
       enemy.abilityList.push(protection);
       
       var dogWhistle = new Ability();
@@ -6875,7 +6875,7 @@ export class EnemyGeneratorService {
       ostinato.isAvailable = true;
       ostinato.requiredLevel = this.utilityService.godPassiveLevel;
       ostinato.isPassive = true;
-      ostinato.effectiveness = 6.8;
+      ostinato.effectiveness = 3.5;
       ostinato.heals = true;
       ostinato.targetsAllies = true;
       ostinato.targetType = TargetEnum.Self;
@@ -7076,7 +7076,7 @@ export class EnemyGeneratorService {
       revelry.targetsAllies = true;
       revelry.secondaryEffectiveness = 1.1;
       revelry.cooldown = revelry.currentCooldown = 60;
-      revelry.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 15, true, true, false, "", 1));
+      revelry.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 8, true, true, false, "", 1));
       enemy.abilityList.push(revelry);
 
       var thyrsus = new Ability();
@@ -7487,7 +7487,7 @@ export class EnemyGeneratorService {
       roost = this.randomizeCooldown(roost);
       roost.dealsDirectDamage = false;
       roost.heals = true;
-      roost.effectiveness = 9.5;
+      roost.effectiveness = 3.25;
       roost.targetsAllies = true;
       roost.targetType = TargetEnum.Self;
       roost.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 10, 1.3, false, true, false));
@@ -7679,7 +7679,7 @@ export class EnemyGeneratorService {
       healingSpirits.name = "Healing Spirits";
       healingSpirits.targetType = TargetEnum.LowestHpPercent;
       healingSpirits.isAvailable = true;
-      healingSpirits.effectiveness = 10;
+      healingSpirits.effectiveness = 4;
       healingSpirits.heals = true;
       healingSpirits.targetsAllies = true;
       healingSpirits.dealsDirectDamage = false;
@@ -7875,7 +7875,7 @@ export class EnemyGeneratorService {
       roost = this.randomizeCooldown(roost);
       roost.dealsDirectDamage = false;
       roost.heals = true;
-      roost.effectiveness = 11.5;
+      roost.effectiveness = 6;
       roost.targetsAllies = true;
       roost.targetType = TargetEnum.Self;
       roost.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 10, 1.65, false, true, false));
@@ -7989,7 +7989,7 @@ export class EnemyGeneratorService {
       coil = this.randomizeCooldown(coil);
       coil.dealsDirectDamage = false;
       coil.heals = true;
-      coil.effectiveness = 11.6;
+      coil.effectiveness = 6;
       coil.targetsAllies = true;
       coil.targetType = TargetEnum.Self;
       coil.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 12, 1.75, false, true, false));
@@ -8021,7 +8021,7 @@ export class EnemyGeneratorService {
       spiritOfTheForest = this.randomizeCooldown(spiritOfTheForest);
       spiritOfTheForest.dealsDirectDamage = false;
       spiritOfTheForest.heals = true;
-      spiritOfTheForest.effectiveness = 13.8;
+      spiritOfTheForest.effectiveness = 5.8;
       spiritOfTheForest.targetsAllies = true;
       spiritOfTheForest.targetType = TargetEnum.Self;
       spiritOfTheForest.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckUp, 10, 1.5, false, true, false));
@@ -8053,7 +8053,7 @@ export class EnemyGeneratorService {
       spiritOfTheForest = this.randomizeCooldown(spiritOfTheForest);
       spiritOfTheForest.dealsDirectDamage = false;
       spiritOfTheForest.heals = true;
-      spiritOfTheForest.effectiveness = 12;
+      spiritOfTheForest.effectiveness = 5;
       spiritOfTheForest.targetsAllies = true;
       spiritOfTheForest.targetType = TargetEnum.Self;
       spiritOfTheForest.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckUp, 15, 1.5, false, true, false));
@@ -8282,7 +8282,7 @@ export class EnemyGeneratorService {
       crushingBlow = this.randomizeCooldown(crushingBlow);
       crushingBlow.dealsDirectDamage = true;
       crushingBlow.elementalType = ElementalTypeEnum.Earth;         
-      crushingBlow.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenUp, 10, .75, true, true));
+      crushingBlow.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenUp, 10, 1.25, false, false));
       enemy.abilityList.push(crushingBlow);
 
       var earthenSpeed = new Ability();
@@ -9484,7 +9484,7 @@ export class EnemyGeneratorService {
       famedInventor.currentCooldown = 0;      
       famedInventor.dealsDirectDamage = false;      
       famedInventor.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, 30, 1.5, false, true, true));
-      famedInventor.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 15, true, true, true, enemy.name, .5));
+      famedInventor.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 4, true, true, true, enemy.name, .5));
       enemy.abilityList.push(famedInventor);
       
       var prizedInvention = new Ability();
@@ -9835,7 +9835,7 @@ export class EnemyGeneratorService {
     } 
     if (type === BestiaryEnum.PoseidonsDolphin) {      
       enemy.name = "Poseidon's Dolphin";      
-      enemy.battleStats = new CharacterStats(1430493, 10150, 21650, 26500, 19500, 30000);  
+      enemy.battleStats = new CharacterStats(1660493, 10150, 21650, 26500, 19500, 30000);  
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 6250;  
@@ -9937,7 +9937,7 @@ export class EnemyGeneratorService {
       scavenge = this.randomizeCooldown(scavenge);
       scavenge.dealsDirectDamage = false;
       scavenge.heals = true;
-      scavenge.effectiveness = 3.8;
+      scavenge.effectiveness = 2;
       scavenge.targetsAllies = true;
       scavenge.targetType = TargetEnum.Self;
       scavenge.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, 12, 1.5, false, true, false));
@@ -9980,7 +9980,7 @@ export class EnemyGeneratorService {
       roost = this.randomizeCooldown(roost);
       roost.dealsDirectDamage = false;
       roost.heals = true;
-      roost.effectiveness = 5.5;
+      roost.effectiveness = 2.75;
       roost.targetsAllies = true;
       roost.targetType = TargetEnum.Self;
       roost.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 10, 1.25, false, true, false));
@@ -11061,7 +11061,7 @@ export class EnemyGeneratorService {
       healingHerb.name = "Healing Herb";
       healingHerb.targetType = TargetEnum.LowestHpPercent;
       healingHerb.isAvailable = true;
-      healingHerb.effectiveness = 12.5;
+      healingHerb.effectiveness = 4.5;
       healingHerb.heals = true;
       healingHerb.targetsAllies = true;
       healingHerb.dealsDirectDamage = false;
@@ -11155,7 +11155,7 @@ export class EnemyGeneratorService {
       healingHerb.name = "Healing Herb";
       healingHerb.targetType = TargetEnum.LowestHpPercent;
       healingHerb.isAvailable = true;
-      healingHerb.effectiveness = 18;
+      healingHerb.effectiveness = 9;
       healingHerb.heals = true;
       healingHerb.targetsAllies = true;
       healingHerb.dealsDirectDamage = false;
@@ -11259,7 +11259,7 @@ export class EnemyGeneratorService {
       healingHerb.name = "Healing Herb";
       healingHerb.targetType = TargetEnum.LowestHpPercent;
       healingHerb.isAvailable = true;
-      healingHerb.effectiveness = 30;
+      healingHerb.effectiveness = 14;
       healingHerb.heals = true;
       healingHerb.targetsAllies = true;
       healingHerb.dealsDirectDamage = false;
@@ -12287,7 +12287,7 @@ export class EnemyGeneratorService {
       divinity.cooldown = divinity.currentCooldown = 10;
       divinity = this.randomizeCooldown(divinity);
       divinity.dealsDirectDamage = false;
-      divinity.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 2, true, true, true, enemy.name, 1));
+      divinity.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 1, true, true, true, enemy.name, 1));
       enemy.abilityList.push(divinity);
 
       var firePower = new Ability();
@@ -12401,7 +12401,7 @@ export class EnemyGeneratorService {
       divinity.cooldown = divinity.currentCooldown = 10;
       divinity = this.randomizeCooldown(divinity);
       divinity.dealsDirectDamage = false;
-      divinity.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 5, true, true, true, enemy.name, 1));
+      divinity.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 2.5, true, true, true, enemy.name, 1));
       enemy.abilityList.push(divinity);
 
       var firePower = new Ability();
@@ -12515,7 +12515,7 @@ export class EnemyGeneratorService {
       divinity.cooldown = divinity.currentCooldown = 10;
       divinity = this.randomizeCooldown(divinity);
       divinity.dealsDirectDamage = false;
-      divinity.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 13, true, true, true, enemy.name, 1));
+      divinity.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 6.25, true, true, true, enemy.name, 1));
       enemy.abilityList.push(divinity);
 
       var firePower = new Ability();
