@@ -845,14 +845,18 @@ export class BackgroundService {
 
         if (trialType === undefined || trialType.count === 0)
           return;
+        
+        run.clearTime = this.getTimeFragmentClearRate(run);
       }
 
-      if (run.selectedTrial === TrialEnum.TrialOfTheStarsNormal || run.selectedTrial === TrialEnum.TrialOfTheStarsHard || run.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard) {
+      if (run.selectedTrial === TrialEnum.TrialOfTheStarsNormal || run.selectedTrial === TrialEnum.TrialOfTheStarsHard || run.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard) {        
         var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
           item.zodiacType === this.zodiacService.getCurrentZodiac());
 
         if (trialType === undefined || trialType.count === 0)
           return;
+
+        run.clearTime = this.getTimeFragmentClearRate(run);
       }
 
       while (run.timer >= run.clearTime) {
@@ -922,6 +926,69 @@ export class BackgroundService {
         run.timer -= run.clearTime;
       }
     });
+  }
+
+  getTimeFragmentClearRate(run: TimeFragmentRun) {
+    var clearRate = 0;
+    var maxDps = 0;
+    var hpList: number[] = [];
+    var enemyOptions: EnemyTeam[] = [];
+
+    if (run.selectedTrial !== undefined) {
+      var trialType: TrialDefeatCount | undefined;
+      if (run.selectedTrial === TrialEnum.TrialOfSkill) {
+        trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
+          item.godType === this.trialService.getGodEnumFromTrialOfSkillBattle());
+      }
+      else if (run.selectedTrial === TrialEnum.TrialOfTheStarsNormal || run.selectedTrial === TrialEnum.TrialOfTheStarsHard || run.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard) {
+        trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
+          item.zodiacType === this.zodiacService.getCurrentZodiac());
+      }
+      else {
+        trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial);
+      }
+
+      if (trialType !== undefined)
+        maxDps = trialType.highestDps;
+
+      var trial = this.dictionaryService.getTrialInfoFromType(run.selectedTrial);
+      enemyOptions = this.trialService.generateBattleOptions(trial);
+      enemyOptions.forEach(enemyTeam => {
+        var teamHp = 0;
+
+        enemyTeam.enemyList.forEach(enemy => {
+          if (run.selectedTrial === TrialEnum.TrialOfSkill && trialType !== undefined)
+            teamHp += trialType.highestHp;
+          else
+            teamHp += enemy.battleStats.maxHp;
+        });
+        hpList.push(teamHp);
+      });
+    }
+    else if (run.selectedSubzone !== undefined) {
+      var subzone = this.balladService.findSubzone(run.selectedSubzone);
+      if (subzone !== undefined)
+        maxDps = subzone.maxDps;
+
+      enemyOptions = this.subzoneGeneratorService.generateBattleOptions(run.selectedSubzone);
+      enemyOptions.forEach(enemyTeam => {
+        var teamHp = 0;
+
+        enemyTeam.enemyList.forEach(enemy => {
+          teamHp += enemy.battleStats.maxHp;
+        });
+
+        hpList.push(teamHp);
+      });
+    }
+
+    var hpSum = hpList.reduce(function (acc, cur) { return acc + cur; });
+    clearRate = this.utilityService.genericShortRound(this.utilityService.genericShortRound(hpSum / hpList.length) / maxDps);
+
+    if (clearRate < this.utilityService.timeFragmentClearRateMinimumSeconds)
+      clearRate = this.utilityService.timeFragmentClearRateMinimumSeconds;
+
+    return clearRate;
   }
 
   getTimeFragmentCondensedRewards(run: TimeFragmentRun): [number, number, [ItemsEnum, number][]] {
