@@ -541,13 +541,14 @@ export class InitializationService {
     //this.lookupService.gainResource(new ResourceValue(ItemsEnum.LightningAbsorptionPotion, 100));
     //this.lookupService.gainResource(new ResourceValue(ItemsEnum.AirAbsorptionPotion, 100));
     //this.lookupService.gainResource(new ResourceValue(ItemsEnum.EarthAbsorptionPotion, 100));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.WaterAbsorptionPotion, 100));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.ScalyRing, 1));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.NecklaceSlotAddition, 10));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.JaggedStone, 10));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.DionysussNecklace, 1));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.PoseidonsNecklace, 1));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.MagicToxin, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.TidalToxin, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.UnsteadyingToxin, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.ElixirOfWill, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.BouncingPotion, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.WildPotion, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.PeonyPoultice, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.PeonySalve, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.RareToEpicTransmutation, 10));
 
     /* this.lookupService.gainResource(new ResourceValue(ItemsEnum.AthenasScythe, 1));
      this.lookupService.gainResource(new ResourceValue(ItemsEnum.ArtemissBow, 1));
@@ -806,7 +807,7 @@ export class InitializationService {
     if (resource !== undefined)
       this.lookupService.gainResource(resource);
 
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfIngenuity, 3));
+    //this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfIngenuity, 3));
     //console.log(this.globalService.globalVar.achievements);
   }
 
@@ -1258,7 +1259,7 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.GiantNecklace);
       }
 
-      var chthonicResetCount = 3;
+      var chthonicResetCount = 5;
       var godLevel = 500;
 
       for (var j = 0; j < chthonicResetCount; j++) {
@@ -1273,9 +1274,9 @@ export class InitializationService {
         this.globalService.assignGodAbilityInfo(athena!);
 
         if (j < chthonicResetCount - 1)
-          godLevel = 1500;
+          godLevel = 1600;
         else
-          godLevel = 1750;
+          godLevel = 1900;
 
         for (var i = 0; i < godLevel; i++) {
           this.globalService.levelUpGod(athena!);
@@ -1488,20 +1489,6 @@ export class InitializationService {
           this.globalService.levelUpPartyMember(character);
         }
 
-        //character.level = 1;
-        //character.exp = 0;
-        //character.linkInfo.totalLinks = 0;
-        //character.linkInfo.remainingLinks = 0;
-        character.baseStats = this.globalService.getCharacterBaseStats(character.type);
-        character.maxLevel = 100;
-      });
-
-      /*var characterLevel = 49;
-      this.globalService.globalVar.characters.forEach(character => {
-        for (var i = 0; i < characterLevel; i++) {
-          this.globalService.levelUpPartyMember(character);
-        }
- 
         character.level = 1;
         character.exp = 0;
         character.linkInfo.totalLinks = 0;
@@ -1510,6 +1497,20 @@ export class InitializationService {
         character.maxLevel = 100;
       });
 
+      var characterLevel = 49;
+      this.globalService.globalVar.characters.forEach(character => {
+        for (var i = 0; i < characterLevel; i++) {
+          this.globalService.levelUpPartyMember(character);
+        }
+ 
+        //character.level = 1;
+        character.exp = 0;
+        //character.linkInfo.totalLinks = 0;
+        //character.linkInfo.remainingLinks = 0;
+        character.baseStats = this.globalService.getCharacterBaseStats(character.type);
+        character.maxLevel = 100;
+      });
+/*
       var characterLevel = 54;
       this.globalService.globalVar.characters.forEach(character => {
         for (var i = 0; i < characterLevel; i++) {

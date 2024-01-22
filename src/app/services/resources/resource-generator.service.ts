@@ -782,6 +782,27 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.ElixirOfFortune) {
       return new ResourceValue(ItemsEnum.ElixirOfFortune, amount);
     }
+    if (type === ItemsEnum.ElixirOfWill) {
+      return new ResourceValue(ItemsEnum.ElixirOfWill, amount);
+    }
+    if (type === ItemsEnum.TidalToxin) {
+      return new ResourceValue(ItemsEnum.TidalToxin, amount);
+    }
+    if (type === ItemsEnum.UnsteadyingToxin) {
+      return new ResourceValue(ItemsEnum.UnsteadyingToxin, amount);
+    }
+    if (type === ItemsEnum.WildPotion) {
+      return new ResourceValue(ItemsEnum.WildPotion, amount);
+    }
+    if (type === ItemsEnum.PeonyPoultice) {
+      return new ResourceValue(ItemsEnum.PeonyPoultice, amount);
+    }
+    if (type === ItemsEnum.PeonySalve) {
+      return new ResourceValue(ItemsEnum.PeonySalve, amount);
+    }
+    if (type === ItemsEnum.RareToEpicTransmutation) {
+      return new ResourceValue(ItemsEnum.RareToEpicTransmutation, amount);
+    }
     if (type === ItemsEnum.WaterAbsorptionPotion) {
       return new ResourceValue(ItemsEnum.WaterAbsorptionPotion, amount);
     }

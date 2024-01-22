@@ -329,7 +329,7 @@ export class GlobalService {
       var insight = new Ability();
       insight.name = "Insight";
       insight.effectiveness = .1;
-      insight.secondaryEffectiveness = 2;
+      insight.secondaryEffectiveness = 1.5;
       insight.requiredLevel = this.utilityService.characterPassiveLevel;      
       insight.isAvailable = false;
       insight.isPassive = true;
@@ -1087,7 +1087,8 @@ export class GlobalService {
       type === StatusEffectEnum.CaringGaze || type === StatusEffectEnum.MelodicMoves || type === StatusEffectEnum.BlisteringRiposte || type === StatusEffectEnum.RecedingTide ||
       type === StatusEffectEnum.WarAndLove || type === StatusEffectEnum.AllPrimaryStatsDown || type === StatusEffectEnum.AllPrimaryStatsExcludeHpDown || type === StatusEffectEnum.FieryJudgment ||
       type === StatusEffectEnum.Protector || type === StatusEffectEnum.LovingEmbrace || type === StatusEffectEnum.DefensiveShapeshifting || type === StatusEffectEnum.DamageShield ||
-      type === StatusEffectEnum.FriendlyCompetition || type === StatusEffectEnum.Focus || type === StatusEffectEnum.BuzzingReminder)
+      type === StatusEffectEnum.FriendlyCompetition || type === StatusEffectEnum.Focus || type === StatusEffectEnum.BuzzingReminder
+      || type === StatusEffectEnum.VortexPull)
       refreshes = true;
 
     return refreshes;
@@ -1100,7 +1101,8 @@ export class GlobalService {
       type === StatusEffectEnum.RejuvenatingElixir || type === StatusEffectEnum.VenomousToxin || type === StatusEffectEnum.WitheringToxin ||
       type === StatusEffectEnum.ElixirOfFortitude || type === StatusEffectEnum.ElixirOfSpeed || type === StatusEffectEnum.FlamingToxin ||
       type === StatusEffectEnum.ParalyzingToxin || type === StatusEffectEnum.KingOfTheSea || type === StatusEffectEnum.ElixirOfFortune ||
-      type === StatusEffectEnum.SandToxin || type === StatusEffectEnum.ElectrifiedToxin || type === StatusEffectEnum.MagicToxin)
+      type === StatusEffectEnum.SandToxin || type === StatusEffectEnum.ElectrifiedToxin || type === StatusEffectEnum.MagicToxin ||
+      type === StatusEffectEnum.TidalToxin || type === StatusEffectEnum.UnsteadyingToxin || type === StatusEffectEnum.ElixirOfWill)
       refreshes = true;
 
     return refreshes;
@@ -1113,7 +1115,8 @@ export class GlobalService {
       type === StatusEffectEnum.WitheringToxin || type === StatusEffectEnum.VenomousToxin || type === StatusEffectEnum.FlamingToxin || type === StatusEffectEnum.ParalyzingToxin ||
       type === StatusEffectEnum.Dead || type === StatusEffectEnum.ElixirOfFortitude || type === StatusEffectEnum.ElixirOfSpeed ||
       type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.RejuvenatingElixir || type === StatusEffectEnum.ElixirOfFortune ||
-      type === StatusEffectEnum.SandToxin || type === StatusEffectEnum.ElectrifiedToxin || type === StatusEffectEnum.MagicToxin)
+      type === StatusEffectEnum.SandToxin || type === StatusEffectEnum.ElectrifiedToxin || type === StatusEffectEnum.MagicToxin ||
+      type === StatusEffectEnum.TidalToxin || type === StatusEffectEnum.UnsteadyingToxin || type === StatusEffectEnum.ElixirOfWill)
       persistsDeath = true;
 
     return persistsDeath;
@@ -1128,7 +1131,8 @@ export class GlobalService {
       type === StatusEffectEnum.Dead || type === StatusEffectEnum.ElixirOfFortitude || type === StatusEffectEnum.ElixirOfSpeed ||
       type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.RejuvenatingElixir || type === StatusEffectEnum.ElixirOfFortune ||
       type === StatusEffectEnum.SandToxin || type === StatusEffectEnum.ElectrifiedToxin || type === StatusEffectEnum.MagicToxin ||
-      type === StatusEffectEnum.DispenserOfDues || type === StatusEffectEnum.Shapeshift)
+      type === StatusEffectEnum.DispenserOfDues || type === StatusEffectEnum.Shapeshift ||
+      type === StatusEffectEnum.TidalToxin || type === StatusEffectEnum.UnsteadyingToxin || type === StatusEffectEnum.ElixirOfWill)
       persistsDeath = true;
 
     if (effect.resolution === EffectResolutionEnum.AlwaysActiveEquipment)
@@ -2689,13 +2693,6 @@ export class GlobalService {
       else
         return matchingCount;
     }
-    else if (godLevel % 50 === 0 && godLevel <= 3000) {
-      var matchingCount = god.permanentStat5GainCount.find(item => item[0] === godLevel);
-      if (matchingCount === undefined)
-        return [0, 0];
-      else
-        return matchingCount;
-    }
     else if (godLevel % 100 === 0 && godLevel <= 3000) {
       var matchingCount = god.permanentStat6GainCount.find(item => item[0] === godLevel);
       if (matchingCount === undefined)
@@ -2703,8 +2700,8 @@ export class GlobalService {
       else
         return matchingCount;
     }
-    else if (godLevel % 50 === 0 && godLevel <= 4000) {
-      var matchingCount = god.permanentDuoAbilityGainCount.find(item => item[0] === godLevel);
+    else if (godLevel % 50 === 0 && godLevel <= 3000) {
+      var matchingCount = god.permanentStat5GainCount.find(item => item[0] === godLevel);
       if (matchingCount === undefined)
         return [0, 0];
       else
@@ -2712,6 +2709,13 @@ export class GlobalService {
     }
     else if (godLevel % 100 === 0 && godLevel <= 4000) {
       var matchingCount = god.permanentStat7GainCount.find(item => item[0] === godLevel);
+      if (matchingCount === undefined)
+        return [0, 0];
+      else
+        return matchingCount;
+    }
+    else if (godLevel % 50 === 0 && godLevel <= 4000) {
+      var matchingCount = god.permanentDuoAbilityGainCount.find(item => item[0] === godLevel);
       if (matchingCount === undefined)
         return [0, 0];
       else

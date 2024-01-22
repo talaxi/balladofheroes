@@ -85,7 +85,8 @@ export class AchievementService {
       subzoneType === SubZoneEnum.ErytheiaGeryonsFarm || subzoneType === SubZoneEnum.HuntForYarrowYarrowField || subzoneType === SubZoneEnum.WarForTheMountainBattleAtTheGates ||
       subzoneType === SubZoneEnum.WarForTheMountainPalaces || subzoneType === SubZoneEnum.WarForTheMountainStables || subzoneType === SubZoneEnum.WarForTheMountainOpenCourtyard ||
       subzoneType === SubZoneEnum.WarForTheMountainThePeak || subzoneType === SubZoneEnum.BlackSeaWindyGale || subzoneType === SubZoneEnum.CreteWhirlpool ||
-      subzoneType === SubZoneEnum.TheLabyrinthLabyrinthCenter || subzoneType === SubZoneEnum.AegeanSeaSympegadesOverlook || subzoneType === SubZoneEnum.ColchisReinforcementsFromAeetes) {
+      subzoneType === SubZoneEnum.TheLabyrinthLabyrinthCenter || subzoneType === SubZoneEnum.AegeanSeaSympegadesOverlook || subzoneType === SubZoneEnum.ColchisReinforcementsFromAeetes ||
+      subzoneType === SubZoneEnum.AiaiaFlowerGarden || subzoneType === SubZoneEnum.StraitsOfMessinaUnavoidablePath || subzoneType === SubZoneEnum.StraitsOfMessinaMawOfTheMonster) {
       newAchievements.push(thirtySecondClear);
     }
 
@@ -103,13 +104,15 @@ export class AchievementService {
       subzoneType === SubZoneEnum.ErytheiaGeryonsFarm || subzoneType === SubZoneEnum.HuntForYarrowYarrowField || subzoneType === SubZoneEnum.WarForTheMountainBattleAtTheGates ||
       subzoneType === SubZoneEnum.WarForTheMountainPalaces || subzoneType === SubZoneEnum.WarForTheMountainStables || subzoneType === SubZoneEnum.WarForTheMountainOpenCourtyard ||
       subzoneType === SubZoneEnum.WarForTheMountainThePeak || subzoneType === SubZoneEnum.BlackSeaWindyGale || subzoneType === SubZoneEnum.CreteWhirlpool ||
-      subzoneType === SubZoneEnum.TheLabyrinthLabyrinthCenter || subzoneType === SubZoneEnum.AegeanSeaSympegadesOverlook || subzoneType === SubZoneEnum.ColchisReinforcementsFromAeetes)
+      subzoneType === SubZoneEnum.TheLabyrinthLabyrinthCenter || subzoneType === SubZoneEnum.AegeanSeaSympegadesOverlook || subzoneType === SubZoneEnum.ColchisReinforcementsFromAeetes ||
+      subzoneType === SubZoneEnum.AiaiaFlowerGarden || subzoneType === SubZoneEnum.StraitsOfMessinaUnavoidablePath || subzoneType === SubZoneEnum.StraitsOfMessinaMawOfTheMonster)
       newAchievements.push(tenSecondClear);
 
     var completeClear = new Achievement(AchievementTypeEnum.Complete, subzoneType);
 
     if (subzoneType === SubZoneEnum.LibyaIsleCenter || subzoneType === SubZoneEnum.ElysiumWavesOfOceanus ||
-      subzoneType === SubZoneEnum.TheLetheHypnosIsland || subzoneType === SubZoneEnum.ErytheiaGeryonsFarm || subzoneType === SubZoneEnum.WarForTheMountainThePeak)
+      subzoneType === SubZoneEnum.TheLetheHypnosIsland || subzoneType === SubZoneEnum.ErytheiaGeryonsFarm || subzoneType === SubZoneEnum.WarForTheMountainThePeak ||
+      subzoneType === SubZoneEnum.StraitsOfMessinaMawOfTheMonster)
       newAchievements.push(completeClear);
 
     return newAchievements;
@@ -464,6 +467,39 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.ShadowArmor, 1));
       else if (subzoneType === SubZoneEnum.TheLabyrinthSolidWall2)
         rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+
+      //TODO:
+      else if (subzoneType === SubZoneEnum.AiaiaUnknownWaters)
+        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        else if (subzoneType === SubZoneEnum.AiaiaBreezyDays)
+        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        else if (subzoneType === SubZoneEnum.AiaiaShoreline)
+        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        else if (subzoneType === SubZoneEnum.AiaiaForestPath)
+        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        else if (subzoneType === SubZoneEnum.AiaiaOpenClearing)
+        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        else if (subzoneType === SubZoneEnum.AiaiaThornyPath)
+        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        else if (subzoneType === SubZoneEnum.AiaiaWildThicket)
+        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        else if (subzoneType === SubZoneEnum.AiaiaFlowerGarden)
+        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+
+        else if (subzoneType === SubZoneEnum.StraitsOfMessinaIntoTheNarrowStraits)
+        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        else if (subzoneType === SubZoneEnum.StraitsOfMessinaEdgeOfCharybdis)
+        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        else if (subzoneType === SubZoneEnum.StraitsOfMessinaCavernOpening)
+        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        else if (subzoneType === SubZoneEnum.StraitsOfMessinaDarkTunnel)
+        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        else if (subzoneType === SubZoneEnum.StraitsOfMessinaUnavoidablePath)
+        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        else if (subzoneType === SubZoneEnum.StraitsOfMessinaIntoTheVortex)
+        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        else if (subzoneType === SubZoneEnum.StraitsOfMessinaMawOfTheMonster)
+        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
     }
 
     if (achievementType === AchievementTypeEnum.ThousandVictories) {
@@ -490,6 +526,8 @@ export class AchievementService {
       var warForTheMountainBoonBonus = .05;
       var creteBoonBonus = .04;
       var theLabyrinthBoonBonus = .04;
+      var aiaiaBoonBonus = .04;
+      var straitsOfMessinaBoonBonus = .04;
 
       if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Aigosthena))
         rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, aigosthenaBoonBonus));
@@ -537,6 +575,10 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, creteBoonBonus));
       else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Labyrinth))
         rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, theLabyrinthBoonBonus));
+        else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Aiaia))
+        rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, aiaiaBoonBonus));
+        else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.StraitsOfMessina))
+        rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, straitsOfMessinaBoonBonus));
     }
 
     //need to figure out what you actually want
@@ -886,6 +928,38 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.LargeGildedKantharos, 1));
       else if (subzoneType === SubZoneEnum.TheLabyrinthSolidWall2)
         rewards.push(new ResourceValue(ItemsEnum.LargeCrackedKantharos, 1));
+        
+      else if (subzoneType === SubZoneEnum.AiaiaUnknownWaters)
+      rewards.push(new ResourceValue(ItemsEnum.LargeGildedKantharos, 1));
+      else if (subzoneType === SubZoneEnum.AiaiaBreezyDays)
+      rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfEarthProtection, 1));
+      else if (subzoneType === SubZoneEnum.AiaiaShoreline)
+      rewards.push(new ResourceValue(ItemsEnum.LargeSilverKantharos, 1));
+      else if (subzoneType === SubZoneEnum.AiaiaForestPath)
+      rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHolyProtection, 1));
+      else if (subzoneType === SubZoneEnum.AiaiaOpenClearing)
+      rewards.push(new ResourceValue(ItemsEnum.LargeBlackKantharos, 1));
+      else if (subzoneType === SubZoneEnum.AiaiaThornyPath)
+      rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfAirDestruction, 1));
+      else if (subzoneType === SubZoneEnum.AiaiaWildThicket)
+      rewards.push(new ResourceValue(ItemsEnum.LargeCrackedKantharos, 1));
+      else if (subzoneType === SubZoneEnum.AiaiaFlowerGarden)
+      rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHaste, 1));
+
+      else if (subzoneType === SubZoneEnum.StraitsOfMessinaIntoTheNarrowStraits)
+      rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfAirProtection, 1));
+      else if (subzoneType === SubZoneEnum.StraitsOfMessinaEdgeOfCharybdis)
+      rewards.push(new ResourceValue(ItemsEnum.LargeGildedKantharos, 1));
+      else if (subzoneType === SubZoneEnum.StraitsOfMessinaCavernOpening)
+      rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHolyDestruction, 1));
+      else if (subzoneType === SubZoneEnum.StraitsOfMessinaDarkTunnel)
+      rewards.push(new ResourceValue(ItemsEnum.LargeOrnateKantharos, 1));
+      else if (subzoneType === SubZoneEnum.StraitsOfMessinaUnavoidablePath)
+      rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfDetermination, 1));
+      else if (subzoneType === SubZoneEnum.StraitsOfMessinaIntoTheVortex)
+      rewards.push(new ResourceValue(ItemsEnum.LargeBlackKantharos, 1));
+      else if (subzoneType === SubZoneEnum.StraitsOfMessinaMawOfTheMonster)
+      rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterProtection, 1));
     }
 
     if (achievementType === AchievementTypeEnum.ThirtySecondClear) {
@@ -951,6 +1025,13 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.LargeBlackKantharos, 1));
       if (subzoneType === SubZoneEnum.TheLabyrinthLabyrinthCenter)
         rewards.push(new ResourceValue(ItemsEnum.LargeSilverKantharos, 1));
+        
+        if (subzoneType === SubZoneEnum.AiaiaFlowerGarden)
+        rewards.push(new ResourceValue(ItemsEnum.LargeBlackKantharos, 1));
+        if (subzoneType === SubZoneEnum.StraitsOfMessinaUnavoidablePath)
+        rewards.push(new ResourceValue(ItemsEnum.LargeOrnateKantharos, 1));
+        if (subzoneType === SubZoneEnum.StraitsOfMessinaMawOfTheMonster)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterDestruction, 1));
     }
 
     if (achievementType === AchievementTypeEnum.TenSecondClear) {
@@ -1018,6 +1099,13 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.LargeBuccheroKantharos, 1));
       if (subzoneType === SubZoneEnum.TheLabyrinthLabyrinthCenter)
         rewards.push(new ResourceValue(ItemsEnum.LargeSilverKantharos, 1));
+              
+        if (subzoneType === SubZoneEnum.AiaiaFlowerGarden)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterProtection, 1));
+        if (subzoneType === SubZoneEnum.StraitsOfMessinaUnavoidablePath)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfPreparation, 1));
+        if (subzoneType === SubZoneEnum.StraitsOfMessinaMawOfTheMonster)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfVulnerability, 1));
     }
 
     if (achievementType === AchievementTypeEnum.Complete) {
@@ -1036,6 +1124,9 @@ export class AchievementService {
       }
       if (subzoneType === SubZoneEnum.WarForTheMountainThePeak) {
         rewards.push(new ResourceValue(ItemsEnum.BonusXp, 10000000));
+      }
+      if (subzoneType === SubZoneEnum.StraitsOfMessinaMawOfTheMonster) {
+        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 500000000));
       }
     }
 
@@ -1391,7 +1482,7 @@ export class AchievementService {
           !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo)?.isAvailable) &&
           achievement.type === AchievementTypeEnum.TenVictoriesApollo) {
           return;
-        }        
+        }
         if ((this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades) === undefined ||
           !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades)?.isAvailable) &&
           achievement.type === AchievementTypeEnum.TenVictoriesHades) {
@@ -1425,12 +1516,12 @@ export class AchievementService {
         if ((this.globalService.globalVar.gods.find(item => item.type === GodEnum.Aphrodite) === undefined ||
           !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Aphrodite)?.isAvailable) &&
           achievement.type === AchievementTypeEnum.TenVictoriesAphrodite) {
-            return;
+          return;
         }
         if ((this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hera) === undefined ||
           !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hera)?.isAvailable) &&
           achievement.type === AchievementTypeEnum.TenVictoriesHera) {
-            return;
+          return;
         }
 
         relatedAchievements.push(achievement);

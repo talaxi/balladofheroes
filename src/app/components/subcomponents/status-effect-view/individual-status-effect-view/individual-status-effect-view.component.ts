@@ -295,6 +295,15 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.MagicToxin) {
       src += "magicToxin.svg";
     }
+    if (effect.type === StatusEffectEnum.TidalToxin) {
+      src += "tidalToxin.svg";
+    }
+    if (effect.type === StatusEffectEnum.ElixirOfWill) {
+      src += "elixirOfWill.svg";
+    }
+    if (effect.type === StatusEffectEnum.UnsteadyingToxin) {
+      src += "unsteadyingToxin.svg";
+    }
     if (effect.type === StatusEffectEnum.HeroicElixir) {
       src += "heroicElixir.svg";
     }
@@ -598,7 +607,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       if (effect.type === StatusEffectEnum.LovingEmbrace)
       src += "aphroditeHeraDuo.svg";     
       if (effect.type === StatusEffectEnum.AllPrimaryStatsDown && effect.abilityName === "Sickness")
-      src += "dionysusArtemisDuo.svg";      
+      src += "dionysusArtemisDuo.svg";    
+      if (effect.type === StatusEffectEnum.VortexPull)
+      src += "vortexPull.svg";       
 
     return src;
   }

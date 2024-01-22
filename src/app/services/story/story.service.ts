@@ -128,6 +128,16 @@ export class StoryService {
       this.showStory = true;
     else if (this.globalService.globalVar.currentStoryId === 46 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.TheLabyrinthLabyrinthCenter))
       this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 47 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.AiaiaBreezyDays))
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 48 && this.balladService.getActiveSubZone().type === SubZoneEnum.AiaiaCircesHome)
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 49 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.AiaiaFlowerGarden))
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 50 && this.balladService.getActiveSubZone().type === SubZoneEnum.StraitsOfMessinaUnavoidablePath)
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 51 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.StraitsOfMessinaUnavoidablePath))
+      this.showStory = true;
 
     if (this.showStory)
       this.lookupService.addStoryToLog(this.globalService.globalVar.currentStoryId, this.balladService.getActiveSubZone().type);
@@ -485,7 +495,7 @@ export class StoryService {
         sceneText = "<div class='sceneDiv'>After defeating the serpent Ladon, you spend some time circling the famed garden. You are surprised to see so many people around. You approach an exasperated woman within the grove.</div>" +
           "<div class='sceneDiv'>" + this.commonCharacterText("“Thieves! The lot of you!”") + " She shouts at the people picking golden apples from the orchards.</div>" +
           "<div class='sceneDiv'>" + this.commonCharacterText("“You!”") + " She points towards you and Zosime. " + this.commonCharacterText("“If you can stop these thieves and bring me back their apples, I'll let you keep some for yourselves!”") + "</div>" +
-          "<div><i><b>Golden Apples</b> have a chance to drop from certain enemies in the Fertile Fields, increasing your alchemy level.</i></div>";
+          "<div class='s4Heading bold textCentered sidequestText'><b>Golden Apples</b> have a chance to drop from certain enemies in the Fertile Fields, increasing your Alchemy level.</div>";
     }
     else if (storyId === 35) {
       if (pageCount === 1)
@@ -836,12 +846,12 @@ export class StoryService {
       //post story events, if any
       if (this.globalService.globalVar.currentStoryId === 1) {
         this.globalService.globalVar.isBattlePaused = false;
-        
+
         if (this.deviceDetectorService.isMobile())
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.MobileOverlay, undefined, undefined, true, subzone.type), this.globalService.globalVar);
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.MobileOverlay, undefined, undefined, true, subzone.type), this.globalService.globalVar);
 
         this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.AutoAttack, undefined, undefined, true, subzone.type), this.globalService.globalVar);
-        this.globalService.handleTutorialModal();        
+        this.globalService.handleTutorialModal();
       }
       if (this.globalService.globalVar.currentStoryId === 3) {
         this.globalService.globalVar.settings.set("autoProgress", false);
@@ -1102,6 +1112,11 @@ export class StoryService {
         sceneText = "<div class='sceneDiv'>After defeating the Lernean Hydra, you wade your way out of the swamp. Near the edge, you notice a dim green object partially obscured in the muck. You reach down and retrieve what seems to be a crystal. As soon as you touch it, it reacts to your magic and immediately begins to glow.</div>" +
           "<br/><br/><br/><div class='s4Heading bold textCentered sidequestText'>Time Fragments Unlocked</div>";
     }
+    if (scene === OptionalSceneEnum.CharybdisJewelcrafting) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>As the great monster falls, the waves begin to calm. For the first time, the mighty whirlpool stills. Near the center, you spy fragments of the sea monster's spikes. You retrieve them, and immediately feel their great power.</div>" +
+          "<br/><br/><br/><div class='s4Heading bold textCentered sidequestText'>Jewelcrafting Max Level Increase!</div>";
+    }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
     sceneText = sceneText.replaceAll("Zosime", "<span class='archerColor storyCharacterName'>Zosime</span>");
@@ -1188,6 +1203,9 @@ export class StoryService {
     if (this.showOptionalStory === OptionalSceneEnum.TimeFragmentInTheSwamp) {
       this.pageCount = 1;
     }
+    if (this.showOptionalStory === OptionalSceneEnum.CharybdisJewelcrafting) {
+      this.pageCount = 1;
+    }
 
     this.sceneText = this.getOptionalStoryText(this.showOptionalStory, this.currentPage);
 
@@ -1272,6 +1290,15 @@ export class StoryService {
 
         this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.TimeFragments, undefined, undefined, true, subzone.type), this.globalService.globalVar);
         this.globalService.handleTutorialModal();
+      }
+      if (this.showOptionalStory === OptionalSceneEnum.CharybdisJewelcrafting) {      
+        var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
+        if (jewelcrafting !== undefined) {
+          jewelcrafting.maxLevel += 25;
+
+          var gameLogEntry = "Handling Charybdis's spikes has given you inspiration. Your Jewelcrafting max level increases by <strong>25</strong> to a total of <strong>" + jewelcrafting.maxLevel + "</strong>.";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry, this.globalService.globalVar);
+        }
       }
 
       this.currentPage = 1;

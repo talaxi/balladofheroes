@@ -578,4 +578,17 @@ export enum ItemsEnum {
   MajorArmorSlotAddition,
   MajorShieldSlotAddition,
   MajorNecklaceSlotAddition,
+  VialOfForeignWaters,
+  TidalToxin,
+  PeonyPoultice,
+  PeonySalve,
+  WildPotion,
+  UnsteadyingToxin,
+  ElixirOfWill,
+  RareToEpicTransmutation,
+  Peony,
+  Mandrake,
+  ColossalRoot,
+  StingrayTip,
+  UnstableElement
 } 

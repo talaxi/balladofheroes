@@ -3692,8 +3692,119 @@ export class SubZoneGeneratorService {
       enemyTeam.isDoubleBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.OrangeFloweredColossus));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WhiteFloweredColossus));
+      battleOptions.push(enemyTeam);      
+    }
+    if (type === SubZoneEnum.StraitsOfMessinaIntoTheNarrowStraits) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AbyssalFish));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AbyssalFish));            
       battleOptions.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DrownedSpirit));
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DrownedSpirit));      
+      battleOptions.push(enemyTeam2);
+
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AbyssalFish));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AbyssalFish));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DrownedSpirit));          
+      battleOptions.push(enemyTeam3);      
+    }
+    if (type === SubZoneEnum.StraitsOfMessinaEdgeOfCharybdis) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AbyssalFish));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AbyssalFish));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AbyssalFish));            
+      battleOptions.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SubmergedAbomination));
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DrownedSpirit));      
+      battleOptions.push(enemyTeam2);
+
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SubmergedAbomination));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SubmergedAbomination));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DrownedSpirit));          
+      battleOptions.push(enemyTeam3);      
       
+      var enemyTeam4: EnemyTeam = new EnemyTeam();
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SubmergedAbomination));
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SubmergedAbomination));      
+      battleOptions.push(enemyTeam4);
+    }
+    if (type === SubZoneEnum.StraitsOfMessinaIntoTheVortex) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DeepSeaMonster));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DeepSeaMonster));                  
+      battleOptions.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SubmergedAbomination));
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.OpenMouthedShark));      
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DeepSeaMonster));
+      battleOptions.push(enemyTeam2);
+
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SubmergedAbomination));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SubmergedAbomination));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SubmergedAbomination));          
+      battleOptions.push(enemyTeam3);      
+      
+      var enemyTeam4: EnemyTeam = new EnemyTeam();
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.OpenMouthedShark));
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.OpenMouthedShark));      
+      battleOptions.push(enemyTeam4);
+    }
+    if (type === SubZoneEnum.StraitsOfMessinaCavernOpening) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ShriekingLamia));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AbyssalFish));                  
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AbyssalFish));                  
+      battleOptions.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ShriekingLamia));
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ShriekingLamia));      
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DeepSeaMonster));
+      battleOptions.push(enemyTeam2);
+
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DeepSeaMonster));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ShriekingLamia));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AbyssalFish));          
+      battleOptions.push(enemyTeam3);            
+    }
+    if (type === SubZoneEnum.StraitsOfMessinaDarkTunnel) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ShriekingLamia));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FrenziedHydra));                  
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DeepSeaMonster));                  
+      battleOptions.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FrenziedHydra));
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FrenziedHydra));            
+      battleOptions.push(enemyTeam2);
+
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FrenziedHydra));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FrenziedHydra));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ShriekingLamia));          
+      battleOptions.push(enemyTeam3);            
+    }
+    if (type === SubZoneEnum.StraitsOfMessinaUnavoidablePath) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Scylla));      
+      battleOptions.push(enemyTeam);
+    }
+    if (type === SubZoneEnum.StraitsOfMessinaMawOfTheMonster) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Charybdis));      
+      battleOptions.push(enemyTeam);
     }
 
     if (differentiateIndividuals) {
@@ -3936,11 +4047,9 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.WarForTheMountainThePeak) {
       balladEnums.push(BalladEnum.Labyrinth);
     }
-    //todo: uncomment next version
-    /*
     if (type === SubZoneEnum.TheLabyrinthLabyrinthCenter) {
       balladEnums.push(BalladEnum.Witch);
-    }*/
+    }
 
     return balladEnums;
   }
@@ -4011,15 +4120,13 @@ export class SubZoneGeneratorService {
     }
     if (type === SubZoneEnum.CreteNorthernCretanCoast) {
       zoneEnums.push(ZoneEnum.Labyrinth);
-    }
-    //TODO: uncomment in next version  
-    /*  
+    }    
     if (type === SubZoneEnum.TheLabyrinthLabyrinthCenter) {
       zoneEnums.push(ZoneEnum.Aiaia);
     }
     if (type === SubZoneEnum.AiaiaFlowerGarden) {
       zoneEnums.push(ZoneEnum.StraitsOfMessina);
-    }*/
+    }
 
     return zoneEnums;
   }
@@ -4505,11 +4612,10 @@ export class SubZoneGeneratorService {
     }
     if (type === SubZoneEnum.TheLabyrinthLongPassage2) {
       subZoneEnums.push(SubZoneEnum.TheLabyrinthSolidWall2);
-    }
-    //TODO: uncomment in next version
-    /*if (type === SubZoneEnum.TheLabyrinthLabyrinthCenter) {
+    }    
+    if (type === SubZoneEnum.TheLabyrinthLabyrinthCenter) {
       subZoneEnums.push(SubZoneEnum.AiaiaUnknownWaters);
-    }*/
+    }
     if (type === SubZoneEnum.AiaiaUnknownWaters) {
       subZoneEnums.push(SubZoneEnum.AiaiaBreezyDays);
     }

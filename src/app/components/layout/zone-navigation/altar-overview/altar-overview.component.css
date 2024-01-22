@@ -90,6 +90,10 @@
     margin: auto;
 }
 
+.altarName {
+    font-size: .985rem;
+}
+
 @media (max-width: 800px) {
 .grid {
     row-gap: 3.3333%; 

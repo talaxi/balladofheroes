@@ -86,9 +86,9 @@ export class MainComponent implements OnInit {
 
     if (coliseumUnlocked) {
       if (!trialsUnlocked)
-        factList.push("On Saturdays and Sundays, you gain two additional Eternal Melee Tickets.");
+        factList.push("On Saturdays and Sundays, you gain an additional Eternal Melee Ticket.");
       else
-        factList.push("On Saturdays and Sundays, you gain two additional Eternal Melee Tickets and the buffs gained from defeating Trial Bosses last twice as long.");
+        factList.push("On Saturdays and Sundays, you gain an additional Eternal Melee Ticket and the buffs gained from defeating Trial Bosses last twice as long.");
     }
 
 

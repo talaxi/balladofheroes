@@ -130,6 +130,20 @@ export class DictionaryService {
       name = "Bouncing Potion";
     else if (type === ItemsEnum.MagicSalve)
       name = "Magic Salve";
+      else if (type === ItemsEnum.PeonySalve)
+      name = "Peony Salve";
+      else if (type === ItemsEnum.PeonyPoultice)
+      name = "Peony Poultice";
+      else if (type === ItemsEnum.WildPotion)
+      name = "Wild Potion";
+      else if (type === ItemsEnum.TidalToxin)
+      name = "Tidal Toxin";
+      else if (type === ItemsEnum.UnsteadyingToxin)
+      name = "Unsteadying Toxin";
+      else if (type === ItemsEnum.ElixirOfWill)
+      name = "Elixir of Will";
+      else if (type === ItemsEnum.RareToEpicTransmutation)
+      name = "Rare to Epic Transmutation";
 
     //equipment
     //swords

@@ -54,7 +54,7 @@
 }
 
 .characterBar {
-    width: 69%;
+    width: 68.4%;
     margin-right: .5rem;
     display: inline-block;
     height: 1rem;
@@ -129,7 +129,7 @@
 .enemy {
     margin-top: .7rem;
     display: grid;
-    grid-template-columns: 69% 1fr;
+    grid-template-columns: 68.4% 1fr;
     justify-content: stretch;
     grid-template-areas:
         "hpBar hpAmount";

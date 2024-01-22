@@ -20,4 +20,6 @@ export enum OptionalSceneEnum {
   HephaestusJewelcrafting,
   IslandOfNaxos,
   TimeFragmentInTheSwamp,
+  CirceAlchemy,
+  CharybdisJewelcrafting
 }

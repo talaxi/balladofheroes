@@ -428,5 +428,13 @@ export enum BestiaryEnum {
   OrangeFloweredColossus,
   WhiteFloweredColossus,
   Rhoecus,
-  TheBee
+  TheBee,
+  AbyssalFish,
+  DrownedSpirit,
+  SubmergedAbomination,
+  DeepSeaMonster,
+  OpenMouthedShark,
+  ShriekingLamia,
+  FrenziedHydra,
+  Scylla
 }
