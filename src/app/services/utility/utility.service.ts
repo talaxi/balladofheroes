@@ -156,7 +156,7 @@ export class UtilityService {
       isKongregate = true;
     }
 
-    return !isKongregate;
+    return isKongregate;
   }
 
   getSanitizedHtml(text: string) {
