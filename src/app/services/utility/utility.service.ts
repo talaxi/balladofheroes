@@ -148,6 +148,16 @@ export class UtilityService {
 
   constructor(public sanitizer: DomSanitizer, public dialog: MatDialog) { }
 
+  isKongregate() {
+    var isKongregate = false;
+    var url = (window.location != window.parent.location) ? document.referrer : document.location.href;
+    if (url.toLowerCase().includes("kongregate")) {
+      isKongregate = true;
+    }
+
+    return isKongregate;
+  }
+
   getSanitizedHtml(text: string) {
     var sanitizedHtml = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(text));
 
@@ -305,11 +315,11 @@ export class UtilityService {
 
     //if (milliseconds)
 
-    if (milliseconds < 100 && milliseconds >= 10) {      
-      millisecondsDisplay = String(millisecondsDisplay).padStart(2, '0');            
+    if (milliseconds < 100 && milliseconds >= 10) {
+      millisecondsDisplay = String(millisecondsDisplay).padStart(2, '0');
     }
     else if (milliseconds < 10) {
-      millisecondsDisplay = String(millisecondsDisplay).padStart(3, '0');         
+      millisecondsDisplay = String(millisecondsDisplay).padStart(3, '0');
     }
 
     return minutesDisplay + ":" + secondsDisplay + "." + millisecondsDisplay;

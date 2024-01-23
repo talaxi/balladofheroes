@@ -65,6 +65,9 @@ export class ColiseumViewComponent implements OnInit {
     this.specialColiseumTournaments = this.getSpecialColiseumTournaments();
     if (this.standardColiseumTournaments.length > 0)
       this.selectedTournament = this.dictionaryService.getColiseumInfoFromType(this.standardColiseumTournaments[0]);
+
+    if (this.utilityService.isKongregate())
+      this.transactionEnabled = false;
   }
 
   isMobile() {
@@ -113,7 +116,7 @@ export class ColiseumViewComponent implements OnInit {
   getSpecialColiseumTournaments() {
     var tournaments: ColiseumTournamentEnum[] = [];
 
-    var weeklyMelee = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.WeeklyMelee);    
+    var weeklyMelee = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.WeeklyMelee);
     if (weeklyMelee !== undefined && weeklyMelee.isAvailable) {
       tournaments.push(weeklyMelee.type);
     }
@@ -287,7 +290,7 @@ export class ColiseumViewComponent implements OnInit {
   isSelectedTournamentWeeklyMelee() {
     return this.selectedTournament.type === ColiseumTournamentEnum.WeeklyMelee;
   }
-  
+
   isSelectedTournamentFriendlyCompetition() {
     return this.selectedTournament.type === ColiseumTournamentEnum.FriendlyCompetition;
   }
@@ -338,7 +341,7 @@ export class ColiseumViewComponent implements OnInit {
   openTransactionModal() {
     var ticketMultiplier = 1;
     if (this.globalService.globalVar.isSubscriber)
-        ticketMultiplier = 2;
+      ticketMultiplier = 2;
 
     this.transactionConfirmationText = "<span class='s4Heading'>For $1, gain a full set of <b>" + (this.utilityService.weeklyMeleeEntryCap * ticketMultiplier) + " Eternal Melee tickets</b></span>.";
 
@@ -352,7 +355,7 @@ export class ColiseumViewComponent implements OnInit {
     var dialogRef = this.openPurchaseDialog();
 
     dialogRef.afterClosed().subscribe(dialogResult => {
-      if (dialogResult) {        
+      if (dialogResult) {
         window.location.href = 'https://square.link/u/Cf9TBEF1';
       }
     });
@@ -383,7 +386,7 @@ export class ColiseumViewComponent implements OnInit {
       this.chooseColiseumTournament(this.specialColiseumTournaments[currentIndex]);
     }
   }
-  
+
   inTextbox() {
     this.menuService.inTextbox = true;
   }
@@ -397,10 +400,10 @@ export class ColiseumViewComponent implements OnInit {
     this.startTournament();
   }
 
-  exportBattleData() {    
+  exportBattleData() {
     var party = this.coliseumService.setupCompetitionParty();
 
-    var battleData = JSON.stringify(party);    
+    var battleData = JSON.stringify(party);
     var compressedData = LZString.compressToBase64(battleData);
     this.battleData = compressedData;
   }
