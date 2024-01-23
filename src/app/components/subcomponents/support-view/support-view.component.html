@@ -4,7 +4,12 @@
     <div>Thank you for considering supporting Ballad of Heroes!</div>
     <br />
     <div>
-        For a $3 one time purchase or when signing up for any tier of Patreon, you will gain immediate access to:
+        <span *ngIf="isKongregate">
+            When signing up for any tier of Patreon, you will gain immediate access to:
+        </span>
+        <span *ngIf="!isKongregate">
+            For a $3 one time purchase or when signing up for any tier of Patreon, you will gain immediate access to:
+        </span>
         <br />
         •2 gods, <span class="smallCaps bold dionysusColor">Dionysus</span> and <span
             class="smallCaps bold nemesisColor">Nemesis</span>.<br />
@@ -65,7 +70,8 @@
         </div>
     </div>
     <div class="smallcaps bold s4Heading accentColor" *ngIf="isKongregate">
-        <i>Currently, this version of the game is not set up to handle Payment or Kreds through Kongregate. To access these benefits, please search for the patreon for Ballad of Heroes or visit the original github site for the game. </i>
+        <i>Currently, this version of the game is not set up to handle Payment or Kreds through Kongregate. To access
+            these benefits, please search for the patreon for Ballad of Heroes. </i>
     </div>
     <hr *ngIf="isMobile" />
     <div class="flex" *ngIf="isMobile">
