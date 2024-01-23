@@ -4626,8 +4626,7 @@ export class SubZoneGeneratorService {
       subZoneEnums.push(SubZoneEnum.AiaiaForestPath);
     }    
     if (type === SubZoneEnum.AiaiaForestPath) {
-      subZoneEnums.push(SubZoneEnum.AiaiaCircesHome);
-      subZoneEnums.push(SubZoneEnum.AiaiaOpenClearing)
+      subZoneEnums.push(SubZoneEnum.AiaiaCircesHome);      
     }    
     if (type === SubZoneEnum.AiaiaOpenClearing) {
       subZoneEnums.push(SubZoneEnum.AiaiaThornyPath);
@@ -4667,6 +4666,7 @@ export class SubZoneGeneratorService {
     var availableOptionsCrafter: ShopItem[] = [];
     var availableOptionsTraveler: ShopItem[] = [];
     var availableOptionsAugeanStables: ShopItem[] = [];
+    var availableOptionsCirceAlchemy: ShopItem[] = [];
 
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.LinenArmor, SubZoneEnum.DodonaDelphi));
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.IronArmor, SubZoneEnum.DodonaDelphi));
@@ -4902,6 +4902,16 @@ export class SubZoneGeneratorService {
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
     }
 
+    if (sidequestData.circeAlchemyLevel === 0)
+      availableOptionsCirceAlchemy.push(this.shopItemGenerator.generateShopItem(ItemsEnum.CirceAlchemy, SubZoneEnum.AiaiaCircesHome));
+    
+      if (subzoneType === SubZoneEnum.AiaiaCircesHome) {
+        shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
+        if (availableOptionsCirceAlchemy.length > 0)
+          shopOptions.push(new ShopOption(ShopTypeEnum.CirceAlchemy, availableOptionsCirceAlchemy));
+      }
+    
+
     if (returnAllShopOptions) {
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
@@ -4919,6 +4929,9 @@ export class SubZoneGeneratorService {
 
       if (availableOptionsAugeanStables.length > 0 && optionalScenesViewed !== undefined && optionalScenesViewed.some(item => item === OptionalSceneEnum.AugeanStables1))
         shopOptions.push(new ShopOption(ShopTypeEnum.AugeanStables, availableOptionsAugeanStables));
+
+        if (availableOptionsCirceAlchemy.length > 0 && optionalScenesViewed !== undefined && optionalScenesViewed.some(item => item === OptionalSceneEnum.CirceAlchemy))
+        shopOptions.push(new ShopOption(ShopTypeEnum.CirceAlchemy, availableOptionsCirceAlchemy));
     }
 
     return shopOptions;

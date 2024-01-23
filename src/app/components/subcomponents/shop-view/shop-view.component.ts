@@ -98,6 +98,10 @@ export class ShopViewComponent implements OnInit {
     return this.globalService.globalVar.sidequestData.augeanStablesLevel >= this.globalService.globalVar.sidequestData.maxAugeanStablesLevel;
   }
 
+  circeAlchemyCompleted() {
+    return this.globalService.globalVar.sidequestData.circeAlchemyLevel >= 1;
+  }
+
   getShopOptions() {
     if (this.showAllShopOptions)
     {
@@ -175,7 +179,7 @@ export class ShopViewComponent implements OnInit {
       else
         this.dialog.open(content, { width: '75%', maxHeight: '85%' });
     }
-    else if (option.type === ShopTypeEnum.AugeanStables) {
+    else if (option.type === ShopTypeEnum.AugeanStables || option.type === ShopTypeEnum.CirceAlchemy) {
       if (this.deviceDetectorService.isMobile())
         dialogRef = this.dialog.open(content, { width: '95%', minHeight: '60vh', height: '60%', id: "dialogNoPadding" });
       else
@@ -198,7 +202,7 @@ export class ShopViewComponent implements OnInit {
       this.jewelcraftingService.checkForNewRecipes();
     }
 
-    if (option.type === ShopTypeEnum.AugeanStables) {
+    if (option.type === ShopTypeEnum.AugeanStables || option.type === ShopTypeEnum.CirceAlchemy) {
       this.isDisplayingNewItems = false;
     }
 
@@ -231,7 +235,7 @@ export class ShopViewComponent implements OnInit {
     }
 
     if (option.type === ShopTypeEnum.Crafter || option.type === ShopTypeEnum.General || option.type === ShopTypeEnum.Traveler ||
-      option.type === ShopTypeEnum.Trader || option.type === ShopTypeEnum.AugeanStables) {
+      option.type === ShopTypeEnum.Trader || option.type === ShopTypeEnum.AugeanStables || option.type === ShopTypeEnum.CirceAlchemy) {
       this.allItems = option.availableItems.sort((a, b) => this.sortFunction(a, b));
       this.newItems = option.availableItems.sort((a, b) => this.sortFunction(a, b)).filter(item => item.originalStore === this.activeSubzoneType);
 
@@ -533,6 +537,15 @@ export class ShopViewComponent implements OnInit {
     if (option.type === ShopTypeEnum.IslandOfNaxos && this.balladService.getActiveSubZone().type === SubZoneEnum.CreteKnossos &&
       !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.IslandOfNaxos)) {
       scene = OptionalSceneEnum.IslandOfNaxos;
+    }    
+    if (option.type === ShopTypeEnum.CirceAlchemy && this.globalService.globalVar.sidequestData.circeAlchemyLevel === 0 && this.balladService.getActiveSubZone().type === SubZoneEnum.AiaiaCircesHome &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.CirceAlchemy)) {
+      scene = OptionalSceneEnum.CirceAlchemy;
+    }
+    if (option.type === ShopTypeEnum.CirceAlchemy && this.globalService.globalVar.sidequestData.circeAlchemyLevel === 0 &&
+      this.globalService.globalVar.sidequestData.displayCirceAlchemyPayScene && this.balladService.getActiveSubZone().type === SubZoneEnum.AiaiaCircesHome &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.CirceAlchemy2)) {
+      scene = OptionalSceneEnum.CirceAlchemy2;
     }
 
     return scene;

@@ -1444,6 +1444,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.AugeanStables3) {
       return new ResourceValue(ItemsEnum.AugeanStables3, amount);
     }
+    if (type === ItemsEnum.CirceAlchemy) {
+      return new ResourceValue(ItemsEnum.CirceAlchemy, amount);
+    }
     if (type === ItemsEnum.DarkOrb) {
       return new ResourceValue(ItemsEnum.DarkOrb, amount);
     }

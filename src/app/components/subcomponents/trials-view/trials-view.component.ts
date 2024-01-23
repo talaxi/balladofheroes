@@ -69,7 +69,7 @@ export class TrialsViewComponent {
       }
 
       var enumValue = propertyValue as TrialEnum;
-      if (enumValue !== TrialEnum.None && enumValue !== TrialEnum.TrialOfResolve) {
+      if (enumValue !== TrialEnum.None) { //todo: hide resolve here if you end up not getting it done
         Trials.push(enumValue);
       }
     }

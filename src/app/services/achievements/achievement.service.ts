@@ -470,36 +470,36 @@ export class AchievementService {
 
       //TODO:
       else if (subzoneType === SubZoneEnum.AiaiaUnknownWaters)
-        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        rewards.push(new ResourceValue(ItemsEnum.RutileAquamarineFragment, 60));
         else if (subzoneType === SubZoneEnum.AiaiaBreezyDays)
-        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        rewards.push(new ResourceValue(ItemsEnum.VialOfForeignWaters, 50));
         else if (subzoneType === SubZoneEnum.AiaiaShoreline)
-        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        rewards.push(new ResourceValue(ItemsEnum.RutileOpalFragment, 60));
         else if (subzoneType === SubZoneEnum.AiaiaForestPath)
-        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        rewards.push(new ResourceValue(ItemsEnum.Peony, 50));
         else if (subzoneType === SubZoneEnum.AiaiaOpenClearing)
-        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        rewards.push(new ResourceValue(ItemsEnum.Mandrake, 50));
         else if (subzoneType === SubZoneEnum.AiaiaThornyPath)
-        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        rewards.push(new ResourceValue(ItemsEnum.RutileRubyFragment, 60));
         else if (subzoneType === SubZoneEnum.AiaiaWildThicket)
-        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        rewards.push(new ResourceValue(ItemsEnum.Peony, 50));
         else if (subzoneType === SubZoneEnum.AiaiaFlowerGarden)
-        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        rewards.push(new ResourceValue(ItemsEnum.ColossalRoot, 30));
 
         else if (subzoneType === SubZoneEnum.StraitsOfMessinaIntoTheNarrowStraits)
-        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        rewards.push(new ResourceValue(ItemsEnum.VialOfForeignWaters, 50));
         else if (subzoneType === SubZoneEnum.StraitsOfMessinaEdgeOfCharybdis)
-        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        rewards.push(new ResourceValue(ItemsEnum.RutileEmeraldFragment, 50));
         else if (subzoneType === SubZoneEnum.StraitsOfMessinaCavernOpening)
-        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        rewards.push(new ResourceValue(ItemsEnum.RutileTopazFragment, 50));
         else if (subzoneType === SubZoneEnum.StraitsOfMessinaDarkTunnel)
-        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        rewards.push(new ResourceValue(ItemsEnum.UnstableElement, 50));
         else if (subzoneType === SubZoneEnum.StraitsOfMessinaUnavoidablePath)
-        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        rewards.push(new ResourceValue(ItemsEnum.StingrayTip, 1));
         else if (subzoneType === SubZoneEnum.StraitsOfMessinaIntoTheVortex)
-        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        rewards.push(new ResourceValue(ItemsEnum.RutileAquamarineFragment, 50));
         else if (subzoneType === SubZoneEnum.StraitsOfMessinaMawOfTheMonster)
-        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+        rewards.push(new ResourceValue(ItemsEnum.RutileAmethystFragment, 50));
     }
 
     if (achievementType === AchievementTypeEnum.ThousandVictories) {

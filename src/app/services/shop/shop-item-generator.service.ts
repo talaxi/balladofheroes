@@ -397,6 +397,9 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.MetalScraps, 100));
       purchasePrice.push(new ResourceValue(ItemsEnum.AnimalHide, 25));
     }
+    if (item === ItemsEnum.CirceAlchemy) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.ColossalRoot, 50));      
+    }
 
     if (item === ItemsEnum.Dionysus) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 8));

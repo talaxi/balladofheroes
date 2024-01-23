@@ -41,6 +41,10 @@
     (click)="openShop(option, augeanStablesModal)">{{getOptionText(option.type)}} <app-notification-icon
       *ngIf="!augeanStablesCompleted()" [isButton]="true"
       [notificationColor]="sideQuestNotification"></app-notification-icon></button>
+      <button *ngIf="option.type === shopTypeEnum.CirceAlchemy" class="buttonStyled shopButtonText"
+    (click)="openShop(option, circeAlchemyModal)">{{getOptionText(option.type)}} <app-notification-icon
+      *ngIf="!circeAlchemyCompleted()" [isButton]="true"
+      [notificationColor]="sideQuestNotification"></app-notification-icon></button>
   <button *ngIf="option.type === shopTypeEnum.Coliseum" class="buttonStyled shopButtonText" [ngClass]="{'stackedButtons': showAllShopOptions}"
     (click)="openShop(option, coliseumModal)">
     {{getOptionText(option.type)}}</button>
@@ -109,6 +113,16 @@
 </ng-template>
 
 <ng-template #augeanStablesModal>  
+  <table>
+    <tr *ngFor="let cells of shopItemRows;">
+      <td class="item" *ngFor="let c of cells;">
+        <app-shopping-item-view [item]="c" [totalItemsInShop]="shopItems.length"></app-shopping-item-view>
+      </td>
+    </tr>
+  </table>
+</ng-template>
+
+<ng-template #circeAlchemyModal>  
   <table>
     <tr *ngFor="let cells of shopItemRows;">
       <td class="item" *ngFor="let c of cells;">

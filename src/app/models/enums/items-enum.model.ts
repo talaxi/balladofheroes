@@ -590,5 +590,6 @@ export enum ItemsEnum {
   Mandrake,
   ColossalRoot,
   StingrayTip,
-  UnstableElement
+  UnstableElement,
+  CirceAlchemy
 } 

@@ -47,7 +47,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.76, 0.75, 0.71, 0.7, 0.65, 0.64, 0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [0.8,0.76, 0.75, 0.71, 0.7, 0.65, 0.64, 0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -1664,6 +1664,35 @@ export class VersionControlService {
           }
           if (starsVeryHard !== undefined && starsVeryHard.count >= 0) {
             starsVeryHard.zodiacType = ZodiacEnum.Capricorn;
+          }
+        }
+        if (version === .8) {
+          this.globalService.globalVar.sidequestData.circeAlchemyLevel = 0;
+
+          this.initializationService.initializeBalladOfTheWitch();
+
+          var labyrinthCenterSubZone = this.balladService.findSubzone(SubZoneEnum.TheLabyrinthLabyrinthCenter);
+          if (labyrinthCenterSubZone !== undefined && labyrinthCenterSubZone.isAvailable && labyrinthCenterSubZone.victoryCount > 0) {
+            var witch = this.balladService.findBallad(BalladEnum.Witch);
+            var aiaia = this.balladService.findZone(ZoneEnum.Aiaia);
+            var unknownWaters = this.balladService.findSubzone(SubZoneEnum.AiaiaUnknownWaters);
+
+            if (witch !== undefined) {
+              witch.isAvailable = true;
+              witch.notify = true;
+            }
+            if (aiaia !== undefined) {
+              aiaia.isAvailable = true;
+              aiaia.notify = true;
+            }
+            if (unknownWaters !== undefined) {
+              unknownWaters.isAvailable = true;
+              unknownWaters.notify = true;
+
+              this.achievementService.createDefaultAchievementsForSubzone(unknownWaters.type).forEach(achievement => {
+                this.globalService.globalVar.achievements.push(achievement);
+              });
+            }
           }
         }
 
