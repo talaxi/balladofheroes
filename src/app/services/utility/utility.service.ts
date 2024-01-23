@@ -151,8 +151,8 @@ export class UtilityService {
 
   isKongregate() {
     var isKongregate = false;
-    var url = (window.location != window.parent.location) ? document.referrer : document.location.href;
-    if (url.includes("kongregate")) {
+    var url = (window.location != window.parent.location) ? document.referrer : document.location.href;    
+    if (url.toLowerCase().includes("kongregate")) {
       isKongregate = true;
     }
 

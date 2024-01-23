@@ -646,7 +646,7 @@ export class InitializationService {
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.PoisonExtractPotion));
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.HeroicElixir));
 
-    var allAchievementsComplete = true;
+    var allAchievementsComplete = false;
 
     if (allAchievementsComplete) {
       this.globalService.globalVar.followerData.numberOfFollowersGainedFromAchievements = 100;
@@ -656,7 +656,7 @@ export class InitializationService {
     }
 
     this.globalService.globalVar.ballads.forEach(ballad => {
-      //if (ballad.type !== BalladEnum.Underworld) {
+      if (ballad.type === BalladEnum.Gorgon || ballad.type === BalladEnum.Champion || ballad.type === BalladEnum.Underworld) {
       ballad.isAvailable = true;
       ballad.notify = true;
       ballad.zones.forEach(zone => {
@@ -682,7 +682,7 @@ export class InitializationService {
         })
         //}
       });
-      //}
+      }
     });
 
     //set up ballad for original testing          
@@ -1224,9 +1224,9 @@ export class InitializationService {
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.AstralRingUnique));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.GleamingLoopUnique));      
 
-      this.globalService.globalVar.activePartyMember1 = CharacterEnum.Archer;
+      this.globalService.globalVar.activePartyMember1 = CharacterEnum.Monk;
       this.globalService.globalVar.characters.forEach(character => { character.isAvailable = true; character.unlockedOverdrives.push(OverdriveNameEnum.Reprisal); character.unlockedOverdrives.push(OverdriveNameEnum.Preservation); character.unlockedOverdrives.push(OverdriveNameEnum.Harmony); character.unlockedOverdrives.push(OverdriveNameEnum.Bullseye); });     //
-      this.globalService.globalVar.activePartyMember2 = CharacterEnum.Priest;
+      this.globalService.globalVar.activePartyMember2 = CharacterEnum.Warrior;
       this.globalService.globalVar.itemBeltSize = 1;
       this.globalService.globalVar.sidequestData.traderHuntLevel = 2;
       //this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy)!.level = 75;
@@ -1239,8 +1239,8 @@ export class InitializationService {
 
       var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
       if (character1 !== undefined) {
-        character1.assignedGod1 = GodEnum.Apollo;
-        character1.assignedGod2 = GodEnum.Artemis;
+        character1.assignedGod1 = GodEnum.Artemis;
+        character1.assignedGod2 = GodEnum.Dionysus;
         character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShadowSpear);
         character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShadowShield);
         character1.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShadowArmor);
@@ -1250,8 +1250,8 @@ export class InitializationService {
 
       var character2 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember2);
       if (character2 !== undefined) {
-        character2.assignedGod1 = GodEnum.Zeus;
-        character2.assignedGod2 = GodEnum.Ares;
+        character2.assignedGod1 = GodEnum.Ares;
+        character2.assignedGod2 = GodEnum.Poseidon;
         character2.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.GiantSword);
         character2.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.GiantShield);
         character2.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.GiantArmor);
@@ -1274,9 +1274,9 @@ export class InitializationService {
         this.globalService.assignGodAbilityInfo(athena!);
 
         if (j < chthonicResetCount - 1)
-          godLevel = 1600;
+          godLevel = 500;
         else
-          godLevel = 1900;
+          godLevel = 120;
 
         for (var i = 0; i < godLevel; i++) {
           this.globalService.levelUpGod(athena!);
