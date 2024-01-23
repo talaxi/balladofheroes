@@ -8,7 +8,7 @@ import { ConfirmationBoxComponent } from 'src/app/components/subcomponents/utili
 @Injectable({
   providedIn: 'root'
 })
-export class UtilityService {
+export class UtilityService {  
   //glossary
   public lowActiveTimeLimit = 1 * 30 * 60;
   public averageActiveTimeLimit = 1 * 60 * 60;
@@ -148,6 +148,16 @@ export class UtilityService {
   public timeFragmentEfficiency = .2;
 
   constructor(public sanitizer: DomSanitizer, public dialog: MatDialog) { }
+
+  isKongregate() {
+    var isKongregate = false;
+    var url = (window.location != window.parent.location) ? document.referrer : document.location.href;
+    if (url.includes("kongregate")) {
+      isKongregate = true;
+    }
+
+    return !isKongregate;
+  }
 
   getSanitizedHtml(text: string) {
     var sanitizedHtml = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(text));

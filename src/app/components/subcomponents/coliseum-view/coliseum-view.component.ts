@@ -65,6 +65,9 @@ export class ColiseumViewComponent implements OnInit {
     this.specialColiseumTournaments = this.getSpecialColiseumTournaments();
     if (this.standardColiseumTournaments.length > 0)
       this.selectedTournament = this.dictionaryService.getColiseumInfoFromType(this.standardColiseumTournaments[0]);
+
+    if (this.utilityService.isKongregate())
+      this.transactionEnabled = false;
   }
 
   isMobile() {

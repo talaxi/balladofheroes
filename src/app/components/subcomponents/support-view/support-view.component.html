@@ -1,66 +1,75 @@
 <div>
-    <span class="sectionHeaderText sectionHeading centeredSpan">Supporter</span>    
+    <span class="sectionHeaderText sectionHeading centeredSpan">Supporter</span>
     <br />
     <div>Thank you for considering supporting Ballad of Heroes!</div>
+    <br />
+    <div>
+        For a $3 one time purchase or when signing up for any tier of Patreon, you will gain immediate access to:
         <br />
-        <div>
-            For a $3 one time purchase or when signing up for any tier of Patreon, you will gain immediate access to:
-            <br />
-            •2 gods, <span class="smallCaps bold dionysusColor">Dionysus</span> and <span
-                class="smallCaps bold nemesisColor">Nemesis</span>.<br />
-            <div class="subbullet"><span>*<span class="smallCaps bold dionysusColor">Dionysus</span> is a support god
-                    who can give shields to allies, cause enemies to take extra damage, and debuff enemies.</span><br />
-                <span>*<span class="smallCaps bold nemesisColor">Nemesis</span> is a defense-oriented goddess who allows
-                    you to counter attack after an enemy attacks, force an
-                    enemy to target you, and attack enemies multiple times.</span>
-            </div>
-            •Two <span class="bold specialEquipment">Special</span> quality necklaces,
-            one focused on offense and the other on
-            defense.<br />
-            <span><i>*These gods and necklaces are eventually obtainable with in game resources and if you have already purchased
-                    them, their cost will be refunded to you.</i></span>
-            <br />
-            •Double the number of Eternal Melee tickets per day, the maximum Eternal Melee ticket cap, and increased buff duration when defeating gods in Trials.
-            <br />
-            •Two Time Fragments that allow you to automate XP/Item gain.
-            <br />
-            •100,000 Coins
+        •2 gods, <span class="smallCaps bold dionysusColor">Dionysus</span> and <span
+            class="smallCaps bold nemesisColor">Nemesis</span>.<br />
+        <div class="subbullet"><span>*<span class="smallCaps bold dionysusColor">Dionysus</span> is a support god
+                who can give shields to allies, cause enemies to take extra damage, and debuff enemies.</span><br />
+            <span>*<span class="smallCaps bold nemesisColor">Nemesis</span> is a defense-oriented goddess who allows
+                you to counter attack after an enemy attacks, force an
+                enemy to target you, and attack enemies multiple times.</span>
+        </div>
+        •Two <span class="bold specialEquipment">Special</span> quality necklaces,
+        one focused on offense and the other on
+        defense.<br />
+        <span><i>*These gods and necklaces are eventually obtainable with in game resources and if you have already
+                purchased
+                them, their cost will be refunded to you.</i></span>
+        <br />
+        •Double the number of <b class="smallCaps">Eternal Melee tickets</b> per day and the maximum ticket cap.
+        <br />
+        •Increased buff duration when defeating gods in Trials.
+        <br />
+        •Two <b class="smallCaps">Time Fragments</b> that allow you to automate XP/Item gain.
+        <br />
+        •<b class="smallCaps">100,000 Coins</b>
+    </div>
+    <br />
+    <div *ngIf="!isKongregate">
+        <span *ngIf="isSupporterAlreadyPurchased()"><i>You are already a Supporter, thank you so much!</i></span>
+        <div *ngIf="!isSupporterAlreadyPurchased()" class="textCentered">
+            <button class="buttonStyled transactionButton largeButtons"
+                onclick="location.href='https://square.link/u/d09fIrid';">Purchase Supporter Benefits</button>
         </div>
         <br />
-        <span *ngIf="isSupporterAlreadyPurchased()"><i>You are already a Supporter, thank you so much!</i></span>
-        <!--<a *ngIf="!isSupporterAlreadyPurchased()" rel="noopener noreferrer" href="https://square.link/u/d09fIrid">Purchase Supporter Benefits</a>-->
-        <div *ngIf="!isSupporterAlreadyPurchased()" class="textCentered">
-        <button  class="buttonStyled transactionButton largeButtons" onclick="location.href='https://square.link/u/d09fIrid';">Purchase Supporter Benefits</button>
-    </div>
-        <!--<span><b><i>Patreon does not allow for one time purchases, but you can sign up for the lowest tier and immediately cancel your subscription to obtain these benefits.</i></b></span>-->
-        <br/>
         <br />
         <div>
-            You can also support the development of this game monthly through Patreon. I will post about my 
+            You can also support the development of this game monthly through Patreon. I will post about my
             plans and ideas for the game as well as provide a code to redeem for additional rewards monthly,
-            such as extra tickets to the Eternal Melee, Ambrosia, and other useful resources to help your game progression.
+            such as extra tickets to the Eternal Melee, Ambrosia, and other useful resources to help your game
+            progression.
             <br />
             <br />
             <div class="centeredSpan">
-                <button class="buttonStyled transactionButton largeButtons" onclick="window.open('https://www.patreon.com/BalladOfHeroes','_blank');">View Patreon</button>
-                <!--<a rel="noopener noreferrer" target="_blank" class="s4Heading bold textCentered" href="https://www.patreon.com/BalladOfHeroes">View
-                    Patreon</a>-->
+                <button class="buttonStyled transactionButton largeButtons"
+                    onclick="window.open('https://www.patreon.com/BalladOfHeroes','_blank');">View Patreon</button>
             </div>
-        </div>  
-    <br />
-    <div>
-        <strong>
-            If you have any issues with receiving your benefits after purchase, please reach out to me via email at
-            balladofheroes@gmail.com or via Discord.
-        </strong>
-    </div> 
-    <br/>
-    <div>
-        Lastly, if you would like to simply give a donation, you can do so through 
-        <a rel="noopener noreferrer" target="_blank" class="s4Heading bold textCentered" href="https://ko-fi.com/balladofheroes">Ko-Fi</a>. Thank you!
+        </div>
+        <br />
+        <div>
+            <strong>
+                If you have any issues with receiving your benefits after purchase, please reach out to me via email at
+                balladofheroes@gmail.com or via Discord.
+            </strong>
+        </div>
+        <br />
+        <div>
+            Lastly, if you would like to simply give a donation, you can do so through
+            <a rel="noopener noreferrer" target="_blank" class="s4Heading bold textCentered"
+                href="https://ko-fi.com/balladofheroes">Ko-Fi</a>. Thank you!
+        </div>
     </div>
-    <hr *ngIf="isMobile"/> 
+    <div class="smallcaps bold s4Heading accentColor" *ngIf="isKongregate">
+        <i>Currently, this version of the game is not set up to handle Payment or Kreds through Kongregate. To access these benefits, please search for the patreon for Ballad of Heroes or visit the original github site for the game. </i>
+    </div>
+    <hr *ngIf="isMobile" />
     <div class="flex" *ngIf="isMobile">
-        <img class="discordIcon" src="assets/svg/discord.svg"> <a class='discordLink' href='https://discord.gg/gcRvF2AJGV'>Click for Discord Link</a>
+        <img class="discordIcon" src="assets/svg/discord.svg"> <a class='discordLink'
+            href='https://discord.gg/gcRvF2AJGV'>Click for Discord Link</a>
     </div>
 </div>
