@@ -9,6 +9,7 @@ import { ConfirmationBoxComponent } from 'src/app/components/subcomponents/utili
   providedIn: 'root'
 })
 export class UtilityService {  
+  public shopBuyMultiplier = 1;
   //glossary
   public lowActiveTimeLimit = 1 * 30 * 60;
   public averageActiveTimeLimit = 1 * 60 * 60;
@@ -60,6 +61,7 @@ export class UtilityService {
   public permanentPassiveGodLevel = 125;
   public permanentGodAbility2Level = 175;
   public permanentGodAbility3Level = 375;
+  public duoAbilityLevel = 3000;
 
   public godStatGainLevelIncrement = (1 / 25);
   public godStatGainBaseAmount = 6;

@@ -24,8 +24,8 @@
                 <span class='statLabel'>Resistance:</span> {{getResistance()}}
             </div>
         </div>
-        <br />
-        <div>
+        <br *ngIf="getElementalStrengths() !== '' || getElementalWeaknesses() !== ''" />
+        <div *ngIf="getElementalStrengths() !== '' || getElementalWeaknesses() !== ''">
             <div [ngClass]="{'stats': getElementalStrengths() !== '' && getElementalWeaknesses() !== ''}"
                 *ngIf="getElementalStrengths() !== '' || getElementalWeaknesses() !== ''">
                 <span *ngIf="getElementalStrengths() !== ''" [innerHtml]="getElementalStrengths()"></span>

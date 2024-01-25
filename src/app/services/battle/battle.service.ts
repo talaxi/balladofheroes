@@ -687,10 +687,16 @@ export class BattleService {
             }
           }
 
-          var amountHealed = this.gainHp(character, effect.effectiveness);
+          var amountHealed = 0;
 
-          if (effect.type === StatusEffectEnum.ScathingBeauty)
+          if (effect.type === StatusEffectEnum.ScathingBeauty) {
             effect.abilityName = "Scathing Beauty";
+            amountHealed = this.gainHp(character, effect.effectiveness * this.lookupService.getAdjustedResistance(character, true));
+          }
+          else
+          {
+            amountHealed = this.gainHp(character, effect.effectiveness);
+          }
 
           var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " gains " + this.utilityService.bigNumberReducer(Math.round(amountHealed)) + " HP from " + effect.abilityName + "'s effect.";
 
@@ -1309,7 +1315,7 @@ export class BattleService {
           !character.unlockedOverdrives.some(item => item === OverdriveNameEnum.Harmony))
           character.unlockedOverdrives.push(OverdriveNameEnum.Harmony);
 
-        if (this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) {
+        if (this.globalService.globalVar.gameLogSettings.get("partyAbilityUse") && Math.round(healedAmount) > 0) {
           var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " uses Insight, restoring " + this.utilityService.bigNumberReducer(Math.round(healedAmount)) + " HP to " + potentialTarget.name + "." + (isCritical ? " <strong>Critical heal!</strong>" : "");
           this.gameLogService.updateGameLog(GameLogEntryEnum.UseAbility, gameLogEntry, this.globalService.globalVar);
         }
@@ -7461,6 +7467,14 @@ export class BattleService {
             this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry, this.globalService.globalVar);
           }
         }
+      }
+    }
+    
+    var unsteadyingToxin = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.UnsteadyingToxin);
+    if (unsteadyingToxin !== undefined) {
+      var rng = this.utilityService.getRandomNumber(0, 1);
+      if (rng <= unsteadyingToxin.effectiveness) {
+        this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.Unsteady, 20, .2, false, false), target, undefined, user);
       }
     }
   }

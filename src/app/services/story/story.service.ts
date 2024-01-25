@@ -293,7 +293,10 @@ export class StoryService {
         sceneText = "<div class='sceneDiv'>You win! The crowd of souls cheer as you make your way to the front of the arena. Hades sits here above all others, staring at you with a piercing gaze. " + this.hadesText("“Continue past the coliseum and you will find Charon ready to ferry you back to the surface. You are free to go, under one condition. Under <i>NO CIRCUMSTANCES</i> will the fools of Olympus be allowed to fall. I will not have them here. Now go.”") + "</div>";
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>As you make your way out of the arena, you find Hermes waiting for you at the front gates. " + this.hermesText("“Well done! Couldn't have done too much better myself. I think I may have been mistaken about you two. You're not wrong for the job, you just need a little guidance. Call on me when you need help, I'm never too far. See you around!”") + "</div>" +
-          "<div>Free from gods for the time being, you begin the short trek to the ferryman of the Underworld.</div>";
+          "<div class='sceneDiv'>Free from gods for the time being, you begin the short trek to the ferryman of the Underworld.</div>";
+        else if (pageCount === 3)
+          sceneText = "<div class='sceneDiv s4Heading bold textCentered sidequestText'>Coliseum Available!</div>" +
+          "Return to the coliseum throughout your journey for increasingly more difficult and rewarding battles. Use the special <b class='smallCaps'>Eternal Melee</b> fight to gain a massive amount of experience for your entire team.";
     }
     else if (storyId === 13) {
       if (pageCount === 1)
@@ -773,7 +776,7 @@ export class StoryService {
       this.pageCount = 3;
     }
     if (this.globalService.globalVar.currentStoryId === 12) {
-      this.pageCount = 2;
+      this.pageCount = 3;
     }
     if (this.globalService.globalVar.currentStoryId === 13) {
       this.pageCount = 2;

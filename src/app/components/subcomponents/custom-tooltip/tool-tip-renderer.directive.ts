@@ -137,6 +137,19 @@ export class ToolTipRendererDirective {
           offsetX: 5
         }]);
     }
+    //not shrinking text correctly
+    /*else if (this.tooltipDirection === DirectionEnum.DownRightAdjacent) {
+      positionStrategy = this._overlayPositionBuilder
+        .flexibleConnectedTo(this._elementRef)
+        .withPositions([{
+          originX: 'end',
+          originY: 'bottom',
+          overlayX: 'start',
+          overlayY: 'top',
+          offsetY: -25,
+          offsetX: 5
+        }]);
+    }*/
     else if (this.tooltipDirection === DirectionEnum.DownLeft) {
       positionStrategy = this._overlayPositionBuilder
         .flexibleConnectedTo(this._elementRef)

@@ -44,63 +44,6 @@ export class ShoppingItemViewComponent implements OnInit {
   @Input() excludeItemDescriptionLocationText = false;
   @Input() totalItemsInShop = 0;
   buyMultiplier: number = 1;
-  ctrlPressed: boolean = false;
-  shiftPressed: boolean = false;
-  altPressed: boolean = false;
-
-  @HostListener('window:keydown', ['$event'])
-  keyEventDown(event: KeyboardEvent) {
-    if (this.cannotMultiply())
-      return;
-
-    if (event.key === "Shift") { //multiply by 25
-      event.preventDefault();
-      if (!this.shiftPressed) {
-        this.buyMultiplier *= 25;
-        this.shiftPressed = true;
-      }
-    }
-    if (event.key === "Control") { //multiply by 10
-      event.preventDefault();
-      if (!this.ctrlPressed) {
-        this.buyMultiplier *= 10;
-        this.ctrlPressed = true;
-      }
-    }
-    if (event.key === "Alt") { //multiply by 100
-      event.preventDefault();
-      if (!this.altPressed) {
-        this.buyMultiplier *= 100;
-        this.altPressed = true;
-      }
-    }
-  }
-
-  @HostListener('window:keyup', ['$event'])
-  keyEventUp(event: KeyboardEvent) {
-    if (this.cannotMultiply())
-      return;
-
-    event.preventDefault();
-    if (event.key === "Shift") { //divide by 25
-      if (this.shiftPressed) {
-        this.buyMultiplier /= 25;
-        this.shiftPressed = false;
-      }
-    }
-    if (event.key === "Control") { //divide by 10
-      if (this.ctrlPressed) {
-        this.buyMultiplier /= 10;
-        this.ctrlPressed = false;
-      }
-    }
-    if (event.key === "Alt") { //divide by 100
-      if (this.altPressed) {
-        this.buyMultiplier /= 100;
-        this.altPressed = false;
-      }
-    }
-  }
 
   constructor(public lookupService: LookupService, private resourceGeneratorService: ResourceGeneratorService,
     private utilityService: UtilityService, private globalService: GlobalService, private gameLoopService: GameLoopService,
@@ -202,6 +145,10 @@ export class ShoppingItemViewComponent implements OnInit {
   }
 
   setItemPurchasePrice() {
+    this.buyMultiplier = this.utilityService.shopBuyMultiplier;
+    if (this.cannotMultiply())
+      this.buyMultiplier = 1;
+
     this.purchaseResourcesRequired = "";
     if (this.item.purchasePrice.some(item => item.item === ItemsEnum.Ambrosia)) {
       this.item.purchasePrice = this.item.purchasePrice.filter(item => item.item !== ItemsEnum.Coin);

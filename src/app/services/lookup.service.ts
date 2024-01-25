@@ -364,7 +364,9 @@ export class LookupService {
       type === ItemsEnum.SmallAnimalBones || type === ItemsEnum.VialOfTheCretanSea || type === ItemsEnum.PristineCrabClaw || type === ItemsEnum.BirchBark ||
       type === ItemsEnum.RadiatingGemstone || type === ItemsEnum.WhiteHorn || type === ItemsEnum.PotentEssence || type === ItemsEnum.BlackHorn ||
       type === ItemsEnum.MagicCore || type === ItemsEnum.EssenceOfHoly || type === ItemsEnum.EssenceOfLightning || type === ItemsEnum.EssenceOfAir ||
-      type === ItemsEnum.EssenceOfEarth || type === ItemsEnum.MetalNuggets || type === ItemsEnum.Mandrake || type === ItemsEnum.UnstableElement) {
+      type === ItemsEnum.EssenceOfEarth || type === ItemsEnum.MetalNuggets || type === ItemsEnum.Mandrake || type === ItemsEnum.UnstableElement || 
+      type === ItemsEnum.RutileRubyFragment || type === ItemsEnum.RutileEmeraldFragment || type === ItemsEnum.RutileTopazFragment ||
+      type === ItemsEnum.RutileOpalFragment || type === ItemsEnum.RutileAmethystFragment || type === ItemsEnum.RutileAquamarineFragment ) {
       return ItemTypeEnum.CraftingMaterial;
     }
 
@@ -442,6 +444,64 @@ export class LookupService {
 
   giveCharactersBonusExp(amount: number) {
     this.globalService.giveCharactersBonusExp(amount);
+  }
+
+  isDuoAvailable(god1: GodEnum, god2: GodEnum) {
+    var god1ConditionMet = false;
+    var god2ConditionMet = false;
+    var gods = [];
+    gods.push(god1);
+    gods.push(god2);
+    if (gods.length < 2)
+      return false;
+
+    for (var i = 0; i < gods.length; i++) {
+      var conditionMet = false;
+
+      if (gods[i] === GodEnum.Athena && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AthenasCrest && item.amount > 0) &&
+        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AthenasSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Artemis && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ArtemissCrest && item.amount > 0) &&
+        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ArtemissSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Hermes && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HermessCrest && item.amount > 0) &&
+        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HermessSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Apollo && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ApollosCrest && item.amount > 0) &&
+        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ApollosSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Ares && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AressCrest && item.amount > 0) &&
+        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AressSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Hades && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HadessCrest && item.amount > 0) &&
+        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HadessSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Nemesis && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.NemesissCrest && item.amount > 0) &&
+        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.NemesissSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Dionysus && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.DionysussCrest && item.amount > 0) &&
+        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.DionysussSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Zeus && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ZeussCrest && item.amount > 0) &&
+        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ZeussSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Poseidon && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.PoseidonsCrest && item.amount > 0) &&
+        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.PoseidonsSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Aphrodite && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AphroditesCrest && item.amount > 0) &&
+        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AphroditesSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Hera && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HerasCrest && item.amount > 0) &&
+        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HerasSigil && item.amount > 0))
+        conditionMet = true;
+
+      if (i === 0)
+        god1ConditionMet = conditionMet;
+      else if (i === 1)
+        god2ConditionMet = conditionMet;
+    }
+
+    return god1ConditionMet && god2ConditionMet;
   }
 
   isItemUnique(type: ItemsEnum) {
@@ -984,7 +1044,15 @@ export class LookupService {
     else {
       //description = "Used for crafting.";
       description = "Crafting material. Use at a Crafter or with a Profession to create new items.";
-      if (item === ItemsEnum.SoulEssence || item === ItemsEnum.SatchelOfHerbs || item === ItemsEnum.BushelOfHerbs || item === ItemsEnum.PotentEssence)
+      if (item === ItemsEnum.SoulEssence || item === ItemsEnum.SatchelOfHerbs || item === ItemsEnum.BushelOfHerbs || item === ItemsEnum.PotentEssence ||
+        item === ItemsEnum.PerfectCrackedRuby || item === ItemsEnum.PerfectCrackedAquamarine || item === ItemsEnum.PerfectCrackedTopaz || 
+        item === ItemsEnum.PerfectCrackedOpal || item === ItemsEnum.PerfectCrackedEmerald || item === ItemsEnum.PerfectCrackedAmethyst ||
+        item === ItemsEnum.PerfectDullRuby || item === ItemsEnum.PerfectDullAquamarine || item === ItemsEnum.PerfectDullTopaz || 
+        item === ItemsEnum.PerfectDullOpal || item === ItemsEnum.PerfectDullEmerald || item === ItemsEnum.PerfectDullAmethyst ||
+        item === ItemsEnum.PerfectFlawedRuby || item === ItemsEnum.PerfectFlawedAquamarine || item === ItemsEnum.PerfectFlawedTopaz || 
+        item === ItemsEnum.PerfectFlawedOpal || item === ItemsEnum.PerfectFlawedEmerald || item === ItemsEnum.PerfectFlawedAmethyst ||
+        item === ItemsEnum.PerfectRutilatedRuby || item === ItemsEnum.PerfectRutilatedAquamarine || item === ItemsEnum.PerfectRutilatedTopaz || 
+        item === ItemsEnum.PerfectRutilatedOpal || item === ItemsEnum.PerfectRutilatedEmerald || item === ItemsEnum.PerfectRutilatedAmethyst)
         return description;
 
       if (!excludeResourceLocations) {
@@ -6335,8 +6403,8 @@ export class LookupService {
       description = "Healing " + this.utilityService.bigNumberReducer(statusEffect.effectiveness) + " HP every " + this.utilityService.roundTo(statusEffect.tickFrequency, 2) + " seconds.";
     if (statusEffect.type === StatusEffectEnum.HealAfterDuration)
       description = "Healing " + this.utilityService.bigNumberReducer(statusEffect.effectiveness * 100) + "% of Max HP when this effect expires.";
-    if (statusEffect.type === StatusEffectEnum.ScathingBeauty)
-      description = "Healing " + this.utilityService.bigNumberReducer(statusEffect.effectiveness) + " HP every " + this.utilityService.roundTo(statusEffect.tickFrequency, 2) + " seconds.";
+    if (statusEffect.type === StatusEffectEnum.ScathingBeauty && character !== undefined)
+      description = "Healing " + this.utilityService.bigNumberReducer(statusEffect.effectiveness * this.getAdjustedResistance(character, true)) + " HP every " + this.utilityService.roundTo(statusEffect.tickFrequency, 2) + " seconds.";
     if (statusEffect.type === StatusEffectEnum.ScathingBeautyUnique && character !== undefined) {
       /*var hitCountAllowed = 1;
       var unique = this.globalService.globalVar.uniques.find(item => item.type === ItemsEnum.BoundingBandUnique);
@@ -8408,6 +8476,8 @@ export class LookupService {
     if (gods.length < 2)
       return new Ability();
 
+    ability.requiredLevel = this.utilityService.duoAbilityLevel;
+
     var god1 = this.globalService.globalVar.gods.find(item => item.type === gods[0]);
     var god2 = this.globalService.globalVar.gods.find(item => item.type === gods[1]);
     if (god1 === undefined || god2 === undefined)
@@ -9713,7 +9783,7 @@ export class LookupService {
   }
 
   getDuoEffectivenessDescription() {
-    return "Increases your Duo ability effectiveness when equipped.";
+    return "Increases your Duo ability effectiveness when equipped. Each Duo ability is increased in different ways.";
   }
 
   getAgilityDescription(character?: Character) {
@@ -10050,7 +10120,7 @@ export class LookupService {
     var breakdown = "";
 
     if (god.partyPermanentStatMultiplier.resistance > 0)
-      breakdown += "Permanent Stat Gain: +" + this.utilityService.genericRound(god.permanentStatGain.duoPermanentEffectiveness * 100) + "<br />";
+      breakdown += "Permanent Stat Gain: +" + this.utilityService.genericRound(god.permanentStatGain.duoPermanentEffectiveness) + "<br />";
 
     return breakdown;
   }
@@ -12511,8 +12581,8 @@ export class LookupService {
       return BestiaryEnum.ScavengingCoyote;
     if (level === 3)
       return BestiaryEnum.RabidJackal;
-    //if (level === 4) //TODO: once next ballad is implemented
-    //return BestiaryEnum.Charybdis; //should be able to trade both rough fragments and flawed jewels
+    if (level === 4) 
+    return BestiaryEnum.Charybdis;
 
     return BestiaryEnum.None;
   }

@@ -8,7 +8,7 @@ import { God } from 'src/app/models/character/god.model';
 import { AffinityLevelRewardEnum } from 'src/app/models/enums/affinity-level-reward-enum.model';
 import { AltarEnum } from 'src/app/models/enums/altar-enum.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
-import { CharacterStatEnum } from 'src/app/models/enums/character-stat-enum.model';
+import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { GodLevelIncreaseEnum } from 'src/app/models/enums/god-level-increase-enum.model';
@@ -56,8 +56,21 @@ export class GodViewComponent implements OnInit {
 
       //for each character, check if this is the assigned god. if so, default template to you
       this.globalService.getActivePartyCharacters(true).forEach(character => {
-        if (character.assignedGod1 === this.god.type || character.assignedGod2 === this.god.type)
+        if (character.assignedGod1 === this.god.type || character.assignedGod2 === this.god.type) {
           this.characterTemplate = character.type;
+          var otherGodType = GodEnum.None;
+          if (character.assignedGod1 === this.god.type)
+            otherGodType = character.assignedGod2;
+          else
+            otherGodType = character.assignedGod1;
+
+          if (this.lookupService.isDuoAvailable(this.god.type, otherGodType)) {
+            var gods: GodEnum[] = [];
+            gods.push(this.god.type);
+            gods.push(otherGodType);
+            this.abilityList.push(this.lookupService.getDuoAbility(gods));
+          }
+        }
       });
     }
 
@@ -73,18 +86,54 @@ export class GodViewComponent implements OnInit {
           }).filter(item => item.isAvailable);
 
           this.globalService.getActivePartyCharacters(true).forEach(character => {
-            if (character.assignedGod1 === this.god.type || character.assignedGod2 === this.god.type)
+            if (character.assignedGod1 === this.god.type || character.assignedGod2 === this.god.type) {
               this.characterTemplate = character.type;
+
+              var otherGodType = GodEnum.None;
+              if (character.assignedGod1 === this.god.type)
+                otherGodType = character.assignedGod2;
+              else
+                otherGodType = character.assignedGod1;
+
+              if (this.lookupService.isDuoAvailable(this.god.type, otherGodType)) {
+                var gods: GodEnum[] = [];
+                gods.push(this.god.type);
+                gods.push(otherGodType);
+                this.abilityList.push(this.lookupService.getDuoAbility(gods));
+              }
+            }
           });
         }
       }
     });
   }
 
+  isDuoAbility(ability: Ability) {
+    return ability.requiredLevel === this.utilityService.duoAbilityLevel;
+  }
+
+  getPartnerGod() {
+    var character = this.globalService.globalVar.characters.find(item => item.type.toString() === this.characterTemplate.toString());
+    if (character === undefined)
+      return "";
+
+    var otherGodType = GodEnum.None;
+    if (character.assignedGod1 === this.god.type)
+      otherGodType = character.assignedGod2;
+    else
+      otherGodType = character.assignedGod1;
+
+    var partnerGod = this.globalService.globalVar.gods.find(item => item.type === otherGodType);
+    if (partnerGod === undefined)
+      return "";
+
+    return "<span class='smallCaps bold'>with</span> <span class='smallCaps bold " + partnerGod.name.toLowerCase() + "Color'>" + partnerGod.name + "</span> - ";
+  }
+
   getGodXp() {
     return this.utilityService.bigNumberReducer(this.god.exp);
   }
-  
+
   getGodXpToNextLevel() {
     return this.utilityService.bigNumberReducer(this.god.expToNextLevel);
   }
@@ -223,13 +272,13 @@ export class GodViewComponent implements OnInit {
         else if (nextLevel % 200 === 0 && nextLevel <= 2000)
           obtainCap = this.utilityService.godPermanentAbility3ObtainCap;
         else if (nextLevel % 100 === 0 && nextLevel <= 3000)
-        obtainCap = this.utilityService.godPermanentStatGain6ObtainCap;
+          obtainCap = this.utilityService.godPermanentStatGain6ObtainCap;
         else if (nextLevel % 50 === 0 && nextLevel <= 3000)
           obtainCap = this.utilityService.godPermanentStatGain5ObtainCap;
         else if (nextLevel % 100 === 0 && nextLevel <= 4000)
           obtainCap = this.utilityService.godPermanentStatGain7ObtainCap;
         else if (nextLevel % 50 === 0 && nextLevel <= 4000)
-        obtainCap = this.utilityService.godPermanentDuoAbilityObtainCap;          
+          obtainCap = this.utilityService.godPermanentDuoAbilityObtainCap;
         else if (nextLevel % 50 === 0 && nextLevel > 4000)
           obtainCap = this.utilityService.godPermanentStatGain8ObtainCap;
 
@@ -259,7 +308,7 @@ export class GodViewComponent implements OnInit {
           rewards += this.utilityService.genericRound(multiplierText !== "" ? increaseValues.resistance * 100 : increaseValues.resistance) + multiplierText + " Resistance " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
 
         if (increaseValues.duoPermanentEffectiveness > 0)
-          rewards += this.utilityService.genericRound(increaseValues.duoPermanentEffectiveness * 100) + "% Duo Ability Effectiveness " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += this.utilityService.genericRound(increaseValues.duoPermanentEffectiveness) + " Duo Ability Upgrade " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.xpGain > 0)
           rewards += this.utilityService.genericRound(increaseValues.xpGain * 100) + "% XP Gain " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.hpRegen > 0)
@@ -438,7 +487,7 @@ export class GodViewComponent implements OnInit {
   getHealingDoneBonus() {
     return this.god.statGain.healingDone + this.god.permanentStatGain.healingDone;
   }
-  
+
   getAllyDamageBonus() {
     return this.god.statGain.allyDamageBonus + this.god.permanentStatGain.allyDamageBonus;
   }
@@ -462,7 +511,7 @@ export class GodViewComponent implements OnInit {
   getTickFrequencyBonus() {
     return this.god.statGain.tickFrequency + this.god.permanentStatGain.tickFrequency;
   }
-  
+
   getLinkEffectivenessBonus() {
     return this.god.statGain.linkEffectiveness + this.god.permanentStatGain.linkEffectiveness;
   }
@@ -935,7 +984,57 @@ export class GodViewComponent implements OnInit {
     return 0;
   }
 
+  isDuoAbilityAvailable() {
+    var conditionMet = false;
+
+    if (this.god.type === GodEnum.Athena && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AthenasCrest && item.amount > 0) &&
+      this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AthenasSigil && item.amount > 0))
+      conditionMet = true;
+    if (this.god.type === GodEnum.Artemis && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ArtemissCrest && item.amount > 0) &&
+      this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ArtemissSigil && item.amount > 0))
+      conditionMet = true;
+    if (this.god.type === GodEnum.Hermes && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HermessCrest && item.amount > 0) &&
+      this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HermessSigil && item.amount > 0))
+      conditionMet = true;
+    if (this.god.type === GodEnum.Apollo && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ApollosCrest && item.amount > 0) &&
+      this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ApollosSigil && item.amount > 0))
+      conditionMet = true;
+    if (this.god.type === GodEnum.Ares && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AressCrest && item.amount > 0) &&
+      this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AressSigil && item.amount > 0))
+      conditionMet = true;
+    if (this.god.type === GodEnum.Hades && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HadessCrest && item.amount > 0) &&
+      this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HadessSigil && item.amount > 0))
+      conditionMet = true;
+    if (this.god.type === GodEnum.Nemesis && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.NemesissCrest && item.amount > 0) &&
+      this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.NemesissSigil && item.amount > 0))
+      conditionMet = true;
+    if (this.god.type === GodEnum.Dionysus && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.DionysussCrest && item.amount > 0) &&
+      this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.DionysussSigil && item.amount > 0))
+      conditionMet = true;
+    if (this.god.type === GodEnum.Zeus && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ZeussCrest && item.amount > 0) &&
+      this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ZeussSigil && item.amount > 0))
+      conditionMet = true;
+    if (this.god.type === GodEnum.Poseidon && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.PoseidonsCrest && item.amount > 0) &&
+      this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.PoseidonsSigil && item.amount > 0))
+      conditionMet = true;
+    if (this.god.type === GodEnum.Aphrodite && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AphroditesCrest && item.amount > 0) &&
+      this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AphroditesSigil && item.amount > 0))
+      conditionMet = true;
+    if (this.god.type === GodEnum.Hera && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HerasCrest && item.amount > 0) &&
+      this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HerasSigil && item.amount > 0))
+      conditionMet = true;
+
+    return conditionMet;
+  }
+
   openPermanentStatBreakdown(content: any) {
+    if (this.deviceDetectorService.isMobile())
+      this.dialog.open(content, { width: '95%', height: '80%', panelClass: 'mat-dialog-no-scroll' });
+    else
+      this.dialog.open(content, { width: '60%', height: '75%', panelClass: 'mat-dialog-no-scroll' });
+  }
+
+  openDuoAbilityBreakdown(content: any) {
     if (this.deviceDetectorService.isMobile())
       this.dialog.open(content, { width: '95%', height: '80%', panelClass: 'mat-dialog-no-scroll' });
     else
@@ -1017,10 +1116,10 @@ export class GodViewComponent implements OnInit {
           item[0] === 2550 || item[0] === 2650 || item[0] === 2750 || item[0] === 2850 || item[0] === 2950)
           gainCap = this.utilityService.godPermanentStatGain5ObtainCap;
         if (item[0] === 2100 || item[0] === 2200 || item[0] === 2300 || item[0] === 2400 || item[0] === 2500 ||
-          item[0] === 2600 || item[0] === 2700 || item[0] === 2800 || item[0] === 2900 || item[0] === 3000){          
+          item[0] === 2600 || item[0] === 2700 || item[0] === 2800 || item[0] === 2900 || item[0] === 3000) {
           gainCap = this.utilityService.godPermanentStatGain6ObtainCap;
           partyText = " to party";
-          }
+        }
         if (item[0] === 3050 || item[0] === 3150 || item[0] === 3250 || item[0] === 3350 || item[0] === 3450 ||
           item[0] === 3550 || item[0] === 3650 || item[0] === 3750 || item[0] === 3850 || item[0] === 3950)
           gainCap = this.utilityService.godPermanentDuoAbilityObtainCap;
@@ -1095,7 +1194,7 @@ export class GodViewComponent implements OnInit {
       statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.water * 100) + "% Water Damage Increase, ";
     if (upgradedStats.overdriveGain > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.overdriveGain * 100) + "% Overdrive Gain, ";
-      if (upgradedStats.linkEffectiveness > 0)
+    if (upgradedStats.linkEffectiveness > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.linkEffectiveness * 100) + "% Link Effectiveness, ";
     if (upgradedStats.armorPenetration > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.armorPenetration * 100) + "% Armor Penetration, ";
@@ -1103,8 +1202,8 @@ export class GodViewComponent implements OnInit {
       statGainText += this.utilityService.genericRound(upgradedStats.abilityCooldownReduction * 100) + "% Ability Cooldown Reduction, ";
     if (upgradedStats.xpGain > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.xpGain * 100) + "% XP Gain, ";
-      if (upgradedStats.duoPermanentEffectiveness > 0)
-      statGainText += this.utilityService.genericRound(upgradedStats.duoPermanentEffectiveness * 100) + "% Duo Ability Effectiveness, ";
+    if (upgradedStats.duoPermanentEffectiveness > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.duoPermanentEffectiveness) + " Duo Ability Upgrade, ";
 
     var upgradedAbilityName = this.god.abilityList.find(item => item.requiredLevel === upgradedAbilities.requiredLevel)?.name;
 
@@ -1142,6 +1241,30 @@ export class GodViewComponent implements OnInit {
       highestLevelReached = this.god.level;
 
     return highestLevelReached;
+  }
+
+  getDuoAbilityBreakdown() {
+    var text = "";
+
+    this.globalService.globalVar.gods.filter(item => item.isAvailable && item.type !== this.god.type).forEach((god, index) => {
+      text += "<span class='smallCaps bold'>with</span> <span class='smallCaps bold " + god.name.toLowerCase() + "Color'>" + god.name + "</span> - ";
+      if (this.lookupService.isDuoAvailable(this.god.type, god.type)) {
+        var gods: GodEnum[] = [];
+        gods.push(this.god.type);
+        gods.push(god.type);
+        var ability = this.lookupService.getDuoAbility(gods);
+        var character = this.globalService.globalVar.characters.find(item => item.type === this.characterTemplate);
+        text += this.lookupService.getGodAbilityDescription(ability.name, character === undefined ? new Character() : character, ability);
+      }
+      else {
+        text += "???";
+      }
+
+      if (index < this.globalService.globalVar.gods.filter(item => item.isAvailable).length - 1)
+        text += "<hr/>";
+    });
+
+    return text;
   }
 
   ngOnDestroy() {

@@ -1671,6 +1671,14 @@ export class VersionControlService {
 
           this.initializationService.initializeBalladOfTheWitch();
 
+          var monkClass = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Monk);
+          if (monkClass !== undefined) {           
+            var passive = monkClass.abilityList.find(item => item.requiredLevel === this.utilityService.characterPassiveLevel);
+            if (passive !== undefined) {
+              passive.secondaryEffectiveness = 1.5;
+            }
+          }
+
           var labyrinthCenterSubZone = this.balladService.findSubzone(SubZoneEnum.TheLabyrinthLabyrinthCenter);
           if (labyrinthCenterSubZone !== undefined && labyrinthCenterSubZone.isAvailable && labyrinthCenterSubZone.victoryCount > 0) {
             var witch = this.balladService.findBallad(BalladEnum.Witch);

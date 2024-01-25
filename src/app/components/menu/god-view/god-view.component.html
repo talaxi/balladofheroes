@@ -280,9 +280,9 @@
                             </strong> <span class="statValue">{{getPartyResistanceMultiplierBonus() * 100 | number :
                                 '1.0-2'}}%</span><br /></span>
                                 <span *ngIf="getDuoEffectivenessBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                                    [contentTemplate]="duoEffectivenessPopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Duo Ability Effectiveness Bonus:
-                                    </strong> <span class="statValue">{{getDuoEffectivenessBonus() * 100 | number :
-                                        '1.0-2'}}%</span><br /></span>
+                                    [contentTemplate]="duoEffectivenessPopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Duo Ability Upgrades:
+                                    </strong> <span class="statValue">{{getDuoEffectivenessBonus() | number :
+                                        '1.0-2'}}</span><br /></span>
         </div>
     </div>
 
@@ -295,12 +295,12 @@
     </div>
 
     <div class="godAbilities">
-        <span class="sectionHeaderText sectionHeading">Abilities</span>
+        <span class="sectionHeaderText sectionHeading">Abilities</span> <button class="buttonStyled buttonOffset" *ngIf="isDuoAbilityAvailable()" (click)="openDuoAbilityBreakdown(duoAbilityBreakdownContent)">View All Duo Abilities</button>
         <div class="sectionInfo">
             <div *ngFor="let ability of abilityList">
                 <strong class="statLabel" [ngClass]="getGodColor()" customToolTip [isLargeTooltip]="true"
                     [tooltipDirection]="affinityTooltipDirection"
-                    [contentTemplate]="abilityPopover">{{ability.name}}</strong> - <span class="statValue"
+                    [contentTemplate]="abilityPopover">{{ability.name}}</strong> <span *ngIf="isDuoAbility(ability)">(Duo with {{getPartnerGod()}})</span> - <span class="statValue"
                     [innerHtml]="getGodAbilityDescription(ability.name, ability)"></span>
                 <ng-template #abilityPopover>
                     <div>
@@ -376,7 +376,7 @@
                     </div>
                 </ng-template>
 
-            </div>
+            </div>            
         </div>
         <br /><br />
         <span class="sectionHeaderText sectionHeading">Affinity</span>
@@ -985,6 +985,16 @@
     </div>
     <hr/>
     <div [innerHtml]="this.getPermanentStatBreakdown()">
+        
+    </div>
+</ng-template>
+
+<ng-template #duoAbilityBreakdownContent>
+    <div class="s4Heading flexBetween">
+        <span>Duo Abilities</span>        
+    </div>
+    <hr/>
+    <div [innerHtml]="this.getDuoAbilityBreakdown()">
         
     </div>
 </ng-template>
