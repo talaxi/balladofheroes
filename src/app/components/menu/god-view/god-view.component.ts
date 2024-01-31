@@ -127,7 +127,7 @@ export class GodViewComponent implements OnInit {
     if (partnerGod === undefined)
       return "";
 
-    return "<span class='smallCaps bold'>with</span> <span class='smallCaps bold " + partnerGod.name.toLowerCase() + "Color'>" + partnerGod.name + "</span> - ";
+    return " (<span class='smallCaps bold'>duo with</span> <span class='smallCaps bold " + partnerGod.name.toLowerCase() + "Color'>" + partnerGod.name + "</span>)";
   }
 
   getGodXp() {
@@ -728,38 +728,104 @@ export class GodViewComponent implements OnInit {
     return text;
   }
 
+  getSecondaryDuoGod() {
+    var character = this.globalService.globalVar.characters.find(item => item.type.toString() === this.characterTemplate.toString());
+    if (character === undefined)
+      return undefined;
+
+    var otherGodType = GodEnum.None;
+    if (character.assignedGod1 === this.god.type)
+      otherGodType = character.assignedGod2;
+    else
+      otherGodType = character.assignedGod1;
+    var otherGod = this.globalService.globalVar.gods.find(item => item.type === otherGodType);
+
+    return otherGod;
+  }
+
   getAbilityUpgradeLevel(ability: Ability) {
-    return ability.abilityUpgradeLevel;
+    if (ability.requiredLevel === this.utilityService.duoAbilityLevel) {
+      var god1Count = this.lookupService.getDuoAbilityUpgradeLevel(this.god);
+      var character = this.globalService.globalVar.characters.find(item => item.type.toString() === this.characterTemplate.toString());
+      if (character === undefined)
+        return "";
+
+      var otherGodType = GodEnum.None;
+      if (character.assignedGod1 === this.god.type)
+        otherGodType = character.assignedGod2;
+      else
+        otherGodType = character.assignedGod1;
+      var otherGod = this.globalService.globalVar.gods.find(item => item.type === otherGodType);
+      var god2Count = 0;
+      if (otherGod !== undefined)
+        god2Count = this.lookupService.getDuoAbilityUpgradeLevel(otherGod);
+
+      return god1Count + god2Count;
+    }
+    else
+      return ability.abilityUpgradeLevel;
   }
 
 
   getPermanentAbilityEffectivenessIncrease(ability: Ability) {
-    var permanentAbilityUpgradeAmount = 0;
-    var permanentAbilityUpgrade = this.god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
-    if (permanentAbilityUpgrade !== undefined)
-      permanentAbilityUpgradeAmount = permanentAbilityUpgrade.effectiveness;
+    if (ability.requiredLevel === this.utilityService.duoAbilityLevel) {
+      var otherGod = this.getSecondaryDuoGod();
+      if (otherGod === undefined)
+        return 0;
 
-    if (ability !== undefined) {
-      if (ability.name === "Quicken")
-        return this.utilityService.genericRound(permanentAbilityUpgradeAmount);
-      else
-        return this.utilityService.genericRound(permanentAbilityUpgradeAmount * 100) + "%";
+      var gods: GodEnum[] = [];
+      gods.push(this.god.type);
+      gods.push(otherGod.type)
+      var baseAbility = this.lookupService.getDuoAbility(gods, true);
+      if (baseAbility === undefined)
+        return 0;
+
+      return this.utilityService.genericRound((ability.effectiveness - baseAbility.effectiveness) * 100) + "%";
     }
+    else {
+      var permanentAbilityUpgradeAmount = 0;
+      var permanentAbilityUpgrade = this.god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
+      if (permanentAbilityUpgrade !== undefined)
+        permanentAbilityUpgradeAmount = permanentAbilityUpgrade.effectiveness;
 
-    return 0;
+      if (ability !== undefined) {
+        if (ability.name === "Quicken")
+          return this.utilityService.genericRound(permanentAbilityUpgradeAmount);
+        else
+          return this.utilityService.genericRound(permanentAbilityUpgradeAmount * 100) + "%";
+      }
+
+      return 0;
+    }
   }
 
   getPermanentSecondaryAbilityEffectivenessIncrease(ability: Ability) {
-    var permanentAbilityUpgradeAmount = 0;
-    var permanentAbilityUpgrade = this.god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
-    if (permanentAbilityUpgrade !== undefined)
-      permanentAbilityUpgradeAmount = permanentAbilityUpgrade.secondaryEffectiveness;
+    if (ability.requiredLevel === this.utilityService.duoAbilityLevel) {
+      var otherGod = this.getSecondaryDuoGod();
+      if (otherGod === undefined)
+        return 0;
 
-    if (ability !== undefined) {
-      return this.utilityService.genericRound(permanentAbilityUpgradeAmount * 100) + "%";
+      var gods: GodEnum[] = [];
+      gods.push(this.god.type);
+      gods.push(otherGod.type)
+      var baseAbility = this.lookupService.getDuoAbility(gods, true);
+      if (baseAbility === undefined)
+        return 0;
+
+      return this.utilityService.genericRound((ability.secondaryEffectiveness - baseAbility.secondaryEffectiveness) * 100) + "%";
     }
+    else {
+      var permanentAbilityUpgradeAmount = 0;
+      var permanentAbilityUpgrade = this.god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
+      if (permanentAbilityUpgrade !== undefined)
+        permanentAbilityUpgradeAmount = permanentAbilityUpgrade.secondaryEffectiveness;
 
-    return 0;
+      if (ability !== undefined) {
+        return this.utilityService.genericRound(permanentAbilityUpgradeAmount * 100) + "%";
+      }
+
+      return 0;
+    }
   }
 
   getAbilityEffectivenessIncrease(ability: Ability) {
@@ -864,23 +930,47 @@ export class GodViewComponent implements OnInit {
 
 
   getPermanentAbilityUserEffectEffectivenessIncrease(ability: Ability) {
-    var baseGod = new God(this.god.type);
-    this.globalService.assignGodAbilityInfo(baseGod);
-    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+    if (ability.requiredLevel === this.utilityService.duoAbilityLevel) {
+      var otherGod = this.getSecondaryDuoGod();
+      if (otherGod === undefined)
+        return 0;
 
-    var permanentAbilityUpgradeAmount = 0;
-    var permanentAbilityUpgrade = this.god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
-    if (permanentAbilityUpgrade !== undefined && permanentAbilityUpgrade.userEffect !== undefined && permanentAbilityUpgrade.userEffect.length > 0)
-      permanentAbilityUpgradeAmount = permanentAbilityUpgrade.userEffect[0].effectiveness;
+      var gods: GodEnum[] = [];
+      gods.push(this.god.type);
+      gods.push(otherGod.type)
+      var baseDuoAbility = this.lookupService.getDuoAbility(gods, true);
+      if (baseDuoAbility === undefined)
+        return 0;
 
-    if (baseAbility !== undefined && baseAbility.userEffect.length > 0) {
-      if (baseAbility.name === "Second Wind")
-        return "*" + this.utilityService.genericRound(1 + permanentAbilityUpgradeAmount);
+      var baseAbilityUserEffect = baseDuoAbility.userEffect[0];
+      var currentAbilityUserEffect = ability.userEffect[0];
+      if (baseAbilityUserEffect === undefined || currentAbilityUserEffect === undefined)
+        return 0;
+
+      if (ability.name === "Blistering Riposte")
+        return this.utilityService.genericRound(((currentAbilityUserEffect.effectiveness / 3) - (baseAbilityUserEffect.effectiveness / 3)) * 100) + "%";
       else
-        return Math.abs(this.utilityService.genericRound(permanentAbilityUpgradeAmount * 100)) + "%";
+        return this.utilityService.genericRound((currentAbilityUserEffect.effectiveness - baseAbilityUserEffect.effectiveness) * 100) + "%";
     }
+    else {
+      var baseGod = new God(this.god.type);
+      this.globalService.assignGodAbilityInfo(baseGod);
+      var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
 
-    return 0;
+      var permanentAbilityUpgradeAmount = 0;
+      var permanentAbilityUpgrade = this.god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
+      if (permanentAbilityUpgrade !== undefined && permanentAbilityUpgrade.userEffect !== undefined && permanentAbilityUpgrade.userEffect.length > 0)
+        permanentAbilityUpgradeAmount = permanentAbilityUpgrade.userEffect[0].effectiveness;
+
+      if (baseAbility !== undefined && baseAbility.userEffect.length > 0) {
+        if (baseAbility.name === "Second Wind")
+          return "*" + this.utilityService.genericRound(1 + permanentAbilityUpgradeAmount);
+        else
+          return Math.abs(this.utilityService.genericRound(permanentAbilityUpgradeAmount * 100)) + "%";
+      }
+
+      return 0;
+    }
   }
 
   getPermanentAbilityUserEffectThresholdIncrease(ability: Ability) {
@@ -902,52 +992,163 @@ export class GodViewComponent implements OnInit {
   }
 
   getPermanentAbilityUserEffectDurationIncrease(ability: Ability) {
-    var baseGod = new God(this.god.type);
-    this.globalService.assignGodAbilityInfo(baseGod);
-    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+    if (ability.requiredLevel === this.utilityService.duoAbilityLevel) {
+      var otherGod = this.getSecondaryDuoGod();
+      if (otherGod === undefined)
+        return 0;
 
-    var permanentAbilityUpgradeAmount = 0;
-    var permanentAbilityUpgrade = this.god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
-    if (permanentAbilityUpgrade !== undefined && permanentAbilityUpgrade.userEffect !== undefined && permanentAbilityUpgrade.userEffect.length > 0)
-      permanentAbilityUpgradeAmount = permanentAbilityUpgrade.userEffect[0].duration;
+      var gods: GodEnum[] = [];
+      gods.push(this.god.type);
+      gods.push(otherGod.type)
+      var baseDuoAbility = this.lookupService.getDuoAbility(gods, true);
+      if (baseDuoAbility === undefined)
+        return 0;
 
-    if (baseAbility !== undefined && baseAbility.userEffect.length > 0)
-      return this.utilityService.roundTo(permanentAbilityUpgradeAmount, 2);
+      var baseAbilityUserEffect = baseDuoAbility.userEffect[0];
+      var currentAbilityUserEffect = ability.userEffect[0];
+      if (baseAbilityUserEffect === undefined || currentAbilityUserEffect === undefined)
+        return 0;
 
-    return 0;
+      return this.utilityService.genericRound((currentAbilityUserEffect.duration - baseAbilityUserEffect.duration));
+    }
+    else {
+      var baseGod = new God(this.god.type);
+      this.globalService.assignGodAbilityInfo(baseGod);
+      var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+      var permanentAbilityUpgradeAmount = 0;
+      var permanentAbilityUpgrade = this.god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
+      if (permanentAbilityUpgrade !== undefined && permanentAbilityUpgrade.userEffect !== undefined && permanentAbilityUpgrade.userEffect.length > 0)
+        permanentAbilityUpgradeAmount = permanentAbilityUpgrade.userEffect[0].duration;
+
+      if (baseAbility !== undefined && baseAbility.userEffect.length > 0)
+        return this.utilityService.roundTo(permanentAbilityUpgradeAmount, 2);
+
+      return 0;
+    }
   }
 
   getPermanentAbilityTargetEffectEffectivenessIncrease(ability: Ability) {
-    var baseGod = new God(this.god.type);
-    this.globalService.assignGodAbilityInfo(baseGod);
-    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+    if (ability.requiredLevel === this.utilityService.duoAbilityLevel) {
+      var otherGod = this.getSecondaryDuoGod();
+      if (otherGod === undefined)
+        return 0;
 
-    var permanentAbilityUpgradeAmount = 0;
-    var permanentAbilityUpgrade = this.god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
-    if (permanentAbilityUpgrade !== undefined && permanentAbilityUpgrade.targetEffect !== undefined && permanentAbilityUpgrade.targetEffect.length > 0)
-      permanentAbilityUpgradeAmount = permanentAbilityUpgrade.targetEffect[0].effectiveness;
+      var gods: GodEnum[] = [];
+      gods.push(this.god.type);
+      gods.push(otherGod.type)
+      var baseDuoAbility = this.lookupService.getDuoAbility(gods, true);
+      if (baseDuoAbility === undefined)
+        return 0;
 
-    if (baseAbility !== undefined && baseAbility.targetEffect.length > 0) {
-      return Math.abs(this.utilityService.genericRound(permanentAbilityUpgradeAmount * 100)) + "%";
+      var baseAbilityTargetEffect = baseDuoAbility.targetEffect[0];
+      var currentAbilityTargetEffect = ability.targetEffect[0];
+      if (baseAbilityTargetEffect === undefined || currentAbilityTargetEffect === undefined)
+        return 0;
+
+      if (ability.name === "Sickness")
+        return this.utilityService.genericRound((baseAbilityTargetEffect.effectiveness - currentAbilityTargetEffect.effectiveness) * 100) + "%";
+      else
+        return this.utilityService.genericRound((currentAbilityTargetEffect.effectiveness - baseAbilityTargetEffect.effectiveness) * 100) + "%";
     }
+    else {
+      var baseGod = new God(this.god.type);
+      this.globalService.assignGodAbilityInfo(baseGod);
+      var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
 
-    return 0;
+      var permanentAbilityUpgradeAmount = 0;
+      var permanentAbilityUpgrade = this.god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
+      if (permanentAbilityUpgrade !== undefined && permanentAbilityUpgrade.targetEffect !== undefined && permanentAbilityUpgrade.targetEffect.length > 0)
+        permanentAbilityUpgradeAmount = permanentAbilityUpgrade.targetEffect[0].effectiveness;
+
+      if (baseAbility !== undefined && baseAbility.targetEffect.length > 0) {
+        return Math.abs(this.utilityService.genericRound(permanentAbilityUpgradeAmount * 100)) + "%";
+      }
+
+      return 0;
+    }
   }
 
   getPermanentAbilityTargetEffectDurationIncrease(ability: Ability) {
-    var baseGod = new God(this.god.type);
-    this.globalService.assignGodAbilityInfo(baseGod);
-    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+    if (ability.requiredLevel === this.utilityService.duoAbilityLevel) {
+      var otherGod = this.getSecondaryDuoGod();
+      if (otherGod === undefined)
+        return 0;
 
-    var permanentAbilityUpgradeAmount = 0;
-    var permanentAbilityUpgrade = this.god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
-    if (permanentAbilityUpgrade !== undefined && permanentAbilityUpgrade.targetEffect !== undefined && permanentAbilityUpgrade.targetEffect.length > 0)
-      permanentAbilityUpgradeAmount = permanentAbilityUpgrade.targetEffect[0].duration;
+      var gods: GodEnum[] = [];
+      gods.push(this.god.type);
+      gods.push(otherGod.type)
+      var baseDuoAbility = this.lookupService.getDuoAbility(gods, true);
+      if (baseDuoAbility === undefined)
+        return 0;
 
-    if (baseAbility !== undefined && baseAbility.targetEffect.length > 0)
-      return this.utilityService.roundTo(permanentAbilityUpgradeAmount, 2);
+      var baseAbilityTargetEffect = baseDuoAbility.targetEffect[0];
+      var currentAbilityTargetEffect = ability.targetEffect[0];
+      if (baseAbilityTargetEffect === undefined || currentAbilityTargetEffect === undefined)
+        return 0;
 
-    return 0;
+      return this.utilityService.genericRound((currentAbilityTargetEffect.duration - baseAbilityTargetEffect.duration));
+    }
+    else {
+      var baseGod = new God(this.god.type);
+      this.globalService.assignGodAbilityInfo(baseGod);
+      var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+      var permanentAbilityUpgradeAmount = 0;
+      var permanentAbilityUpgrade = this.god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
+      if (permanentAbilityUpgrade !== undefined && permanentAbilityUpgrade.targetEffect !== undefined && permanentAbilityUpgrade.targetEffect.length > 0)
+        permanentAbilityUpgradeAmount = permanentAbilityUpgrade.targetEffect[0].duration;
+
+      if (baseAbility !== undefined && baseAbility.targetEffect.length > 0)
+        return this.utilityService.roundTo(permanentAbilityUpgradeAmount, 2);
+
+      return 0;
+    }
+  }
+
+  getPermanentAbilityUserMaxCountIncrease(ability: Ability) {
+    //duo ability only atm
+    var otherGod = this.getSecondaryDuoGod();
+    if (otherGod === undefined)
+      return 0;
+
+    var gods: GodEnum[] = [];
+    gods.push(this.god.type);
+    gods.push(otherGod.type)
+    var baseDuoAbility = this.lookupService.getDuoAbility(gods, true);
+    if (baseDuoAbility === undefined)
+      return 0;
+
+    var baseAbilityUserEffect = baseDuoAbility.userEffect[0];
+    var currentAbilityUserEffect = ability.userEffect[0];
+    if (baseAbilityUserEffect === undefined || currentAbilityUserEffect === undefined)
+      return 0;
+
+    if (ability.name === "Discordant Melody")
+      return this.utilityService.genericRound((currentAbilityUserEffect.maxCount - baseAbilityUserEffect.maxCount));
+    else
+      return this.utilityService.genericRound((currentAbilityUserEffect.maxCount - baseAbilityUserEffect.maxCount) * 100) + "%";
+  }
+
+  getPermanentAbilityTargetMaxCountIncrease(ability: Ability) {
+    //duo ability only atm
+    var otherGod = this.getSecondaryDuoGod();
+    if (otherGod === undefined)
+      return 0;
+
+    var gods: GodEnum[] = [];
+    gods.push(this.god.type);
+    gods.push(otherGod.type)
+    var baseDuoAbility = this.lookupService.getDuoAbility(gods, true);
+    if (baseDuoAbility === undefined)
+      return 0;
+
+    var baseAbilityTargetEffect = baseDuoAbility.targetEffect[0];
+    var currentAbilityTargetEffect = ability.targetEffect[0];
+    if (baseAbilityTargetEffect === undefined || currentAbilityTargetEffect === undefined)
+      return 0;
+
+    return this.utilityService.genericRound((currentAbilityTargetEffect.maxCount - baseAbilityTargetEffect.maxCount) * 100) + "%";
   }
 
   getAbilityTargetEffectEffectivenessIncrease(ability: Ability) {

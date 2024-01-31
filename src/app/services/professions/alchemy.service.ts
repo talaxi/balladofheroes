@@ -1010,7 +1010,7 @@ export class AlchemyService {
     }
     if (item === ItemsEnum.PeonyPoultice) {
       recipe.quality = EquipmentQualityEnum.Special;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.Peony, 3));    
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Peony, 4));    
 
       recipe.numberOfSteps = 2;
       recipe.steps.push(ProfessionActionsEnum.PrepareWaterSmallPot);
@@ -1033,7 +1033,7 @@ export class AlchemyService {
     if (item === ItemsEnum.PeonySalve) {
       recipe.quality = EquipmentQualityEnum.Special;
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Peony, 2));    
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.Mandrake, 1));      
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Mandrake, 2));      
 
       recipe.numberOfSteps = 4;      
       recipe.steps.push(ProfessionActionsEnum.MixOil);

@@ -362,6 +362,10 @@ a:link {
   color: var(--foreground-accent);
 }
 
+.linkForeground {
+  color: var(--foreground-quaternary);
+}
+
 * {
   font-family: "Candara", sans-serif !important;
 }

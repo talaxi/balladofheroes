@@ -232,7 +232,7 @@ export class GlobalService {
       pinningShot.cooldown = pinningShot.currentCooldown = 36;
       pinningShot.dealsDirectDamage = true;
       pinningShot.effectiveness = 1.6;
-      pinningShot.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Stun, 4, 0, false, false));
+      pinningShot.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Stun, 2, 0, false, false));
       character.abilityList.push(pinningShot);
     }
 
@@ -315,32 +315,21 @@ export class GlobalService {
       palmStrike.targetEffect.push(this.createStatusEffect(StatusEffectEnum.PalmStrike, -1, 1, false, false, undefined, undefined, undefined, true, undefined, undefined, undefined, undefined, 3));
       character.abilityList.push(palmStrike);
 
-      /*var insight = new Ability();
-      insight.name = "Insight";
-      insight.effectiveness = .2;
-      insight.requiredLevel = this.utilityService.characterPassiveLevel;
-      insight.maxCount = 4;
-      insight.isAvailable = false;
-      insight.isPassive = true;
-      insight.isActivatable = false;
-      insight.userEffect.push(this.createStatusEffect(StatusEffectEnum.Insight, 4, 1.05, false, true));
-      character.abilityList.push(insight);*/
-      
       var insight = new Ability();
       insight.name = "Insight";
       insight.effectiveness = .1;
       insight.secondaryEffectiveness = 1.5;
-      insight.requiredLevel = this.utilityService.characterPassiveLevel;      
+      insight.requiredLevel = this.utilityService.characterPassiveLevel;
       insight.isAvailable = false;
       insight.isPassive = true;
-      insight.isActivatable = false;      
+      insight.isActivatable = false;
       character.abilityList.push(insight);
 
       var spiritUnleashed = new Ability();
       spiritUnleashed.name = "Spirit Unleashed";
       spiritUnleashed.requiredLevel = this.utilityService.characterAbility2Level;
       spiritUnleashed.isAvailable = false;
-      spiritUnleashed.effectiveness = 2.1;      
+      spiritUnleashed.effectiveness = 2.1;
       spiritUnleashed.dealsDirectDamage = true;
       spiritUnleashed.cooldown = spiritUnleashed.currentCooldown = 36;
       spiritUnleashed.targetEffect.push(this.createStatusEffect(StatusEffectEnum.DamageTakenUp, 7, 1.25, false, false));
@@ -3883,9 +3872,9 @@ export class GlobalService {
 
     this.globalVar.characters.forEach(character => {
       if (character.abilityList !== undefined && character.abilityList.length > 0)
-      character.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
-        ability.currentCooldown = this.getAbilityCooldown(ability, character, true);
-      });
+        character.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
+          ability.currentCooldown = this.getAbilityCooldown(ability, character, true);
+        });
     });
 
     this.globalVar.gods.forEach(god => {
@@ -3893,16 +3882,15 @@ export class GlobalService {
       if (party[0].assignedGod1 === god.type || party[0].assignedGod2 === god.type) {
         equippedCharacterEnum = party[0].type;
       }
-      if (party[1] !== undefined && (party[1].assignedGod1 === god.type || party[1].assignedGod2 === god.type))
-      {
+      if (party[1] !== undefined && (party[1].assignedGod1 === god.type || party[1].assignedGod2 === god.type)) {
         equippedCharacterEnum = party[1].type;
       }
       var equippedCharacter = this.globalVar.characters.find(item => item.type === equippedCharacterEnum);
 
       if (god.abilityList !== undefined && god.abilityList.length > 0)
-      god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
-        ability.currentCooldown = this.getAbilityCooldown(ability, equippedCharacter !== undefined ? equippedCharacter : new Character(), true);
-      });
+        god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
+          ability.currentCooldown = this.getAbilityCooldown(ability, equippedCharacter !== undefined ? equippedCharacter : new Character(), true);
+        });
     });
   }
 
@@ -4537,16 +4525,47 @@ export class GlobalService {
       this.gainResource(new ResourceValue(gainedItem, rng));
     }
 
-    var remainingRounds = round - 25;
+    if (round > 30) {
+      var rng = 200;
+      var gainedItem = this.getRandomGem();
+
+      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalVar);
+      this.gainResource(new ResourceValue(gainedItem, rng));
+    }
+
+    if (round > 35) {
+      var rng = 100000;
+      var gainedItem = ItemsEnum.Coin;
+
+      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalVar);
+      this.gainResource(new ResourceValue(gainedItem, rng));
+    }
+
+    if (round > 40) {
+      var rng = this.utilityService.getRandomInteger(30, 70);
+      var gainedItem = this.getRandomRareMaterial();
+
+      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalVar);
+      this.gainResource(new ResourceValue(gainedItem, rng));
+    }
+
+    if (round > 45) {
+      var rng = this.utilityService.getRandomInteger(25, 100);
+      var gainedItem = ItemsEnum.MetalNuggets;
+
+      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalVar);
+      this.gainResource(new ResourceValue(gainedItem, rng));
+    }
+
+    //the subtracted number should be the last number
+    var remainingRounds = round - 45;
 
     while (remainingRounds > 5) {
-      if (round > 20) {
-        var rng = 100;
-        var gainedItem = this.getRandomGem();
+      var rng = 100;
+      var gainedItem = this.getRandomRutileFragment();
 
-        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalVar);
-        this.gainResource(new ResourceValue(gainedItem, rng));
-      }
+      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalVar);
+      this.gainResource(new ResourceValue(gainedItem, rng));
 
       remainingRounds -= 5;
     }
@@ -4555,12 +4574,12 @@ export class GlobalService {
   setNewTournament(canRepeat: boolean = false) {
     var repeatColiseumFight = this.globalVar.settings.get("repeatColiseumFight") ?? false;
 
-    if (!repeatColiseumFight || !canRepeat) {      
+    if (!repeatColiseumFight || !canRepeat) {
       return new ColiseumTournament();
     }
 
     var type = this.dictionaryService.getColiseumInfoFromType(this.globalVar.activeBattle.activeTournament.type);
-    
+
     return this.startColiseumTournament(type);
   }
 
@@ -4660,6 +4679,20 @@ export class GlobalService {
     return items[rng];
   }
 
+  getRandomRutileFragment() {
+    var items: ItemsEnum[] = [];
+    items.push(ItemsEnum.RutileTopazFragment);
+    items.push(ItemsEnum.RutileRubyFragment);
+    items.push(ItemsEnum.RutileOpalFragment);
+    items.push(ItemsEnum.RutileAmethystFragment);
+    items.push(ItemsEnum.RutileEmeraldFragment);
+    items.push(ItemsEnum.RutileAquamarineFragment);
+
+    var rng = this.utilityService.getRandomInteger(0, items.length - 1);
+
+    return items[rng];
+  }
+
   getRandomUncommonMaterial() {
     var items: ItemsEnum[] = [];
     items.push(ItemsEnum.EssenceOfWater);
@@ -4668,6 +4701,19 @@ export class GlobalService {
     items.push(ItemsEnum.Sorrel);
     items.push(ItemsEnum.SharkTeeth);
     items.push(ItemsEnum.Seashell);
+
+    var rng = this.utilityService.getRandomInteger(0, items.length - 1);
+
+    return items[rng];
+  }
+
+  getRandomRareMaterial() {
+    var items: ItemsEnum[] = [];
+    items.push(ItemsEnum.Honey);
+    items.push(ItemsEnum.ToxicIchor);
+    items.push(ItemsEnum.PristineCrabClaw);
+    items.push(ItemsEnum.VialOfTheCretanSea);
+    items.push(ItemsEnum.MagicCore);
 
     var rng = this.utilityService.getRandomInteger(0, items.length - 1);
 

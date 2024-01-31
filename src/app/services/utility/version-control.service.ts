@@ -1679,6 +1679,27 @@ export class VersionControlService {
             }
           }
 
+          var archerClass = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Archer);
+          if (archerClass !== undefined) {           
+            var ability2 = archerClass.abilityList.find(item => item.requiredLevel === this.utilityService.characterAbility2Level);
+            if (ability2 !== undefined && ability2.targetEffect.length > 0) {
+              ability2.targetEffect[0].duration = 2;
+            }
+          }
+          
+          var warriorClass = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Warrior);
+          if (warriorClass !== undefined) {           
+            var ability1 = warriorClass.abilityList.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
+            if (ability1 !== undefined && ability1.targetEffect.length > 1) {
+              ability1.targetEffect[0].duration = 12;
+              ability1.targetEffect[1].duration = 12;
+            }
+            var passive = warriorClass.abilityList.find(item => item.requiredLevel === this.utilityService.characterPassiveLevel);
+            if (passive !== undefined) {
+              passive.threshold = .5;
+            }
+          }
+
           var labyrinthCenterSubZone = this.balladService.findSubzone(SubZoneEnum.TheLabyrinthLabyrinthCenter);
           if (labyrinthCenterSubZone !== undefined && labyrinthCenterSubZone.isAvailable && labyrinthCenterSubZone.victoryCount > 0) {
             var witch = this.balladService.findBallad(BalladEnum.Witch);

@@ -533,21 +533,21 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       src += "passionateRhythmAutoAttack.svg";
     }
     if (effect.type === StatusEffectEnum.BucklerOfPerfectHarmonyAttack || effect.type === StatusEffectEnum.BucklerOfPerfectHarmonyAttackUnique)
-      src += "Libra.svg";
+      src += "libraGold.svg";
     if (effect.type === StatusEffectEnum.Slow)
-      src += "Sagittarius.svg";
+      src += "sagittariusGold.svg";
     if (effect.type === StatusEffectEnum.BoundingBand || effect.type === StatusEffectEnum.BoundingBandUnique)
-      src += "Capricorn.svg";
+      src += "capricornGold.svg";
     if (effect.type === StatusEffectEnum.ScathingBeauty || effect.type === StatusEffectEnum.ScathingBeautyUnique)
-      src += "Aquarius.svg";
+      src += "aquariusGold.svg";
     if (effect.type === StatusEffectEnum.RainbowPlating || effect.type === StatusEffectEnum.RainbowPlatingUnique)
-      src += "Pisces.svg";
+      src += "piscesGold.svg";
     if (effect.type === StatusEffectEnum.EnergyShield || effect.type === StatusEffectEnum.EnergyShieldUnique)
-      src += "Gemini.svg";
+      src += "geminiGold.svg";
     if (effect.type === StatusEffectEnum.SturdyShell)
-      src += "Cancer.svg";
+      src += "cancerGold.svg";
       if (effect.type === StatusEffectEnum.Leo)
-      src += "Leo.svg";
+      src += "leoGold.svg";
       if (effect.type === StatusEffectEnum.BlindedByLove)
       src += "athenaAphroditeDuo.svg";
       if (effect.type === StatusEffectEnum.ReduceNextAbilityCooldown)

@@ -10,6 +10,10 @@ import { ConfirmationBoxComponent } from 'src/app/components/subcomponents/utili
 })
 export class UtilityService {  
   public shopBuyMultiplier = 1;
+  public ctrlPressed: boolean = false;
+  public shiftPressed: boolean = false;
+  public altPressed: boolean = false;
+
   //glossary
   public lowActiveTimeLimit = 1 * 30 * 60;
   public averageActiveTimeLimit = 1 * 60 * 60;

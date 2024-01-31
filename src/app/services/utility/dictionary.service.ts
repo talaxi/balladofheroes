@@ -247,6 +247,8 @@ export class DictionaryService {
       name = "Shadow Ring";
     else if (type === ItemsEnum.RagingBull)
       name = "Raging Bull";
+      else if (type === ItemsEnum.StingrayTip)
+      name = "Stingray Tip";
     else if (type === ItemsEnum.ScorpionStingerEpic)
       name = "Scorpion Stinger";
     else if (type === ItemsEnum.ScorpionStingerSpecial)
@@ -993,8 +995,6 @@ export class DictionaryService {
       name = "Mandrake";
     else if (type === ItemsEnum.ColossalRoot)
       name = "Colossal Root";
-    else if (type === ItemsEnum.StingrayTip)
-      name = "Stingray Tip";
     else if (type === ItemsEnum.UnstableElement)
       name = "Unstable Element";
     else if (type === ItemsEnum.VialOfForeignWaters)

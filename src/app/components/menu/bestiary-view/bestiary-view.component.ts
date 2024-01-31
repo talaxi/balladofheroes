@@ -28,6 +28,7 @@ import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ZodiacEnum } from 'src/app/models/enums/zodiac-enum.model';
+import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
 import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
 import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
 import { EnemyGeneratorService } from 'src/app/services/enemy-generator/enemy-generator.service';
@@ -810,6 +811,11 @@ export class BestiaryViewComponent {
     });
 
     return achievementCount;
+  }
+
+  jumpToAchievements() {
+    this.menuService.selectedMenuDisplay = MenuEnum.Achievements;
+    this.menuService.setAchievementPresets(this.balladService.getActiveBallad(), this.balladService.getActiveZone(), this.balladService.getActiveSubZone());
   }
 
   overlayEmitter(overlayRef: OverlayRef) {

@@ -16,6 +16,14 @@ export class TutorialService {
   getTutorialText(type: TutorialTypeEnum, newAbility?: Ability, character?: Character, addToLog: boolean = true, subzoneEnum?: SubZoneEnum) {    
     var text = "";
 
+    if (type === TutorialTypeEnum.GameReview) {
+      var supportButtonText = "By clicking on the '<b class='smallCaps clickableText linkForeground supportClickableItem'><u>Support</u></b>' link below on the footer of the page, ";
+      if (this.deviceDetectorService.isMobile())
+        supportButtonText = "By clicking on the <span class='bold supportMobileClickableItem'>'<u>Support</u>'</span> tab option on the bottom of the Menu, ";
+
+      text = "I hope that you are enjoying <b class='smallCaps'>Ballad of Heroes</b>! If you have any feedback, recommendations, or issues, I would love to hear about them on <a href='https://discord.gg/gcRvF2AJGV' rel='noopener noreferrer' target='_blank'>Discord</a> or via email at balladofheroes@gmail.com. <br/><br/>" +
+      "This game will always be free, but if you are able, I would greatly appreciate your support. " + supportButtonText + " you will see a couple of options to support the development of Ballad of Heroes so that I can continue to create content at a regular pace. You can gain early access to gods, design your own Eternal Melee boss fight, and more. Thank you, and I hope you continue to enjoy the game!";
+    }
     if (type === TutorialTypeEnum.CharacterPassiveAbility) {
       if (this.deviceDetectorService.isMobile())
         text = "Each character gains a unique passive ability at level 4. View your passive ability by tapping and hold your character's name or viewing their character page.";

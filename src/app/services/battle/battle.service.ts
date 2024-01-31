@@ -366,7 +366,7 @@ export class BattleService {
       !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.TimeFragmentInTheSwamp)) {
       this.storyService.displayOptionalScene(OptionalSceneEnum.TimeFragmentInTheSwamp);
     }
-    
+
     if (this.lookupService.getSubZoneCompletionByType(SubZoneEnum.StraitsOfMessinaMawOfTheMonster) &&
       !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.CharybdisJewelcrafting)) {
       this.storyService.displayOptionalScene(OptionalSceneEnum.CharybdisJewelcrafting);
@@ -611,12 +611,12 @@ export class BattleService {
         }
 
         if (effect.type === StatusEffectEnum.VortexPull) {
-         effect.effectiveness += .05;
+          effect.effectiveness += .05;
 
-         if (effect.effectiveness >= 1) {
-          this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 8, 0, false, false), character);          
-          character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.VortexPull);
-         }
+          if (effect.effectiveness >= 1) {
+            this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 8, 0, false, false), character);
+            character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.VortexPull);
+          }
         }
       }
 
@@ -693,8 +693,7 @@ export class BattleService {
             effect.abilityName = "Scathing Beauty";
             amountHealed = this.gainHp(character, effect.effectiveness * this.lookupService.getAdjustedResistance(character, true));
           }
-          else
-          {
+          else {
             amountHealed = this.gainHp(character, effect.effectiveness);
           }
 
@@ -1151,10 +1150,6 @@ export class BattleService {
 
     var boundingBand = character.battleInfo.statusEffects.find(item => (item.type === StatusEffectEnum.BoundingBandUnique && item.count >= 9));
     if (boundingBand !== undefined) {
-      //should be reducable i think, switch it to deal true dmg and same goes for hermes set bonus
-      /*var effect = this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, -1, this.lookupService.getAdjustedAttack(character) * (boundingBand.effectiveness - 1), true, false, false, character.name, 0, false, ElementalTypeEnum.Water);
-      effect.dotType = dotTypeEnum.BasedOnAttack;
-      this.applyStatusEffect(effect, target, undefined, character);*/
       var trueDamageDealt = this.dealTrueDamage(true, target, this.lookupService.getAdjustedAttack(character) * (boundingBand.effectiveness - 1), character, undefined, true);
       var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong>" + " takes " + this.utilityService.bigNumberReducer(Math.round(trueDamageDealt)) + " Water damage from " + character.name + "'s effect.";
 
@@ -1612,7 +1607,7 @@ export class BattleService {
     if (unsteady !== undefined) {
       deltaTime *= 1 - unsteady.effectiveness;
     }
-    
+
     var vortexPull = character.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.VortexPull);
     if (vortexPull !== undefined) {
       deltaTime *= 1 - vortexPull.effectiveness;
@@ -1821,6 +1816,32 @@ export class BattleService {
         this.applyStatusEffect(copy, user);
         this.applyStatusEffect(copy, user);
         this.applyStatusEffect(copy, user);
+      }
+    }
+
+    if (abilityCopy.name === "Love to Death") {
+      var lordOfTheUnderworld = this.lookupService.characterHasAbility("Lord of the Underworld", user);
+
+      if (lordOfTheUnderworld !== undefined) {
+        var copy = this.globalService.makeStatusEffectCopy(lordOfTheUnderworld.userEffect[0]);
+        var hades = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades);
+        if (hades !== undefined) {
+          var lordOfTheUnderworldUpgrade = hades.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.godPassiveLevel);
+          if (lordOfTheUnderworldUpgrade !== undefined && lordOfTheUnderworldUpgrade.userEffect.length > 0)
+            copy.effectiveness += lordOfTheUnderworldUpgrade.userEffect[0].effectiveness;
+
+          copy.duration += abilityCopy.secondaryEffectiveness;
+        }
+
+        this.applyStatusEffect(copy, user);
+        this.applyStatusEffect(copy, user);
+        this.applyStatusEffect(copy, user);
+
+        if (ally !== undefined) {
+          this.applyStatusEffect(copy, ally);
+          this.applyStatusEffect(copy, ally);
+          this.applyStatusEffect(copy, ally);
+        }
       }
     }
 
@@ -2060,9 +2081,7 @@ export class BattleService {
     }
     else if (abilityCopy.heals) {
       if (abilityCopy.isAoe) {
-        party.filter(character => !character.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead)).forEach(potentialTarget => {
-          console.log("Heal target: " + potentialTarget.name);
-          console.log(potentialTarget.battleInfo.statusEffects);
+        party.filter(character => !character.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead)).forEach(potentialTarget => {          
           var linkEffectivenessBoost = user.battleStats.linkEffectiveness;
           var linkEffectivenessBoostEffect = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.LinkBoost);
           if (linkEffectivenessBoostEffect !== undefined)
@@ -3262,7 +3281,7 @@ export class BattleService {
                 appliedStatusEffect.effectiveness += permanentAbilityUpgrades.targetEffect[0].effectiveness;
               }
             }
-
+            
             appliedStatusEffect.effectiveness = this.lookupService.getAdjustedAttack(user, undefined, isPartyUsing) * appliedStatusEffect.effectiveness;
           }
           else if (appliedStatusEffect.dotType === dotTypeEnum.BasedOnDamage) {
@@ -4638,7 +4657,7 @@ export class BattleService {
     var adjustedAllyAttackModifier = 0; //used specifically for Kiss of Death
 
     if (ability !== undefined) {
-      if (ability.name === "Kiss of Death" && partyMembers !== undefined) {
+      if ((ability.name === "Kiss of Death" || ability.name === "Love to Death" || ability.name === "Begrudging Alliance") && partyMembers !== undefined) {
         var ally = partyMembers.find(item => item.type !== attacker.type || item.type === CharacterEnum.Enemy);
         if (ally !== undefined) {
           adjustedAllyAttack = ally.battleStats.attack;
@@ -5645,10 +5664,6 @@ export class BattleService {
     var rng = this.utilityService.getRandomNumber(0, 1);
 
     if (rng <= this.globalService.getSetBonusAmount(EquipmentSetEnum.Hermes, 5)) {
-      /*var effect = this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, -1, this.lookupService.getAdjustedAttack(attacker), true, false, false, attacker.name, 0, false, ElementalTypeEnum.Air);
-      effect.dotType = dotTypeEnum.BasedOnAttack;
-      this.applyStatusEffect(effect, target, undefined, attacker);*/
-
       var trueDamageDealt = this.dealTrueDamage(true, target, this.lookupService.getAdjustedAttack(attacker), attacker, undefined, true);
       var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong>" + " takes " + this.utilityService.bigNumberReducer(Math.round(trueDamageDealt)) + " Air damage from " + attacker.name + "'s effect.";
 
@@ -6417,6 +6432,10 @@ export class BattleService {
           if (unlockedSubZone.type === SubZoneEnum.AigosthenaWesternWoodlands) {
             this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.QuickView, undefined, undefined, true, subZone), this.globalService.globalVar);
             this.globalService.handleTutorialModal();
+          }          
+          if (unlockedSubZone.type === SubZoneEnum.PeloposNisosArcadianRoads) {
+            this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.GameReview, undefined, undefined, true, subZone), this.globalService.globalVar);
+            this.globalService.handleTutorialModal();
           }
         }
       });
@@ -6537,7 +6556,11 @@ export class BattleService {
       if (character.battleStats.currentHp === this.lookupService.getAdjustedMaxHp(character))
         return;
 
-      var healedAmount = this.gainHp(character, effect.healAmount * healingMultiplier)
+      var additionalPercentValue = 0;
+      if (effect.healPercent > 0)
+        additionalPercentValue = effect.healPercent * this.lookupService.getAdjustedMaxHp(character);
+
+      var healedAmount = this.gainHp(character, (effect.healAmount + additionalPercentValue) * healingMultiplier);
       this.lookupService.useResource(this.battleItemInUse, 1);
 
       if (this.globalService.globalVar.gameLogSettings.get("useBattleItem")) {
@@ -6595,7 +6618,8 @@ export class BattleService {
       if (character.battleStats.currentHp <= 0)
         return;
 
-      effect.userEffect[0].effectiveness *= damageMultiplier;
+      effect.userEffect[0].effectiveness += (damageMultiplier - 1);
+      effect.userEffect[0].effectiveness = effect.userEffect[0].effectiveness * this.lookupService.getAdjustedMaxHp(character);
 
       this.applyStatusEffect(effect.userEffect[0], character);
       this.lookupService.useResource(this.battleItemInUse, 1);
@@ -6623,7 +6647,12 @@ export class BattleService {
         if (!member.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead)
           && member.battleStats.currentHp < this.lookupService.getAdjustedMaxHp(member)) {
           itemUsed = true;
-          var healedAmount = this.gainHp(member, effect.healAmount * healingMultiplier)
+
+          var additionalPercentValue = 0;
+          if (effect.healPercent > 0)
+            additionalPercentValue = effect.healPercent * this.lookupService.getAdjustedMaxHp(member);
+
+          var healedAmount = this.gainHp(member, (effect.healAmount + additionalPercentValue) * healingMultiplier)
 
           if (this.globalService.globalVar.gameLogSettings.get("useBattleItem")) {
             var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(member.type) + "'>" + member.name + "</strong>" + " uses " + itemName + ", gaining " + this.utilityService.bigNumberReducer(Math.round(healedAmount)) + " HP.";
@@ -6655,11 +6684,16 @@ export class BattleService {
       if (elementalType !== ElementalTypeEnum.None)
         elementalText = this.getElementalDamageText(elementalType);
 
-      if (effect.trueDamagePercent > 0)
+      var baseDamage = effect.trueDamageAmount;
+
+      if (effect.trueDamagePercent > 0) {
         effect.trueDamageAmount = effect.trueDamagePercent * character.battleStats.maxHp;
 
-      if (effect.maxThreshold > 0 && effect.trueDamageAmount > effect.maxThreshold)
-        effect.trueDamageAmount = effect.maxThreshold;
+        if (effect.maxThreshold > 0 && effect.trueDamageAmount > effect.maxThreshold)
+          effect.trueDamageAmount = effect.maxThreshold;
+
+        effect.trueDamageAmount += baseDamage;
+      }
 
       var hitCount = 1;
       if (this.battleItemInUse === ItemsEnum.BouncingPotion)
@@ -6684,6 +6718,8 @@ export class BattleService {
       if (this.battleItemInUse === ItemsEnum.WildPotion)
         hitCount = 2;
 
+      var baseDamage = effect.trueDamageAmount;
+
       party.forEach(member => {
         if (member.battleStats.currentHp > 0) {
           itemUsed = true;
@@ -6692,11 +6728,14 @@ export class BattleService {
           if (elementalType !== ElementalTypeEnum.None)
             elementalText = this.getElementalDamageText(elementalType);
 
-          if (effect.trueDamagePercent > 0)
+          if (effect.trueDamagePercent > 0) {
             effect.trueDamageAmount = effect.trueDamagePercent * member.battleStats.maxHp;
 
-          if (effect.maxThreshold > 0 && effect.trueDamageAmount > effect.maxThreshold)
-            effect.trueDamageAmount = effect.maxThreshold;
+            if (effect.maxThreshold > 0 && effect.trueDamageAmount > effect.maxThreshold)
+              effect.trueDamageAmount = effect.maxThreshold;
+
+            effect.trueDamageAmount += baseDamage;
+          }
 
           for (var i = 0; i < hitCount; i++) {
             var damage = this.dealTrueDamage(true, member, effect.trueDamageAmount * damageMultiplier, undefined, elementalType, true);
@@ -7377,8 +7416,8 @@ export class BattleService {
       }
 
       targetGainsEffects.forEach(effect => {
-        if (effect.dotType === dotTypeEnum.BasedOnAttack) //reusing this enum
-        {
+        if (effect.dotType === dotTypeEnum.BasedOnAttack && effect.abilityName !== "Stingray Tip") //reusing this enum
+        {          
           effect.effectiveness *= this.lookupService.getAdjustedAttack(user);
         }
 
@@ -7469,7 +7508,7 @@ export class BattleService {
         }
       }
     }
-    
+
     var unsteadyingToxin = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.UnsteadyingToxin);
     if (unsteadyingToxin !== undefined) {
       var rng = this.utilityService.getRandomNumber(0, 1);

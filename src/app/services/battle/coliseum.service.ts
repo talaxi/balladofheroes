@@ -572,10 +572,15 @@ export class ColiseumService {
           continue;
         }
       }
+      else if (round <= 35) {
+        if (this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Olympus && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Labyrinth) {
+          continue;
+        }
+      }
       //eventually add round limiter here when you have more stuff
       else {
         if ((this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Olympus &&
-          this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Labyrinth && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Labors)) {
+          this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Labyrinth && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Witch)) {
           continue;
         }
       }

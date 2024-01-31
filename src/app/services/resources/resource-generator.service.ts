@@ -474,6 +474,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.RagingBull) {
       return new ResourceValue(ItemsEnum.RagingBull, amount);
     }
+    if (type === ItemsEnum.StingrayTip) {
+      return new ResourceValue(ItemsEnum.StingrayTip, amount);
+    }
     if (type === ItemsEnum.ScorpionStingerEpic) {
       return new ResourceValue(ItemsEnum.ScorpionStingerEpic, amount);
     }

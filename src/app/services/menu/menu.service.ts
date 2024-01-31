@@ -28,6 +28,10 @@ export class MenuService {
   selectedBestiaryBallad: Ballad | undefined;
   selectedBestiaryZone: Zone | undefined;
   selectedBestiarySubzone: SubZone | undefined;
+  
+  selectedAchievementBallad: Ballad | undefined;
+  selectedAchievementZone: Zone | undefined;
+  selectedAchievementSubzone: SubZone | undefined;
 
   constructor(private globalService: GlobalService) { 
     this.selectedMenuDisplay = MenuEnum.Characters;
@@ -78,5 +82,11 @@ export class MenuService {
     this.selectedBestiaryBallad = ballad;
     this.selectedBestiaryZone = zone;
     this.selectedBestiarySubzone = subzone;
+  }
+  
+  setAchievementPresets(ballad: Ballad | undefined, zone: Zone | undefined, subzone: SubZone | undefined) {
+    this.selectedAchievementBallad = ballad;
+    this.selectedAchievementZone = zone;
+    this.selectedAchievementSubzone = subzone;
   }
 }

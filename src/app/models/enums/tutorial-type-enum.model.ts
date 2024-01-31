@@ -26,5 +26,6 @@ export enum TutorialTypeEnum {
   Enemies,
   Link,
   TimeFragments,
-  Uniques
+  Uniques,
+  GameReview
 }

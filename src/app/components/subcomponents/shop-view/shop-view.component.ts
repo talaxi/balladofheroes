@@ -52,9 +52,6 @@ export class ShopViewComponent implements OnInit {
   traderLevelUpText = "";
   traderLevelUpKillsRemainingText = "";
   @ViewChild('coliseumModal') coliseumModal: any;
-  ctrlPressed: boolean = false;
-  shiftPressed: boolean = false;
-  altPressed: boolean = false;
 
   isDisplayingNewItems: boolean = true;
   shopItems: ShopItem[];
@@ -71,26 +68,26 @@ export class ShopViewComponent implements OnInit {
 
   
   @HostListener('window:keydown', ['$event'])
-  keyEventDown(event: KeyboardEvent) {      
+  keyEventDown(event: KeyboardEvent) {          
     if (event.key === "Shift") { //multiply by 25
       event.preventDefault();
-      if (!this.shiftPressed) {
+      if (!this.utilityService.shiftPressed) {
         this.utilityService.shopBuyMultiplier *= 25;
-        this.shiftPressed = true;
+        this.utilityService.shiftPressed = true;
       }
     }
     if (event.key === "Control") { //multiply by 10
       event.preventDefault();
-      if (!this.ctrlPressed) {
+      if (!this.utilityService.ctrlPressed) {        
         this.utilityService.shopBuyMultiplier *= 10;
-        this.ctrlPressed = true;
+        this.utilityService.ctrlPressed = true;
       }
     }
     if (event.key === "Alt") { //multiply by 100
       event.preventDefault();
-      if (!this.altPressed) {
+      if (!this.utilityService.altPressed) {
         this.utilityService.shopBuyMultiplier *= 100;
-        this.altPressed = true;
+        this.utilityService.altPressed = true;
       }
     }
   }
@@ -99,21 +96,21 @@ export class ShopViewComponent implements OnInit {
   keyEventUp(event: KeyboardEvent) {    
     event.preventDefault();
     if (event.key === "Shift") { //divide by 25
-      if (this.shiftPressed) {
+      if (this.utilityService.shiftPressed) {
         this.utilityService.shopBuyMultiplier /= 25;
-        this.shiftPressed = false;
+        this.utilityService.shiftPressed = false;
       }
     }
     if (event.key === "Control") { //divide by 10
-      if (this.ctrlPressed) {
+      if (this.utilityService.ctrlPressed) {
         this.utilityService.shopBuyMultiplier /= 10;
-        this.ctrlPressed = false;
+        this.utilityService.ctrlPressed = false;
       }
     }
     if (event.key === "Alt") { //divide by 100
-      if (this.altPressed) {
+      if (this.utilityService.altPressed) {
         this.utilityService.shopBuyMultiplier /= 100;
-        this.altPressed = false;
+        this.utilityService.altPressed = false;
       }
     }
   }
@@ -687,6 +684,7 @@ export class ShopViewComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    this.utilityService.shopBuyMultiplier = 1;
     this.layoutService.jumpedToColiseum = false;
 
     if (this.subscription !== undefined)

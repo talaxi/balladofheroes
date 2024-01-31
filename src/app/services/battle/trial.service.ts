@@ -665,6 +665,9 @@ export class TrialService {
     if (todaysDate.getDay() === 6 || todaysDate.getDay() === 0)
       buffHours *= 2;
 
+    if (this.globalService.globalVar.isSubscriber)
+      buffHours *= 2;
+
     if (type === TrialEnum.TrialOfSkill) {
       var lootUpEffect = this.globalService.createStatusEffect(StatusEffectEnum.LootRateUp, buffHours * 60 * 60, 1.25, false, true);
       var xpUpEffect = this.globalService.createStatusEffect(StatusEffectEnum.ExperienceGainUp, buffHours * 60 * 60, 1.25, false, true);

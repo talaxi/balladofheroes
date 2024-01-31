@@ -15,7 +15,8 @@
     <div class="navigation">
         <div class="zoneGrid">
             <div class="balladList">
-                <div class="eachBallad unavailableBallad" *ngFor="let ballad of temporarilyUnavailableBallads" customToolTip [contentTemplate]="unavailableUnderworldPopover">
+                <div class="eachBallad unavailableBallad" *ngFor="let ballad of temporarilyUnavailableBallads" customToolTip [contentTemplate]="unavailableUnderworldPopover"
+                [tooltipDirection]="tooltipDirectionDown">
                     <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading" [disabled]="true"
                             [ngClass]="getBalladClass(ballad)"
                             (click)="balladService.selectBallad(ballad)">{{balladService.getBalladName(ballad.type)}}</button>

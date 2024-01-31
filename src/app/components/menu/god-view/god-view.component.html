@@ -300,7 +300,7 @@
             <div *ngFor="let ability of abilityList">
                 <strong class="statLabel" [ngClass]="getGodColor()" customToolTip [isLargeTooltip]="true"
                     [tooltipDirection]="affinityTooltipDirection"
-                    [contentTemplate]="abilityPopover">{{ability.name}}</strong> <span *ngIf="isDuoAbility(ability)">(Duo with {{getPartnerGod()}})</span> - <span class="statValue"
+                    [contentTemplate]="abilityPopover">{{ability.name}}</strong> <span class="statValue" *ngIf="isDuoAbility(ability)" [innerHtml]="getPartnerGod()"></span> - <span class="statValue"
                     [innerHtml]="getGodAbilityDescription(ability.name, ability)"></span>
                 <ng-template #abilityPopover>
                     <div>
@@ -373,6 +373,15 @@
                         <div *ngIf="getAbilityCooldownReduction(ability) !== 0"><span class="statLabel">Cooldown
                                 Reduction: </span> <span class="statValue"
                                 [innerHtml]="getAbilityCooldownReduction(ability)"></span> seconds</div>
+                                <div
+                            *ngIf="getPermanentAbilityUserMaxCountIncrease(ability) !== 0 && getPermanentAbilityUserMaxCountIncrease(ability) !== '0%'">
+                            <span class="statLabel">Permanent User Additional Effect Increase: </span> <span class="statValue"
+                                [innerHtml]="getPermanentAbilityUserMaxCountIncrease(ability)"></span></div>
+                                <div
+                            *ngIf="getPermanentAbilityTargetMaxCountIncrease(ability) !== 0 && getPermanentAbilityTargetMaxCountIncrease(ability) !== '0%'">
+                            <span class="statLabel">Permanent Target Additional Effect Increase: </span> <span class="statValue"
+                                [innerHtml]="getPermanentAbilityTargetMaxCountIncrease(ability)"></span></div>
+                                
                     </div>
                 </ng-template>
 

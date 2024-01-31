@@ -177,6 +177,10 @@
     height: calc(100% - 2.5rem);
 }
 
+.timeFragmentQuickView {
+    height: 100%;
+}
+
 @media (max-width: 800px) {
     .zoneGrid {
         display: grid;

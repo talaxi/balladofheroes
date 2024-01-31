@@ -721,6 +721,9 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.ScorpionStingerSpecial) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
     }
+    if (item === ItemsEnum.StingrayTip) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }
     if (item === ItemsEnum.EssenceOfEarth) {
       purchasePrice.push(new ResourceValue(ItemsEnum.EssenceOfWater, 3));
     }
