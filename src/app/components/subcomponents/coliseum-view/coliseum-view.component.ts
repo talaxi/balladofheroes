@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
-import { MatDialog as MatDialog } from '@angular/material/dialog';
+import { MatDialog as MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
@@ -34,6 +34,7 @@ export class ColiseumViewComponent implements OnInit {
   transactionEnabled: boolean = true;
   transactionConfirmationText = "";
   battleData = "";
+  dialogRef: MatDialogRef<any, any>;
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -319,6 +320,14 @@ export class ColiseumViewComponent implements OnInit {
     this.globalService.globalVar.settings.set("automateEternalMelee", this.automateEternalMelee);
   }
 
+  isRoundComplete(round: number) {
+    if (this.getHighestWeeklyMeleeRoundCompleted() >= round) {      
+        return { 'crossed': true };
+    }
+
+    return {};
+  }
+
   setRewardsText() {
     var rewardsText = "";
 
@@ -339,7 +348,13 @@ export class ColiseumViewComponent implements OnInit {
   }
 
   openModal(content: any) {
-    return this.dialog.open(content, { width: '40%', height: 'auto' });
+    this.dialogRef = this.dialog.open(content, { width: '75%', height: 'auto' });
+    return this.dialogRef;
+  }
+
+  closeDialog() {   
+    if (this.dialogRef !== undefined)   
+      this.dialogRef.close(true);  
   }
 
   openTransactionModal() {

@@ -104,6 +104,29 @@
             <br />
             <br />
             <div class="shop" *ngFor="let shopOption of shopOptions; let i = index">
+                <div *ngIf="isShopOptionColiseum(shopOption)">
+                    <span class="sectionHeaderText sectionHeading">{{getOptionText(shopOption.type)}}</span>
+                    <br />
+                    <i>Each Eternal Melee boss is randomly selected from bosses you have already defeated. In addition, <b
+                            class="smallCaps">Chthonic Patron</b> supporters can create their own bosses. Below are
+                            <b class="smallCaps">Chthonic Patron</b> bosses that can randomly appear.</i>
+                            <br/>
+                            <br/>
+                    <div class="enemyList">
+                        <div class="enemy" *ngFor="let enemyTeam of coliseumPatronList; let i = index">
+                            <strong>Boss Battle</strong>
+                            <br/>
+                            <div *ngFor="let enemy of enemyTeam.enemyList; let j = index">
+                                <span [innerHtml]="getEnemyName(enemy, true)" customToolTip
+                                    [tooltipDirection]="tooltipDirection" [contentTemplate]="enemyPopover"></span>
+                                <ng-template #enemyPopover>
+                                    <app-enemy-description-view 
+                                        [character]="enemy"></app-enemy-description-view>
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div *ngIf="isShopOptionTrialOfSkill(shopOption)">
                     <span class="sectionHeaderText sectionHeading">{{getOptionText(shopOption.type)}}</span>
                     <br />
@@ -191,11 +214,11 @@
                                     [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Scorpio, 'filtered': selectedZodiac !== zodiacEnum.Scorpio}"
                                     src="assets/svg/Scorpio.svg" /></button>
                             <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader zodiacButton"
-                                (click)="showTrialOfStars(zodiacEnum.Sagittarius)"><img  class="zodiacImage"
+                                (click)="showTrialOfStars(zodiacEnum.Sagittarius)"><img class="zodiacImage"
                                     [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Sagittarius, 'filtered': selectedZodiac !== zodiacEnum.Sagittarius}"
                                     src="assets/svg/Sagittarius.svg" /></button>
                             <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader zodiacButton"
-                                (click)="showTrialOfStars(zodiacEnum.Capricorn)"><img  class="zodiacImage"
+                                (click)="showTrialOfStars(zodiacEnum.Capricorn)"><img class="zodiacImage"
                                     [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Capricorn, 'filtered': selectedZodiac !== zodiacEnum.Capricorn}"
                                     src="assets/svg/Capricorn.svg" /></button>
                         </div>
@@ -362,7 +385,7 @@
                     </div>
                 </div>
 
-                <div *ngIf="!isShopOptionTrialOfSkill(shopOption)">
+                <div *ngIf="!isShopOptionTrialOfSkill(shopOption) && !isShopOptionColiseum(shopOption)">
                     <span class="sectionHeaderText sectionHeading">{{getOptionText(shopOption.type)}}</span>
                     <br />
                     <div class="item" *ngFor="let item of getShopOptionItems(shopOption); let j = index">
@@ -396,7 +419,7 @@
             <span>Highest XPS Achieved: {{getHighestXps(selectedSubzone)}}</span>
             <br />
             <span>Highest DPS Achieved: {{getHighestDps(selectedSubzone)}}</span>
-            <br/>
+            <br />
             <button (click)="jumpToAchievements()">View Achievements</button>
             <br />
             <br />

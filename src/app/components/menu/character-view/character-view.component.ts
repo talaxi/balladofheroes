@@ -736,7 +736,7 @@ export class CharacterViewComponent implements OnInit {
     gods.push(this.assignedGod1);
     gods.push(this.assignedGod2)
     var baseAbility = this.lookupService.getDuoAbility(gods, true);
-    if (baseAbility === undefined)
+    if (baseAbility === undefined || baseAbility.requiredLevel !== this.utilityService.duoAbilityLevel)
       return 0;
 
 
@@ -757,7 +757,7 @@ export class CharacterViewComponent implements OnInit {
     gods.push(this.assignedGod1);
     gods.push(this.assignedGod2)
     var baseAbility = this.lookupService.getDuoAbility(gods, true);
-    if (baseAbility === undefined)
+    if (baseAbility === undefined || baseAbility.requiredLevel !== this.utilityService.duoAbilityLevel)
       return 0;
 
 

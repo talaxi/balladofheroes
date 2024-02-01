@@ -4936,6 +4936,13 @@ export class EnemyGeneratorService {
       enemy.loot.push(new LootItem(ItemsEnum.SerpentScale, ItemTypeEnum.CraftingMaterial, 1, .075));
       enemy.loot.push(new LootItem(ItemsEnum.VialOfLakeLerna, ItemTypeEnum.CraftingMaterial, 2, .1));
 
+      var flamingManePlaceholder = new Ability();
+      flamingManePlaceholder.name = "Lernean Hydra Immortality";
+      flamingManePlaceholder.isAvailable = true;
+      flamingManePlaceholder.dealsDirectDamage = false;
+      flamingManePlaceholder.cooldown = flamingManePlaceholder.currentCooldown = 100000;
+      enemy.abilityList.push(flamingManePlaceholder);
+
       var bite = new Ability();
       bite.name = "Bite";
       bite.isAvailable = true;
@@ -15001,7 +15008,7 @@ export class EnemyGeneratorService {
     }     
     if (type === BestiaryEnum.ChampionOfAres) {      
       enemy.name = "Champion of Ares";
-      //TODO: stats & abilities
+      //TODO: stats
       enemy.battleStats = new CharacterStats(603504, 13050, 14000, 14500, 23500, 23250);      
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
@@ -15103,24 +15110,34 @@ export class EnemyGeneratorService {
       enemy.xpGainFromDefeat = 3875;                 
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DivineProtection, -1, .7, false, true, false));                  
             
-      var greasedUp = new Ability();
-      greasedUp.name = "Greased Up";
-      greasedUp.isAvailable = true;
-      greasedUp.cooldown = greasedUp.currentCooldown = 10;      
-      greasedUp.dealsDirectDamage = false;      
-      greasedUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AutoAttackSpeedUp, -1, 1.2, false, true, false, undefined, undefined, true, undefined, undefined, undefined, undefined, 5));
-      enemy.abilityList.push(greasedUp);
+      var craftWeapon = new Ability();
+      craftWeapon.name = "Craft Weapon";
+      craftWeapon.isAvailable = true;
+      craftWeapon.cooldown = craftWeapon.currentCooldown = 20;      
+      craftWeapon.dealsDirectDamage = false;      
+      craftWeapon.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, 15, 1.75, false, true, false));
+      craftWeapon.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Focus, 15, 1, false, false, false, "Rampaging Cyclops"));
+      enemy.abilityList.push(craftWeapon);
 
-      var highSpeed = new Ability();
-      highSpeed.name = "High Speed";
-      highSpeed.isAvailable = true;
-      highSpeed.cooldown = highSpeed.currentCooldown = 22;
-      highSpeed.dealsDirectDamage = false;      
-      highSpeed.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, 0, 1.3, true, true));
-      highSpeed.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, 0, 1.3, true, true));
-      highSpeed.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, 0, 1.3, true, true));
-      greasedUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 2, false, true, false));
-      enemy.abilityList.push(highSpeed);     
+      var rampageSmash = new Ability();
+      rampageSmash.name = "Rampage Smash";
+      rampageSmash.isAvailable = true;
+      rampageSmash.cooldown = 3;
+      rampageSmash.currentCooldown = 20;
+      rampageSmash.dealsDirectDamage = true;      
+      rampageSmash.effectiveness = 15;
+      rampageSmash.damageModifierRange = .5;
+      enemy.abilityList.push(rampageSmash);
+      
+      //TODO: this needs to reset rampage smash and craft weapon cooldowns to 20
+      var rampageCombo = new Ability();
+      rampageCombo.name = "Rampage Combo";
+      rampageCombo.isAvailable = true;
+      rampageCombo.cooldown = rampageCombo.currentCooldown = 35;
+      rampageCombo.dealsDirectDamage = true;      
+      rampageCombo.effectiveness = 25;   
+      rampageCombo.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));   
+      enemy.abilityList.push(rampageCombo);     
       
       var enrage = new Ability();
       enrage.name = "Enrage";
@@ -15138,26 +15155,34 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 6;
       enemy.xpGainFromDefeat = 3875;                 
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DivineProtection, -1, .7, false, true, false));                  
-            
-      var greasedUp = new Ability();
-      greasedUp.name = "Greased Up";
-      greasedUp.isAvailable = true;
-      greasedUp.cooldown = greasedUp.currentCooldown = 10;      
-      greasedUp.dealsDirectDamage = false;      
-      greasedUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AutoAttackSpeedUp, -1, 1.2, false, true, false, undefined, undefined, true, undefined, undefined, undefined, undefined, 5));
-      enemy.abilityList.push(greasedUp);
-
-      var highSpeed = new Ability();
-      highSpeed.name = "High Speed";
-      highSpeed.isAvailable = true;
-      highSpeed.cooldown = highSpeed.currentCooldown = 22;
-      highSpeed.dealsDirectDamage = false;      
-      highSpeed.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, 0, 1.3, true, true));
-      highSpeed.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, 0, 1.3, true, true));
-      highSpeed.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, 0, 1.3, true, true));
-      greasedUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 2, false, true, false));
-      enemy.abilityList.push(highSpeed);     
       
+      var slam = new Ability();
+      slam.name = "Slam";
+      slam.isAvailable = true;
+      slam.cooldown = slam.currentCooldown = 18;
+      slam = this.randomizeCooldown(slam);
+      slam.dealsDirectDamage = true;
+      slam.effectiveness = .8;
+      enemy.abilityList.push(slam);      
+
+      var markTarget = new Ability();
+      markTarget.name = "Mark Target";
+      markTarget.isAvailable = true;
+      markTarget.cooldown = markTarget.currentCooldown = 15;      
+      markTarget.dealsDirectDamage = false;      
+      markTarget.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Taunt, 15, 1, false, false, undefined, enemy.name));
+      enemy.abilityList.push(markTarget);
+
+      var command = new Ability();
+      command.name = "Command";
+      command.isAvailable = true;
+      command.cooldown = command.currentCooldown = 18;
+      command = this.randomizeCooldown(command);
+      command.dealsDirectDamage = false;
+      command.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, 12, 1.65, false, true, true));
+      command.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckUp, 12, 1.65, false, true, true));
+      enemy.abilityList.push(command);
+
       var enrage = new Ability();
       enrage.name = "Enrage";
       enrage.isAvailable = true;
@@ -15174,25 +15199,26 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 6;
       enemy.xpGainFromDefeat = 3875;                 
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DivineProtection, -1, .7, false, true, false));                  
-            
-      var greasedUp = new Ability();
-      greasedUp.name = "Greased Up";
-      greasedUp.isAvailable = true;
-      greasedUp.cooldown = greasedUp.currentCooldown = 10;      
-      greasedUp.dealsDirectDamage = false;      
-      greasedUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AutoAttackSpeedUp, -1, 1.2, false, true, false, undefined, undefined, true, undefined, undefined, undefined, undefined, 5));
-      enemy.abilityList.push(greasedUp);
+      
+      var crunch = new Ability();
+      crunch.name = "Crunch";
+      crunch.isAvailable = true;
+      crunch.effectiveness = 1.8;
+      crunch.cooldown = crunch.currentCooldown = 13;
+      crunch = this.randomizeCooldown(crunch);
+      crunch.dealsDirectDamage = true;
+      crunch.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 4, .6, false, false, false));
+      enemy.abilityList.push(crunch);
 
-      var highSpeed = new Ability();
-      highSpeed.name = "High Speed";
-      highSpeed.isAvailable = true;
-      highSpeed.cooldown = highSpeed.currentCooldown = 22;
-      highSpeed.dealsDirectDamage = false;      
-      highSpeed.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, 0, 1.3, true, true));
-      highSpeed.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, 0, 1.3, true, true));
-      highSpeed.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, 0, 1.3, true, true));
-      greasedUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 2, false, true, false));
-      enemy.abilityList.push(highSpeed);     
+      var bite = new Ability();
+      bite.name = "Bite";
+      bite.isAvailable = true;
+      bite.effectiveness = 1.5;
+      bite.dealsDirectDamage = true;
+      bite.cooldown = bite.currentCooldown = 22;
+      bite = this.randomizeCooldown(bite);
+      bite.targetEffect.push(this.globalService.createDamageOverTimeEffect(20, 4, .1, bite.name));
+      enemy.abilityList.push(bite);
       
       var enrage = new Ability();
       enrage.name = "Enrage";
@@ -15211,25 +15237,35 @@ export class EnemyGeneratorService {
       enemy.xpGainFromDefeat = 3875;                 
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DivineProtection, -1, .7, false, true, false));                  
             
-      var greasedUp = new Ability();
-      greasedUp.name = "Greased Up";
-      greasedUp.isAvailable = true;
-      greasedUp.cooldown = greasedUp.currentCooldown = 10;      
-      greasedUp.dealsDirectDamage = false;      
-      greasedUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AutoAttackSpeedUp, -1, 1.2, false, true, false, undefined, undefined, true, undefined, undefined, undefined, undefined, 5));
-      enemy.abilityList.push(greasedUp);
+      var stomp = new Ability();
+      stomp.name = "Stomp";
+      stomp.isAvailable = true;
+      stomp.effectiveness = 15;
+      stomp.cooldown = stomp.currentCooldown = 15;
+      stomp = this.randomizeCooldown(stomp);
+      stomp.dealsDirectDamage = true;
+      enemy.abilityList.push(stomp);
+       
+      var massiveGaze = new Ability();
+      massiveGaze.name = "Massive Gaze";
+      massiveGaze.isAvailable = true;
+      massiveGaze.cooldown = 20;
+      massiveGaze.currentCooldown = 0;
+      massiveGaze.dealsDirectDamage = false;
+      massiveGaze.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceDown, 20, .65, false, false));
+      massiveGaze.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Focus, 20, 1, false, false, false, "Massive Cyclops"));
+      enemy.abilityList.push(massiveGaze);
+          
+      var massiveLightningBolts = new Ability();
+      massiveLightningBolts.name = "Massive Lightning Bolts";
+      massiveLightningBolts.isAvailable = true;
+      massiveLightningBolts.effectiveness = 15;
+      massiveLightningBolts.cooldown = massiveLightningBolts.currentCooldown = 15;
+      massiveLightningBolts = this.randomizeCooldown(massiveLightningBolts);
+      massiveLightningBolts.dealsDirectDamage = true;
+      massiveLightningBolts.elementalType = ElementalTypeEnum.Lightning;
+      enemy.abilityList.push(massiveLightningBolts);
 
-      var highSpeed = new Ability();
-      highSpeed.name = "High Speed";
-      highSpeed.isAvailable = true;
-      highSpeed.cooldown = highSpeed.currentCooldown = 22;
-      highSpeed.dealsDirectDamage = false;      
-      highSpeed.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, 0, 1.3, true, true));
-      highSpeed.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, 0, 1.3, true, true));
-      highSpeed.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, 0, 1.3, true, true));
-      greasedUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 2, false, true, false));
-      enemy.abilityList.push(highSpeed);     
-      
       var enrage = new Ability();
       enrage.name = "Enrage";
       enrage.isAvailable = true;
@@ -15246,26 +15282,36 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 6;
       enemy.xpGainFromDefeat = 3875;                 
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DivineProtection, -1, .7, false, true, false));                  
-            
-      var greasedUp = new Ability();
-      greasedUp.name = "Greased Up";
-      greasedUp.isAvailable = true;
-      greasedUp.cooldown = greasedUp.currentCooldown = 10;      
-      greasedUp.dealsDirectDamage = false;      
-      greasedUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AutoAttackSpeedUp, -1, 1.2, false, true, false, undefined, undefined, true, undefined, undefined, undefined, undefined, 5));
-      enemy.abilityList.push(greasedUp);
+        
+      var stomp = new Ability();
+      stomp.name = "Mini Stomp";
+      stomp.isAvailable = true;
+      stomp.effectiveness = 15;
+      stomp.cooldown = stomp.currentCooldown = 15;
+      stomp = this.randomizeCooldown(stomp);
+      stomp.dealsDirectDamage = true;
+      enemy.abilityList.push(stomp);
+       
+      var massiveGaze = new Ability();
+      massiveGaze.name = "Mini Gaze";
+      massiveGaze.isAvailable = true;
+      massiveGaze.cooldown = 20;
+      massiveGaze.currentCooldown = 0;
+      massiveGaze.dealsDirectDamage = false;
+      massiveGaze.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 20, .85, false, false));
+      massiveGaze.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Focus, 20, 1, false, false, false, "Massive Cyclops"));
+      enemy.abilityList.push(massiveGaze);
+          
+      var massiveLightningBolts = new Ability();
+      massiveLightningBolts.name = "Mini Lightning Bolts";
+      massiveLightningBolts.isAvailable = true;
+      massiveLightningBolts.effectiveness = 15;
+      massiveLightningBolts.cooldown = massiveLightningBolts.currentCooldown = 15;
+      massiveLightningBolts = this.randomizeCooldown(massiveLightningBolts);
+      massiveLightningBolts.dealsDirectDamage = true;
+      massiveLightningBolts.elementalType = ElementalTypeEnum.Lightning;
+      enemy.abilityList.push(massiveLightningBolts);
 
-      var highSpeed = new Ability();
-      highSpeed.name = "High Speed";
-      highSpeed.isAvailable = true;
-      highSpeed.cooldown = highSpeed.currentCooldown = 22;
-      highSpeed.dealsDirectDamage = false;      
-      highSpeed.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, 0, 1.3, true, true));
-      highSpeed.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, 0, 1.3, true, true));
-      highSpeed.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, 0, 1.3, true, true));
-      greasedUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 2, false, true, false));
-      enemy.abilityList.push(highSpeed);     
-      
       var enrage = new Ability();
       enrage.name = "Enrage";
       enrage.isAvailable = true;
@@ -15280,27 +15326,47 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(603504, 13050, 14000, 14500, 23500, 23250);      
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
-      enemy.xpGainFromDefeat = 3875;                 
+      enemy.xpGainFromDefeat = 3875;                       
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DivineProtection, -1, .7, false, true, false));                  
-            
-      var greasedUp = new Ability();
-      greasedUp.name = "Greased Up";
-      greasedUp.isAvailable = true;
-      greasedUp.cooldown = greasedUp.currentCooldown = 10;      
-      greasedUp.dealsDirectDamage = false;      
-      greasedUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AutoAttackSpeedUp, -1, 1.2, false, true, false, undefined, undefined, true, undefined, undefined, undefined, undefined, 5));
-      enemy.abilityList.push(greasedUp);
+      
+      var stomp = new Ability();
+      stomp.name = "Stomp";
+      stomp.isAvailable = true;
+      stomp.effectiveness = 15;
+      stomp.cooldown = stomp.currentCooldown = 15;
+      stomp = this.randomizeCooldown(stomp);
+      stomp.dealsDirectDamage = true;
+      enemy.abilityList.push(stomp);
+       
+      var craftFireLaser = new Ability();
+      craftFireLaser.name = "Craft Fire Laser";
+      craftFireLaser.isAvailable = true;
+      craftFireLaser.cooldown = craftFireLaser.currentCooldown = 20;      
+      craftFireLaser.dealsDirectDamage = false;      
+      craftFireLaser.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, 15, 1.75, false, true, false));
+      craftFireLaser.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true, false));
+      craftFireLaser.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Focus, 15, 1, false, false, false, "Blasting Cyclops"));
+      enemy.abilityList.push(craftFireLaser);
 
-      var highSpeed = new Ability();
-      highSpeed.name = "High Speed";
-      highSpeed.isAvailable = true;
-      highSpeed.cooldown = highSpeed.currentCooldown = 22;
-      highSpeed.dealsDirectDamage = false;      
-      highSpeed.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, 0, 1.3, true, true));
-      highSpeed.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, 0, 1.3, true, true));
-      highSpeed.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, 0, 1.3, true, true));
-      greasedUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 2, false, true, false));
-      enemy.abilityList.push(highSpeed);     
+      var blasting = new Ability();
+      blasting.name = "Blasting";
+      blasting.isAvailable = true;
+      blasting.cooldown = 2;
+      blasting.currentCooldown = 20;
+      blasting.dealsDirectDamage = true;      
+      blasting.effectiveness = 15;
+      blasting.elementalType = ElementalTypeEnum.Fire;
+      enemy.abilityList.push(blasting);
+      
+      //TODO: this needs to reset blasting and craft fire laser cooldowns to 20
+      var blastWave = new Ability();
+      blastWave.name = "Blast Wave";
+      blastWave.isAvailable = true;
+      blastWave.cooldown = blastWave.currentCooldown = 30;
+      blastWave.dealsDirectDamage = true;      
+      blastWave.effectiveness = 25;   
+      blastWave.isAoe = true;
+      enemy.abilityList.push(blastWave);    
       
       var enrage = new Ability();
       enrage.name = "Enrage";
@@ -15319,6 +15385,7 @@ export class EnemyGeneratorService {
       enemy.xpGainFromDefeat = 3875;                 
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DivineProtection, -1, .7, false, true, false));                  
             
+      //if it takes X amount of damage while buff is up, it retreats to shell and reduces all damage taken by 90% for awhile
       var greasedUp = new Ability();
       greasedUp.name = "Greased Up";
       greasedUp.isAvailable = true;

@@ -41,6 +41,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TutorialBoxComponent } from 'src/app/components/subcomponents/utility/tutorial-box/tutorial-box.component';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ZodiacService } from './zodiac.service';
+import { IndividualFollower } from "src/app/models/followers/individual-follower.model";
 
 @Injectable({
   providedIn: 'root'
@@ -2745,7 +2746,7 @@ export class GlobalService {
           return false;
       }
     }
-    else {
+    else if (godLevel <= 2000) {
       if (godLevel % 200 === 50) {
         if (count[1] >= this.utilityService.godPermanentAbility1ObtainCap)
           return false;
@@ -2762,6 +2763,32 @@ export class GlobalService {
         if (count[1] >= this.utilityService.godPermanentAbility3ObtainCap)
           return false;
       }
+    }
+    else if (godLevel <= 3000) {
+      if (godLevel % 100 === 0) {
+        if (count[1] >= this.utilityService.godPermanentStatGain6ObtainCap)
+          return false;
+      }
+      else if (godLevel % 50 === 0) {
+        if (count[1] >= this.utilityService.godPermanentStatGain5ObtainCap) {
+          return false;
+        }
+      }
+    }
+    else if (godLevel <= 4000) {
+      if (godLevel % 100 === 0) {
+        if (count[1] >= this.utilityService.godPermanentStatGain7ObtainCap)
+          return false;
+      }
+      else if (godLevel % 50 === 0) {
+        if (count[1] >= this.utilityService.godPermanentDuoAbilityObtainCap) {
+          return false;
+        }
+      }
+    }
+    else if (godLevel % 50 === 0) {
+      if (count[1] >= this.utilityService.godPermanentStatGain8ObtainCap)
+        return false;
     }
 
     return true;
@@ -3743,6 +3770,7 @@ export class GlobalService {
   getGodXpToNextLevel(level: number) {
     var baseXp = 200;
     var tier1Breakpoint = 500;
+    var tier2Breakpoint = 2000;
 
     if (level < 15)
       baseXp += level * 10;
@@ -3769,7 +3797,16 @@ export class GlobalService {
       tier2Xp = this.utilityService.roundTo(exponential + additive, 5);
     }
 
-    return tier1Xp + tier2Xp;
+    var tier3Xp = 0;
+    if (level > tier2Breakpoint) {
+      baseXp = 1800000;
+      var factor = 1.00515;
+      var tier3Level = level - (tier2Breakpoint);
+      var exponential = (baseXp * (factor ** (tier3Level)));
+      tier3Xp = this.utilityService.roundTo(exponential, 5);
+    }
+
+    return tier1Xp + tier2Xp + tier3Xp;
   }
 
   getNextStatToIncrease(lastStat: CharacterStatEnum) {
@@ -4455,8 +4492,11 @@ export class GlobalService {
     this.resetCooldowns();
 
     if (type === ColiseumTournamentEnum.WeeklyMelee) {
+      var previousWeeklyMeleeRoundMax = this.globalVar.sidequestData.highestWeeklyMeleeRound;
       if ((losingRound - 1) > this.globalVar.sidequestData.highestWeeklyMeleeRound)
         this.globalVar.sidequestData.highestWeeklyMeleeRound = (losingRound - 1);
+
+      this.checkForFirstTimeEternalMeleeRewards(previousWeeklyMeleeRoundMax, this.globalVar.sidequestData.highestWeeklyMeleeRound);
 
       var bonusXpBase = 3250;
       var growthFactor = 1.205;
@@ -4482,6 +4522,35 @@ export class GlobalService {
 
       this.giveCharactersBonusExp(bonusXp);
       this.gainResource(new ResourceValue(ItemsEnum.Coin, bonusCoins));
+    }
+  }
+
+  checkForFirstTimeEternalMeleeRewards(previousMax: number, newMax: number) {
+    if (previousMax < 10 && newMax >= 10) {
+      var rng = 2;
+      if (this.globalVar.followerData.numberOfFollowersGainedFromColiseum === undefined)
+        this.globalVar.followerData.numberOfFollowersGainedFromColiseum = 0;
+      this.globalVar.followerData.numberOfFollowersGainedFromColiseum += rng;
+      this.globalVar.followerData.availableFollowers += rng;
+      for (var i = 0; i < rng; i++) {
+        this.globalVar.followerData.followers.push(new IndividualFollower());
+      }
+
+      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng + " Followers</strong> for completing Round 10 of the Eternal Melee for the first time.", this.globalVar);      
+    }
+    if (previousMax < 20 && newMax >= 20) {
+      var rng = 1;
+      var gainedItem = ItemsEnum.DarkOrb;
+
+      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong> for completing Round 20 of the Eternal Melee for the first time.", this.globalVar);
+      this.gainResource(new ResourceValue(gainedItem, rng));
+    }
+    if (previousMax < 30 && newMax >= 30) {
+      var rng = 1;
+      var gainedItem = ItemsEnum.HermessStaff;
+
+      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong> for completing Round 30 of the Eternal Melee for the first time.", this.globalVar);
+      this.gainResource(new ResourceValue(gainedItem, rng));
     }
   }
 
@@ -4542,7 +4611,7 @@ export class GlobalService {
     }
 
     if (round > 40) {
-      var rng = this.utilityService.getRandomInteger(30, 70);
+      var rng = this.utilityService.getRandomInteger(60, 130);
       var gainedItem = this.getRandomRareMaterial();
 
       this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalVar);
@@ -4550,7 +4619,7 @@ export class GlobalService {
     }
 
     if (round > 45) {
-      var rng = this.utilityService.getRandomInteger(25, 100);
+      var rng = this.utilityService.getRandomInteger(50, 200);
       var gainedItem = ItemsEnum.MetalNuggets;
 
       this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalVar);
@@ -4561,7 +4630,7 @@ export class GlobalService {
     var remainingRounds = round - 45;
 
     while (remainingRounds > 5) {
-      var rng = 100;
+      var rng = 250;
       var gainedItem = this.getRandomRutileFragment();
 
       this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalVar);

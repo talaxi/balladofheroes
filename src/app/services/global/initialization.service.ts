@@ -656,7 +656,7 @@ export class InitializationService {
     }
 
     this.globalService.globalVar.ballads.forEach(ballad => {
-      if (ballad.type === BalladEnum.Gorgon || ballad.type === BalladEnum.Champion || ballad.type === BalladEnum.Underworld) {
+      //if (ballad.type === BalladEnum.Gorgon || ballad.type === BalladEnum.Champion || ballad.type === BalladEnum.Underworld) {
       ballad.isAvailable = true;
       ballad.notify = true;
       ballad.zones.forEach(zone => {
@@ -682,7 +682,7 @@ export class InitializationService {
         })
         //}
       });
-      }
+      //}
     });
 
     //set up ballad for original testing          
@@ -1266,7 +1266,7 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.GiantNecklace);
       }
 
-      var chthonicResetCount = 3;
+      var chthonicResetCount = 1;
       var godLevel = 500;
 
       for (var j = 0; j < chthonicResetCount; j++) {
@@ -1283,7 +1283,7 @@ export class InitializationService {
         if (j < chthonicResetCount - 1)
           godLevel = 2000;
         else
-          godLevel = 2500;
+          godLevel = 2000;
 
         for (var i = 0; i < godLevel; i++) {
           this.globalService.levelUpGod(athena!);

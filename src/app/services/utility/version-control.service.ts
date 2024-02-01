@@ -1671,6 +1671,28 @@ export class VersionControlService {
 
           this.initializationService.initializeBalladOfTheWitch();
 
+          this.globalService.globalVar.gods.forEach(god => {
+            god.permanentStat5GainCount.forEach(count => {
+              if (count[1] > this.utilityService.godPermanentStatGain5ObtainCap)
+                count[1] = this.utilityService.godPermanentStatGain5ObtainCap;
+            });
+
+            god.permanentStat6GainCount.forEach(count => {
+              if (count[1] > this.utilityService.godPermanentStatGain6ObtainCap)
+                count[1] = this.utilityService.godPermanentStatGain6ObtainCap;
+            });
+
+            god.permanentDuoAbilityGainCount.forEach(count => {
+              if (count[1] > this.utilityService.godPermanentDuoAbilityObtainCap)
+                count[1] = this.utilityService.godPermanentDuoAbilityObtainCap;
+            });
+
+            god.permanentStat7GainCount.forEach(count => {
+              if (count[1] > this.utilityService.godPermanentStatGain7ObtainCap)
+                count[1] = this.utilityService.godPermanentStatGain7ObtainCap;
+            });
+          });
+
           var monkClass = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Monk);
           if (monkClass !== undefined) {           
             var passive = monkClass.abilityList.find(item => item.requiredLevel === this.utilityService.characterPassiveLevel);

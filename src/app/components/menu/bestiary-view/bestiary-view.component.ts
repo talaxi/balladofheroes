@@ -51,6 +51,7 @@ export class BestiaryViewComponent {
   isMobile: boolean = false;
   enemyList: Enemy[] = [];
   enemyEncounters: EnemyTeam[] = [];
+  coliseumPatronList: EnemyTeam[] = [];
   availableItems: LootItem[] = [];
   availableTreasure: ResourceValue[] = [];
   tooltipDirection = DirectionEnum.DownRight;
@@ -77,6 +78,8 @@ export class BestiaryViewComponent {
     var presetZone = this.selectedZone?.type;
     var presetSubzone = this.selectedSubzone?.type;
 
+    this.setupColiseumPatronList();
+
     if (presetBallad !== undefined)
       this.selectBallad(presetBallad);
     if (presetZone !== undefined)
@@ -91,6 +94,21 @@ export class BestiaryViewComponent {
     }).forEach(item => {
       this.availableBallads.push(item.type);
     });
+  }
+
+  setupColiseumPatronList() {
+    this.coliseumPatronList = [];
+
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ColchianDragon));
+      this.coliseumPatronList.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.isDoubleBossFight = true;
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Rhoecus));
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.TheBee));
+      this.coliseumPatronList.push(enemyTeam2);    
   }
 
   selectBallad(type: BalladEnum) {
@@ -268,6 +286,10 @@ export class BestiaryViewComponent {
       return 0;
 
     return trialType.count;
+  }
+
+  isShopOptionColiseum(option: ShopOption) {    
+    return option.type === ShopTypeEnum.Coliseum;
   }
 
   isShopOptionTrialOfSkill(option: ShopOption) {
@@ -485,14 +507,14 @@ export class BestiaryViewComponent {
     this.utilityService.removeExcessOverlayDivs();
   }
 
-  getEnemyName(enemy: Enemy) {
+  getEnemyName(enemy: Enemy, bypassHiddenName: boolean = false) {
     var defeatCount = 0;
     var name = this.nameHiddenText;
     var defeatCountStat = this.globalService.globalVar.enemyDefeatCount.find(item => item.bestiaryEnum === enemy.bestiaryType);
     if (defeatCountStat !== undefined)
       defeatCount = defeatCountStat.count;
 
-    if (defeatCount > 0)
+    if (defeatCount > 0 || bypassHiddenName)
       name = enemy.name;
 
     return name;

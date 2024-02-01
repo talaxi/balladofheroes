@@ -43,7 +43,7 @@ export class ColiseumService {
     var info = this.dictionaryService.getColiseumInfoFromType(type);
 
     if (type === ColiseumTournamentEnum.WeeklyMelee)
-    return "Complete as many rounds as you can in " + info.tournamentTimerLength + " seconds. Each round is progressively more difficult. Gain " + (this.globalService.globalVar.isSubscriber ? "two entries" : "one entry") + " per day. (And " + (this.globalService.globalVar.isSubscriber ? "two extra entries" : "an extra entry") + " for playing on Saturday or Sunday!)";
+      return "Complete as many rounds as you can in " + info.tournamentTimerLength + " seconds. Each round is progressively more difficult. Gain " + (this.globalService.globalVar.isSubscriber ? "two entries" : "one entry") + " per day. (And " + (this.globalService.globalVar.isSubscriber ? "two extra entries" : "an extra entry") + " for playing on Saturday or Sunday!)";
 
     if (type === ColiseumTournamentEnum.FriendlyCompetition)
       return "Do battle with another player's party. Export your data here to give to them, or enter their exported data and begin battling.";
@@ -130,7 +130,7 @@ export class ColiseumService {
       }
     }
     //then reset
-    if (type === ColiseumTournamentEnum.FriendlyCompetition) {      
+    if (type === ColiseumTournamentEnum.FriendlyCompetition) {
       this.globalService.globalVar.activeBattle.activeTournament = this.globalService.setNewTournament(false);
     }
     else
@@ -592,7 +592,7 @@ export class ColiseumService {
         });
     }
 
-    if (isBoss) {      
+    if (isBoss) {
       this.getPatreonBosses(round).forEach(bossTeam => {
         allRelevantEnemyParties.push(bossTeam);
       });
@@ -682,9 +682,8 @@ export class ColiseumService {
       }
 
       if (enemy.bestiaryType === BestiaryEnum.TheBee) {
-        var buzzingReminder = enemy.abilityList.find(item => item.name === "Buzzing Reminder");        
-        if (buzzingReminder !== undefined)
-        {          
+        var buzzingReminder = enemy.abilityList.find(item => item.name === "Buzzing Reminder");
+        if (buzzingReminder !== undefined) {
           buzzingReminder.maxCount = Math.round(enemy.battleStats.maxHp * .1);
         }
       }
@@ -814,13 +813,44 @@ export class ColiseumService {
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.FriendlyCompetition, -1, this.utilityService.friendlyCompetitionDamageReduction, false, true));
 
       //TODO: have to run through every ability's permanents
+      enemy.abilityList.forEach(ability => {
+        var permanentUpgrades = member.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
+        if (permanentUpgrades !== undefined) {
+          ability.effectiveness += permanentUpgrades.effectiveness;
+
+          if (permanentUpgrades.targetEffect !== undefined && permanentUpgrades.targetEffect.length > 0) {
+            ability.targetEffect[0].effectiveness += permanentUpgrades.targetEffect[0].effectiveness;
+          }
+          
+          if (permanentUpgrades.userEffect !== undefined && permanentUpgrades.userEffect.length > 0) {
+            ability.userEffect[0].effectiveness += permanentUpgrades.userEffect[0].effectiveness;
+          }
+        }
+      });
 
       if (member.assignedGod1 !== undefined && member.assignedGod1 !== GodEnum.None) {
         var god = this.globalService.globalVar.gods.find(item => item.type === member.assignedGod1);
         if (god !== undefined) {
           if (god.abilityList !== undefined && god.abilityList.length > 0)
             god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
-              enemy.abilityList.push(ability);
+              var abilityCopy = ability.makeCopy();
+
+              var permanentAbilityUpgrades = god!.permanentAbilityUpgrades.find(item => item.requiredLevel === abilityCopy.requiredLevel);
+              if (permanentAbilityUpgrades !== undefined) {
+                abilityCopy.effectiveness += permanentAbilityUpgrades.effectiveness;                
+
+                if (permanentAbilityUpgrades.targetEffect !== undefined && permanentAbilityUpgrades.targetEffect.length > 0) {
+                  abilityCopy.targetEffect[0].effectiveness += permanentAbilityUpgrades.targetEffect[0].effectiveness;
+                  abilityCopy.targetEffect[0].duration += permanentAbilityUpgrades.targetEffect[0].duration;
+                }
+                
+                if (permanentAbilityUpgrades.userEffect !== undefined && permanentAbilityUpgrades.userEffect.length > 0) {
+                  abilityCopy.userEffect[0].effectiveness += permanentAbilityUpgrades.userEffect[0].effectiveness;
+                  abilityCopy.userEffect[0].duration += permanentAbilityUpgrades.userEffect[0].duration;
+                }
+              }
+
+              enemy.abilityList.push(abilityCopy);
             });
         }
       }
@@ -830,7 +860,36 @@ export class ColiseumService {
         if (god !== undefined) {
           if (god.abilityList !== undefined && god.abilityList.length > 0)
             god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
-              enemy.abilityList.push(ability);
+              var abilityCopy = ability.makeCopy();
+
+              var permanentAbilityUpgrades = god!.permanentAbilityUpgrades.find(item => item.requiredLevel === abilityCopy.requiredLevel);
+              if (permanentAbilityUpgrades !== undefined) {
+                abilityCopy.effectiveness += permanentAbilityUpgrades.effectiveness;                
+
+                if (permanentAbilityUpgrades.targetEffect !== undefined && permanentAbilityUpgrades.targetEffect.length > 0) {
+                  abilityCopy.targetEffect[0].effectiveness += permanentAbilityUpgrades.targetEffect[0].effectiveness;
+                  abilityCopy.targetEffect[0].duration += permanentAbilityUpgrades.targetEffect[0].duration;
+
+                  if (permanentAbilityUpgrades.targetEffect.length > 1)
+                  {
+                    abilityCopy.targetEffect[1].effectiveness += permanentAbilityUpgrades.targetEffect[0].effectiveness;
+                    abilityCopy.targetEffect[1].duration += permanentAbilityUpgrades.targetEffect[0].duration;  
+                  }
+                }
+                
+                if (permanentAbilityUpgrades.userEffect !== undefined && permanentAbilityUpgrades.userEffect.length > 0) {
+                  abilityCopy.userEffect[0].effectiveness += permanentAbilityUpgrades.userEffect[0].effectiveness;
+                  abilityCopy.userEffect[0].duration += permanentAbilityUpgrades.userEffect[0].duration;
+                  
+                  if (permanentAbilityUpgrades.userEffect.length > 1)
+                  {
+                    abilityCopy.userEffect[1].effectiveness += permanentAbilityUpgrades.userEffect[0].effectiveness;
+                    abilityCopy.userEffect[1].duration += permanentAbilityUpgrades.userEffect[0].duration;  
+                  }
+                }
+              }
+
+              enemy.abilityList.push(abilityCopy);
             });
         }
       }

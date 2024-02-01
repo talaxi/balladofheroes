@@ -609,7 +609,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       if (effect.type === StatusEffectEnum.AllPrimaryStatsDown && effect.abilityName === "Sickness")
       src += "dionysusArtemisDuo.svg";    
       if (effect.type === StatusEffectEnum.VortexPull)
-      src += "vortexPull.svg";       
+      src += "vortexPull.svg";    
+      if (effect.type === StatusEffectEnum.FriendlyCompetition)
+      src += "friendlyCompetition.svg";       
 
     return src;
   }

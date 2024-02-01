@@ -3762,9 +3762,7 @@ export class LookupService {
 
     //Warrior
     if (abilityName === "Battle Cry")
-      abilityDescription = "Draw a target's focus for the next <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds, forcing all attacks to target you. Also, apply a debuff on the target that increases their damage taken from Thorns effects by <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
-    //if (abilityName === "Last Stand")
-    //abilityDescription = "When HP drops below <strong>" + thresholdAmountPercent + "%</strong>, increase Defense by <strong>" + effectiveAmountPercent + "%</strong>. Passive.";
+      abilityDescription = "Draw a target's focus for the next <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds, forcing all attacks to target you. Also, apply a debuff on the target that increases their damage taken from Thorns effects by <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";    
     if (abilityName === "Counterattack")
       abilityDescription = "When an enemy is forced to auto attack you, deal <strong>" + effectivenessPercent + "%</strong> of the damage back to them. If your HP is below <strong>" + thresholdAmountPercent + "%</strong>, also immediately auto attack after any damage dealing attack from an enemy forced to target you. Passive.";
     if (abilityName === "Shield Slam")
@@ -3782,8 +3780,7 @@ export class LookupService {
     if (abilityName === "Palm Strike")
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage and apply a Palm Strike debuff to the target. Every third Palm Strike on a target will increase the effectiveness by <b>" + (secondaryEffectivenessPercent - 100) + "%</b> and hit all targets. " + cooldown + " second cooldown.";
     if (abilityName === "Insight")
-      abilityDescription = "After using an auto attack, heal both party members for <strong>" + this.utilityService.genericRound(effectivenessPercent / 2) + "% of Attack + " + this.utilityService.genericRound(effectivenessPercent / 2) + "% of Resistance</strong> HP. Increase this amount by <b>" + (secondaryEffectivenessPercent - 100) + "%</b> if the target has the Palm Strike debuff. Passive.";
-    //abilityDescription = "After using an auto attack, increase ability damage by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for " + relatedUserGainStatusEffectDuration + " seconds. Passive.";
+      abilityDescription = "After using an auto attack, heal both party members for <strong>" + this.utilityService.genericRound(effectivenessPercent / 2) + "% of Attack + " + this.utilityService.genericRound(effectivenessPercent / 2) + "% of Resistance</strong> HP. Increase this amount by <b>" + (secondaryEffectivenessPercent - 100) + "%</b> if the target has the Palm Strike debuff. Passive.";    
     if (abilityName === "Spirit Unleashed") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. Rotate between giving your target a debuff to increase their damage taken by <b>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</b>, reduce their damage dealt by <b>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</b>, or reduce their Auto Attack Speed by <b>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</b>. " + cooldown + " second cooldown.";
     }
@@ -5741,7 +5738,46 @@ export class LookupService {
     }
     if (ability.name === "Grasp") {
       abilityDescription = "Stun a target for " + relatedTargetGainStatusEffectDuration + " seconds and apply a damage over time effect that deals <strong>" + secondaryRelatedTargetGainStatusEffectEffectivenessPercent + "% of Attack</strong> damage every " + secondaryRelatedTargetGainStatusEffectTickFrequency + " seconds for " + secondaryRelatedTargetGainStatusEffectDuration + " seconds. " + cooldown + " second cooldown.";
+    }        
+    if (ability.name === "Quick Hit")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage and increase Agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    if (ability.name === "Barrage")
+      abilityDescription = "Every <strong>" + this.utilityService.ordinalSuffixOf(abilityCount) + "</strong> auto attack hits all additional enemies for <strong>" + effectivenessPercent + "%</strong> of the damage dealt. Passive.";
+    if (ability.name === "Thousand Cuts")
+      abilityDescription = "For <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds, increase your Damage Dealt by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> after each auto attack or ability. " + cooldown + " second cooldown.";
+    if (ability.name === "Mark")
+      abilityDescription = "When an enemy has a status effect that you have applied, they also have Mark. Mark increases damage taken by <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong>. Passive.";
+    if (ability.name === "Pinning Shot")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. Stun the target for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    if (ability.name === "Battle Cry")
+      abilityDescription = "Draw a target's focus for the next <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds, forcing all attacks to target you. Also, apply a debuff on the target that increases their damage taken from Thorns effects by <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";    
+    if (ability.name === "Counterattack")
+      abilityDescription = "When an enemy is forced to auto attack you, deal <strong>" + effectivenessPercent + "%</strong> of the damage back to them. If your HP is below <strong>" + thresholdAmountPercent + "%</strong>, also immediately auto attack after any damage dealing attack from an enemy forced to target you. Passive.";
+    if (ability.name === "Shield Slam")
+      abilityDescription = "Increase Attack by <strong>" + (secondaryEffectiveAmountPercent) + "% of Defense</strong> then deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. " + cooldown + " second cooldown.";
+    if (ability.name === "Heal")
+      abilityDescription = "Heal a party member for <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Resistance</strong> HP. Targets the party member with the lowest HP %. " + cooldown + " second cooldown.";
+    if (ability.name === "Faith")
+      abilityDescription = "Altar effectiveness is increased by <strong>" + effectiveAmountPercent + "%</strong>. Passive.";
+    if (ability.name === "Pray")
+      abilityDescription = "Grant all characters a <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Resistance</strong> HP Shield, up to <strong>" + thresholdAmountPercent + "%</strong> of their Max HP. " + cooldown + " second cooldown.";
+    if (ability.name === "Palm Strike")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage and apply a Palm Strike debuff to the target. Every third Palm Strike on a target will increase the effectiveness by <b>" + (secondaryEffectiveAmountPercent - 100) + "%</b> and hit all targets. " + cooldown + " second cooldown.";
+    if (ability.name === "Insight")
+      abilityDescription = "After using an auto attack, heal both party members for <strong>" + this.utilityService.genericRound(effectivenessPercent / 2) + "% of Attack + " + this.utilityService.genericRound(effectivenessPercent / 2) + "% of Resistance</strong> HP. Increase this amount by <b>" + (secondaryEffectiveAmountPercent - 100) + "%</b> if the target has the Palm Strike debuff. Passive.";    
+    if (ability.name === "Spirit Unleashed") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. Rotate between giving your target a debuff to increase their damage taken by <b>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</b>, reduce their damage dealt by <b>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</b>, or reduce their Auto Attack Speed by <b>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</b>. " + cooldown + " second cooldown.";
     }
+    if (ability.name === "Elemental Strike")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. A random element is used for the damage. " + cooldown + " second cooldown.";
+    if (ability.name === "Awakened Spirit")
+      abilityDescription = "After dealing damage with any element, increase damage dealt by that element by <strong>" + (effectivenessPercent - 100) + "%</strong> and reduce damage taken from that element by <strong>" + (100 - secondaryEffectiveAmountPercent) + "%</strong> for 7 seconds. Passive.";
+    if (ability.name === "Outburst")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. The damage is increased by <strong>" + (secondaryEffectiveAmountPercent - 100) + "%</strong> for each different element you attacked with since the last time this was used. " + cooldown + " second cooldown.";
+      if (ability.name === "Quicken")
+      abilityDescription = "Every auto attack reduces your cooldowns by <strong>" + ((ability?.effectiveness ?? 0)).toFixed(3) + "</strong> seconds. Passive.";
+    if (ability.name === "Lernean Hydra Immortality")
+      abilityDescription = "The Lernean Hydra is immune to all damage while its heads are alive.";
 
     return abilityDescription;
   }

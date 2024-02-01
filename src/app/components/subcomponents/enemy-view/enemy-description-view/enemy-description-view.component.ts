@@ -83,32 +83,32 @@ export class EnemyDescriptionViewComponent {
     if (this.character.battleStats.elementIncrease.fire > 0) {
       if (increases !== "")
         increases += "<br/>";
-      increases += "<span class='statLabel'>Fire Damage Dealt:</span> <span class='statValue'>+" + this.character.battleStats.elementIncrease.fire * 100 + "%</span>";
+      increases += "<span class='statLabel'>Fire Damage Dealt:</span> <span class='statValue'>+" + this.utilityService.genericRound(this.character.battleStats.elementIncrease.fire * 100) + "%</span>";
     }
     if (this.character.battleStats.elementIncrease.holy > 0) {
       if (increases !== "")
         increases += "<br/>";
-      increases += "<span class='statLabel'>Holy Damage Dealt:</span> <span class='statValue'>+" + this.character.battleStats.elementIncrease.holy * 100 + "%</span>";
+      increases += "<span class='statLabel'>Holy Damage Dealt:</span> <span class='statValue'>+" + this.utilityService.genericRound(this.character.battleStats.elementIncrease.holy * 100) + "%</span>";
     }
     if (this.character.battleStats.elementIncrease.water > 0) {
       if (increases !== "")
         increases += "<br/>";
-      increases += "<span class='statLabel'>Water Damage Dealt:</span> <span class='statValue'>+" + this.character.battleStats.elementIncrease.water * 100 + "%</span>";
+      increases += "<span class='statLabel'>Water Damage Dealt:</span> <span class='statValue'>+" + this.utilityService.genericRound(this.character.battleStats.elementIncrease.water * 100) + "%</span>";
     }
     if (this.character.battleStats.elementIncrease.air > 0) {
       if (increases !== "")
         increases += "<br/>";
-      increases += "<span class='statLabel'>Air Damage Dealt:</span> <span class='statValue'>+" + this.character.battleStats.elementIncrease.air * 100 + "%</span>";
+      increases += "<span class='statLabel'>Air Damage Dealt:</span> <span class='statValue'>+" + this.utilityService.genericRound(this.character.battleStats.elementIncrease.air * 100) + "%</span>";
     }
     if (this.character.battleStats.elementIncrease.earth > 0) {
       if (increases !== "")
         increases += "<br/>";
-      increases += "<span class='statLabel'>Earth Damage Dealt:</span> <span class='statValue'>+" + this.character.battleStats.elementIncrease.earth * 100 + "%</span>";
+      increases += "<span class='statLabel'>Earth Damage Dealt:</span> <span class='statValue'>+" + this.utilityService.genericRound(this.character.battleStats.elementIncrease.earth * 100) + "%</span>";
     }
     if (this.character.battleStats.elementIncrease.lightning > 0) {
       if (increases !== "")
         increases += "<br/>";
-      increases += "<span class='statLabel'>Lightning Damage Dealt:</span> <span class='statValue'>+" + this.character.battleStats.elementIncrease.lightning * 100 + "%</span>";
+      increases += "<span class='statLabel'>Lightning Damage Dealt:</span> <span class='statValue'>+" + this.utilityService.genericRound(this.character.battleStats.elementIncrease.lightning * 100) + "%</span>";
     }
 
     return increases;
@@ -119,63 +119,63 @@ export class EnemyDescriptionViewComponent {
     if (this.character.battleStats.elementResistance.water > 0) {
       if (decreases !== "")
         decreases += "<br/>";
-      decreases += "<span class='statLabel'>Water Damage Taken:</span> <span class='statValue'>-" + this.character.battleStats.elementResistance.water * 100 + "%</span>";
+      decreases += "<span class='statLabel'>Water Damage Taken:</span> <span class='statValue'>-" + this.utilityService.genericRound(this.character.battleStats.elementResistance.water * 100) + "%</span>";
     }
     if (this.character.battleStats.elementResistance.fire > 0) {
       if (decreases !== "")
         decreases += "<br/>";
-      decreases += "<span class='statLabel'>Fire Damage Taken:</span> <span class='statValue'>-" + this.character.battleStats.elementResistance.fire * 100 + "%</span>";
+      decreases += "<span class='statLabel'>Fire Damage Taken:</span> <span class='statValue'>-" + this.utilityService.genericRound(this.character.battleStats.elementResistance.fire * 100) + "%</span>";
     }
     if (this.character.battleStats.elementResistance.holy > 0) {
       if (decreases !== "")
         decreases += "<br/>";
-      decreases += "<span class='statLabel'>Holy Damage Taken:</span> <span class='statValue'>-" + this.character.battleStats.elementResistance.holy * 100 + "%</span>";
+      decreases += "<span class='statLabel'>Holy Damage Taken:</span> <span class='statValue'>-" + this.utilityService.genericRound(this.character.battleStats.elementResistance.holy * 100) + "%</span>";
     }
     if (this.character.battleStats.elementResistance.air > 0) {
       if (decreases !== "")
         decreases += "<br/>";
-      decreases += "<span class='statLabel'>Air Damage Taken:</span> <span class='statValue'>-" + this.character.battleStats.elementResistance.air * 100 + "%</span>";
+      decreases += "<span class='statLabel'>Air Damage Taken:</span> <span class='statValue'>-" + this.utilityService.genericRound(this.character.battleStats.elementResistance.air * 100) + "%</span>";
     }
     if (this.character.battleStats.elementResistance.earth > 0) {
       if (decreases !== "")
         decreases += "<br/>";
-      decreases += "<span class='statLabel'>Earth Damage Taken:</span> <span class='statValue'>-" + this.character.battleStats.elementResistance.earth * 100 + "%</span>";
+      decreases += "<span class='statLabel'>Earth Damage Taken:</span> <span class='statValue'>-" + this.utilityService.genericRound(this.character.battleStats.elementResistance.earth * 100) + "%</span>";
     }
     if (this.character.battleStats.elementResistance.lightning > 0) {
       if (decreases !== "")
         decreases += "<br/>";
-      decreases += "<span class='statLabel'>Lightning Damage Taken:</span> <span class='statValue'>-" + this.character.battleStats.elementResistance.lightning * 100 + "%</span>";
+      decreases += "<span class='statLabel'>Lightning Damage Taken:</span> <span class='statValue'>-" + this.utilityService.genericRound(this.character.battleStats.elementResistance.lightning * 100) + "%</span>";
     }
 
     if (this.character.battleStats.elementResistance.water < 0) {
       if (decreases !== "")
         decreases += "<br/>";
-      decreases += "<span class='statLabel'>Water Damage Taken:</span> <span class='statValue'>+" + Math.abs(this.character.battleStats.elementResistance.water) * 100 + "%</span>";
+      decreases += "<span class='statLabel'>Water Damage Taken:</span> <span class='statValue'>+" + this.utilityService.genericRound(Math.abs(this.character.battleStats.elementResistance.water) * 100) + "%</span>";
     }
     if (this.character.battleStats.elementResistance.holy < 0) {
       if (decreases !== "")
         decreases += "<br/>";
-      decreases += "<span class='statLabel'>Holy Damage Taken:</span> <span class='statValue'>+" + Math.abs(this.character.battleStats.elementResistance.holy) * 100 + "%</span>";
+      decreases += "<span class='statLabel'>Holy Damage Taken:</span> <span class='statValue'>+" + this.utilityService.genericRound(Math.abs(this.character.battleStats.elementResistance.holy) * 100) + "%</span>";
     }
     if (this.character.battleStats.elementResistance.air < 0) {
       if (decreases !== "")
         decreases += "<br/>";
-      decreases += "<span class='statLabel'>Air Damage Taken:</span> <span class='statValue'>+" + Math.abs(this.character.battleStats.elementResistance.air) * 100 + "%</span>";
+      decreases += "<span class='statLabel'>Air Damage Taken:</span> <span class='statValue'>+" + this.utilityService.genericRound(Math.abs(this.character.battleStats.elementResistance.air) * 100) + "%</span>";
     }
     if (this.character.battleStats.elementResistance.earth < 0) {
       if (decreases !== "")
         decreases += "<br/>";
-      decreases += "<span class='statLabel'>Earth Damage Taken:</span> <span class='statValue'>+" + Math.abs(this.character.battleStats.elementResistance.earth) * 100 + "%</span>";
+      decreases += "<span class='statLabel'>Earth Damage Taken:</span> <span class='statValue'>+" + this.utilityService.genericRound(Math.abs(this.character.battleStats.elementResistance.earth) * 100) + "%</span>";
     }
     if (this.character.battleStats.elementResistance.fire < 0) {
       if (decreases !== "")
         decreases += "<br/>";
-      decreases += "<span class='statLabel'>Fire Damage Taken:</span> <span class='statValue'>+" + Math.abs(this.character.battleStats.elementResistance.fire) * 100 + "%</span>";
+      decreases += "<span class='statLabel'>Fire Damage Taken:</span> <span class='statValue'>+" + this.utilityService.genericRound(Math.abs(this.character.battleStats.elementResistance.fire) * 100) + "%</span>";
     }
     if (this.character.battleStats.elementResistance.lightning < 0) {
       if (decreases !== "")
         decreases += "<br/>";
-      decreases += "<span class='statLabel'>Lightning Damage Taken:</span> <span class='statValue'>+" + Math.abs(this.character.battleStats.elementResistance.lightning) * 100 + "%</span>";
+      decreases += "<span class='statLabel'>Lightning Damage Taken:</span> <span class='statValue'>+" + this.utilityService.genericRound(Math.abs(this.character.battleStats.elementResistance.lightning) * 100) + "%</span>";
     }
 
     return decreases;

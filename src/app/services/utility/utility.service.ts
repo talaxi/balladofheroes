@@ -8,7 +8,7 @@ import { ConfirmationBoxComponent } from 'src/app/components/subcomponents/utili
 @Injectable({
   providedIn: 'root'
 })
-export class UtilityService {  
+export class UtilityService {
   public shopBuyMultiplier = 1;
   public ctrlPressed: boolean = false;
   public shiftPressed: boolean = false;
@@ -157,7 +157,7 @@ export class UtilityService {
 
   isKongregate() {
     var isKongregate = false;
-    var url = (window.location != window.parent.location) ? document.referrer : document.location.href;    
+    var url = (window.location != window.parent.location) ? document.referrer : document.location.href;
     if (url.toLowerCase().includes("kongregate")) {
       isKongregate = true;
     }
@@ -322,11 +322,11 @@ export class UtilityService {
 
     //if (milliseconds)
 
-    if (milliseconds < 100 && milliseconds >= 10) {      
-      millisecondsDisplay = String(millisecondsDisplay).padStart(2, '0');            
+    if (milliseconds < 100 && milliseconds >= 10) {
+      millisecondsDisplay = String(millisecondsDisplay).padStart(2, '0');
     }
     else if (milliseconds < 10) {
-      millisecondsDisplay = String(millisecondsDisplay).padStart(3, '0');         
+      millisecondsDisplay = String(millisecondsDisplay).padStart(3, '0');
     }
 
     return minutesDisplay + ":" + secondsDisplay + "." + millisecondsDisplay;
@@ -374,7 +374,7 @@ export class UtilityService {
     return fib[level + 2];
   }
 
-  bigNumberReducer(originalAmount: number) {
+  bigNumberReducer(originalAmount: number, includeSpan: boolean = true) {
     var originalAmount = Math.round(originalAmount);
     var reducedNumber = "";
 
@@ -388,7 +388,10 @@ export class UtilityService {
         reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
       }
 
-      reducedNumber += "K";
+      if (includeSpan)
+        reducedNumber += "<span class='thousandsNumber'>K</span>";
+      else
+        reducedNumber += "K";
     }
     else if (this.getDigitCount(originalAmount) <= 9) {
       var leadingNumberCount = this.getDigitCount(originalAmount) - 6;
@@ -398,7 +401,10 @@ export class UtilityService {
         reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
       }
 
-      reducedNumber += "M";
+      if (includeSpan)
+        reducedNumber += "<span class='millionsNumber'>M</span>";
+      else
+        reducedNumber += "M";
     }
     else if (this.getDigitCount(originalAmount) <= 12) {
       var leadingNumberCount = this.getDigitCount(originalAmount) - 9;
@@ -408,7 +414,10 @@ export class UtilityService {
         reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
       }
 
-      reducedNumber += "B";
+      if (includeSpan)
+        reducedNumber += "<span class='billionsNumber'>B</span>";
+      else
+        reducedNumber += "B";
     }
     else if (this.getDigitCount(originalAmount) <= 15) {
       var leadingNumberCount = this.getDigitCount(originalAmount) - 12;
@@ -418,7 +427,10 @@ export class UtilityService {
         reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
       }
 
-      reducedNumber += "T";
+      if (includeSpan)
+        reducedNumber += "<span class='trillionsNumber'>T</span>";
+      else
+        reducedNumber += "T";
     }
     else if (this.getDigitCount(originalAmount) <= 18) {
       var leadingNumberCount = this.getDigitCount(originalAmount) - 15;
@@ -428,7 +440,23 @@ export class UtilityService {
         reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
       }
 
-      reducedNumber += "AA";
+      if (includeSpan)
+        reducedNumber += "<span class='aaNumber'>AA</span>";
+      else
+        reducedNumber += "AA";
+    }
+    else if (this.getDigitCount(originalAmount) <= 21) {
+      var leadingNumberCount = this.getDigitCount(originalAmount) - 18;
+      reducedNumber = originalAmount.toString().substring(0, leadingNumberCount);
+      if (3 - leadingNumberCount > 0) {
+        var remainingCount = 3 - leadingNumberCount;
+        reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
+      }
+
+      if (includeSpan)
+        reducedNumber += "<span class='abNumber'>AB</span>";
+      else
+        reducedNumber += "AB";
     }
 
     return reducedNumber;

@@ -198,6 +198,13 @@
   --followerColor: #3DB6D1;
   --sidequestColor: #cc6f12;
 
+  --thousandsColor: #e3b352;
+  --millionsColor: #c4cc6c;
+  --billionsColor: #52e361;
+  --trillionsColor: #FE9791;
+  --aaColor: #9CB3EA;
+  --abColor: #BAB0BF;
+
   --barrierColor: #0FCCC6;
   --linkText: #DCA5E2;
 
@@ -749,6 +756,35 @@ body {
   color: var(--sidequestColor);
 }
 
+.thousandsNumber {
+  color: var(--thousandsColor);
+  font-weight: bold;
+}
+
+.millionsNumber {
+  color: var(--millionsColor);
+  font-weight: bold;
+}
+
+.billionsNumber {
+  color: var(--billionsColor);
+  font-weight: bold;
+}
+
+.trillionsNumber {
+  color: var(--trillionsColor);
+  font-weight: bold;
+}
+
+.aaNumber {
+  color: var(--aaColor);
+  font-weight: bold;
+}
+
+.abNumber {
+  color: var(--abColor);
+  font-weight: bold;
+}
 
 .tutorialText {
   font-weight: bold;

@@ -2081,7 +2081,7 @@ export class BattleService {
     }
     else if (abilityCopy.heals) {
       if (abilityCopy.isAoe) {
-        party.filter(character => !character.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead)).forEach(potentialTarget => {          
+        party.filter(character => !character.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead)).forEach(potentialTarget => {
           var linkEffectivenessBoost = user.battleStats.linkEffectiveness;
           var linkEffectivenessBoostEffect = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.LinkBoost);
           if (linkEffectivenessBoostEffect !== undefined)
@@ -3281,7 +3281,7 @@ export class BattleService {
                 appliedStatusEffect.effectiveness += permanentAbilityUpgrades.targetEffect[0].effectiveness;
               }
             }
-            
+
             appliedStatusEffect.effectiveness = this.lookupService.getAdjustedAttack(user, undefined, isPartyUsing) * appliedStatusEffect.effectiveness;
           }
           else if (appliedStatusEffect.dotType === dotTypeEnum.BasedOnDamage) {
@@ -4953,15 +4953,17 @@ export class BattleService {
     }
 
     var retributionEffect = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Retribution);
-    if (retributionEffect !== undefined) {
+    if (retributionEffect !== undefined) {      
       var retribution = this.lookupService.characterHasAbility("Retribution", target);
-      if (retribution !== undefined && target.type !== CharacterEnum.Enemy) {
-        var nemesis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis);
+      if (retribution !== undefined) {
         var permanentEffectiveness = 0;
-        if (nemesis !== undefined) {
-          var permanentUpgrade = nemesis.permanentAbilityUpgrades.find(item => item.requiredLevel === retribution!.requiredLevel);
-          if (permanentUpgrade !== undefined) {
-            permanentEffectiveness += permanentUpgrade.effectiveness;
+        if (target.type !== CharacterEnum.Enemy) {
+          var nemesis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis);
+          if (nemesis !== undefined) {
+            var permanentUpgrade = nemesis.permanentAbilityUpgrades.find(item => item.requiredLevel === retribution!.requiredLevel);
+            if (permanentUpgrade !== undefined) {
+              permanentEffectiveness += permanentUpgrade.effectiveness;
+            }
           }
         }
 
@@ -6432,7 +6434,7 @@ export class BattleService {
           if (unlockedSubZone.type === SubZoneEnum.AigosthenaWesternWoodlands) {
             this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.QuickView, undefined, undefined, true, subZone), this.globalService.globalVar);
             this.globalService.handleTutorialModal();
-          }          
+          }
           if (unlockedSubZone.type === SubZoneEnum.PeloposNisosArcadianRoads) {
             this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.GameReview, undefined, undefined, true, subZone), this.globalService.globalVar);
             this.globalService.handleTutorialModal();
@@ -7417,7 +7419,7 @@ export class BattleService {
 
       targetGainsEffects.forEach(effect => {
         if (effect.dotType === dotTypeEnum.BasedOnAttack && effect.abilityName !== "Stingray Tip") //reusing this enum
-        {          
+        {
           effect.effectiveness *= this.lookupService.getAdjustedAttack(user);
         }
 

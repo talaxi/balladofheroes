@@ -128,7 +128,55 @@
     </div>
 
     <ng-template #eternalMeleeRewardsModal>
-        <app-confirmation-box [cancelOptionAvailable]="false" [confirmationText]="rewardsText"></app-confirmation-box>
+        <span>Enemies will not give XP, Coins, or Items like normal. Instead, you will gain XP and Coins based on how
+            many rounds you complete. The further you progress, the more you will gain. In addition, you will gain an
+            item reward after each boss fight.</span>
+        <br />
+        <br />
+        <div class="eternalMeleeRewards flexAround">
+            <div class="column">
+                <div class="smallCaps bold">first completion</div>
+                <br/>
+                <span [ngClass]='isRoundComplete(10)'>Completing Round 10: +2 Followers</span>
+                <br />
+                <span [ngClass]='isRoundComplete(20)'>Completing Round 20: +1 Dark Orb</span>
+                <br />
+                <span [ngClass]='isRoundComplete(30)'>Completing Round 30: <span class="specialEquipment bold">Hermes's Staff</span></span>
+            </div>
+            <div class="vr">
+                <hr class="vrHr" />
+            </div>
+            <div class="column">
+                <div class="bold smallCaps">every attempt</div>
+                <br/>
+                Completing Round 5: +10-50 Basic Crafting Materials
+                <br />
+                Completing Round 10: +30-70 Rough Gem Fragments
+                <br />
+                Completing Round 15: +25-100 Metal Scraps
+                <br />
+                Completing Round 20: +25-150 Chthonic Favor
+                <br />
+                Completing Round 25: +30-70 Uncommon Crafting Materials
+                <br />
+                Completing Round 30: +200 Rough Gem Fragments
+                <br />
+                Completing Round 35: +100K Coins
+                <br />
+                Completing Round 40: +60-130 Rare Crafting Materials
+                <br />
+                Completing Round 45: +50-200 Metal Nuggets
+                <br />
+                Every successive boss fight: +250 Rutile Gem Fragments
+                <br /><br />
+            </div>
+        </div>
+        <div class="bold textCentered"><i>Rewards will continue to be adjusted as future content is added to the game</i></div>
+
+        <div class="textCentered">
+            <button class="buttonStyled" (click)="closeDialog()">Close</button>
+        </div>
+        <!--<app-confirmation-box [cancelOptionAvailable]="false" [confirmationText]="rewardsText"></app-confirmation-box>-->
     </ng-template>
 
     <ng-template #confirmationBox>

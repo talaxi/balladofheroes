@@ -1116,7 +1116,7 @@ export class GodViewComponent implements OnInit {
     gods.push(this.god.type);
     gods.push(otherGod.type)
     var baseDuoAbility = this.lookupService.getDuoAbility(gods, true);
-    if (baseDuoAbility === undefined)
+    if (baseDuoAbility === undefined || baseDuoAbility.requiredLevel !== this.utilityService.duoAbilityLevel)
       return 0;
 
     var baseAbilityUserEffect = baseDuoAbility.userEffect[0];
@@ -1140,7 +1140,7 @@ export class GodViewComponent implements OnInit {
     gods.push(this.god.type);
     gods.push(otherGod.type)
     var baseDuoAbility = this.lookupService.getDuoAbility(gods, true);
-    if (baseDuoAbility === undefined)
+    if (baseDuoAbility === undefined || baseDuoAbility.requiredLevel !== this.utilityService.duoAbilityLevel)
       return 0;
 
     var baseAbilityTargetEffect = baseDuoAbility.targetEffect[0];

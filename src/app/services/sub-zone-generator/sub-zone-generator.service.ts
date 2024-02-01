@@ -4737,6 +4737,8 @@ export class SubZoneGeneratorService {
       shopOptions.push(new ShopOption(ShopTypeEnum.Coliseum, []));
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
       shopOptions.push(new ShopOption(ShopTypeEnum.Traveler, availableOptionsTraveler));
+      
+      return shopOptions;
     }
 
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FracturedAmethystRing, SubZoneEnum.PeloposNisosTravelPost));
@@ -4748,6 +4750,8 @@ export class SubZoneGeneratorService {
 
     if (subzoneType === SubZoneEnum.PeloposNisosTravelPost) {
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
+
+      return shopOptions;
     }
 
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HeftyStone, SubZoneEnum.CalydonTownMarket));
@@ -4762,6 +4766,8 @@ export class SubZoneGeneratorService {
     if (subzoneType === SubZoneEnum.CalydonTownMarket) {
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
+
+      return shopOptions;
     }
 
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.GoldenSword, SubZoneEnum.AegeanSeaIolcus));
@@ -4771,6 +4777,8 @@ export class SubZoneGeneratorService {
     if (subzoneType === SubZoneEnum.AegeanSeaIolcus) {
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
       shopOptions.push(new ShopOption(ShopTypeEnum.Jewelcrafter, []));
+
+      return shopOptions;
     }
 
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ScalyRing, SubZoneEnum.AegeanSeaSalmydessus));
@@ -4779,6 +4787,8 @@ export class SubZoneGeneratorService {
 
     if (subzoneType === SubZoneEnum.AegeanSeaSalmydessus) {
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
+
+      return shopOptions;
     }
 
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FeatheredTunic, SubZoneEnum.BlackSeaMariandyna));
@@ -4787,6 +4797,8 @@ export class SubZoneGeneratorService {
 
     if (subzoneType === SubZoneEnum.BlackSeaMariandyna) {
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
+
+      return shopOptions;
     }
 
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.LesserCrackedRuby, SubZoneEnum.ColchisCityCenter));
@@ -4804,11 +4816,15 @@ export class SubZoneGeneratorService {
       shopOptions.push(new ShopOption(ShopTypeEnum.StoryScene24, []));
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
+
+      return shopOptions;
     }
 
     if (subzoneType === SubZoneEnum.NemeaCleonea) {
       if (sidequestData.traderHuntLevel !== undefined)
         shopOptions.push(new ShopOption(ShopTypeEnum.Trader, this.getAvailableTraderOptions(sidequestData.traderHuntLevel)));
+      
+        return shopOptions;
     }
 
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FurArmor, SubZoneEnum.StymphaliaTiryns));
@@ -4818,6 +4834,8 @@ export class SubZoneGeneratorService {
 
     if (subzoneType === SubZoneEnum.StymphaliaTiryns) {
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
+
+      return shopOptions;
     }
 
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BronzeBeakNecklace, SubZoneEnum.CoastOfCreteElis));
@@ -4836,6 +4854,8 @@ export class SubZoneGeneratorService {
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
       if (availableOptionsAugeanStables.length > 0)
         shopOptions.push(new ShopOption(ShopTypeEnum.AugeanStables, availableOptionsAugeanStables));
+
+        return shopOptions;
     }
 
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.SpiritShield, SubZoneEnum.ErytheiaCadiz));
@@ -4845,6 +4865,8 @@ export class SubZoneGeneratorService {
 
     if (subzoneType === SubZoneEnum.ErytheiaCadiz) {
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
+
+      return shopOptions;
     }
 
     if (subzoneType === SubZoneEnum.MountOlympusOlympus) {
@@ -4869,6 +4891,8 @@ export class SubZoneGeneratorService {
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
       shopOptions.push(new ShopOption(ShopTypeEnum.Traveler, availableOptionsTraveler));
       shopOptions.push(new ShopOption(ShopTypeEnum.IslandOfNaxos, []));
+
+      return shopOptions;
     }
 
     if (cloakedStrangerFound && gods !== undefined) {
@@ -4900,6 +4924,8 @@ export class SubZoneGeneratorService {
     
     if (subzoneType === SubZoneEnum.TheLabyrinthCloakedStranger) {
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
+
+      return shopOptions;
     }
 
     if (sidequestData.circeAlchemyLevel === 0)
@@ -4909,6 +4935,8 @@ export class SubZoneGeneratorService {
         shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
         if (availableOptionsCirceAlchemy.length > 0)
           shopOptions.push(new ShopOption(ShopTypeEnum.CirceAlchemy, availableOptionsCirceAlchemy));
+
+          return shopOptions;
       }
     
 
