@@ -283,10 +283,10 @@ export class TimeFragmentViewComponent {
       if (trialType === undefined)
         return 0;
 
-      dps = this.utilityService.bigNumberReducer(trialType.highestDps);
+      dps = this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, trialType.highestDps);
     }
     else if (this.selectedSubzone !== undefined)
-      dps = this.utilityService.bigNumberReducer(this.selectedSubzone.maxDps);
+      dps = this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, this.selectedSubzone.maxDps);
 
     return "Max DPS Achieved: " + dps;
   }
@@ -342,7 +342,7 @@ export class TimeFragmentViewComponent {
       return "";
 
     clearRate = Math.round(this.getClearTime(run));
-    rewards += "<span>" + this.utilityService.bigNumberReducer(xpGained) + "</span>" + " XP" + (oneLine ? ", " : "<br/>");
+    rewards += "<span>" + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, xpGained) + "</span>" + " XP" + (oneLine ? ", " : "<br/>");
   
     if (trialType !== undefined && trialType.type === TrialEnum.TrialOfSkill) {      
       rewards += (this.utilityService.timeFragmentEfficiency * this.utilityService.trialAffinityXpGain) + " " + this.lookupService.getGodNameByType(trialType.godType) + " Affinity XP, "

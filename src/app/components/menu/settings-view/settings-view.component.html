@@ -67,6 +67,12 @@
         </span> 
         <br />
         <span>
+            <mat-checkbox class="example-margin" [(ngModel)]="showBigNumberColors" customToolTip [contentTemplate]="bigNumberPopover"
+                (input)="showBigNumberColorsToggle()">Show Big Number Colors
+            </mat-checkbox>
+        </span> 
+        <br />
+        <span>
             <mat-checkbox *ngIf="fps === utilityService.lowFps" class="example-margin" [(ngModel)]="showAbilityCooldownPercents" customToolTip [contentTemplate]="showAbilityCooldownPercentsPopover"
                 (input)="showAbilityCooldownPercentsToggle()">Show Ability Cooldown Percents
             </mat-checkbox>
@@ -321,6 +327,12 @@
     <div>
         Run the game in 2 second batches during offline time. This will reduce loading speed but also increase
         accuracy.
+    </div>
+</ng-template>
+
+<ng-template #bigNumberPopover>
+    <div>
+        Show a unique color for each big number modifier (K, B, T, etc) so that you can quickly identify it.
     </div>
 </ng-template>
 

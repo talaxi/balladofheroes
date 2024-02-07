@@ -612,6 +612,8 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       src += "vortexPull.svg";    
       if (effect.type === StatusEffectEnum.FriendlyCompetition)
       src += "friendlyCompetition.svg";       
+      if (effect.type === StatusEffectEnum.Tentative)
+      src += "tentative.svg";       
 
     return src;
   }

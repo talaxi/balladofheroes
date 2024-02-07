@@ -3,6 +3,7 @@ import { AchievementTypeEnum } from 'src/app/models/enums/achievement-type-enum.
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
+import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { Achievement } from 'src/app/models/global/achievement.model';
 import { AchievementService } from 'src/app/services/achievements/achievement.service';
@@ -10,6 +11,7 @@ import { BalladService } from 'src/app/services/ballad/ballad.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
 import { LookupService } from 'src/app/services/lookup.service';
+import { LayoutService } from 'src/app/models/global/layout.service';
 
 @Component({
   selector: 'app-achievements-view',
@@ -34,15 +36,21 @@ export class AchievementsViewComponent implements OnInit {
   showUncompleted = false;
 
   constructor(private globalService: GlobalService, public balladService: BalladService, private lookupService: LookupService,
-    private achievementService: AchievementService, private menuService: MenuService) { }
+    private achievementService: AchievementService, private menuService: MenuService, private layoutService: LayoutService) { }
 
   ngOnInit(): void {
-    if (this.menuService.selectedAchievementBallad !== undefined)
+    if (this.menuService.selectedAchievementBallad !== undefined) {      
+      console.log("Ballad type: " + this.menuService.selectedAchievementBallad.type);
       this.selectedBallad = this.menuService.selectedAchievementBallad.type;
-    if (this.menuService.selectedAchievementZone !== undefined)
+      this.populateZones();
+    }
+    if (this.menuService.selectedAchievementZone !== undefined) {      
       this.selectedZone = this.menuService.selectedAchievementZone.type;
-    if (this.menuService.selectedAchievementSubzone !== undefined)
-      this.selectedSubzone = this.menuService.selectedAchievementSubzone.type;
+      this.populateSubzones();
+    }
+    if (this.menuService.selectedAchievementSubzone !== undefined) {
+      this.selectedSubzone = this.menuService.selectedAchievementSubzone.type;      
+    }
 
     this.menuService.setAchievementPresets(undefined, undefined, undefined);
 
@@ -340,6 +348,15 @@ export class AchievementsViewComponent implements OnInit {
     this.lastPage = Math.ceil(this.achievementsBySubZone.length / this.itemsPerPage);
     this.globalService.globalVar.settings.set("achievementsPerPage", this.itemsPerPage);
     this.getAchievementsByPage();
+  }
+
+  jumpToSubzone(type: SubZoneEnum) {  
+    var subzone = this.balladService.findSubzone(type);  
+    var zone = this.balladService.findZoneOfSubzone(type);
+    if (subzone !== undefined && zone !== undefined) {      
+      this.balladService.selectSubZone(subzone, zone);
+      this.layoutService.changeLayout(NavigationEnum.Default);
+    }     
   }
 
   preventRightClick() {

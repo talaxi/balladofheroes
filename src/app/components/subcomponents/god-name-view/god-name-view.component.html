@@ -11,7 +11,7 @@
                 mode="determinate" [value]="getGodXpPercent(1)" class="blue-progress characterBar xpHighBar">
             </mat-progress-bar>
             <div class="xpColor s3Heading" *ngIf="!notLowPerformanceMode()">                
-                {{getGodExp(1)}} / {{getGodExpToNextLevel(1)}} XP
+                <span [innerHTML]="getGodExp(1)"></span> / <span [innerHTML]="getGodExpToNextLevel(1)"></span> XP
             </div>
         </div>
         <div *ngIf="godHasActivatablePassive(1) && godSpecificAbilityUnlocked(1)"
@@ -40,7 +40,7 @@
                 mode="determinate" [value]="getGodXpPercent(2)" class="blue-progress characterBar xpHighBar">
             </mat-progress-bar>
             <div class="xpColor s3Heading" *ngIf="!notLowPerformanceMode()">                
-                {{getGodExp(2)}} / {{getGodExpToNextLevel(2)}} XP
+                <span [innerHTML]="getGodExp(2)"></span> / <span [innerHTML]="getGodExpToNextLevel(2)"></span> XP
             </div>
         </div>
         <div *ngIf="godHasActivatablePassive(2) && godSpecificAbilityUnlocked(2)"
@@ -80,7 +80,7 @@
     <div>
         Level {{getCharacterGodLevel(character, 1)}}
         <br />
-        {{getGodExp(1)}} / {{getGodExpToNextLevel(1)}} XP to Level
+        <span [innerHTML]="getGodExp(1)"></span> / <span [innerHTML]="getGodExpToNextLevel(1)"></span> XP to Level
         {{getCharacterGodLevel(character, 1) + 1}}
     </div>
 </ng-template>
@@ -89,7 +89,7 @@
     <div>
         Level {{getCharacterGodLevel(character, 2)}}
         <br />
-        {{getGodExp(2)}} / {{getGodExpToNextLevel(2)}} XP to Level
+        <span [innerHTML]="getGodExp(2)"></span> / <span [innerHTML]="getGodExpToNextLevel(2)"></span> XP to Level
         {{getCharacterGodLevel(character, 2) + 1}}
     </div>
 </ng-template>

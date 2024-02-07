@@ -182,27 +182,27 @@ export class EnemyDescriptionViewComponent {
   }
 
   getAttack() {
-    return this.utilityService.bigNumberReducer(this.character.battleStats.attack);
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, this.character.battleStats.attack);
   }
 
   getMaxHp() {
-    return this.utilityService.bigNumberReducer(this.character.battleStats.maxHp);
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, this.character.battleStats.maxHp);
   }
 
   getDefense() {
-    return this.utilityService.bigNumberReducer(this.character.battleStats.defense);
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, this.character.battleStats.defense);
   }
 
   getAgility() {
-    return this.utilityService.bigNumberReducer(this.character.battleStats.agility);
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, this.character.battleStats.agility);
   }
 
   getLuck() {
-    return this.utilityService.bigNumberReducer(this.character.battleStats.luck);
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, this.character.battleStats.luck);
   }
 
   getResistance() {
-    return this.utilityService.bigNumberReducer(this.character.battleStats.resistance);
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, this.character.battleStats.resistance);
   }
 
   getCharacterCriticalHitChance(whichCharacter: number) {

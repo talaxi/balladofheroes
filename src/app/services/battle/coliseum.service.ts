@@ -821,7 +821,7 @@ export class ColiseumService {
           if (permanentUpgrades.targetEffect !== undefined && permanentUpgrades.targetEffect.length > 0) {
             ability.targetEffect[0].effectiveness += permanentUpgrades.targetEffect[0].effectiveness;
           }
-          
+
           if (permanentUpgrades.userEffect !== undefined && permanentUpgrades.userEffect.length > 0) {
             ability.userEffect[0].effectiveness += permanentUpgrades.userEffect[0].effectiveness;
           }
@@ -837,15 +837,18 @@ export class ColiseumService {
 
               var permanentAbilityUpgrades = god!.permanentAbilityUpgrades.find(item => item.requiredLevel === abilityCopy.requiredLevel);
               if (permanentAbilityUpgrades !== undefined) {
-                abilityCopy.effectiveness += permanentAbilityUpgrades.effectiveness;                
+                abilityCopy.effectiveness += permanentAbilityUpgrades.effectiveness;
 
                 if (permanentAbilityUpgrades.targetEffect !== undefined && permanentAbilityUpgrades.targetEffect.length > 0) {
                   abilityCopy.targetEffect[0].effectiveness += permanentAbilityUpgrades.targetEffect[0].effectiveness;
                   abilityCopy.targetEffect[0].duration += permanentAbilityUpgrades.targetEffect[0].duration;
                 }
-                
+
                 if (permanentAbilityUpgrades.userEffect !== undefined && permanentAbilityUpgrades.userEffect.length > 0) {
-                  abilityCopy.userEffect[0].effectiveness += permanentAbilityUpgrades.userEffect[0].effectiveness;
+                  if (abilityCopy.name === "Second Wind")
+                    abilityCopy.userEffect[0].effectiveness *= 1 + permanentAbilityUpgrades.userEffect[0].effectiveness;
+                  else
+                    abilityCopy.userEffect[0].effectiveness += permanentAbilityUpgrades.userEffect[0].effectiveness;
                   abilityCopy.userEffect[0].duration += permanentAbilityUpgrades.userEffect[0].duration;
                 }
               }
@@ -864,27 +867,28 @@ export class ColiseumService {
 
               var permanentAbilityUpgrades = god!.permanentAbilityUpgrades.find(item => item.requiredLevel === abilityCopy.requiredLevel);
               if (permanentAbilityUpgrades !== undefined) {
-                abilityCopy.effectiveness += permanentAbilityUpgrades.effectiveness;                
+                abilityCopy.effectiveness += permanentAbilityUpgrades.effectiveness;
 
                 if (permanentAbilityUpgrades.targetEffect !== undefined && permanentAbilityUpgrades.targetEffect.length > 0) {
                   abilityCopy.targetEffect[0].effectiveness += permanentAbilityUpgrades.targetEffect[0].effectiveness;
                   abilityCopy.targetEffect[0].duration += permanentAbilityUpgrades.targetEffect[0].duration;
 
-                  if (permanentAbilityUpgrades.targetEffect.length > 1)
-                  {
+                  if (permanentAbilityUpgrades.targetEffect.length > 1) {
                     abilityCopy.targetEffect[1].effectiveness += permanentAbilityUpgrades.targetEffect[0].effectiveness;
-                    abilityCopy.targetEffect[1].duration += permanentAbilityUpgrades.targetEffect[0].duration;  
+                    abilityCopy.targetEffect[1].duration += permanentAbilityUpgrades.targetEffect[0].duration;
                   }
                 }
-                
+
                 if (permanentAbilityUpgrades.userEffect !== undefined && permanentAbilityUpgrades.userEffect.length > 0) {
-                  abilityCopy.userEffect[0].effectiveness += permanentAbilityUpgrades.userEffect[0].effectiveness;
+                  if (abilityCopy.name === "Second Wind")
+                  abilityCopy.userEffect[0].effectiveness *= 1 + permanentAbilityUpgrades.userEffect[0].effectiveness;
+                  else
+                    abilityCopy.userEffect[0].effectiveness += permanentAbilityUpgrades.userEffect[0].effectiveness;
                   abilityCopy.userEffect[0].duration += permanentAbilityUpgrades.userEffect[0].duration;
-                  
-                  if (permanentAbilityUpgrades.userEffect.length > 1)
-                  {
+
+                  if (permanentAbilityUpgrades.userEffect.length > 1) {
                     abilityCopy.userEffect[1].effectiveness += permanentAbilityUpgrades.userEffect[0].effectiveness;
-                    abilityCopy.userEffect[1].duration += permanentAbilityUpgrades.userEffect[0].duration;  
+                    abilityCopy.userEffect[1].duration += permanentAbilityUpgrades.userEffect[0].duration;
                   }
                 }
               }

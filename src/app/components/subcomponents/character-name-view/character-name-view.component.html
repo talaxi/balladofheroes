@@ -23,7 +23,7 @@
     <mat-progress-bar *ngIf="notLowPerformanceMode()" mode="determinate" [ngClass]="{'removeTransition': removeBarTransition}" [value]="getCharacterXpPercent()" class="blue-progress characterBar xpHighBar">
     </mat-progress-bar>
     <div class="xpColor s3Heading" *ngIf="!notLowPerformanceMode()">                
-        {{getCharacterXp()}} / {{getCharacterXpToNextLevel()}} XP
+        <span [innerHTML]="getCharacterXp()"></span> / <span [innerHTML]="getCharacterXpToNextLevel()"></span> XP
     </div>
 </div>
 
@@ -41,7 +41,7 @@
     <div>
         Level {{character.level}}
         <br />
-        <span *ngIf="!isCharacterAtMaxLevel()">{{getCharacterXp()}} / {{getCharacterXpToNextLevel()}} XP to Level
+        <span *ngIf="!isCharacterAtMaxLevel()"><span [innerHTML]="getCharacterXp()"></span> / <span [innerHTML]="getCharacterXpToNextLevel()"></span> XP to Level
         {{character.level + 1}}
     </span>
     <span *ngIf="isCharacterAtMaxLevel()">

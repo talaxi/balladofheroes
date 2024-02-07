@@ -176,6 +176,8 @@ export class UtilityService {
 
   getRandomSeededInteger(min: number, max: number, seedValue: string = "seeded"): number {
     var prng = seedrandom(seedValue);
+    min -= .500000001;
+    max += .499999999;
     return Math.round(prng() * (max - min) + min);
   }
 
@@ -374,10 +376,10 @@ export class UtilityService {
     return fib[level + 2];
   }
 
-  bigNumberReducer(originalAmount: number, includeSpan: boolean = true) {
+  bigNumberReducer(includeSpan: boolean, originalAmount: number) {
     var originalAmount = Math.round(originalAmount);
     var reducedNumber = "";
-
+    
     if (this.getDigitCount(originalAmount) <= 3)
       reducedNumber = originalAmount.toString();
     else if (this.getDigitCount(originalAmount) <= 6) {

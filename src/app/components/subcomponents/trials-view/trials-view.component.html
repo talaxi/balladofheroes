@@ -34,7 +34,7 @@
                 <span [innerHtml]="getTrialOfResolveDescription()"></span>
                 <hr />
                 <div>
-                    <span>Current Stage: {{getTrialOfResolveStage()}}</span>
+                    <span><b>Current Stage:</b> {{getTrialOfResolveStage()}}</span>
                     <br />
                     <div *ngFor="let enemy of resolveEnemies">
                         <span class="smallCaps bold" customToolTip
@@ -45,6 +45,8 @@
                             </ng-template>
                         </span>
                     </div>
+                    <br/>
+                    <span><b>Reward: </b> <span [innerHTML]="getTrialOfResolveReward()"></span></span>
                     <hr />
                     <div>
                         <br />

@@ -127,48 +127,6 @@ export class MainOverviewComponent {
     this.globalService.globalVar.settings.set("autoProgress", false);
   }
 
-  /*jumpToLatestGeneralStore() {
-    var latestShop: SubZone = this.balladService.getActiveSubZone();
-    var relatedZone: Zone | undefined = this.balladService.getActiveZone();
-    var relatedBallad: Ballad | undefined = this.balladService.getActiveBallad();
-
-    this.globalService.globalVar.ballads.filter(item => item.isAvailable).forEach(ballad => {
-      ballad.isSelected = false;
-      if (ballad.zones !== undefined && ballad.zones.length > 0)
-        ballad.zones.filter(item => item.isAvailable).forEach(zone => {
-          zone.isSelected = false;
-          if (zone.subzones !== undefined && zone.subzones.length > 0)
-            zone.subzones.filter(item => item.isAvailable).forEach(subzone => {
-              subzone.isSelected = false;
-              if (subzone.isGeneralStore()) {
-                latestShop = subzone;
-                relatedZone = zone;
-                relatedBallad = ballad;
-              }
-            });
-        });
-    });
-
-    latestShop.isSelected = true;
-    latestShop.notify = false;
-    if (relatedZone !== undefined)
-      relatedZone.isSelected = true;
-    if (relatedBallad !== undefined)
-      relatedBallad.isSelected = true;
-    this.globalService.globalVar.playerNavigation.currentSubzone = latestShop;
-    this.globalService.resetCooldowns();
-    this.dpsCalculatorService.rollingAverageTimer = 0;
-    this.dpsCalculatorService.partyDamagingActions = [];
-    this.dpsCalculatorService.enemyDamagingActions = [];
-    this.globalService.globalVar.activeBattle.battleDuration = 0;
-    this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
-
-    var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + latestShop.name + "</strong>.";
-    this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
-
-    this.globalService.globalVar.settings.set("autoProgress", false);
-  }*/
-
   isSubZoneChangingDisabled() {
     return this.globalService.getActivePartyCharacters(true).some(item => item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.PreventEscape));
   }

@@ -88,11 +88,11 @@ export class CharacterNameViewComponent implements OnInit {
   }
 
   getCharacterXp() {
-    return this.utilityService.bigNumberReducer(this.character.exp);
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, this.character.exp);
   }
   
   getCharacterXpToNextLevel() {
-    return this.utilityService.bigNumberReducer(this.character.expToNextLevel);
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, this.character.expToNextLevel);
   }
   
   isButtonActive() {

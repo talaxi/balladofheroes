@@ -1042,7 +1042,7 @@ export class GlobalService {
     return statusEffect;
   }
 
-  doesStatusEffectRefresh(type: StatusEffectEnum) {
+  doesStatusEffectRefresh(type: StatusEffectEnum, newCaster: string, originalCaster: string) {
     var refreshes = false;
 
     if (type === StatusEffectEnum.Taunt || type === StatusEffectEnum.Mark || type === StatusEffectEnum.Stun || type === StatusEffectEnum.Blind ||
@@ -1077,7 +1077,7 @@ export class GlobalService {
       type === StatusEffectEnum.CaringGaze || type === StatusEffectEnum.MelodicMoves || type === StatusEffectEnum.BlisteringRiposte || type === StatusEffectEnum.RecedingTide ||
       type === StatusEffectEnum.WarAndLove || type === StatusEffectEnum.AllPrimaryStatsDown || type === StatusEffectEnum.AllPrimaryStatsExcludeHpDown || type === StatusEffectEnum.FieryJudgment ||
       type === StatusEffectEnum.Protector || type === StatusEffectEnum.LovingEmbrace || type === StatusEffectEnum.DefensiveShapeshifting || type === StatusEffectEnum.DamageShield ||
-      type === StatusEffectEnum.FriendlyCompetition || type === StatusEffectEnum.Focus || type === StatusEffectEnum.BuzzingReminder
+      type === StatusEffectEnum.FriendlyCompetition || (type === StatusEffectEnum.Focus && originalCaster === newCaster) || type === StatusEffectEnum.BuzzingReminder
       || type === StatusEffectEnum.VortexPull)
       refreshes = true;
 
@@ -3889,6 +3889,9 @@ export class GlobalService {
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Focus);
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DamageTakenUp);
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DamageDealtDown);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.PalmStrike);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Mark);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.InstantHealAfterAutoAttack);
 
       var shapeshift = member.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Shapeshift);
       if (shapeshift !== undefined) {

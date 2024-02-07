@@ -35,6 +35,7 @@ export class ColiseumViewComponent implements OnInit {
   transactionConfirmationText = "";
   battleData = "";
   dialogRef: MatDialogRef<any, any>;
+  file: any;
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -117,7 +118,7 @@ export class ColiseumViewComponent implements OnInit {
   getSpecialColiseumTournaments() {
     var tournaments: ColiseumTournamentEnum[] = [];
 
-    var weeklyMelee = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.WeeklyMelee);    
+    var weeklyMelee = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.WeeklyMelee);
     if (weeklyMelee !== undefined && weeklyMelee.isAvailable) {
       tournaments.push(weeklyMelee.type);
     }
@@ -147,7 +148,7 @@ export class ColiseumViewComponent implements OnInit {
   }
 
   getRequiredDpsForSelectedTournament() {
-    return this.utilityService.bigNumberReducer(this.coliseumService.getRequiredDps(this.selectedTournament.type));
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, this.coliseumService.getRequiredDps(this.selectedTournament.type));
   }
 
   getFirstTimeCompletionRewards() {
@@ -291,7 +292,7 @@ export class ColiseumViewComponent implements OnInit {
   isSelectedTournamentWeeklyMelee() {
     return this.selectedTournament.type === ColiseumTournamentEnum.WeeklyMelee;
   }
-  
+
   isSelectedTournamentFriendlyCompetition() {
     return this.selectedTournament.type === ColiseumTournamentEnum.FriendlyCompetition;
   }
@@ -321,8 +322,8 @@ export class ColiseumViewComponent implements OnInit {
   }
 
   isRoundComplete(round: number) {
-    if (this.getHighestWeeklyMeleeRoundCompleted() >= round) {      
-        return { 'crossed': true };
+    if (this.getHighestWeeklyMeleeRoundCompleted() >= round) {
+      return { 'crossed': true };
     }
 
     return {};
@@ -352,29 +353,29 @@ export class ColiseumViewComponent implements OnInit {
     return this.dialogRef;
   }
 
-  closeDialog() {   
-    if (this.dialogRef !== undefined)   
-      this.dialogRef.close(true);  
+  closeDialog() {
+    if (this.dialogRef !== undefined)
+      this.dialogRef.close(true);
   }
 
   openTransactionModal() {
     var ticketMultiplier = 1;
     if (this.globalService.globalVar.isSubscriber)
-        ticketMultiplier = 2;
+      ticketMultiplier = 2;
 
-        this.transactionConfirmationText = "<span class='s4Heading'>For $1, gain a full set of <b>" + (this.utilityService.weeklyMeleeEntryCap * ticketMultiplier) + " Eternal Melee tickets</b></span>.";
+    this.transactionConfirmationText = "<span class='s4Heading'>For $1, gain a full set of <b>" + (this.utilityService.weeklyMeleeEntryCap * ticketMultiplier) + " Eternal Melee tickets</b></span>.";
 
     var supportArea = " on the footer below ";
     if (this.isMobile())
       supportArea = " in the menu ";
 
     if (ticketMultiplier === 1)
-    this.transactionConfirmationText += "<br/><br/><i>Note that Subscribers gain <strong>" + (this.utilityService.weeklyMeleeEntryCap * 2) + "</strong> tickets instead of <strong>" + (this.utilityService.weeklyMeleeEntryCap) + "</strong>, as well as numerous other benefits. Press 'Cancel' and visit the 'Support' area " + supportArea + " to see how to subscribe for a one time payment of $3.</i>";
+      this.transactionConfirmationText += "<br/><br/><i>Note that Subscribers gain <strong>" + (this.utilityService.weeklyMeleeEntryCap * 2) + "</strong> tickets instead of <strong>" + (this.utilityService.weeklyMeleeEntryCap) + "</strong>, as well as numerous other benefits. Press 'Cancel' and visit the 'Support' area " + supportArea + " to see how to subscribe for a one time payment of $3.</i>";
 
     var dialogRef = this.openPurchaseDialog();
 
     dialogRef.afterClosed().subscribe(dialogResult => {
-      if (dialogResult) {        
+      if (dialogResult) {
         window.location.href = 'https://square.link/u/Cf9TBEF1';
       }
     });
@@ -405,7 +406,7 @@ export class ColiseumViewComponent implements OnInit {
       this.chooseColiseumTournament(this.specialColiseumTournaments[currentIndex]);
     }
   }
-  
+
   inTextbox() {
     this.menuService.inTextbox = true;
   }
@@ -419,11 +420,48 @@ export class ColiseumViewComponent implements OnInit {
     this.startTournament();
   }
 
-  exportBattleData() {    
+  exportBattleData() {
     var party = this.coliseumService.setupCompetitionParty();
 
-    var battleData = JSON.stringify(party);    
+    var battleData = JSON.stringify(party);
     var compressedData = LZString.compressToBase64(battleData);
     this.battleData = compressedData;
+  }
+
+  public exportBattleDataToFile() {
+    var party = this.coliseumService.setupCompetitionParty();
+
+    var battleData = JSON.stringify(party);
+    var compressedData = LZString.compressToBase64(battleData);
+
+    let file = new Blob([compressedData], { type: '.txt' });
+    let a = document.createElement("a"),
+      url = URL.createObjectURL(file);
+    a.href = url;
+    a.download = "BalladOfHeroes-FriendlyCompetitionData-" + new Date().toLocaleDateString();
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, 0);
+  }
+
+  public startFriendlyCompetitionFromFile() {    
+    if (this.file === null || this.file === undefined || this.file.length === 0)
+      alert("First select a file to import.");
+
+    let fileReader = new FileReader();
+    fileReader.onload = (e) => {
+      if (fileReader.result !== null) {
+        this.selectedTournament.competitionData = fileReader.result.toString();        
+        this.startTournament();
+      }      
+    }
+    fileReader.readAsText(this.file);
+  }
+
+  fileChanged(e: any) {
+    this.file = e.target.files[0];
   }
 }

@@ -45,6 +45,7 @@ export class SettingsViewComponent implements OnInit {
   showGameLogTimeStamps = false;
   showLowPerformanceAnimationFlash = false;
   showAbilityCooldownPercents = true;
+  showBigNumberColors = false;
 
   constructor(private globalService: GlobalService, private balladService: BalladService, private storyService: StoryService,
     public utilityService: UtilityService, public dialog: MatDialog, private deploymentService: DeploymentService,
@@ -101,6 +102,7 @@ export class SettingsViewComponent implements OnInit {
     this.showGameLogTimeStamps = this.globalService.globalVar.settings.get("showGameLogTimestamps") ?? false;
     this.showLowPerformanceAnimationFlash = this.globalService.globalVar.settings.get("showLowPerformanceAnimationFlash") ?? false;    
     this.showAbilityCooldownPercents = this.globalService.globalVar.settings.get("showAbilityCooldownPercents") ?? true;    
+    this.showBigNumberColors = this.globalService.globalVar.settings.get("showBigNumberColors") ?? false;    
   }
 
   public SaveGame() {
@@ -259,6 +261,9 @@ export class SettingsViewComponent implements OnInit {
   }
   showAbilityCooldownPercentsToggle() {
     this.globalService.globalVar.settings.set("showAbilityCooldownPercents", this.showAbilityCooldownPercents);
+  }  
+  showBigNumberColorsToggle() {
+    this.globalService.globalVar.settings.set("showBigNumberColors", this.showBigNumberColors);
   }
 
   ngOnDestroy() {    

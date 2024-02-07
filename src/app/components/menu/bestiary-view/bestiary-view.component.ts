@@ -314,7 +314,7 @@ export class BestiaryViewComponent {
     if (trialType === undefined)
       return 0;
 
-    return this.utilityService.bigNumberReducer(trialType.highestXps);
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, trialType.highestXps);
   }
 
   getHighestDpsForTrialGod() {
@@ -322,7 +322,7 @@ export class BestiaryViewComponent {
     if (trialType === undefined)
       return 0;
 
-    return this.utilityService.bigNumberReducer(trialType.highestDps);
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, trialType.highestDps);
   }
 
   getTrialOfTheStarsDefeatCount() {
@@ -358,7 +358,7 @@ export class BestiaryViewComponent {
     if (trialType === undefined)
       return 0;
 
-    return this.utilityService.bigNumberReducer(trialType.highestXps);
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, trialType.highestXps);
 
     return 0;
   }
@@ -378,7 +378,7 @@ export class BestiaryViewComponent {
     if (trialType === undefined)
       return 0;
 
-    return this.utilityService.bigNumberReducer(trialType.highestDps);
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, trialType.highestDps);
 
     return 0;
   }
@@ -681,11 +681,11 @@ export class BestiaryViewComponent {
   }
 
   getHighestXps(subzone: SubZone) {
-    return this.utilityService.bigNumberReducer(subzone.maxXps);
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, subzone.maxXps);
   }
 
   getHighestDps(subzone: SubZone) {
-    return this.utilityService.bigNumberReducer(subzone.maxDps);
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, subzone.maxDps);
   }
 
   itemIsMaterial(item: ItemsEnum) {
@@ -837,7 +837,8 @@ export class BestiaryViewComponent {
 
   jumpToAchievements() {
     this.menuService.selectedMenuDisplay = MenuEnum.Achievements;
-    this.menuService.setAchievementPresets(this.balladService.getActiveBallad(), this.balladService.getActiveZone(), this.balladService.getActiveSubZone());
+    console.log("Selected ballad: " + this.selectedBallad?.type);
+    this.menuService.setAchievementPresets(this.selectedBallad, this.selectedZone, this.selectedSubzone);
   }
 
   overlayEmitter(overlayRef: OverlayRef) {

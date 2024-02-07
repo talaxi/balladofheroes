@@ -1668,6 +1668,7 @@ export class VersionControlService {
         }
         if (version === .8) {
           this.globalService.globalVar.sidequestData.circeAlchemyLevel = 0;
+          this.globalService.globalVar.settings.set("showBigNumberColors", false);
 
           this.initializationService.initializeBalladOfTheWitch();
 

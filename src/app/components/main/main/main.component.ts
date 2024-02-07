@@ -75,6 +75,11 @@ export class MainComponent implements OnInit {
     else
       factList.push("Hover over an enemy's name to see their stats, ability details, and possible loot.");
 
+      if (this.isMobile)
+      factList.push("When viewing a class or god in the menu, tap and hold their level to see a detailed breakdown of their XP modifiers.");
+    else
+      factList.push("When viewing a class or god in the menu, hover their level to see a detailed breakdown of their XP modifiers.");
+
     if (underworldUnlocked) {
       if (!coliseumUnlocked && !trialsUnlocked)
         factList.push("Chthonic Preferred God Resets are based on real time and not game time.");

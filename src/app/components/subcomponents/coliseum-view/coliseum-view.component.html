@@ -80,7 +80,7 @@
                 <span><strong>Battle Code</strong></span>
                 <div class="importExportDiv">
                     <textarea *ngIf="!isMobile()" (focus)="inTextbox()" (blur)="outOfTextbox()" id="importExport"
-                        name="importExport" rows="10" [(ngModel)]="battleData"></textarea>
+                        name="importExport" rows="7" [(ngModel)]="battleData"></textarea>
                     <textarea *ngIf="isMobile()" (focus)="inTextbox()" (blur)="outOfTextbox()" id="importExport"
                         name="importExport" rows="5" [(ngModel)]="battleData"></textarea>
                     <div class="importExportButtons">
@@ -90,6 +90,15 @@
                         <button class="buttonStyled" (click)="exportBattleData()">
                             Export
                         </button>
+                        <br/>
+                        <button class="buttonStyled" (click)="startFriendlyCompetitionFromFile()">
+                            Start Battle from File
+                        </button>
+                        <button class="buttonStyled" (click)="exportBattleDataToFile()">
+                            Export to File
+                        </button>
+                        <br/>
+                        <input type='file' class="spaced" id="fileUpload" (change)="fileChanged($event)">                        
                     </div>
                     <br />
                 </div>

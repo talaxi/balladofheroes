@@ -94,11 +94,11 @@ export class CharacterViewComponent implements OnInit {
   }
 
   getCharacterXp() {
-    return this.utilityService.bigNumberReducer(this.character.exp);
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, this.character.exp);
   }
 
   getCharacterXpToNextLevel() {
-    return this.utilityService.bigNumberReducer(this.character.expToNextLevel);
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, this.character.expToNextLevel);
   }
 
   getOverdriveName() {
@@ -736,7 +736,7 @@ export class CharacterViewComponent implements OnInit {
     gods.push(this.assignedGod1);
     gods.push(this.assignedGod2)
     var baseAbility = this.lookupService.getDuoAbility(gods, true);
-    if (baseAbility === undefined || baseAbility.requiredLevel !== this.utilityService.duoAbilityLevel)
+    if (baseAbility === undefined || ability.requiredLevel !== this.utilityService.duoAbilityLevel)
       return 0;
 
 
@@ -757,7 +757,7 @@ export class CharacterViewComponent implements OnInit {
     gods.push(this.assignedGod1);
     gods.push(this.assignedGod2)
     var baseAbility = this.lookupService.getDuoAbility(gods, true);
-    if (baseAbility === undefined || baseAbility.requiredLevel !== this.utilityService.duoAbilityLevel)
+    if (baseAbility === undefined || ability.requiredLevel !== this.utilityService.duoAbilityLevel)
       return 0;
 
 

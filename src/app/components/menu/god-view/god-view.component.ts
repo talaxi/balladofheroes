@@ -131,11 +131,11 @@ export class GodViewComponent implements OnInit {
   }
 
   getGodXp() {
-    return this.utilityService.bigNumberReducer(this.god.exp);
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, this.god.exp);
   }
 
   getGodXpToNextLevel() {
-    return this.utilityService.bigNumberReducer(this.god.expToNextLevel);
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, this.god.expToNextLevel);
   }
 
   getGodAbilityDescription(abilityName: string, ability?: Ability) {
@@ -1108,16 +1108,17 @@ export class GodViewComponent implements OnInit {
 
   getPermanentAbilityUserMaxCountIncrease(ability: Ability) {
     //duo ability only atm
-    var otherGod = this.getSecondaryDuoGod();
+    var otherGod = this.getSecondaryDuoGod();    
     if (otherGod === undefined)
       return 0;
 
     var gods: GodEnum[] = [];
     gods.push(this.god.type);
     gods.push(otherGod.type)
-    var baseDuoAbility = this.lookupService.getDuoAbility(gods, true);
-    if (baseDuoAbility === undefined || baseDuoAbility.requiredLevel !== this.utilityService.duoAbilityLevel)
+    var baseDuoAbility = this.lookupService.getDuoAbility(gods, true);    
+    if (baseDuoAbility === undefined || ability.requiredLevel !== this.utilityService.duoAbilityLevel) {      
       return 0;
+    }
 
     var baseAbilityUserEffect = baseDuoAbility.userEffect[0];
     var currentAbilityUserEffect = ability.userEffect[0];
@@ -1140,7 +1141,7 @@ export class GodViewComponent implements OnInit {
     gods.push(this.god.type);
     gods.push(otherGod.type)
     var baseDuoAbility = this.lookupService.getDuoAbility(gods, true);
-    if (baseDuoAbility === undefined || baseDuoAbility.requiredLevel !== this.utilityService.duoAbilityLevel)
+    if (baseDuoAbility === undefined || ability.requiredLevel !== this.utilityService.duoAbilityLevel)
       return 0;
 
     var baseAbilityTargetEffect = baseDuoAbility.targetEffect[0];

@@ -202,6 +202,17 @@ export class TrialsViewComponent {
     return this.utilityService.convertSecondsToHHMMSS(remainingTime);
   }
 
+  getTrialOfResolveReward() {
+  var reward = this.trialService.handleTrialOfResolveReward(false);
+    if (this.globalService.globalVar.sidequestData.trialStage === 30) {
+      return "<span class='bold smallCaps aphroditeColor'>Aphrodite</span>";
+    }
+    else if (reward === undefined)
+      return "";
+    else
+      return reward.amount + " " + (reward.amount === 1 ? this.dictionaryService.getItemName(reward.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(reward.item)));
+  }
+
   openModal(content: any) {
     return this.dialog.open(content, { width: '40%', height: 'auto' });
   }

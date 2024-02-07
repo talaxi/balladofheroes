@@ -12,7 +12,7 @@
             <button class="buttonAsText clickableText" (click)="openPermanentStatBreakdown(permanentStatBreakdownContent)" customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="godXpPopover">Level
                 {{god.level}}</button>
             <br />
-            <span customToolTip [tooltipDirection]="tooltipDirection" (click)="openPermanentStatBreakdown(permanentStatBreakdownContent)" [contentTemplate]="godXpPopover">{{getGodXp()}} / {{getGodXpToNextLevel()}} XP to Level {{god.level +
+            <span customToolTip [tooltipDirection]="tooltipDirection" (click)="openPermanentStatBreakdown(permanentStatBreakdownContent)" [contentTemplate]="godXpPopover"><span [innerHTML]="getGodXp()"></span> / <span [innerHTML]="getGodXpToNextLevel()"></span> XP to Level {{god.level +
                 1}}</span>
         </div>
         <div class="traverseDown">
