@@ -644,43 +644,43 @@ export class StoryService {
           "<div>" + this.zosimeText("“Have we thought this through well enough?”") + "</div>";
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>" + this.zosimeText("“Aeëtes was the most monstrous god I've known, do we think his sister will be different?”") + "</div>" +
-          "<div>Her fears matched up well with your own. " + this.thalesText("“Athena seemed cautious, but she believed this could work. I trust her.”") + " You aren't entirely certain of that, but you tried to sound convincing. She nods, trusting your judgment.</div>" +
+          "<div class='sceneDiv'>Her fears matched up well with your own. " + this.thalesText("“Athena seemed cautious, but she believed this could work. I trust her.”") + " You aren't entirely certain of that, but you tried to sound convincing. She nods, trusting your judgment.</div>" +
           "<div>You've heard more stories of the havoc wrought by the giants on the towns near Olympus, and their attention was spreading further and further out. This plan may be dangerous, but you know that time is of the essence. You will have to make it work. </div>";
     }
     else if (storyId === 48) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>Finally, you see a small speck of brown in the sea of blue. Jagged rocks scatter the island of Aiaia, but your crewmates manage to find a small cove safe to drop anchor. This was as far as they go -- they've heard stories of the Witch and have no desire to meet face to face.</div>" +
-          "<div class='sceneDiv'>The island itself was quite forested, and there was only one obvious path inland. You lead the way as trek for a short while before coming to a clearing. Before you is a small house, alongside a barn with chickens and pigs. </div>" +
-          "<div>Since stepping onto the island, you felt a bit uneasy. The feeling grew with every step, and now your mind was spinning. Your vision distorts and fades to black as you try to reach out to Zosime but cannot. You lose control of your body as you feel yourself twisting and shifting about. " + this.zosimeText("“Thales?!”") + " is the last thing you hear before your vision returns. You are much shorter. You can no longer remember what you are doing. You are a pig. You search for something to eat.</div>";
+          "<div class='sceneDiv'>The island itself was quite forested, and there was only one obvious path inland. You lead the way for a short while before coming to a clearing. In front of you is a small house, alongside a barn with chickens and pigs. </div>" +
+          "<div>Since stepping onto the island, you felt a bit uneasy. That feeling grew with every step, and now your mind was spinning. Your vision distorts and fades to black as you try to reach out to Zosime but cannot. You lose control of your body as you feel yourself twisting and shifting about. " + this.zosimeText("“Thales?!”") + " is the last thing you hear before your vision returns. You are much shorter. You can no longer remember what you are doing. You are a pig. You search for something to eat.</div>";
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>Zosime watches in fear as her companion flails around, body shrinking and contorting. Tanned skin fades to a light pink and arms shrink to small legs. To her horror, Thales has been transformed into a hog.</div>" +
           "<div class='sceneDiv'>Outside of the house, Zosime notices a woman flanked by a lioness. Her focus had been entirely on Thales, but now shifts. Zosime quickly draws her bow at the ready, but does not yet raise it to attack.</div>" +
           "<div>" + this.commonCharacterText("“Who are you, and why are you here?”") + " The woman, Circe, demanded. To Zosime's surprise, she spoke with a mortal voice unlike the booming voice of her brother. </div>";
       else if (pageCount === 3)
         sceneText = "<div class='sceneDiv'>" + this.zosimeText("“I am Zosime, and he is Thales. We've come to ask for your help, and he has done nothing against you! Return him!”") + " Zosime replies, raising her bow slightly, unsure how best to proceed with the Witch.</div>" +
-          "<div class='sceneDiv'>" + this.commonCharacterText("“I know the desires of men who find their way to this island. In a way, I have helped him. His desires are much simpler now.”") + " the Witch says coldly.</div>" +
+          "<div class='sceneDiv'>" + this.commonCharacterText("“He is not the first man to wander onto my island in search of 'help' only to show his true desires. His desires are much simpler now.”") + " the Witch says coldly.</div>" +
           "<div class='sceneDiv'>Circe steps forward from her home, the lioness still at her flank.</div>" +
-          "<div>" + this.commonCharacterText("“I ask again, why are you here?”") + "</div>";
+          "<div>" + this.commonCharacterText("“I must confess, I did not notice you at first. I ask again, why are you here?”") + "</div>";
       else if (pageCount === 4)
         sceneText = "<div class='sceneDiv'>Zosime hurriedly tells the story of her journey so far. The chance meeting in Delphi, the magic attached to Thales by Athena and Khronos, their conquests over monsters, and the fall of Olympus.</div>" +
-          "<div class='sceneDiv'>Circe listened patiently for the story to end. She paused for a moment upon its completion, mulling over what she had heard. Zosime thought she noticed the Witch flinch upon mention of Athena, but otherwise Circe gave nothing away.</div>" +
-          "<div>Circe and her lionness continued to step forward, stalking closer to Zosime. " + this.commonCharacterText("“I have no love for the Olympians or the games they play. My father is the sun itself. It makes no difference to me who lives on the mountain.”") + "</div>"; 
+          "<div class='sceneDiv'>Circe listened patiently for the story to end. She paused for a moment upon its completion, mulling over what she had heard. Zosime thought she noticed the Witch flinch upon the mention of Athena, but otherwise Circe gave nothing away.</div>" +
+          "<div>Circe and her lionness continued to step forward, stalking closer to Zosime. " + this.commonCharacterText("“I have no love for the Olympians or the games they play. What difference does it make to me who lives on the mountain while I live on Aiaia?”") + "</div>"; 
       else if (pageCount === 5)
-        sceneText = "<div class='sceneDiv'>As Circe approaches, Zosime finally began to feel alarm. She points her bow at the lionness, but stops short when noticing the look of surprise on the Witch.</div>" +
-          "<div class='sceneDiv'>Zosime turned to see what they were staring at and noticed her own lioness by her side. After swallowing down a brief instinct to flee, she saw that her lioness had a slight golden glow. Artemis.</div>" +
-          "<div class='sceneDiv'>" + this.commonCharacterText("“I believe this is the first time we have met. Your brothers and sisters have all been by to make their demands or have their fun. I wondered if your absence was out of respect or indifference.”") + "</div>" +
-          "<div class='sceneDiv'>She stopped there for a moment to think. With a slight frown, she continues. </div>" + 
+        sceneText = "<div class='sceneDiv'>As Circe approaches, Zosime finally began to feel alarm. She points her bow at the lionness, but stops short when noticing the look of surprise on the Witch's face.</div>" +
+          "<div class='sceneDiv'>Zosime turned to see what they were staring at and noticed her own lioness by her side. After swallowing down a brief instinct to move, she saw that her lioness had a slight golden glow. Artemis.</div>" +
+          "<div class='sceneDiv'>" + this.commonCharacterText("“I believe this is the first time we have met. Your brothers and sisters have all been by to make their demands or have their fun of course. I wondered if your absence was out of respect or indifference.”") + "</div>" +
+          "<div class='sceneDiv'>With a slight frown, she continues. </div>" + 
           "<div>" + this.commonCharacterText("“I will return your friend to you, and you will leave this place. I do not want Athena's ire, but I will not be a pawn in her games. She has taken enough from me.”") + "</div>"; 
       else if (pageCount === 6)
         sceneText = "<div class='sceneDiv'>Feeling her chance slipping away, Zosime decides to push her luck.</div>" +
           "<div class='sceneDiv'>" + this.zosimeText("“It's not just about the gods. It's about your brother, Aeëtes. He spreads corruption to all around him, keeping the dead alive for his bidding. I aim to stop him and the terrors he inflicts upon those around him, and I cannot do it without Thales.”") + "</div>" +
-          "<div class='sceneDiv'>Zosime believed she had piqued the Witch's interest. She moves to Thales and kneels down, covering his snout with oil and muttering an unintelligible phrase. Thales began to take shape once more.</div>" +
+          "<div class='sceneDiv'>Zosime believed she had piqued the Witch's interest. Circe moves to Thales and kneels down, covering his snout with oil and muttering an unintelligible phrase. Thales began to take shape once more.</div>" +
           "<div class='sceneDiv'>" + this.commonCharacterText("“I will say that I am interested in this magic over time you speak of. This island is full of potent herbs. Deep in the forest, you will find a rare flower of deep yellow and green. I have avoided collecting it to due to its scarcity, but if what you say is true then you should be able to bring me a bundle of them. Go now and bring them to me.”") + "</div>" +
           "<div>Seizing on this small opportunity, Zosime hurries Thales along the trail while filling him on what he missed.</div>";
     }
     else if (storyId === 49) {
       if (pageCount === 1)
-        sceneText = "<div class='sceneDiv'>You find a beautiful flower matching the description given by Circe. After picking it, you wait awhile and see that it returns. You suppose that picking a flower over and over isn't that much different than fighting a monster multiple times. After picking a sizable amount, you make your way back the way you came.</div>" +
+        sceneText = "<div class='sceneDiv'>You find a beautiful flower matching the description given by Circe. After picking it, you wait awhile and see that it returns. You suppose that picking a flower over and over isn't that much different than fighting the same monster multiple times. After picking a sizable amount, you make your way back the way you came.</div>" +
           "<div>When you return to the home of the Witch, she is nowhere to be seen but the door has been left open. You hesitate, not certain that you can truly trust her. Zosime proceeds into the house though, unwavering, and you follow.</div>";          
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>The house is filled with various flora and is more inviting and warm than you expected. Circe is in an open room off to the side, working with different herbs. She turns towards you as you enter and gives a small nod of approval when she sees your bushel of flowers.</div>" +
@@ -697,7 +697,7 @@ export class StoryService {
     else if (storyId === 50) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>On a calm and sunny day, the narrow path finally appears upon the horizon. As you approach, the still waters become more vigorous, and you start to feel the pull of the great whirlpool.</div>" +
-      "<div class='sceneDiv'>Traveling through here was once like picking your own poison. To avoid the disastrous whirlpool Carybdis, you would be driven straight into the lair of the monstrous Scylla.</div>" +
+      "<div class='sceneDiv'>Traveling through here was once like picking your own poison. To avoid the disastrous whirlpool Charybdis, you would be driven straight into the lair of the monstrous Scylla.</div>" +
       "<div>That is the path you take today. Your ship careens in the darkness through the rocky cove.</div>";
       else if (pageCount === 2)
         sceneText = "<div>As always, your magic holds. The waves part to reveal one head, then two, then too many thrashing about to count. The monster seemed to relish in the opportunity to take one more set of victims, and you were in for the fight of your life.</div>";
@@ -746,6 +746,7 @@ export class StoryService {
     sceneText = sceneText.replaceAll("Alcyoneus", "<span class='commonCharacterColor storyCharacterName'>Alcyoneus</span>");
     sceneText = sceneText.replaceAll("Gration", "<span class='commonCharacterColor storyCharacterName'>Gration</span>");
     sceneText = sceneText.replaceAll("Aristaeus", "<span class='commonCharacterColor storyCharacterName'>Aristaeus</span>");
+    sceneText = sceneText.replaceAll("Helios", "<span class='commonCharacterColor storyCharacterName'>Helios</span>");
 
     return sceneText;
   }
@@ -1222,15 +1223,15 @@ export class StoryService {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>You return to Circe's home. You do not see her outside, but the door is open. You decide it best to knock -- no need to give Circe any reason to transform you once again.</div>" +
         "<div class='sceneDiv'>" + this.commonCharacterText("“Come in.”") + "</div>" +
-        "<div class='sceneDiv'>You enter the abode at the Witch's request. Despite living alone, Circe's home was not cold. Various animals moved about, including the lionness laying calmly by Circe's side. The Witch herself was hard at work spinning yarn with her beautiful loom. You clear your throat, trying to think of the right way to ask for another favor.</div>";
+        "<div class='sceneDiv'>You enter the abode at the Witch's request. Despite living alone, Circe's home was not cold. On this day, various animals moved about including the lionness laying calmly by Circe's side. The Witch herself was hard at work spinning yarn with her beautiful loom. You clear your throat, trying to think of the right way to ask for another favor.</div>";
       else if (pageCount === 2)
-        sceneText = "<div class='sceneDiv'>" + this.thalesText("“Do you think you could show me some of your potions?”") + " You finally blurt out. All who know of Circe know that she has perhaps the greatest mind of potions and herbs amongst the living. You didn't want to miss an opportunity to improve your craft</div>" +
+        sceneText = "<div class='sceneDiv'>" + this.thalesText("“Do you think you could show me some of your potions?”") + " You finally blurt out. All who know of Circe know that she has perhaps the greatest mind of potions and herbs amongst the living. You didn't want to miss an opportunity to improve your craft.</div>" +
         "<div class='sceneDiv'>Circe continued to work at her loom without acknowledgement. Finally, she spoke. " + this.commonCharacterText("“Have you been touched by Hecate? You continue to surprise me.”") + " She said without looking away from her work.</div>" + 
-        "<div>" + this.commonCharacterText("“I'm in need of some deep roots from the forest. Bring me some and we'll talk.”") + "</div>";
+        "<div>" + this.commonCharacterText("“I'm in need of some roots from the forest. Bring me some and we'll talk.”") + "</div>";
     }
     if (scene === OptionalSceneEnum.CirceAlchemy2) {
       if (pageCount === 1)
-        sceneText = "<div class='sceneDiv'>You return to Circe with the roots she requested." + this.commonCharacterText("Nice work. I suppose I should hold up my end of the deal. Come now, gather around and try to keep up.") + " She says, pulling down an array of herbs and potions from her collection.</div>" +
+        sceneText = "<div class='sceneDiv'>You return to Circe with the roots she requested. " + this.commonCharacterText("Well done. I suppose I should hold up my end of the deal. Come now, gather around and try to keep up.") + " She says, pulling down an array of herbs and potions from her collection.</div>" +
           "<br/><br/><br/><div class='s4Heading bold textCentered sidequestText'>Alchemy Max Level Increase!</div>";
     }
     if (scene === OptionalSceneEnum.CharybdisJewelcrafting) {
@@ -1256,6 +1257,7 @@ export class StoryService {
     sceneText = sceneText.replaceAll("Heracles", "<span class='commonCharacterColor storyCharacterName'>Heracles</span>");
     sceneText = sceneText.replaceAll("Heracles's", "<span class='commonCharacterColor storyCharacterName'>Heracles's</span>");
     sceneText = sceneText.replaceAll("Hephaestus", "<span class='commonCharacterColor storyCharacterName'>Hephaestus</span>");
+    sceneText = sceneText.replaceAll("Circe", "<span class='commonCharacterColor storyCharacterName'>Circe</span>");
 
     return sceneText;
   }
@@ -1328,7 +1330,7 @@ export class StoryService {
       this.pageCount = 1;
     }
     if (this.showOptionalStory === OptionalSceneEnum.CirceAlchemy) {
-      this.pageCount = 1;
+      this.pageCount = 2;
     }
     if (this.showOptionalStory === OptionalSceneEnum.CirceAlchemy2) {
       this.pageCount = 1;

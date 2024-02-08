@@ -43,7 +43,7 @@
       [notificationColor]="sideQuestNotification"></app-notification-icon></button>
       <button *ngIf="option.type === shopTypeEnum.CirceAlchemy" class="buttonStyled shopButtonText"
     (click)="openShop(option, circeAlchemyModal)">{{getOptionText(option.type)}} <app-notification-icon
-      *ngIf="!circeAlchemyCompleted()" [isButton]="true"
+      *ngIf="!circeAlchemyCompleted() && circeAlchemyAvailable()" [isButton]="true"
       [notificationColor]="sideQuestNotification"></app-notification-icon></button>
   <button *ngIf="option.type === shopTypeEnum.Coliseum" class="buttonStyled shopButtonText" [ngClass]="{'stackedButtons': showAllShopOptions}"
     (click)="openShop(option, coliseumModal)">

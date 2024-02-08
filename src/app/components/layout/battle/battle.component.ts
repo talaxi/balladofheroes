@@ -46,11 +46,13 @@ export class BattleComponent implements OnInit {
   scrollButtonDelay = 0;
   scrollButtonDelayTotalCount = 5;
   showSkipButtonMessage = false;
+  showSkipButtonMessage2 = false;
   showStoryAnimation = false;
   storyAnimationTimerCap = .5;
   @Input() isMobile = false;
   notificationOverlayMessage = "";
   repeatColiseumFight: boolean = false;
+  isGamePaused: boolean = false;
 
   constructor(public globalService: GlobalService, private gameLoopService: GameLoopService, private battleService: BattleService,
     private utilityService: UtilityService, private gameLogService: GameLogService, public storyService: StoryService,
@@ -59,9 +61,6 @@ export class BattleComponent implements OnInit {
     private menuService: MenuService) { }
 
   ngOnInit(): void {
-    if (this.globalService.globalVar.currentStoryId === 0 && this.globalService.globalVar.isBattlePaused)
-      this.showSkipButtonMessage = true;
-
     this.activeSubzone = this.balladService.getActiveSubZone();
     this.showDevStats = this.deploymentService.showStats;
     this.repeatColiseumFight = this.globalService.globalVar.settings.get("repeatColiseumFight") ?? false;
@@ -74,10 +73,20 @@ export class BattleComponent implements OnInit {
         this.checkForNotificationOverlayMessage(deltaTime);
       }
 
-      if (this.globalService.globalVar.currentStoryId === 0 && this.globalService.globalVar.isBattlePaused)
+      this.isGamePaused = this.globalService.globalVar.isGamePaused;
+      
+      if (this.globalService.globalVar.currentStoryId === 0 && this.storyService.currentPage === 1 && this.globalService.globalVar.isBattlePaused) {
         this.showSkipButtonMessage = true;
-      else
+        this.showSkipButtonMessage2 = false;
+      }
+      else if (this.globalService.globalVar.currentStoryId === 0 && this.storyService.currentPage === 2 && this.globalService.globalVar.isBattlePaused) {
         this.showSkipButtonMessage = false;
+        this.showSkipButtonMessage2 = true;
+      }
+      else {
+        this.showSkipButtonMessage = false;
+        this.showSkipButtonMessage2 = false;
+      }
 
       this.activeSubzone = this.balladService.getActiveSubZone();
 

@@ -80,7 +80,7 @@ export class SettingsViewComponent implements OnInit {
   getSettings() {
     var storyStyle = this.globalService.globalVar.settings.get("storyStyle");
     if (storyStyle === undefined)
-      this.storyStyle = StoryStyleSettingEnum.Medium;
+      this.storyStyle = StoryStyleSettingEnum.Slow;
     else
       this.storyStyle = storyStyle;
       

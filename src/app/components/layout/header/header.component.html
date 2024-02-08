@@ -20,12 +20,12 @@
       <button class="buttonAsText clickableText gameState" (click)="pauseGame()">
             <span class="pauseItem" customToolTip [contentTemplate]="unpausedPopover" *ngIf="!globalService.globalVar.isGamePaused  && !textMode"><img *ngIf="!textMode" class="icon" src="assets/svg/pause.svg"></span>
 
-            <span class="headerTextItems clickableText globalHeaderItem" customToolTip [contentTemplate]="pausedPopover" *ngIf="globalService.globalVar.isGamePaused  && textMode">play</span>
+            <span class="headerTextItems clickableText globalHeaderItem playGame" customToolTip [contentTemplate]="pausedPopover" *ngIf="globalService.globalVar.isGamePaused  && textMode">play</span>
             <span class="headerTextItems clickableText globalHeaderItem" customToolTip [contentTemplate]="unpausedPopover" *ngIf="!globalService.globalVar.isGamePaused  && textMode">pause</span>
         </button>        
     </div>    
 
-    <div customToolTip [contentTemplate]="gameSpeedPopover" class="extraTimeItem centerAlign" [ngClass]="{'extraSpeedDisabled': !this.globalService.globalVar.extraSpeedEnabled}">
+    <div customToolTip [contentTemplate]="gameSpeedPopover" [tooltipDirection]="tooltipDirection" class="extraTimeItem centerAlign" [ngClass]="{'extraSpeedDisabled': !this.globalService.globalVar.extraSpeedEnabled}">
       <button class="buttonAsText clickableText globalHeaderItem normalFontSize" (click)="toggleExtraSpeed()">
         <span class="headerTextItems clickableText globalHeaderItem" *ngIf="!isMobile">game speed: {{this.globalService.globalVar.extraSpeedEnabled ? "2x" : "1x"}}</span>
         <span class="headerTextItems clickableText globalHeaderItem" *ngIf="isMobile">{{this.globalService.globalVar.extraSpeedEnabled ? "2x" : "1x"}} <img class="icon" src="assets/svg/clock.svg"></span>

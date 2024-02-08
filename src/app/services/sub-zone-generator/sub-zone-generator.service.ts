@@ -3930,7 +3930,7 @@ export class SubZoneGeneratorService {
     var rewards: ResourceValue[] = [];
 
     if (type === SubZoneEnum.AigosthenaUpperCoast) {
-      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ThrowingStone, 25));
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ThrowingStone, 50));
     }
     if (type === SubZoneEnum.AigosthenaBay) {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.IronSword, 1));
@@ -3945,7 +3945,7 @@ export class SubZoneGeneratorService {
     //rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ExtraSpeed1Hour, 1));
     //}
     if (type === SubZoneEnum.DodonaMountainOpening) {
-      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ThrowingStone, 40));
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ThrowingStone, 50));
     }
     if (type === SubZoneEnum.DodonaMountainPassOne) {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ThrowingStone, 2));

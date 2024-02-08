@@ -21,8 +21,8 @@ export class TutorialService {
       if (this.deviceDetectorService.isMobile())
         supportButtonText = "By clicking on the <span class='bold supportMobileClickableItem'>'<u>Support</u>'</span> tab option on the bottom of the Menu, ";
 
-      text = "I hope that you are enjoying <b class='smallCaps'>Ballad of Heroes</b>! If you have any feedback, recommendations, or issues, I would love to hear about them on <a href='https://discord.gg/gcRvF2AJGV' rel='noopener noreferrer' target='_blank'>Discord</a> or via email at balladofheroes@gmail.com. <br/><br/>" +
-      "This game will always be free, but if you are able, I would greatly appreciate your support. " + supportButtonText + " you will see a couple of options to support the development of Ballad of Heroes so that I can continue to create content at a regular pace. You can gain early access to gods, design your own Eternal Melee boss fight, and more. Thank you, and I hope you continue to enjoy the game!";
+      text = "I hope that you are enjoying my game <b class='smallCaps'>Ballad of Heroes</b>! If you have any feedback, recommendations, or issues, I would love to hear about them on <a href='https://discord.gg/gcRvF2AJGV' rel='noopener noreferrer' target='_blank'>Discord</a> or via email at balladofheroes@gmail.com. <br/><br/>" +
+      "This game will always be free, but if you are able, I would greatly appreciate your support. " + supportButtonText + " you will see a couple of options to support the development of <b class='smallCaps'>Ballad of Heroes</b>. You can gain early access to gods, design your own Eternal Melee boss fight, and more. Thank you, and I hope you continue to enjoy the game!";
     }
     if (type === TutorialTypeEnum.CharacterPassiveAbility) {
       if (this.deviceDetectorService.isMobile())

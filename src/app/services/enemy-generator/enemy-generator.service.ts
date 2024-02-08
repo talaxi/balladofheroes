@@ -8467,6 +8467,8 @@ export class EnemyGeneratorService {
       //switches to defensive mode where it immediately gains X rocks. being critically hit
       //removes a rock. when switching back to offensive mode, does a very powerful attack based on number of rocks         
       
+      var stanceDelay = .25;
+
       //used in both modes
       var thump = new Ability();
       thump.name = "Thump";
@@ -8483,7 +8485,7 @@ export class EnemyGeneratorService {
       earthenOffense.name = "Earthen Offense";
       earthenOffense.isAvailable = true;      
       earthenOffense.cooldown = 60;      
-      earthenOffense.currentCooldown = 0;
+      earthenOffense.currentCooldown = stanceDelay;
       earthenOffense.dealsDirectDamage = false;            
       earthenOffense.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.EarthenOffense, -1, 1.75, false, true));      
       enemy.abilityList.push(earthenOffense);
@@ -8493,7 +8495,8 @@ export class EnemyGeneratorService {
       blitz.name = "Blitz";
       blitz.isAvailable = true;
       blitz.effectiveness = 7.2;
-      blitz.cooldown = blitz.currentCooldown = 22;
+      blitz.cooldown = 22;
+      blitz.currentCooldown = 22 + stanceDelay;
       blitz = this.randomizeCooldown(blitz);
       blitz.dealsDirectDamage = true;
       blitz.isAoe = true;
@@ -8507,7 +8510,7 @@ export class EnemyGeneratorService {
       maim.isAvailable = true;
       maim.effectiveness = 6.6;
       maim.cooldown = 18;
-      maim.currentCooldown = 15;
+      maim.currentCooldown = 15 + stanceDelay;
       maim.dealsDirectDamage = true;      
       maim.elementalType = ElementalTypeEnum.Earth;
       maim.targetEffect.push(this.globalService.createDamageOverTimeEffect(10, 2, .4, maim.name, dotTypeEnum.BasedOnDamage, ElementalTypeEnum.Earth));
@@ -8519,7 +8522,7 @@ export class EnemyGeneratorService {
       earthenDefense.name = "Earthen Defense";
       earthenDefense.isAvailable = true;  
       earthenDefense.cooldown = 60;
-      earthenDefense.currentCooldown = 30;               
+      earthenDefense.currentCooldown = 30 + stanceDelay;               
       earthenDefense.dealsDirectDamage = false;            
       earthenDefense.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.EarthenDefense, -1, 1.75, false, true));      
       enemy.abilityList.push(earthenDefense);
@@ -8528,7 +8531,7 @@ export class EnemyGeneratorService {
       pointedStones.name = "Pointed Stones";
       pointedStones.isAvailable = true;      
       pointedStones.cooldown = 15;
-      pointedStones.currentCooldown = 0;
+      pointedStones.currentCooldown = stanceDelay;
       pointedStones.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, 15, 6000, false, false));
       enemy.abilityList.push(pointedStones);
       
@@ -8536,7 +8539,8 @@ export class EnemyGeneratorService {
       glancingBlow.name = "Glancing Blow";
       glancingBlow.isAvailable = true;
       glancingBlow.effectiveness = 8.7;
-      glancingBlow.cooldown = glancingBlow.currentCooldown = 16;
+      glancingBlow.cooldown = 16;
+      glancingBlow.currentCooldown = 16 + stanceDelay;
       glancingBlow = this.randomizeCooldown(glancingBlow);
       glancingBlow.dealsDirectDamage = true;
       glancingBlow.elementalType = ElementalTypeEnum.Earth;
@@ -13908,7 +13912,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(2861000, 16475, 50350, 37500, 35000, 37500);           
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
-      enemy.xpGainFromDefeat = 55275;    
+      enemy.xpGainFromDefeat = 5525;    
       enemy.battleInfo.elementalType = ElementalTypeEnum.Water;
       enemy.loot.push(new LootItem(ItemsEnum.VialOfForeignWaters, ItemTypeEnum.CraftingMaterial, 1, .08));
       
@@ -15859,6 +15863,7 @@ export class EnemyGeneratorService {
       swipe.dealsDirectDamage = true;
       swipe.isAoe = true;
       swipe.cooldown = swipe.currentCooldown = 18;
+      swipe = this.randomizeCooldown(swipe);
       enemy.abilityList.push(swipe);
       
       var starStrike = new Ability();
@@ -15875,7 +15880,7 @@ export class EnemyGeneratorService {
       starShield.isAvailable = true;
       starShield.cooldown = starShield.currentCooldown = 20;
       starShield.dealsDirectDamage = false;      
-      starShield.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 4.25, true, true, false, enemy.name, 1));
+      starShield.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 10.25, true, true, false, enemy.name, 1));
       starShield.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomPrimaryStatUp, -1, 1.05, true, true, false, undefined, undefined, true));
       enemy.abilityList.push(starShield);     
       
@@ -15900,7 +15905,8 @@ export class EnemyGeneratorService {
       peck.isAvailable = true;
       peck.effectiveness = 20.5;
       peck.dealsDirectDamage = true;
-      peck.cooldown = peck.currentCooldown = 14;      
+      peck.cooldown = peck.currentCooldown = 14;  
+      peck = this.randomizeCooldown(peck);    
       enemy.abilityList.push(peck);
 
       var skyHigh = new Ability();
@@ -15969,7 +15975,7 @@ export class EnemyGeneratorService {
       northernWinds = this.randomizeCooldown(northernWinds);
       northernWinds.dealsDirectDamage = false;      
       northernWinds.targetEffect.push(this.globalService.createDamageOverTimeEffect(20, 4, 4000, northernWinds.name, dotTypeEnum.TrueDamage, ElementalTypeEnum.Air, true));
-      northernWinds.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityDown, 20, .3, false, false));
+      northernWinds.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityDown, 20, .3, false, false, true));
       enemy.abilityList.push(northernWinds);  
       
       var icyShielding = new Ability();
@@ -15979,7 +15985,7 @@ export class EnemyGeneratorService {
       icyShielding = this.randomizeCooldown(icyShielding);
       icyShielding.dealsDirectDamage = false;
       icyShielding.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageShield, -1, 1, false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 2));
-      icyShielding.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 2, true, true, false, enemy.name, 1));
+      icyShielding.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 12, true, true, false, enemy.name, 1));
       enemy.abilityList.push(icyShielding);
 
       var enrage = new Ability();
@@ -16015,7 +16021,7 @@ export class EnemyGeneratorService {
       icyShielding = this.randomizeCooldown(icyShielding);
       icyShielding.dealsDirectDamage = false;
       icyShielding.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageShield, -1, 1, false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 2));
-      icyShielding.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 2, true, true, false, enemy.name, 1));
+      icyShielding.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 14, true, true, false, enemy.name, 1));
       enemy.abilityList.push(icyShielding);
 
       var westernWinds = new Ability();
@@ -16025,7 +16031,7 @@ export class EnemyGeneratorService {
       westernWinds = this.randomizeCooldown(westernWinds);
       westernWinds.dealsDirectDamage = false;      
       westernWinds.targetEffect.push(this.globalService.createDamageOverTimeEffect(20, 4, 4500, westernWinds.name, dotTypeEnum.TrueDamage, ElementalTypeEnum.Air, true));
-      westernWinds.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 20, .5, false, false));
+      westernWinds.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 20, .5, false, false, true));
       enemy.abilityList.push(westernWinds);        
       
       var enrage = new Ability();
@@ -16061,7 +16067,7 @@ export class EnemyGeneratorService {
       easternWinds = this.randomizeCooldown(easternWinds);
       easternWinds.dealsDirectDamage = false;      
       easternWinds.targetEffect.push(this.globalService.createDamageOverTimeEffect(20, 4, 5000, easternWinds.name, dotTypeEnum.TrueDamage, ElementalTypeEnum.Air, true));
-      easternWinds.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckDown, 20, .3, false, false));
+      easternWinds.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckDown, 20, .3, false, false, true));
       enemy.abilityList.push(easternWinds);    
       
       var icyShielding = new Ability();
@@ -16071,7 +16077,7 @@ export class EnemyGeneratorService {
       icyShielding = this.randomizeCooldown(icyShielding);
       icyShielding.dealsDirectDamage = false;
       icyShielding.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageShield, -1, 1, false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 2));
-      icyShielding.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 2, true, true, false, enemy.name, 1));
+      icyShielding.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 16, true, true, false, enemy.name, 1));
       enemy.abilityList.push(icyShielding);
       
       var enrage = new Ability();
@@ -16107,7 +16113,7 @@ export class EnemyGeneratorService {
       southernWinds = this.randomizeCooldown(southernWinds);
       southernWinds.dealsDirectDamage = false;      
       southernWinds.targetEffect.push(this.globalService.createDamageOverTimeEffect(20, 4, 6000, southernWinds.name, dotTypeEnum.TrueDamage, ElementalTypeEnum.Air, true));
-      southernWinds.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceDown, 20, .3, false, false));
+      southernWinds.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceDown, 20, .3, false, false, true));
       enemy.abilityList.push(southernWinds);    
       
       var icyShielding = new Ability();
@@ -16117,7 +16123,7 @@ export class EnemyGeneratorService {
       icyShielding = this.randomizeCooldown(icyShielding);
       icyShielding.dealsDirectDamage = false;
       icyShielding.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageShield, -1, 1, false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 2));
-      icyShielding.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 2, true, true, false, enemy.name, 1));
+      icyShielding.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 18, true, true, false, enemy.name, 1));
       enemy.abilityList.push(icyShielding);
       
       var enrage = new Ability();
@@ -16158,7 +16164,7 @@ export class EnemyGeneratorService {
       razorSharpFeathers.isAvailable = true;
       razorSharpFeathers.effectiveness = 21.8;
       razorSharpFeathers.dealsDirectDamage = true;
-      razorSharpFeathers.cooldown = razorSharpFeathers.currentCooldown = 20;
+      razorSharpFeathers.cooldown = razorSharpFeathers.currentCooldown = 25;
       razorSharpFeathers = this.randomizeCooldown(razorSharpFeathers);
       razorSharpFeathers.elementalType = ElementalTypeEnum.Air;
       razorSharpFeathers.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 120, .98, false, false, false, undefined, undefined, true));
@@ -16172,7 +16178,7 @@ export class EnemyGeneratorService {
       rejuvenation.cooldown = rejuvenation.currentCooldown = 30;
       rejuvenation = this.randomizeCooldown(rejuvenation);
       rejuvenation.dealsDirectDamage = false;      
-      rejuvenation.userEffect.push(this.globalService.createHealOverTimeEffect(15, 5, 3, rejuvenation.name));
+      rejuvenation.userEffect.push(this.globalService.createHealOverTimeEffect(15, 5, 7.5, rejuvenation.name));
       enemy.abilityList.push(rejuvenation);
 
       var enrage = new Ability();

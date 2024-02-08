@@ -28,6 +28,7 @@ export class TrialsViewComponent {
   resolveEnemies: Enemy[] = [];
   starsEnemies: Enemy[] = [];
   trials: TrialEnum[] = [];
+  trialEnum = TrialEnum;
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -40,9 +41,14 @@ export class TrialsViewComponent {
     if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("menuTraverseSubMenuDown"))) {
       this.toggleSubMenuOptions(1);
     }
-    
+
     if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("triggerAction"))) {
-      this.startTrial();
+      if (this.selectedTrial.type === TrialEnum.TrialOfResolve) {
+        if (this.isTrialAvailable())
+          this.startTrial();
+      }
+      else
+        this.startTrial();
     }
   }
 
@@ -77,8 +83,8 @@ export class TrialsViewComponent {
     return Trials;
   }
 
-  getTrialOfTheStarsEnemies() {    
-    var battleOptions = this.trialService.generateBattleOptions(this.selectedTrial);    
+  getTrialOfTheStarsEnemies() {
+    var battleOptions = this.trialService.generateBattleOptions(this.selectedTrial);
     if (battleOptions !== undefined && battleOptions.length >= 1)
       return this.trialService.generateBattleOptions(this.selectedTrial)[0].enemyList;
 
@@ -163,13 +169,6 @@ export class TrialsViewComponent {
     };
   }
 
-  getTrialNameColor(type: TrialEnum) {
-    if (this.selectedTrial !== undefined && this.selectedTrial.type === type)
-      return { 'active': true };
-
-    return {};
-  }
-
   startTrial() {
     this.dpsCalculatorService.rollingAverageTimer = 0;
     this.dpsCalculatorService.partyDamagingActions = [];
@@ -180,7 +179,7 @@ export class TrialsViewComponent {
     this.dialog.closeAll();
   }
 
-  getTrialEnemies() {    
+  getTrialEnemies() {
     return this.trialService.getTrialOfResolveBattle().enemyList;
   }
 
@@ -202,8 +201,67 @@ export class TrialsViewComponent {
     return this.utilityService.convertSecondsToHHMMSS(remainingTime);
   }
 
+  isTrialAvailable() {
+    if (this.globalService.globalVar.sidequestData.trialStage > 40)
+      return false;
+
+    return true;
+  }
+
+  //need to combine these
+  /*getTrialNameColor(type: TrialEnum) {
+    if (this.selectedTrial !== undefined && this.selectedTrial.type === type)
+      return { 'active': true };
+
+    return {};
+  }*/
+
+  getTrialNameColor(type: TrialEnum) {
+    if (type === TrialEnum.TrialOfResolve) {
+      if (this.globalService.globalVar.sidequestData.trialStage > 40) {
+        if (this.selectedTrial !== undefined && this.selectedTrial.type === type)
+          return { 'activeBackground clearedSubzoneColor': true };
+        else
+          return { 'clearedSubzoneColor': true };
+      }
+    }
+    else if (type === TrialEnum.TrialOfTheStarsNormal) {
+
+    }
+    else if (type === TrialEnum.TrialOfTheStarsHard) {
+
+    }
+    else if (type === TrialEnum.TrialOfTheStarsVeryHard) {
+
+    }
+
+    if (this.selectedTrial !== undefined && this.selectedTrial.type === type)
+      return { 'active': true };
+
+    return {};
+    /*
+        if (this.firstTimeRewardAlreadyObtained(type) && !this.quickCompletionRewardAlreadyObtained(type)) {
+          if (this.selectedTournament !== undefined && this.selectedTournament.type === type)
+            return { 'activeBackground clearedSubzoneColor': true };
+          else
+            return { 'clearedSubzoneColor': true };
+        }
+        else if (this.firstTimeRewardAlreadyObtained(type) && this.quickCompletionRewardAlreadyObtained(type)) {
+          if (this.selectedTournament !== undefined && this.selectedTournament.type === type)
+            return { 'activeBackground completedSubzoneColor': true };
+          else
+            return { 'completedSubzoneColor': true };
+        }
+        else {
+          if (this.selectedTournament !== undefined && this.selectedTournament.type === type)
+            return { 'active': true };
+        }
+    
+        return {};*/
+  }
+
   getTrialOfResolveReward() {
-  var reward = this.trialService.handleTrialOfResolveReward(false);
+    var reward = this.trialService.handleTrialOfResolveReward(false);
     if (this.globalService.globalVar.sidequestData.trialStage === 30) {
       return "<span class='bold smallCaps aphroditeColor'>Aphrodite</span>";
     }
@@ -220,12 +278,12 @@ export class TrialsViewComponent {
   repeatTrialFightToggle() {
     this.globalService.globalVar.settings.set("repeatTrialFight", this.repeatTrialFight);
   }
-  
+
   repeatStarTrialFightToggle() {
     this.globalService.globalVar.settings.set("repeatStarTrialFight", this.repeatStarTrialFight);
   }
 
-  toggleSubMenuOptions(direction: number) {    
+  toggleSubMenuOptions(direction: number) {
     var currentIndex = this.trials.findIndex(item => item === this.selectedTrial.type);
     currentIndex += direction;
 
@@ -233,7 +291,7 @@ export class TrialsViewComponent {
       currentIndex = this.trials.length - 1;
     if (currentIndex > this.trials.length - 1)
       currentIndex = 0;
-    
+
     this.chooseTrial(this.trials[currentIndex]);
   }
 }

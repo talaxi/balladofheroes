@@ -25,6 +25,8 @@ export class MainComponent implements OnInit {
   maxBankedTime = 0;
   displayFunFacts = true;
   isMobile = false;
+  isGamePaused = false;
+  viewingBattle = false;
 
   constructor(private layoutService: LayoutService, private gameLoopService: GameLoopService, public lookupService: LookupService,
     public storyService: StoryService, private deviceDetectorService: DeviceDetectorService, private globalService: GlobalService,
@@ -35,7 +37,23 @@ export class MainComponent implements OnInit {
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       this.navigation = this.layoutService.navigation;
+      this.isGamePaused = this.globalService.globalVar.isGamePaused;
+      this.viewingBattle = this.layoutService.navigation === NavigationEnum.Default && !this.isAtStoryScene() && !this.isAtChestScene() && !this.isAtAltarScene();
     });
+  }
+
+  isAtChestScene() {
+    if (this.globalService.globalVar.activeBattle !== undefined)
+      return this.globalService.globalVar.activeBattle.atScene && this.globalService.globalVar.activeBattle.sceneType === SceneTypeEnum.Chest;
+
+    return false;
+  }
+
+  isAtAltarScene() {
+    if (this.globalService.globalVar.activeBattle !== undefined)
+      return this.globalService.globalVar.activeBattle.atScene && this.globalService.globalVar.activeBattle.sceneType === SceneTypeEnum.Altar;
+
+    return false;
   }
 
   closeMobileMenu() {

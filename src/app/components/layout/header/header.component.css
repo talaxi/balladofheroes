@@ -18,6 +18,10 @@
         "menuItem performanceState gameState extraTimeItem storyItem";
 }
 
+.playGame {
+    color: var(--alert-text) !important;
+}
+
 .storyItem {
     grid-area: storyItem;
     text-align: right;

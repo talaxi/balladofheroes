@@ -14,6 +14,7 @@ import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { ResourceViewSortEnum } from 'src/app/models/enums/resource-view-sort-enum.model';
 import { ShopTypeEnum } from 'src/app/models/enums/shop-type-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
+import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { LayoutService } from 'src/app/models/global/layout.service';
 import { Profession } from 'src/app/models/professions/profession.model';
 import { ShopItem } from 'src/app/models/shop/shop-item.model';
@@ -150,6 +151,11 @@ export class ShopViewComponent implements OnInit {
 
   circeAlchemyCompleted() {
     return this.globalService.globalVar.sidequestData.circeAlchemyLevel >= 1;
+  }
+
+  circeAlchemyAvailable() {
+    var straitsOfMessinaZone = this.balladService.findZone(ZoneEnum.StraitsOfMessina);
+    return straitsOfMessinaZone?.isAvailable;
   }
 
   getShopOptions() {

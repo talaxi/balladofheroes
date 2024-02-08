@@ -46,12 +46,13 @@
                         </span>
                     </div>
                     <br/>
-                    <span><b>Reward: </b> <span [innerHTML]="getTrialOfResolveReward()"></span></span>
+                    <span *ngIf="isTrialAvailable()"><b>Reward: </b> <span [innerHTML]="getTrialOfResolveReward()"></span></span>
+                    <span *ngIf="!isTrialAvailable()">New battles coming soon!</span>
                     <hr />
                     <div>
                         <br />
                         <br />
-                        <button class="buttonStyled" (click)="startTrial()">Start Trial</button>
+                        <button class="buttonStyled" [disabled]="!isTrialAvailable()" (click)="startTrial()">Start Trial</button>
                     </div>
                 </div>
             </div>
