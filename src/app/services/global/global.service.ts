@@ -1092,7 +1092,8 @@ export class GlobalService {
       type === StatusEffectEnum.ElixirOfFortitude || type === StatusEffectEnum.ElixirOfSpeed || type === StatusEffectEnum.FlamingToxin ||
       type === StatusEffectEnum.ParalyzingToxin || type === StatusEffectEnum.KingOfTheSea || type === StatusEffectEnum.ElixirOfFortune ||
       type === StatusEffectEnum.SandToxin || type === StatusEffectEnum.ElectrifiedToxin || type === StatusEffectEnum.MagicToxin ||
-      type === StatusEffectEnum.TidalToxin || type === StatusEffectEnum.UnsteadyingToxin || type === StatusEffectEnum.ElixirOfWill)
+      type === StatusEffectEnum.TidalToxin || type === StatusEffectEnum.UnsteadyingToxin || type === StatusEffectEnum.ElixirOfWill ||
+      type === StatusEffectEnum.AgonizingToxin)
       refreshes = true;
 
     return refreshes;
@@ -1106,7 +1107,8 @@ export class GlobalService {
       type === StatusEffectEnum.Dead || type === StatusEffectEnum.ElixirOfFortitude || type === StatusEffectEnum.ElixirOfSpeed ||
       type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.RejuvenatingElixir || type === StatusEffectEnum.ElixirOfFortune ||
       type === StatusEffectEnum.SandToxin || type === StatusEffectEnum.ElectrifiedToxin || type === StatusEffectEnum.MagicToxin ||
-      type === StatusEffectEnum.TidalToxin || type === StatusEffectEnum.UnsteadyingToxin || type === StatusEffectEnum.ElixirOfWill)
+      type === StatusEffectEnum.TidalToxin || type === StatusEffectEnum.UnsteadyingToxin || type === StatusEffectEnum.ElixirOfWill ||
+      type === StatusEffectEnum.AgonizingToxin)
       persistsDeath = true;
 
     return persistsDeath;
@@ -1122,7 +1124,8 @@ export class GlobalService {
       type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.RejuvenatingElixir || type === StatusEffectEnum.ElixirOfFortune ||
       type === StatusEffectEnum.SandToxin || type === StatusEffectEnum.ElectrifiedToxin || type === StatusEffectEnum.MagicToxin ||
       type === StatusEffectEnum.DispenserOfDues || type === StatusEffectEnum.Shapeshift ||
-      type === StatusEffectEnum.TidalToxin || type === StatusEffectEnum.UnsteadyingToxin || type === StatusEffectEnum.ElixirOfWill)
+      type === StatusEffectEnum.TidalToxin || type === StatusEffectEnum.UnsteadyingToxin || type === StatusEffectEnum.ElixirOfWill ||
+      type === StatusEffectEnum.AgonizingToxin)
       persistsDeath = true;
 
     if (effect.resolution === EffectResolutionEnum.AlwaysActiveEquipment)

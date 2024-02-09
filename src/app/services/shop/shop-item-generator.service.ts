@@ -886,6 +886,15 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.RutilatedAquamarine) {
       purchasePrice.push(new ResourceValue(ItemsEnum.PerfectFlawedAquamarine, 2));
     }
+    if (item === ItemsEnum.SoothingHerb) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500));
+    }
+    if (item === ItemsEnum.NecklaceOfStarryNights) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 55000));
+    }
+    if (item === ItemsEnum.NecklaceOfEndlessWaves) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 55000));
+    }
 
     return new ShopItem(item, purchasePrice, originalStore);
   }

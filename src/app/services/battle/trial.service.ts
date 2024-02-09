@@ -660,7 +660,7 @@ export class TrialService {
 
   handleTrialVictory(type: TrialEnum) {
     this.globalService.resetCooldowns();
-    var buffHours = 4;
+    var buffHours = this.utilityService.trialOfSkillBuffHours;
     var todaysDate = new Date();
     if (todaysDate.getDay() === 6 || todaysDate.getDay() === 0)
       buffHours *= 2;

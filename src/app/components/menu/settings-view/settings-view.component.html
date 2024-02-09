@@ -7,7 +7,7 @@
             <span class="smallCaps bold">story speed</span>
             <br />
             <mat-button-toggle-group [(ngModel)]="storyStyle" aria-label="Story Style" (change)="setStoryStyle()">
-                <mat-button-toggle customToolTip [contentTemplate]="storyStylePausePopover"
+                <mat-button-toggle customToolTip [contentTemplate]="storyStylePausePopover" [tooltipDirection] = "tooltipDirection"
                     [value]="storyStyleEnum.Pause">Pause</mat-button-toggle>
                 <mat-button-toggle [value]="storyStyleEnum.Slow">Slow</mat-button-toggle>
                 <mat-button-toggle [value]="storyStyleEnum.Medium">Medium</mat-button-toggle>
@@ -55,7 +55,7 @@
         </span> 
         <br />
         <span>
-            <mat-checkbox class="example-margin" [(ngModel)]="verboseMode" customToolTip [contentTemplate]="verboseModePopover"
+            <mat-checkbox class="example-margin" [(ngModel)]="verboseMode" customToolTip [contentTemplate]="verboseModePopover" [tooltipDirection] = "tooltipDirection"
                 (input)="verboseModeToggle()">Verbose Mode
             </mat-checkbox>
         </span> 
@@ -67,13 +67,19 @@
         </span> 
         <br />
         <span>
-            <mat-checkbox class="example-margin" [(ngModel)]="showBigNumberColors" customToolTip [contentTemplate]="bigNumberPopover"
+            <mat-checkbox class="example-margin" [(ngModel)]="showBigNumberColors" customToolTip [contentTemplate]="bigNumberPopover" [tooltipDirection] = "tooltipDirection"
                 (input)="showBigNumberColorsToggle()">Show Big Number Colors
             </mat-checkbox>
         </span> 
         <br />
         <span>
-            <mat-checkbox *ngIf="fps === utilityService.lowFps" class="example-margin" [(ngModel)]="showAbilityCooldownPercents" customToolTip [contentTemplate]="showAbilityCooldownPercentsPopover"
+            <mat-checkbox class="example-margin" [(ngModel)]="showPauseMessage" customToolTip [contentTemplate]="showPauseMessagePopover" [tooltipDirection] = "tooltipDirection"
+                (input)="showPauseMessageToggle()">Show Pause Message
+            </mat-checkbox>
+        </span> 
+        <br />
+        <span>
+            <mat-checkbox *ngIf="fps === utilityService.lowFps" class="example-margin" [(ngModel)]="showAbilityCooldownPercents" customToolTip [contentTemplate]="showAbilityCooldownPercentsPopover" [tooltipDirection] = "tooltipDirection"
                 (input)="showAbilityCooldownPercentsToggle()">Show Ability Cooldown Percents
             </mat-checkbox>
         </span> 
@@ -113,17 +119,17 @@
                     <span class="smallCaps bold">Offline Loading Time</span>
                     <br />
                     <mat-button-toggle-group [(ngModel)]="loadingTime" aria-label="Offline Loading Time"
-                        (change)="setLoadingTime()">
-                        <mat-button-toggle customToolTip [contentTemplate]="lowLoadingTimePopover"
-                            [value]="utilityService.lowActiveTimeLimit">30 MIN</mat-button-toggle>
-                        <mat-button-toggle customToolTip [contentTemplate]="averageLoadingTimePopover"
+                        (change)="setLoadingTime()">                        
+                        <mat-button-toggle customToolTip [contentTemplate]="averageLoadingTimePopover" [tooltipDirection] = "tooltipDirection"
                             [value]="utilityService.averageActiveTimeLimit">1 HR</mat-button-toggle>
-                        <mat-button-toggle customToolTip [contentTemplate]="highLoadingTimePopover"
+                        <mat-button-toggle customToolTip [contentTemplate]="highLoadingTimePopover" [tooltipDirection] = "tooltipDirection"
                             [value]="utilityService.highActiveTimeLimit">2 HR</mat-button-toggle>
-                        <mat-button-toggle customToolTip [contentTemplate]="veryHighLoadingTimePopover"
+                        <mat-button-toggle customToolTip [contentTemplate]="veryHighLoadingTimePopover" [tooltipDirection] = "tooltipDirection"
                             [value]="utilityService.veryHighActiveTimeLimit">4 HR</mat-button-toggle>
-                            <mat-button-toggle customToolTip [contentTemplate]="extremelyHighLoadingTimePopover"
-                            [value]="utilityService.extremelyHighActiveTimeLimit">8 HR</mat-button-toggle>
+                            <mat-button-toggle customToolTip [contentTemplate]="extremelyHighLoadingTimePopover" [tooltipDirection] = "tooltipDirection"
+                            [value]="utilityService.extremelyHighActiveTimeLimit">8 HR</mat-button-toggle>  
+                            <mat-button-toggle customToolTip [contentTemplate]="maximumLoadingTimePopover" [tooltipDirection] = "tooltipDirection"
+                            [value]="utilityService.maximumActiveTimeLimit">24 HR</mat-button-toggle>
                     </mat-button-toggle-group>
                 </div>
                 <div class="twoColumn">
@@ -131,11 +137,11 @@
                     <br />
                     <mat-button-toggle-group [(ngModel)]="loadingAccuracy" aria-label="Loading Accuracy"
                         (change)="setLoadingAccuracy()">
-                        <mat-button-toggle customToolTip [contentTemplate]="lowLoadingAccuracyPopover"
+                        <mat-button-toggle customToolTip [contentTemplate]="lowLoadingAccuracyPopover" [tooltipDirection] = "tooltipDirection"
                             [value]="utilityService.lowLoadingAccuracy">Low</mat-button-toggle>
-                        <mat-button-toggle customToolTip [contentTemplate]="averageLoadingAccuracyPopover"
+                        <mat-button-toggle customToolTip [contentTemplate]="averageLoadingAccuracyPopover" [tooltipDirection] = "tooltipDirection"
                             [value]="utilityService.averageLoadingAccuracy">Average</mat-button-toggle>
-                        <mat-button-toggle customToolTip [contentTemplate]="highLoadingAccuracyPopover"
+                        <mat-button-toggle customToolTip [contentTemplate]="highLoadingAccuracyPopover" [tooltipDirection] = "tooltipDirection"
                             [value]="utilityService.highLoadingAccuracy">High</mat-button-toggle>
                     </mat-button-toggle-group>
                 </div>
@@ -145,11 +151,11 @@
                 <span class="smallCaps bold">Performance</span>
                 <br />
                 <mat-button-toggle-group [(ngModel)]="fps" aria-label="Fps" (change)="setFps()">
-                    <mat-button-toggle customToolTip [contentTemplate]="lowFpsPopover"
+                    <mat-button-toggle customToolTip [contentTemplate]="lowFpsPopover" [tooltipDirection] = "tooltipDirection"
                         [value]="utilityService.lowFps">Low</mat-button-toggle>
-                    <mat-button-toggle customToolTip [contentTemplate]="averageFpsPopover"
+                    <mat-button-toggle customToolTip [contentTemplate]="averageFpsPopover" [tooltipDirection] = "tooltipDirection"
                         [value]="utilityService.averageFps">Average</mat-button-toggle>
-                    <mat-button-toggle customToolTip [contentTemplate]="highFpsPopover"
+                    <mat-button-toggle customToolTip [contentTemplate]="highFpsPopover" [tooltipDirection] = "tooltipDirection"
                         [value]="utilityService.highFps">High</mat-button-toggle>
                 </mat-button-toggle-group>
             </div>
@@ -311,28 +317,40 @@
     </div>
 </ng-template>
 
+<ng-template #maximumLoadingTimePopover>
+    <div>
+        Automate the game for up to 1440 minutes of away time. <b>Loading times will be long!</b>
+    </div>
+</ng-template>
+
 <ng-template #lowLoadingAccuracyPopover>
     <div>
-        Run the game in 10 second batches during offline time. This will increase loading speed but also reduce accuracy.
+        Run the game in 10 second batches during offline time to catch up. This will reduce loading time as well as accuracy.
     </div>
 </ng-template>
 
 <ng-template #averageLoadingAccuracyPopover>
     <div>
-        Run the game in 5 second batches during offline time.
+        Run the game in 5 second batches during offline time to catch up.
     </div>
 </ng-template>
 
 <ng-template #highLoadingAccuracyPopover>
     <div>
-        Run the game in 2 second batches during offline time. This will reduce loading speed but also increase
-        accuracy.
+        Run the game in 2 second batches during offline time to catch up. This will increase
+        accuracy as well as loading time.
     </div>
 </ng-template>
 
 <ng-template #bigNumberPopover>
     <div>
         Show a unique color for each big number modifier (K, B, T, etc) so that you can quickly identify it.
+    </div>
+</ng-template>
+
+<ng-template #showPauseMessagePopover>
+    <div>
+        Show an alert message in the middle of the screen when the game is paused.
     </div>
 </ng-template>
 

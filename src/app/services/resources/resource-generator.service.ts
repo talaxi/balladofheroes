@@ -172,6 +172,12 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.DarkMoonPendant) {
       return new ResourceValue(ItemsEnum.DarkMoonPendant, amount);
     }
+    if (type === ItemsEnum.NecklaceOfEndlessWaves) {
+      return new ResourceValue(ItemsEnum.NecklaceOfEndlessWaves, amount);
+    }
+    if (type === ItemsEnum.NecklaceOfStarryNights) {
+      return new ResourceValue(ItemsEnum.NecklaceOfStarryNights, amount);
+    }
 
     //rings
     if (type === ItemsEnum.MoltenRing) {
@@ -719,6 +725,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.RestorativeHerb) {
       return new ResourceValue(ItemsEnum.RestorativeHerb, amount);
     }
+    if (type === ItemsEnum.SoothingHerb) {
+      return new ResourceValue(ItemsEnum.SoothingHerb, amount);
+    }
     if (type === ItemsEnum.FocusPotion) {
       return new ResourceValue(ItemsEnum.FocusPotion, amount);
     }
@@ -727,6 +736,9 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.VenomousToxin) {
       return new ResourceValue(ItemsEnum.VenomousToxin, amount);
+    }
+    if (type === ItemsEnum.AgonizingToxin) {
+      return new ResourceValue(ItemsEnum.AgonizingToxin, amount);
     }
     if (type === ItemsEnum.ElixirOfFortitude) {
       return new ResourceValue(ItemsEnum.ElixirOfFortitude, amount);

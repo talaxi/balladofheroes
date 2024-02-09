@@ -325,7 +325,8 @@ export class LookupService {
       type === ItemsEnum.RestorativeSalve || type === ItemsEnum.HoneyPoultice || type === ItemsEnum.HoneySalve ||
       type === ItemsEnum.FireAbsorptionPotion || type === ItemsEnum.HolyAbsorptionPotion || type === ItemsEnum.AirAbsorptionPotion ||
       type === ItemsEnum.EarthAbsorptionPotion || type === ItemsEnum.LightningAbsorptionPotion || type === ItemsEnum.WaterAbsorptionPotion ||
-      type === ItemsEnum.MagicSalve || type === ItemsEnum.MagicRevivify || type === ItemsEnum.PeonySalve || type === ItemsEnum.PeonyPoultice) {
+      type === ItemsEnum.MagicSalve || type === ItemsEnum.MagicRevivify || type === ItemsEnum.PeonySalve || type === ItemsEnum.PeonyPoultice ||
+      type === ItemsEnum.SoothingHerb) {
       return ItemTypeEnum.HealingItem;
     }
 
@@ -340,7 +341,7 @@ export class LookupService {
     if (type === ItemsEnum.PoisonousToxin || type === ItemsEnum.DebilitatingToxin || type === ItemsEnum.WitheringToxin ||
       type === ItemsEnum.VenomousToxin || type === ItemsEnum.ParalyzingToxin || type === ItemsEnum.FlamingToxin ||
       type === ItemsEnum.SandToxin || type === ItemsEnum.ElectrifiedToxin || type === ItemsEnum.MagicToxin ||
-      type === ItemsEnum.TidalToxin || type === ItemsEnum.UnsteadyingToxin) {
+      type === ItemsEnum.TidalToxin || type === ItemsEnum.UnsteadyingToxin || type === ItemsEnum.AgonizingToxin) {
       return ItemTypeEnum.Toxin;
     }
 
@@ -558,7 +559,8 @@ export class LookupService {
     }
 
     if (type === ItemsEnum.HealingHerb || type === ItemsEnum.HealingPoultice || type === ItemsEnum.RestorativeHerb ||
-      type === ItemsEnum.RestorativePoultice || type === ItemsEnum.HoneyPoultice || type === ItemsEnum.PeonyPoultice)
+      type === ItemsEnum.RestorativePoultice || type === ItemsEnum.HoneyPoultice || type === ItemsEnum.PeonyPoultice ||
+      type === ItemsEnum.SoothingHerb)
       name = "Heal a party member for " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, effect.healAmount) + " HP" + (effect.healPercent > 0 ? " and an additional " + this.utilityService.genericRound(effect.healPercent * 100) + "% of their Max HP." : ".");
 
     else if (type === ItemsEnum.HealingSalve || type === ItemsEnum.RestorativeSalve || type === ItemsEnum.HoneySalve ||
@@ -612,6 +614,8 @@ export class LookupService {
       name = "Apply a toxin to a party member's weapon, giving their auto attacks a 10% chance to reduce a target's Attack by 20% for 16 seconds. Lasts for 30 minutes. Only one toxin can be applied per party member at a time. This effect persists on death.";
     else if (type === ItemsEnum.VenomousToxin)
       name = "Apply a toxin to a party member's weapon, giving their auto attacks a 10% chance to deal an additional 982 damage. Lasts for 30 minutes. Only one toxin can be applied per party member at a time. This effect persists on death.";
+      else if (type === ItemsEnum.AgonizingToxin)
+      name = "Apply a toxin to a party member's weapon, giving their auto attacks a 10% chance to deal an additional " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, 185000) + " damage. Lasts for 30 minutes. Only one toxin can be applied per party member at a time. This effect persists on death.";
     else if (type === ItemsEnum.FlamingToxin)
       name = "Apply a toxin to a party member's weapon, causing all auto attacks to take on the Fire element. Lasts for 30 minutes. Only one toxin can be applied per party member at a time. This effect persists on death.";
     else if (type === ItemsEnum.ParalyzingToxin)
@@ -3068,6 +3072,32 @@ export class LookupService {
       equipmentPiece.stats.abilityCooldownReduction += .05;
       equipmentPiece.slotCount = 4;
       equipmentPiece.set = EquipmentSetEnum.Shadow;
+    }    
+    if (type === ItemsEnum.NecklaceOfEndlessWaves) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(5000, 500, 500, 0, 0, 0);
+      equipmentPiece.stats.criticalMultiplier += .1;
+      equipmentPiece.stats.elementResistance.water += .1;
+      equipmentPiece.stats.elementIncrease.water += .1;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
+      equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, -1, 1.5, true, false, true, this.dictionaryService.getItemName(type).toString(), 0, false, ElementalTypeEnum.Water, 30));
+      equipmentEffect.targetEffect[0].dotType = dotTypeEnum.BasedOnAttack;
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.slotCount = 3;
+    }
+    if (type === ItemsEnum.NecklaceOfStarryNights) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(5000, 500, 0, 0, 500, 0);
+      equipmentPiece.stats.criticalMultiplier += .1;
+      equipmentPiece.stats.elementResistance.air += .1;
+      equipmentPiece.stats.elementIncrease.air += .1;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
+      equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, -1, 1.5, true, false, true, this.dictionaryService.getItemName(type).toString(), 0, false, ElementalTypeEnum.Air, 30));
+      equipmentEffect.targetEffect[0].dotType = dotTypeEnum.BasedOnAttack;
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.slotCount = 3;
     }
 
     //ring
@@ -6229,6 +6259,8 @@ export class LookupService {
       description = "Withering Toxin";
     if (type === StatusEffectEnum.VenomousToxin)
       description = "Venomous Toxin";
+      if (type === StatusEffectEnum.AgonizingToxin)
+      description = "Agonizing Toxin";
     if (type === StatusEffectEnum.FlamingToxin)
       description = "Flaming Toxin";
     if (type === StatusEffectEnum.ParalyzingToxin)
@@ -6724,6 +6756,8 @@ export class LookupService {
       description = "10% chance on auto attack to reduce target's Attack by 20% for 16 seconds.";
     if (statusEffect.type === StatusEffectEnum.VenomousToxin)
       description = "10% chance on auto attack to deal 982 additional damage.";
+      if (statusEffect.type === StatusEffectEnum.AgonizingToxin)
+      description = "10% chance on auto attack to deal " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, 185000) + " additional damage.";
     if (statusEffect.type === StatusEffectEnum.FlamingToxin)
       description = "Auto Attacks have the Fire element.";
     if (statusEffect.type === StatusEffectEnum.ParalyzingToxin)
@@ -7385,6 +7419,10 @@ export class LookupService {
       itemEffect.isAoe = true;
       itemEffect.healPercent = .005;
     }
+    if (item === ItemsEnum.SoothingHerb) {
+      itemEffect.dealsDamage = false;
+      itemEffect.healAmount = 3000;
+    }
     if (item === ItemsEnum.PeonyPoultice) {
       itemEffect.dealsDamage = false;
       itemEffect.healAmount = 9000;
@@ -7517,6 +7555,10 @@ export class LookupService {
     if (item === ItemsEnum.VenomousToxin) {
       itemEffect.dealsDamage = false;
       itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.VenomousToxin, 30 * 60, .1, false, true, undefined, "Venomous Toxin"));
+    }
+    if (item === ItemsEnum.AgonizingToxin) {
+      itemEffect.dealsDamage = false;
+      itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgonizingToxin, 30 * 60, .1, false, true, undefined, "Agonizing Toxin"));
     }
     if (item === ItemsEnum.FlamingToxin) {
       itemEffect.dealsDamage = false;
@@ -8316,8 +8358,10 @@ export class LookupService {
           if (effect.type === StatusEffectEnum.InstantTrueDamage) {
             if (equipment.itemType === ItemsEnum.SwordOfFlames)
               equipmentEffects += "Blast your target with fire, dealing " + effect.effectiveness + " Fire damage.<br/>";
-            else if (equipment.itemType === ItemsEnum.ShieldOfTheSea)
+            else if (equipment.itemType === ItemsEnum.ShieldOfTheSea || equipment.itemType === ItemsEnum.NecklaceOfEndlessWaves)
               equipmentEffects += "Deal <strong>" + Math.round(effect.effectiveness * 100) + "% of Attack</strong> Water damage to all targets as true damage. <br/>";
+              else if (equipment.itemType === ItemsEnum.NecklaceOfStarryNights)
+              equipmentEffects += "Deal <strong>" + Math.round(effect.effectiveness * 100) + "% of Attack</strong> Air damage to all targets as true damage. <br/>";
             else if (equipment.itemType === ItemsEnum.AthenasScythe)
               equipmentEffects += "Deal <strong>" + Math.round(effect.effectiveness * 100) + "% of Attack</strong> Holy damage to your target as true damage. <br/>";
             else if (equipment.itemType === ItemsEnum.ZeussNecklace)
@@ -9400,6 +9444,9 @@ export class LookupService {
     if (type === ItemsEnum.RestorativeHerb) {
       src += "restorativeHerb.svg";
     }
+    if (type === ItemsEnum.SoothingHerb) {
+      src += "soothingHerb.svg";
+    }
     if (type === ItemsEnum.ThrowingStone) {
       src += "throwingStone.svg";
     }
@@ -9447,6 +9494,9 @@ export class LookupService {
     }
     if (type === ItemsEnum.VenomousToxin) {
       src += "venomousToxin.svg";
+    }
+    if (type === ItemsEnum.AgonizingToxin) {
+      src += "agonizingToxin.svg";
     }
     if (type === ItemsEnum.UnstablePotion) {
       src += "unstablePotion.svg";

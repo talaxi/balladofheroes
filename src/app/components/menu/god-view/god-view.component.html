@@ -287,7 +287,8 @@
     </div>
 
     <div class="godUpcoming">
-        <span class="sectionHeaderText sectionHeading">Upcoming Level Rewards</span>
+        <span class="sectionHeaderText sectionHeading" customToolTip [tooltipDirection]="tooltipDirection"
+        [contentTemplate]="godStatAllocationPopover">Upcoming Level Rewards</span>
         <div class="sectionInfo">
             <div [innerHtml]="getGodLevelRewards()">
             </div>
@@ -1004,6 +1005,16 @@
     </div>
     <hr/>
     <div [innerHtml]="this.getDuoAbilityBreakdown()">
+        
+    </div>
+</ng-template>
+
+<ng-template #godStatAllocationPopover>
+    <div class="flexBetween">
+        <span>Each god specializes in different Primary Stat Bonuses. The stat increases gained from leveling start as the same amount regardless of god, and then are modified by the god's multipliers. This god's multipliers are:</span>        
+    </div>
+    <hr/>
+    <div [innerHtml]="this.statAllocationBreakdown()">
         
     </div>
 </ng-template>

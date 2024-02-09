@@ -3806,6 +3806,12 @@ export class SubZoneGeneratorService {
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Charybdis));      
       battleOptions.push(enemyTeam);
     }
+    if (type === SubZoneEnum.EscapeFromColchisBattleAtSea) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Aeetes));      
+      battleOptions.push(enemyTeam);
+    }
 
     if (differentiateIndividuals) {
       battleOptions.forEach(enemyTeam => {
@@ -4927,6 +4933,10 @@ export class SubZoneGeneratorService {
 
       return shopOptions;
     }
+
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.SoothingHerb, SubZoneEnum.AiaiaCircesHome));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.NecklaceOfEndlessWaves, SubZoneEnum.AiaiaCircesHome));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.NecklaceOfStarryNights, SubZoneEnum.AiaiaCircesHome));
 
     if (sidequestData.circeAlchemyLevel === 0)
       availableOptionsCirceAlchemy.push(this.shopItemGenerator.generateShopItem(ItemsEnum.CirceAlchemy, SubZoneEnum.AiaiaCircesHome));

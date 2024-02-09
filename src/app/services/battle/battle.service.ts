@@ -6644,7 +6644,8 @@ export class BattleService {
 
     if (this.battleItemInUse === ItemsEnum.HealingHerb || this.battleItemInUse === ItemsEnum.HealingPoultice
       || this.battleItemInUse === ItemsEnum.RestorativeHerb || this.battleItemInUse === ItemsEnum.RestorativePoultice
-      || this.battleItemInUse === ItemsEnum.HoneyPoultice || this.battleItemInUse === ItemsEnum.PeonyPoultice) {
+      || this.battleItemInUse === ItemsEnum.HoneyPoultice || this.battleItemInUse === ItemsEnum.PeonyPoultice
+      || this.battleItemInUse === ItemsEnum.SoothingHerb) {
       if (character.battleStats.currentHp === this.lookupService.getAdjustedMaxHp(character))
         return;
 
@@ -6897,7 +6898,7 @@ export class BattleService {
       this.battleItemInUse === ItemsEnum.FlamingToxin || this.battleItemInUse === ItemsEnum.ParalyzingToxin ||
       this.battleItemInUse === ItemsEnum.SandToxin || this.battleItemInUse === ItemsEnum.ElectrifiedToxin ||
       this.battleItemInUse === ItemsEnum.MagicToxin || this.battleItemInUse === ItemsEnum.TidalToxin ||
-      this.battleItemInUse === ItemsEnum.UnsteadyingToxin) {
+      this.battleItemInUse === ItemsEnum.UnsteadyingToxin || this.battleItemInUse === ItemsEnum.AgonizingToxin) {
       if (character.battleStats.currentHp <= 0)
         return;
 
@@ -6961,6 +6962,9 @@ export class BattleService {
     }
     if (type === ItemsEnum.VenomousToxin) {
       return StatusEffectEnum.VenomousToxin;
+    }
+    if (type === ItemsEnum.AgonizingToxin) {
+      return StatusEffectEnum.AgonizingToxin;
     }
     if (type === ItemsEnum.PoisonousToxin) {
       return StatusEffectEnum.PoisonousToxin;
@@ -7593,6 +7597,22 @@ export class BattleService {
         }
       }
     }
+    
+    var agonizingToxin = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.AgonizingToxin);
+    if (agonizingToxin !== undefined) {
+      for (var i = 0; i < totalAttempts; i++) {
+        var rng = this.utilityService.getRandomNumber(0, 1);
+        if (rng <= agonizingToxin.effectiveness) {
+          var damageDealt = 185000;
+          this.dealTrueDamage(true, target, damageDealt, user, undefined, true);
+          var gameLogEntry = "<strong>" + target.name + "</strong>" + " takes " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, Math.round(damageDealt)) + " damage from " + agonizingToxin.caster + "'s effect.";
+
+          if (this.globalService.globalVar.gameLogSettings.get("partyStatusEffect")) {
+            this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry, this.globalService.globalVar);
+          }
+        }
+      }
+    }
 
     var magicToxin = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.MagicToxin);
     if (magicToxin !== undefined) {
@@ -7714,7 +7734,7 @@ export class BattleService {
     if (effect === StatusEffectEnum.WitheringToxin || effect === StatusEffectEnum.VenomousToxin || effect === StatusEffectEnum.DebilitatingToxin ||
       effect === StatusEffectEnum.PoisonousToxin || effect === StatusEffectEnum.FlamingToxin || effect === StatusEffectEnum.ParalyzingToxin ||
       effect === StatusEffectEnum.SandToxin || effect === StatusEffectEnum.ElectrifiedToxin || effect === StatusEffectEnum.MagicToxin ||
-      effect === StatusEffectEnum.TidalToxin || effect === StatusEffectEnum.UnsteadyingToxin)
+      effect === StatusEffectEnum.TidalToxin || effect === StatusEffectEnum.UnsteadyingToxin || effect === StatusEffectEnum.AgonizingToxin)
       return true;
 
     return false;

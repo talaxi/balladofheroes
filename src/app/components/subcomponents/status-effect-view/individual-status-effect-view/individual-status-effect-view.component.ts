@@ -286,6 +286,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.VenomousToxin) {
       src += "venomousToxin.svg";
     }
+    if (effect.type === StatusEffectEnum.AgonizingToxin) {
+      src += "agonizingToxin.svg";
+    }
     if (effect.type === StatusEffectEnum.SandToxin) {
       src += "sandToxin.svg";
     }

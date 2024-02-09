@@ -1469,6 +1469,19 @@ export class GodViewComponent implements OnInit {
     return text;
   }
 
+  statAllocationBreakdown() {
+    var text = "";
+
+    text += "Max HP: " + this.utilityService.genericRound(this.god.gainModifiers.maxHp * 100) + "%</br>";
+    text += "Attack: " + this.utilityService.genericRound(this.god.gainModifiers.attack * 100) + "%</br>";
+    text += "Agility: " + this.utilityService.genericRound(this.god.gainModifiers.agility * 100) + "%</br>";
+    text += "Defense: " + this.utilityService.genericRound(this.god.gainModifiers.defense * 100) + "%</br>";
+    text += "Luck: " + this.utilityService.genericRound(this.god.gainModifiers.luck * 100) + "%</br>";
+    text += "Resistance: " + this.utilityService.genericRound(this.god.gainModifiers.resistance * 100) + "%</br>";
+
+    return text;
+  }
+
   ngOnDestroy() {
     if (this.subscription !== undefined)
       this.subscription.unsubscribe();

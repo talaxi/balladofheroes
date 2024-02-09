@@ -47,7 +47,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.8,0.76, 0.75, 0.71, 0.7, 0.65, 0.64, 0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [0.8, 0.76, 0.75, 0.71, 0.7, 0.65, 0.64, 0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -1672,6 +1672,10 @@ export class VersionControlService {
 
           this.initializationService.initializeBalladOfTheWitch();
 
+          this.globalService.globalVar.settings.set("showPauseMessage", true);
+          if (this.globalService.globalVar.settings.get("loadingTime") === this.utilityService.lowActiveTimeLimit)
+            this.globalService.globalVar.settings.set("loadingTime", this.utilityService.averageActiveTimeLimit);
+
           this.globalService.globalVar.gods.forEach(god => {
             god.permanentStat5GainCount.forEach(count => {
               if (count[1] > this.utilityService.godPermanentStatGain5ObtainCap)
@@ -1695,7 +1699,7 @@ export class VersionControlService {
           });
 
           var monkClass = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Monk);
-          if (monkClass !== undefined) {           
+          if (monkClass !== undefined) {
             var passive = monkClass.abilityList.find(item => item.requiredLevel === this.utilityService.characterPassiveLevel);
             if (passive !== undefined) {
               passive.secondaryEffectiveness = 1.5;
@@ -1703,15 +1707,15 @@ export class VersionControlService {
           }
 
           var archerClass = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Archer);
-          if (archerClass !== undefined) {           
+          if (archerClass !== undefined) {
             var ability2 = archerClass.abilityList.find(item => item.requiredLevel === this.utilityService.characterAbility2Level);
             if (ability2 !== undefined && ability2.targetEffect.length > 0) {
               ability2.targetEffect[0].duration = 2;
             }
           }
-          
+
           var warriorClass = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Warrior);
-          if (warriorClass !== undefined) {           
+          if (warriorClass !== undefined) {
             var ability1 = warriorClass.abilityList.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
             if (ability1 !== undefined && ability1.targetEffect.length > 1) {
               ability1.targetEffect[0].duration = 12;

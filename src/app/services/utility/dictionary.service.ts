@@ -48,6 +48,8 @@ export class DictionaryService {
       name = "Healing Salve";
     if (type === ItemsEnum.RestorativeHerb)
       name = "Restorative Herb";
+      if (type === ItemsEnum.SoothingHerb)
+        name = "Soothing Herb";
     if (type === ItemsEnum.RestorativePoultice)
       name = "Restorative Poultice";
     if (type === ItemsEnum.RestorativeSalve)
@@ -82,6 +84,8 @@ export class DictionaryService {
       name = "Withering Toxin";
     else if (type === ItemsEnum.VenomousToxin)
       name = "Venomous Toxin";
+      else if (type === ItemsEnum.AgonizingToxin)
+      name = "Agonizing Toxin";
     else if (type === ItemsEnum.FirePotion)
       name = "Fire Potion";
     else if (type === ItemsEnum.ExplodingPotion)
@@ -477,6 +481,10 @@ export class DictionaryService {
       name = "Giant Necklace";
     else if (type === ItemsEnum.PoseidonsNecklace)
       name = "Poseidon's Necklace";
+      else if (type === ItemsEnum.NecklaceOfEndlessWaves)
+        name = "Necklace of Endless Waves";
+        else if (type === ItemsEnum.NecklaceOfStarryNights)
+          name = "Necklace of Starry Nights";
 
     //armor
     else if (type === ItemsEnum.LinenArmor)

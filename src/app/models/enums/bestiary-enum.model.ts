@@ -436,5 +436,6 @@ export enum BestiaryEnum {
   OpenMouthedShark,
   ShriekingLamia,
   FrenziedHydra,
-  Scylla
+  Scylla,
+  Aeetes
 }

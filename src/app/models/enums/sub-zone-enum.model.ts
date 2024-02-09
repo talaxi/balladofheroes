@@ -201,5 +201,16 @@ export enum SubZoneEnum {
   StraitsOfMessinaMawOfTheMonster,
   StraitsOfMessinaCavernOpening,
   StraitsOfMessinaDarkTunnel,
-  StraitsOfMessinaUnavoidablePath
+  StraitsOfMessinaUnavoidablePath,
+  ReturnToColchisPhasisBeach,
+  ReturnToColchisUnderTheStars,
+  ReturnToColchisParanoidMerchant,
+  ReturnToColchisColchisOutskirts,
+  ReturnToColchisColchisStreets,
+  ReturnToColchisReturnToTheGrove,
+  EscapeFromColchisEscape1,
+  EscapeFromColchisEscape2,
+  EscapeFromColchisInnerPath,
+  EscapeFromColchisBackAgainstTheWall,
+  EscapeFromColchisBattleAtSea
 }

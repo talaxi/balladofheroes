@@ -468,7 +468,6 @@ export class AchievementService {
       else if (subzoneType === SubZoneEnum.TheLabyrinthSolidWall2)
         rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
 
-      //TODO:
       else if (subzoneType === SubZoneEnum.AiaiaUnknownWaters)
         rewards.push(new ResourceValue(ItemsEnum.RutileAquamarineFragment, 60));
         else if (subzoneType === SubZoneEnum.AiaiaBreezyDays)

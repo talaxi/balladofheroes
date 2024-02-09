@@ -591,5 +591,9 @@ export enum ItemsEnum {
   ColossalRoot,
   StingrayTip,
   UnstableElement,
-  CirceAlchemy
+  CirceAlchemy,
+  SoothingHerb,
+  NecklaceOfEndlessWaves,
+  NecklaceOfStarryNights,
+  AgonizingToxin
 } 

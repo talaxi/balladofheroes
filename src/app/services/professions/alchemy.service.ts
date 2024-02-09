@@ -368,11 +368,18 @@ export class AlchemyService {
         this.updateGameLogWithNewRecipe(ItemsEnum.ElixirOfWill);
       }
     }
-    if (alchemy.level >= 125) {
+    /*if (alchemy.level >= 125) {
       if (!this.doesUserHaveRecipe(ItemsEnum.RareToEpicTransmutation)) {
         this.learnRecipe(ItemsEnum.RareToEpicTransmutation);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.RareToEpicTransmutation);
+      }
+    }*/
+    if (alchemy.level >= 125) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.AgonizingToxin)) {
+        this.learnRecipe(ItemsEnum.AgonizingToxin);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.AgonizingToxin);
       }
     }
 
@@ -1065,9 +1072,8 @@ export class AlchemyService {
 
       recipe.expGain = 95;
     }
-    if (item === ItemsEnum.RareToEpicTransmutation) {
-      recipe.quality = EquipmentQualityEnum.Special;
-      //TODO
+    /*if (item === ItemsEnum.RareToEpicTransmutation) {
+      recipe.quality = EquipmentQualityEnum.Special;  
       recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfForeignWaters, 2));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.MagicDust, 2));      
       
@@ -1075,6 +1081,16 @@ export class AlchemyService {
       recipe.steps.push(ProfessionActionsEnum.Transmutate);
 
       recipe.expGain = 165;
+    }*/
+    if (item === ItemsEnum.AgonizingToxin) {
+      recipe.quality = EquipmentQualityEnum.Special;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfForeignWaters, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.ColossalRoot, 1));      
+
+      recipe.numberOfSteps = 1;
+      recipe.steps.push(ProfessionActionsEnum.RareCrushIngredients);
+
+      recipe.expGain = 100;
     }
 
     return recipe;

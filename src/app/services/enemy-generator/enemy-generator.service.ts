@@ -16189,6 +16189,82 @@ export class EnemyGeneratorService {
       enrage.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsExcludeHpUp, -1, 1.3, false, true, false, undefined, undefined, true));      
       enemy.abilityList.push(enrage);        
     } 
+    if (type === BestiaryEnum.Aeetes) {      
+      enemy.name = "Aeëtes";
+      enemy.battleStats = new CharacterStats(23259500, 23550, 126750, 50000, 55500, 65500);           
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 6;
+      enemy.xpGainFromDefeat = 25000;    
+      enemy.battleInfo.elementalType = ElementalTypeEnum.Water;
+      enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenDown, -1, .75, false, true, false));
+      enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageOverTimeTakenDown, -1, .75, false, true, false));
+      enemy.loot.push(new LootItem(ItemsEnum.RutileAquamarineFragment, ItemTypeEnum.CraftingMaterial, 1, .05));      
+      enemy.loot.push(new LootItem(ItemsEnum.RutileOpalFragment, ItemTypeEnum.CraftingMaterial, 1, .05));      
+      enemy.loot.push(new LootItem(ItemsEnum.RutileEmeraldFragment, ItemTypeEnum.CraftingMaterial, 1, .05));      
+      enemy.loot.push(new LootItem(ItemsEnum.RutileTopazFragment, ItemTypeEnum.CraftingMaterial, 1, .05));      
+      enemy.loot.push(new LootItem(ItemsEnum.RutileRubyFragment, ItemTypeEnum.CraftingMaterial, 1, .05));      
+      enemy.loot.push(new LootItem(ItemsEnum.RutileAmethystFragment, ItemTypeEnum.CraftingMaterial, 1, .05));      
+
+      var spikeShot = new Ability();
+      spikeShot.name = "Spike Shot";
+      spikeShot.isAvailable = true;
+      spikeShot.cooldown = spikeShot.currentCooldown = 17;
+      spikeShot = this.randomizeCooldown(spikeShot);
+      spikeShot.dealsDirectDamage = true;
+      spikeShot.effectiveness = 15;
+      enemy.abilityList.push(spikeShot);
+
+      var rip = new Ability();
+      rip.name = "Rip";
+      rip.isAvailable = true;
+      rip.cooldown = rip.currentCooldown = 21;
+      rip = this.randomizeCooldown(rip);
+      rip.dealsDirectDamage = true;
+      rip.effectiveness = 10;
+      rip.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
+      rip.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
+      enemy.abilityList.push(rip);      
+
+      var furiousWaves = new Ability();
+      furiousWaves.name = "Furious Waves";
+      furiousWaves.isAvailable = true;
+      furiousWaves.effectiveness = 8.35;
+      furiousWaves.cooldown = 5;
+      furiousWaves.currentCooldown = 120;
+      furiousWaves.elementalType = ElementalTypeEnum.Water;
+      furiousWaves.isAoe = true;
+      furiousWaves.dealsDirectDamage = true;      
+      enemy.abilityList.push(furiousWaves);
+
+      //unsteadies both characters by 25%. Increases up to 100% for the duration of the status effect
+      //If it reaches 100%, stuns for X seconds
+      //Reduce unsteady amount by 20% every time you use an ability. Remove entirely if it gets to 0 or less
+      var vortexPull = new Ability();
+      vortexPull.name = "Vortex Pull";
+      vortexPull.isAvailable = true;
+      vortexPull.cooldown = vortexPull.currentCooldown = 28;
+      vortexPull = this.randomizeCooldown(vortexPull);
+      vortexPull.dealsDirectDamage = false;      
+      vortexPull.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.VortexPull, 20, .25, false, false, true));
+      enemy.abilityList.push(vortexPull);
+
+      var maelstrom = new Ability();
+      maelstrom.name = "Maelstrom";
+      maelstrom.isAvailable = true;      
+      maelstrom.cooldown = maelstrom.currentCooldown = 28;
+      maelstrom = this.randomizeCooldown(maelstrom);
+      maelstrom.dealsDirectDamage = false;      
+      maelstrom.targetEffect.push(this.globalService.createDamageOverTimeEffect(16, 2, 2500, maelstrom.name, dotTypeEnum.TrueDamage, ElementalTypeEnum.Water, true));
+      enemy.abilityList.push(maelstrom);  
+
+      var enrage = new Ability();
+      enrage.name = "Enrage";
+      enrage.isAvailable = true;
+      enrage.cooldown = enrage.currentCooldown = 30;      
+      enrage.dealsDirectDamage = false;
+      enrage.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsExcludeHpUp, -1, 1.25, false, true, false, undefined, undefined, true));      
+      enemy.abilityList.push(enrage);       
+    } 
 
     //probably a better way to do this... these reductions are multiplicative but enemies don't get stats calc'd so otherwise
     //it gets multiplied by 0

@@ -244,5 +244,6 @@ export enum StatusEffectEnum {
     UnsteadyingToxin,
     ElixirOfWill,
     VortexPull,
-    Tentative
+    Tentative,
+    AgonizingToxin
   }

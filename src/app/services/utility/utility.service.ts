@@ -20,6 +20,7 @@ export class UtilityService {
   public highActiveTimeLimit = 2 * 60 * 60;
   public veryHighActiveTimeLimit = 4 * 60 * 60;
   public extremelyHighActiveTimeLimit = 8 * 60 * 60;
+  public maximumActiveTimeLimit = 24 * 60 * 60;
 
   public extraSpeedTimeLimit = 12 * 60 * 60;
   public patronExtraSpeedTimeLimit = 24 * 60 * 60;
@@ -31,6 +32,7 @@ export class UtilityService {
   public timeFragmentClearRateMinimumSeconds = 3;
   public duoAbilityCooldown = 1;
   public friendlyCompetitionDamageReduction = .2;
+  public trialOfSkillBuffHours = 6;
 
   public lowLoadingAccuracy = 10;
   public averageLoadingAccuracy = 5;

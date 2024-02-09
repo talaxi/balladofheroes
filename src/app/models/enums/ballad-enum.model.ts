@@ -8,5 +8,6 @@ export enum BalladEnum {
   Argo,
   Olympus,
   Labyrinth,
-  Witch
+  Witch,
+  Eagle
 }
