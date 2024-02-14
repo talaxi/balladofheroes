@@ -595,5 +595,7 @@ export enum ItemsEnum {
   SoothingHerb,
   NecklaceOfEndlessWaves,
   NecklaceOfStarryNights,
-  AgonizingToxin
+  AgonizingToxin,
+  TokenOfFavor,
+  TokenOfSupport
 } 

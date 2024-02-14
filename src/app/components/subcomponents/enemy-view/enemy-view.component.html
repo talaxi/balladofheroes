@@ -3,7 +3,7 @@
     <span class="flex spaceBetween">
         <span class="targetSpace" *ngIf="isBoss">
         </span>
-        <span #enemyNameContainer class="s2Heading name" customToolTip [tooltipDirection]="tooltipDirection"
+        <span #enemyNameContainer class="s2Heading name" customToolTip [tooltipDirection]="tooltipDirection" [isBossTooltip]="isBoss"
             [contentTemplate]="enemyPopover" (overlayRefEmitter)="overlayEmitter($event)"> 
             <span #enemyName>
                 {{character.name}}                 

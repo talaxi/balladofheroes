@@ -35,18 +35,18 @@ export class ToolTipRendererDirective {
   @Input() isDelayed: boolean = true;
   @Input() isLargeTooltip: boolean = false;
   @Input() isSmallTooltip: boolean = false;
+  @Input() isBossTooltip: boolean = false;
   @Input() tooltipDirection: DirectionEnum = DirectionEnum.Right;
   smallTooltipPercent = .31; //these need to match the css
   regularTooltipPercent = .38; //these need to match the css
   largeTooltipPercent = .495; //these need to match the css
+  bossTooltipPercent = .43; //these need to match the css
 
   constructor(private _overlay: Overlay,
     private _overlayPositionBuilder: OverlayPositionBuilder,
     private _elementRef: ElementRef,
-    private globalService: GlobalService,
     private gameLoopService: GameLoopService,
-    private deviceDetectorService: DeviceDetectorService,
-    private utilityService: UtilityService) { }
+    private deviceDetectorService: DeviceDetectorService) { }
 
   /**
    * Init life cycle event handler
@@ -60,25 +60,10 @@ export class ToolTipRendererDirective {
       this.smallTooltipPercent = .45;
       this.regularTooltipPercent = .625;
       this.largeTooltipPercent = .70;
+      this.bossTooltipPercent = .80;
     }
 
     var positionStrategy: FlexibleConnectedPositionStrategy;
-
-    var tooltipPercent = 0;
-    if (this.isLargeTooltip)
-      tooltipPercent = this.largeTooltipPercent;
-    else if (this.isSmallTooltip)
-      tooltipPercent = this.smallTooltipPercent;
-    else
-      tooltipPercent = this.regularTooltipPercent;
-    /*
-        if (this.tooltipDirection === DirectionEnum.Right) {
-              
-    
-          if ((screen.width * (1 - tooltipPercent) < (this._elementRef.nativeElement.getBoundingClientRect().x + this._elementRef.nativeElement.getBoundingClientRect().width)))
-            this.tooltipDirection = DirectionEnum.DownRight;
-        }
-    */
    
     if (this.tooltipDirection === DirectionEnum.Down) {
       positionStrategy = this._overlayPositionBuilder
@@ -249,6 +234,7 @@ export class ToolTipRendererDirective {
           tooltipRef.instance.contentTemplate = this.contentTemplate;
           tooltipRef.instance.isLargeTooltip = this.isLargeTooltip;
           tooltipRef.instance.isSmallTooltip = this.isSmallTooltip;
+          tooltipRef.instance.isBossTooltip = this.isBossTooltip;
           tooltipRef.instance.tooltipDirection = this.tooltipDirection;
         }
       });
@@ -260,6 +246,7 @@ export class ToolTipRendererDirective {
         tooltipRef.instance.contentTemplate = this.contentTemplate;
         tooltipRef.instance.isLargeTooltip = this.isLargeTooltip;
         tooltipRef.instance.isSmallTooltip = this.isSmallTooltip;
+        tooltipRef.instance.isBossTooltip = this.isBossTooltip;
         tooltipRef.instance.tooltipDirection = this.tooltipDirection;
       }
     }

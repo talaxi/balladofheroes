@@ -868,7 +868,8 @@ export class BackgroundService {
         this.globalService.giveCharactersExp(this.globalService.getActivePartyCharacters(true), xpGain);
 
         if (run.selectedTrial === TrialEnum.TrialOfSkill) {
-          var affinityXpGain = this.utilityService.trialAffinityXpGain * .2;
+          var efficiency = this.globalService.globalVar.isSubscriber ? this.utilityService.supporterTimeFragmentEfficiency : this.utilityService.timeFragmentEfficiency;
+          var affinityXpGain = this.utilityService.trialAffinityXpGain * efficiency;
 
           var god = this.globalService.globalVar.gods.find(item => item.type === this.trialService.getGodEnumFromTrialOfSkillBattle());
           if (god !== undefined) {
@@ -998,8 +999,8 @@ export class BackgroundService {
     var xpList: number[] = [];
     var coinList: number[] = [];
     var xpGained = 0;
-    var coinsGained = 0;
-    var fragmentEfficiency = .2;
+    var coinsGained = 0;    
+    var fragmentEfficiency =  this.globalService.globalVar.isSubscriber ? this.utilityService.supporterTimeFragmentEfficiency : this.utilityService.timeFragmentEfficiency;
 
     if (run.selectedTrial !== undefined) {
       /*var trialType: TrialDefeatCount | undefined;

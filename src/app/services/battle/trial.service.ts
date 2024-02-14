@@ -831,7 +831,7 @@ export class TrialService {
       var gainedItem = ItemsEnum.DarkMoonPendant;
 
       if (this.globalService.globalVar.isSubscriber) {
-        itemCount = 100;
+        itemCount = stage * 20;
         gainedItem = ItemsEnum.Ambrosia;
       }      
 
@@ -847,7 +847,7 @@ export class TrialService {
       var gainedItem = ItemsEnum.BlazingSunPendant;
       
       if (this.globalService.globalVar.isSubscriber) {
-        itemCount = 100;
+        itemCount = stage * 20;
         gainedItem = ItemsEnum.Ambrosia;
       }      
 
@@ -876,7 +876,7 @@ export class TrialService {
       }
     }
     else if (stage % 5 === 0) {
-      var itemCount = (Math.floor(stage / 10) + 1) * 5;
+      var itemCount = stage * 20;
       var gainedItem = ItemsEnum.Ambrosia;
       reward = new ResourceValue(gainedItem, itemCount);
 
@@ -886,7 +886,7 @@ export class TrialService {
       }
     }
     else {
-      var itemCount = (Math.floor(stage / 10) + 1);
+      var itemCount = stage * 5;
       var gainedItem = ItemsEnum.Ambrosia;
       reward = new ResourceValue(gainedItem, itemCount);
 

@@ -437,5 +437,17 @@ export enum BestiaryEnum {
   ShriekingLamia,
   FrenziedHydra,
   Scylla,
-  Aeetes
+  Aeetes,
+  ExplodingHusk,
+  FeralHusk,
+  DiseasedHusk,
+  IridescentSquid,
+  HornedOwl,
+  SpiderSwarm,
+  JoltedHusk,
+  SilentHusk,
+  ErraticHusk,
+  EnflamedHusk,
+  GuardianOfTheGrove,
+  HulkingHusk
 }

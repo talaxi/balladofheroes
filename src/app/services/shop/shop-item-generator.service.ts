@@ -407,6 +407,13 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.Nemesis) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 8));
     }
+    
+    if (item === ItemsEnum.TokenOfSupport) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 10));
+    }    
+    if (item === ItemsEnum.TokenOfFavor) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 20));
+    }
 
     if (item === ItemsEnum.AthenasScythe) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 12));

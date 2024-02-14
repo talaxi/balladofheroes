@@ -154,6 +154,7 @@ export class UtilityService {
 
   public trialAffinityXpGain = 200;
   public timeFragmentEfficiency = .2;
+  public supporterTimeFragmentEfficiency = .3;
 
   constructor(public sanitizer: DomSanitizer, public dialog: MatDialog) { }
 

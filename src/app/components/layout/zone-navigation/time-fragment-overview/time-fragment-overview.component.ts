@@ -92,7 +92,8 @@ export class TimeFragmentOverviewComponent {
     rewards += "<span>" + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, xpGained) + "</span>" + " XP" + (oneLine ? ", " : "<br/>");
     
     if (trialType !== undefined && trialType.type === TrialEnum.TrialOfSkill) {      
-      rewards += (this.utilityService.timeFragmentEfficiency * this.utilityService.trialAffinityXpGain) + " " + this.lookupService.getGodNameByType(trialType.godType) + " Affinity XP, "
+      var efficiency = this.globalService.globalVar.isSubscriber ? this.utilityService.supporterTimeFragmentEfficiency : this.utilityService.timeFragmentEfficiency;
+      rewards += (efficiency * this.utilityService.trialAffinityXpGain) + " " + this.lookupService.getGodNameByType(trialType.godType) + " Affinity XP, "
     }
 
     if (coinsGained > 0)

@@ -1,5 +1,5 @@
 <div #tooltipElement [ngClass]="{'cssTooltip': isSticky, 'shiftLeft': shiftLeft && !shiftUp && !shiftDown, 'shiftUp': !shiftLeft && shiftUp, 'shiftUpLeft': shiftLeft && shiftUp, 'shiftDown': !shiftLeft && shiftDown, 'shiftDownLeft': shiftLeft && shiftDown }">
-    <div class="tooltip-container" [ngClass]="{'largeTooltip': isLargeTooltip, 'smallTooltip': isSmallTooltip, 'lightTooltip': !tooltipTheme}">
+    <div class="tooltip-container" [ngClass]="{'largeTooltip': isLargeTooltip, 'smallTooltip': isSmallTooltip, 'bossTooltip': isBossTooltip, 'lightTooltip': !tooltipTheme}">
       <ng-template #simpleText>
         <div [innerHtml]='text'></div>
       </ng-template>

@@ -1676,7 +1676,31 @@ export class VersionControlService {
           if (this.globalService.globalVar.settings.get("loadingTime") === this.utilityService.lowActiveTimeLimit)
             this.globalService.globalVar.settings.set("loadingTime", this.utilityService.averageActiveTimeLimit);
 
+          var blazingSunUpgrades = this.globalService.globalVar.resources.find(item => item.item === ItemsEnum.BlazingSunPendantUniqueUpgrade);
+          var blazingSun = this.globalService.globalVar.uniques.find(item => item.type === ItemsEnum.BlazingSunPendantUnique);
+          if (blazingSun !== undefined && blazingSunUpgrades !== undefined && blazingSunUpgrades.amount > 0) {
+            for (var i = 0; i < blazingSunUpgrades.amount; i++) {
+              if (this.globalService.globalVar.isSubscriber)
+              this.lookupService.giveUniqueXp(blazingSun, 19);
+              else
+              this.lookupService.giveUniqueXp(blazingSun, 9);
+            }
+          }
+          
+          var darkMoonUpgrades = this.globalService.globalVar.resources.find(item => item.item === ItemsEnum.DarkMoonPendantUniqueUpgrade);
+          var darkMoon = this.globalService.globalVar.uniques.find(item => item.type === ItemsEnum.DarkMoonPendantUnique);
+          if (darkMoon !== undefined && darkMoonUpgrades !== undefined && darkMoonUpgrades.amount > 0) {
+            for (var i = 0; i < darkMoonUpgrades.amount; i++) {
+              if (this.globalService.globalVar.isSubscriber)
+              this.lookupService.giveUniqueXp(darkMoon, 19);
+              else
+              this.lookupService.giveUniqueXp(darkMoon, 9);
+            }
+          }
+          
           this.globalService.globalVar.gods.forEach(god => {
+            god.gainModifiers = god.getGainModifier(god.type);
+
             god.permanentStat5GainCount.forEach(count => {
               if (count[1] > this.utilityService.godPermanentStatGain5ObtainCap)
                 count[1] = this.utilityService.godPermanentStatGain5ObtainCap;
@@ -1718,12 +1742,133 @@ export class VersionControlService {
           if (warriorClass !== undefined) {
             var ability1 = warriorClass.abilityList.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
             if (ability1 !== undefined && ability1.targetEffect.length > 1) {
-              ability1.targetEffect[0].duration = 12;
-              ability1.targetEffect[1].duration = 12;
+              ability1.targetEffect[0].duration = 14;
+              ability1.targetEffect[1].duration = 14;
             }
             var passive = warriorClass.abilityList.find(item => item.requiredLevel === this.utilityService.characterPassiveLevel);
             if (passive !== undefined) {
               passive.threshold = .5;
+            }
+          }
+
+          var monkClass = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Monk);
+          if (monkClass !== undefined) {           
+            var permanentAbility1Upgrades = monkClass.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
+            if (permanentAbility1Upgrades !== undefined) {
+              permanentAbility1Upgrades.effectiveness = 0;
+
+              monkClass.permanentAbility1GainCount.forEach(item => {
+                permanentAbility1Upgrades!.effectiveness += item[1] * (.05 * Math.ceil(item[0] / 10));
+              });
+            }
+
+            var permanentPassiveUpgrades = monkClass.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.characterPassiveLevel);
+            if (permanentPassiveUpgrades !== undefined) {
+              permanentPassiveUpgrades!.effectiveness = 0;
+
+              monkClass.permanentPassiveGainCount.forEach(item => {
+                permanentPassiveUpgrades!.effectiveness += item[1] * (.01 * Math.ceil(item[0] / 10));
+              });
+            }
+          }
+
+          var priestClass = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Priest);
+          if (priestClass !== undefined) {                  
+            var permanentPassiveUpgrades = priestClass.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.characterPassiveLevel);
+            if (permanentPassiveUpgrades !== undefined) {
+              permanentPassiveUpgrades!.effectiveness = 0;
+
+              priestClass.permanentPassiveGainCount.forEach(item => {
+                permanentPassiveUpgrades!.effectiveness += item[1] * (.01 * Math.ceil(item[0] / 10));
+              });
+            }
+            
+            var permanentAbility1Upgrades = priestClass.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
+            if (permanentAbility1Upgrades !== undefined) {
+              permanentAbility1Upgrades.effectiveness = 0;
+
+              priestClass.permanentAbility1GainCount.forEach(item => {
+                permanentAbility1Upgrades!.effectiveness += item[1] * (.02 * Math.ceil(item[0] / 10));
+              });
+            }
+
+            var permanentAbility2Upgrades = priestClass.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.characterAbility2Level);
+            if (permanentAbility2Upgrades !== undefined && permanentAbility2Upgrades.userEffect.length > 0) {
+              permanentAbility2Upgrades!.userEffect[0].effectiveness = 0;
+              priestClass.permanentAbility2GainCount.forEach(item => {
+                permanentAbility2Upgrades!.userEffect[0].effectiveness += item[1] * (.02 * Math.ceil(item[0] / 10));
+              });
+            }
+          }
+
+          var archerClass = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Archer);
+          if (archerClass !== undefined) {  
+            var permanentPassiveUpgrades = archerClass.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.characterPassiveLevel);
+            if (permanentPassiveUpgrades !== undefined && permanentPassiveUpgrades.targetEffect.length > 0) {
+              permanentPassiveUpgrades!.targetEffect[0].effectiveness = 0;
+
+              archerClass.permanentPassiveGainCount.forEach(item => {
+                permanentPassiveUpgrades!.targetEffect[0].effectiveness += item[1] * (.0075 * Math.ceil(item[0] / 10));
+              });
+            }
+
+            var permanentAbility2Upgrades = archerClass.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.characterAbility2Level);
+            if (permanentAbility2Upgrades !== undefined) {
+              permanentAbility2Upgrades!.effectiveness = 0;
+              archerClass.permanentAbility2GainCount.forEach(item => {
+                permanentAbility2Upgrades!.effectiveness += item[1] * (.15 * Math.ceil(item[0] / 10));
+              });
+            }
+          }
+
+          //increase warrior battle cry thorns dmg maybe
+          var warriorClass = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Warrior);
+          if (warriorClass !== undefined) {  
+            var permanentAbility1Upgrades = warriorClass.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
+            if (permanentAbility1Upgrades !== undefined && permanentAbility1Upgrades.targetEffect.length > 0) {
+              permanentAbility1Upgrades.targetEffect[0].effectiveness = 0;
+
+              warriorClass.permanentAbility1GainCount.forEach(item => {
+                permanentAbility1Upgrades!.targetEffect[0].effectiveness += item[1] * (.03 * Math.ceil(item[0] / 10));
+              });
+            }
+                     
+            var permanentAbility2Upgrades = warriorClass.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.characterAbility2Level);
+            if (permanentAbility2Upgrades !== undefined) {
+              permanentAbility2Upgrades!.effectiveness = 0;
+              warriorClass.permanentAbility2GainCount.forEach(item => {
+                permanentAbility2Upgrades!.effectiveness += item[1] * (.2 * Math.ceil(item[0] / 10));
+              });
+            }
+          }
+
+          var thaumaturgeClass = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Thaumaturge);
+          if (thaumaturgeClass !== undefined) { 
+            var permanentPassiveUpgrades = thaumaturgeClass.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.characterPassiveLevel);
+            if (permanentPassiveUpgrades !== undefined) {
+              permanentPassiveUpgrades!.effectiveness = 0;
+
+              thaumaturgeClass.permanentPassiveGainCount.forEach(item => {
+                permanentPassiveUpgrades!.effectiveness += item[1] * (.0125 * Math.ceil(item[0] / 10));
+              });
+            }
+
+            var permanentAbility2Upgrades = thaumaturgeClass.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.characterAbility2Level);
+            if (permanentAbility2Upgrades !== undefined) {
+              permanentAbility2Upgrades!.effectiveness = 0;
+              thaumaturgeClass.permanentAbility2GainCount.forEach(item => {
+                permanentAbility2Upgrades!.effectiveness += item[1] * (.175 * Math.ceil(item[0] / 10));
+              });
+            }
+          }
+
+          var artemis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis);
+          if (artemis !== undefined) {
+            var passive = artemis.abilityList.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);           
+
+            var permanentPassive = artemis.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+            if (permanentPassive !== undefined) {
+              permanentPassive.effectiveness = permanentPassive.effectiveness / 2;
             }
           }
 

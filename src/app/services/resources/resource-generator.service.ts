@@ -680,6 +680,12 @@ export class ResourceGeneratorService {
     }
 
     //equippables
+    if (type === ItemsEnum.TokenOfSupport) {
+      return new ResourceValue(ItemsEnum.TokenOfSupport, amount);
+    }
+    if (type === ItemsEnum.TokenOfFavor) {
+      return new ResourceValue(ItemsEnum.TokenOfFavor, amount);
+    }
     if (type === ItemsEnum.HealingHerb) {
       return new ResourceValue(ItemsEnum.HealingHerb, amount);
     }
@@ -1775,7 +1781,7 @@ export class ResourceGeneratorService {
       return new CharacterStats(baseRutilatedStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
-    var basePerfectRutilatedStatValue = .135;
+    var basePerfectRutilatedStatValue = .15;
     if (item === ItemsEnum.PerfectRutilatedOpal) {
       return new CharacterStats(0, basePerfectRutilatedStatValue, 0, 0, 0, 0);
     }
@@ -1795,7 +1801,7 @@ export class ResourceGeneratorService {
       return new CharacterStats(basePerfectRutilatedStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
-    var baseBrilliantStatValue = .15;
+    var baseBrilliantStatValue = .18;
     if (item === ItemsEnum.BrilliantOpal) {
       return new CharacterStats(0, baseBrilliantStatValue, 0, 0, 0, 0);
     }
@@ -1815,7 +1821,7 @@ export class ResourceGeneratorService {
       return new CharacterStats(baseBrilliantStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
-    var basePerfectBrilliantStatValue = .165;
+    var basePerfectBrilliantStatValue = .21;
     if (item === ItemsEnum.PerfectBrilliantOpal) {
       return new CharacterStats(0, basePerfectBrilliantStatValue, 0, 0, 0, 0);
     }
@@ -1835,7 +1841,7 @@ export class ResourceGeneratorService {
       return new CharacterStats(basePerfectBrilliantStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
-    var baseFlawlessStatValue = .18;
+    var baseFlawlessStatValue = .25;
     if (item === ItemsEnum.FlawlessOpal) {
       return new CharacterStats(0, baseFlawlessStatValue, 0, 0, 0, 0);
     }
@@ -1855,7 +1861,7 @@ export class ResourceGeneratorService {
       return new CharacterStats(baseFlawlessStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
-    var basePerfectFlawlessStatValue = .195;
+    var basePerfectFlawlessStatValue = .3;
     if (item === ItemsEnum.PerfectFlawlessOpal) {
       return new CharacterStats(0, basePerfectFlawlessStatValue, 0, 0, 0, 0);
     }
@@ -1875,7 +1881,7 @@ export class ResourceGeneratorService {
       return new CharacterStats(basePerfectFlawlessStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
-    var baseAdamantineStatValue = .21;
+    var baseAdamantineStatValue = .4;
     if (item === ItemsEnum.AdamantineOpal) {
       return new CharacterStats(0, baseAdamantineStatValue, 0, 0, 0, 0);
     }
@@ -1895,7 +1901,7 @@ export class ResourceGeneratorService {
       return new CharacterStats(baseAdamantineStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
-    var basePerfectAdamantineStatValue = .225;
+    var basePerfectAdamantineStatValue = .5;
     if (item === ItemsEnum.PerfectAdamantineOpal) {
       return new CharacterStats(0, basePerfectAdamantineStatValue, 0, 0, 0, 0);
     }

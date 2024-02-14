@@ -211,14 +211,14 @@ export class ShoppingItemViewComponent implements OnInit {
           for (var i = 0; i < this.buyMultiplier; i++) {
             var unique = this.globalService.globalVar.uniques.find(item => item.type === ItemsEnum.DarkMoonPendantUnique);
             if (unique !== undefined)
-              this.lookupService.giveUniqueXp(unique, 1);
+              this.lookupService.giveUniqueXp(unique, 10);
           }
         }
         else if (resource.item === ItemsEnum.BlazingSunPendantUniqueUpgrade) {
           for (var i = 0; i < this.buyMultiplier; i++) {
             var unique = this.globalService.globalVar.uniques.find(item => item.type === ItemsEnum.BlazingSunPendantUnique);
             if (unique !== undefined)
-              this.lookupService.giveUniqueXp(unique, 1);
+              this.lookupService.giveUniqueXp(unique, 10);
           }
         }
         else if (resource.item === ItemsEnum.WarriorClass || resource.item === ItemsEnum.PriestClass || resource.item === ItemsEnum.MonkClass || resource.item === ItemsEnum.ThaumaturgeClass) {

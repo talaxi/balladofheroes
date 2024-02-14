@@ -47,6 +47,8 @@ export class BalladService {
       name = "Ballad of the Labyrinth";
     if (type === BalladEnum.Witch)
       name = "Ballad of the Witch";
+      if (type === BalladEnum.Eagle)
+      name = "Ballad of the Eagle";
 
     return name;
   }
@@ -72,6 +74,8 @@ export class BalladService {
       name = "Labyrinth";
     if (type === BalladEnum.Witch)
       name = "Witch";
+      if (type === BalladEnum.Eagle)
+      name = "Eagle";
 
     return name;
   }
@@ -1188,7 +1192,7 @@ export class BalladService {
       type === SubZoneEnum.BlackSeaMariandyna || type === SubZoneEnum.ColchisCityCenter || type === SubZoneEnum.NemeaCleonea ||
       type === SubZoneEnum.StymphaliaTiryns || type === SubZoneEnum.CoastOfCreteElis || type === SubZoneEnum.ErytheiaCadiz ||
       type === SubZoneEnum.MountOlympusOlympus || type === SubZoneEnum.CreteKnossos || type === SubZoneEnum.TheLabyrinthCloakedStranger ||
-      type === SubZoneEnum.AiaiaCircesHome || type === SubZoneEnum.ReturnToColchisParanoidStranger) {
+      type === SubZoneEnum.AiaiaCircesHome || type === SubZoneEnum.ReturnToColchisParanoidMerchant) {
       return true;
     }
 

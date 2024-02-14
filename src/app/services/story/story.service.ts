@@ -1425,7 +1425,7 @@ export class StoryService {
         if (jewelcrafting !== undefined) {
           jewelcrafting.maxLevel += 25;
 
-          var gameLogEntry = "Handling Charybdis's spikes has given you inspiration. Your Jewelcrafting max level increases by <strong>25</strong> to a total of <strong>" + jewelcrafting.maxLevel + "</strong>.";
+          var gameLogEntry = "Handling Charybdis's spikes have given you inspiration. Your Jewelcrafting max level increases by <strong>25</strong> to a total of <strong>" + jewelcrafting.maxLevel + "</strong>.";
           this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry, this.globalService.globalVar);
         }
       }

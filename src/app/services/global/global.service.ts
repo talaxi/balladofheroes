@@ -243,8 +243,8 @@ export class GlobalService {
       battleCry.requiredLevel = this.utilityService.defaultCharacterAbilityLevel;
       battleCry.isAvailable = false;
       battleCry.cooldown = battleCry.currentCooldown = 16;
-      battleCry.targetEffect.push(this.createStatusEffect(StatusEffectEnum.ThornsDamageTakenUp, 12, 1.1, false, false, false, character.name));
-      battleCry.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Taunt, 12, 0, false, false, false, character.name));
+      battleCry.targetEffect.push(this.createStatusEffect(StatusEffectEnum.ThornsDamageTakenUp, 14, 1.1, false, false, false, character.name));
+      battleCry.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Taunt, 14, 0, false, false, false, character.name));
       character.abilityList.push(battleCry);
 
       var counterattack = new Ability();
@@ -531,7 +531,7 @@ export class GlobalService {
       trueShot.isPassive = true;
       trueShot.isActivatable = false;
       trueShot.dealsDirectDamage = false;
-      trueShot.effectiveness = 1.1;
+      trueShot.effectiveness = 1.05;
       trueShot.secondaryEffectiveness = 1;
       god.abilityList.push(trueShot);
     }
@@ -772,8 +772,8 @@ export class GlobalService {
       chainsOfFate.dealsDirectDamage = false;
       chainsOfFate.effectiveness = 1.05;
       chainsOfFate.cooldown = chainsOfFate.currentCooldown = 36;
-      chainsOfFate.userEffect.push(this.createStatusEffect(StatusEffectEnum.ChainsOfFate, 15, 1, false, true));
-      chainsOfFate.targetEffect.push(this.createStatusEffect(StatusEffectEnum.ChainsOfFate, 15, 1, false, false));
+      chainsOfFate.userEffect.push(this.createStatusEffect(StatusEffectEnum.ChainsOfFate, 20, 1, false, true));
+      chainsOfFate.targetEffect.push(this.createStatusEffect(StatusEffectEnum.ChainsOfFate, 20, 1, false, false));
       god.abilityList.push(chainsOfFate);
 
       var noEscape = new Ability();
@@ -822,7 +822,7 @@ export class GlobalService {
       electrify.dealsDirectDamage = true;
       electrify.cooldown = electrify.currentCooldown = 51;
       electrify.elementalType = ElementalTypeEnum.Lightning;
-      electrify.targetEffect.push(this.createStatusEffect(StatusEffectEnum.LightningDamageTakenUp, 16, 1.1, false, false));
+      electrify.targetEffect.push(this.createStatusEffect(StatusEffectEnum.LightningDamageTakenUp, 12, 1.1, false, false));
       god.abilityList.push(electrify);
 
       var chainLightning = new Ability();
@@ -901,7 +901,7 @@ export class GlobalService {
       fatalAttraction.name = "Fatal Attraction";
       fatalAttraction.isAvailable = false;
       fatalAttraction.requiredLevel = this.utilityService.defaultGodAbilityLevel;
-      fatalAttraction.cooldown = fatalAttraction.currentCooldown = 27;
+      fatalAttraction.cooldown = fatalAttraction.currentCooldown = 30;
       fatalAttraction.dealsDirectDamage = false;
       fatalAttraction.userEffect.push(this.createStatusEffect(StatusEffectEnum.FatalAttraction, -1, 1.1, false, true));
       god.abilityList.push(fatalAttraction);
@@ -1807,16 +1807,16 @@ export class GlobalService {
         ability.effectiveness += .15 * Math.ceil(newLevel / 10);
       }
       if (character.type === CharacterEnum.Priest) {
-        ability.effectiveness += .04 * Math.ceil(newLevel / 10);
+        ability.effectiveness += .02 * Math.ceil(newLevel / 10);
       }
       if (character.type === CharacterEnum.Warrior) {
         if (ability.targetEffect.length === 0)
           ability.targetEffect.push(new StatusEffect(StatusEffectEnum.None));
 
-        ability.targetEffect[0].effectiveness += .025 * Math.ceil(newLevel / 10);
+        ability.targetEffect[0].effectiveness += .03 * Math.ceil(newLevel / 10);
       }
       if (character.type === CharacterEnum.Monk) {
-        ability.effectiveness += .075 * Math.ceil(newLevel / 10);
+        ability.effectiveness += .05 * Math.ceil(newLevel / 10);
       }
       if (character.type === CharacterEnum.Thaumaturge) {
         ability.effectiveness += .15 * Math.ceil(newLevel / 10);
@@ -1833,19 +1833,19 @@ export class GlobalService {
           ability.targetEffect.push(new StatusEffect(StatusEffectEnum.None));
 
         var targetGainsEffect = ability.targetEffect[0];
-        targetGainsEffect.effectiveness += .01 * Math.ceil(newLevel / 10);
+        targetGainsEffect.effectiveness += .0075 * Math.ceil(newLevel / 10);
       }
       if (character.type === CharacterEnum.Priest) {
-        ability.effectiveness += .025 * Math.ceil(newLevel / 10);
+        ability.effectiveness += .01 * Math.ceil(newLevel / 10);
       }
       if (character.type === CharacterEnum.Warrior) {
         ability.effectiveness += .025 * Math.ceil(newLevel / 10);
       }
       if (character.type === CharacterEnum.Monk) {
-        ability.effectiveness += .015 * Math.ceil(newLevel / 10);
+        ability.effectiveness += .01 * Math.ceil(newLevel / 10);
       }
       if (character.type === CharacterEnum.Thaumaturge) {
-        ability.effectiveness += .015 * Math.ceil(newLevel / 10);
+        ability.effectiveness += .0125 * Math.ceil(newLevel / 10);
       }
     }
     if (newLevel % 10 === 8) {        //ability 2
@@ -1857,19 +1857,21 @@ export class GlobalService {
         ability.userEffect[0].effectiveness += .0025 * Math.ceil(newLevel / 10);
       }
       if (character.type === CharacterEnum.Archer) {
-        ability.effectiveness += .1 * Math.ceil(newLevel / 10);
+        ability.effectiveness += .15 * Math.ceil(newLevel / 10);
       }
       if (character.type === CharacterEnum.Priest) {
-        ability.effectiveness += .025 * Math.ceil(newLevel / 10);
+        if (ability.userEffect.length === 0)
+          ability.userEffect.push(new StatusEffect(StatusEffectEnum.None));
+        ability.userEffect[0].effectiveness += .02 * Math.ceil(newLevel / 10);
       }
       if (character.type === CharacterEnum.Warrior) {
-        ability.effectiveness += .1 * Math.ceil(newLevel / 10);
+        ability.effectiveness += .2 * Math.ceil(newLevel / 10);
       }
       if (character.type === CharacterEnum.Monk) {
         ability.effectiveness += .125 * Math.ceil(newLevel / 10);
       }
       if (character.type === CharacterEnum.Thaumaturge) {
-        ability.effectiveness += .1 * Math.ceil(newLevel / 10);
+        ability.effectiveness += .175 * Math.ceil(newLevel / 10);
       }
     }
 
@@ -2567,7 +2569,7 @@ export class GlobalService {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
         ability.secondaryEffectiveness += .05;
       else if (ability.abilityUpgradeLevel <= 100)
-        ability.effectiveness += .01;
+        ability.effectiveness += .005;
     }
     else if (god.type === GodEnum.Hermes) {
       if (ability.abilityUpgradeLevel <= 100)
@@ -3060,7 +3062,7 @@ export class GlobalService {
           userGainsEffect.effectiveness = .05;
         }
         else if (god.type === GodEnum.Artemis) {
-          ability.effectiveness += .02;
+          ability.effectiveness += .01;
         }
         else if (god.type === GodEnum.Hermes) {
           ability.effectiveness += .005;
@@ -4542,7 +4544,7 @@ export class GlobalService {
         this.globalVar.followerData.followers.push(new IndividualFollower());
       }
 
-      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng + " Followers</strong> for completing Round 10 of the Eternal Melee for the first time.", this.globalVar);      
+      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng + " Followers</strong> for completing Round 10 of the Eternal Melee for the first time.", this.globalVar);
     }
     if (previousMax < 20 && newMax >= 20) {
       var rng = 1;

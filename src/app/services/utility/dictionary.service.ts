@@ -287,6 +287,10 @@ export class DictionaryService {
       name = "Blazing Sun Pendant Unique XP";
     else if (type === ItemsEnum.TimeFragment)
       name = "Time Fragment";
+      else if (type === ItemsEnum.TokenOfFavor)
+      name = "Token of Favor";
+      else if (type === ItemsEnum.TokenOfSupport)
+      name = "Token of Support";
     else if (type === ItemsEnum.AthenasCrest)
       name = "Athena's Crest";
     else if (type === ItemsEnum.ArtemissCrest)

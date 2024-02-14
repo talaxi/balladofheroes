@@ -743,6 +743,9 @@ export class PartyComponent implements OnInit {
   }
 
   isDuoAvailable(character: Character) {
+    if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead))
+      return false;
+
     var god1ConditionMet = false;
     var god2ConditionMet = false;
     var gods = [];

@@ -125,7 +125,7 @@ export class TrialsViewComponent {
   }
 
   getTrialOfTheStarsDescription() {
-    return "Challenge the patron of the current Zodiac sign and gain special rewards!";
+    return "Challenge the patron of the current Zodiac sign for special rewards!";
   }
 
   getTrialOfResolveStage() {

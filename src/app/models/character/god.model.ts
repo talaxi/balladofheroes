@@ -85,7 +85,7 @@ export class God {
         this.duoAbilityAccess = false;
     }
 
-    private getGainModifier(type: GodEnum) {
+    public getGainModifier(type: GodEnum) {
         if (type === GodEnum.Athena)
             return new PrimaryStats(1.1, 1.05, 1.4, .8, .75, 1); //6.1 total
         else if (type === GodEnum.Artemis)
@@ -95,21 +95,21 @@ export class God {
         else if (type === GodEnum.Apollo)
             return new PrimaryStats(1.075, .9, .8, .85, 1.175, 1.45); //6.26 total
         else if (type === GodEnum.Ares)
-            return new PrimaryStats(1.4, 1.0325, .725, .9, 1.15, .8775); //6.085 total
+            return new PrimaryStats(1.35, 1.03, .725, 1, 1.15, .875); //6.13 total
         else if (type === GodEnum.Hades)
             return new PrimaryStats(.925, 1.03, 1, .6, 1.25, 1.2); //6.005 total
         else if (type === GodEnum.Dionysus)
             return new PrimaryStats(.9, .92, 1.2, 1.1, .85, 1.275); //6.245 total
         else if (type === GodEnum.Nemesis)
-            return new PrimaryStats(1.15, 1.01, 1.25, .8, .7, 1.25); //6.16 total
+            return new PrimaryStats(1.15, 1.01, 1.25, .8, .7, 1.225); //6.135 total
         else if (type === GodEnum.Zeus)
-            return new PrimaryStats(.85, 1.1, 1.15, 1.05, 1.05, .7); //5.9 total
+            return new PrimaryStats(.85, 1.1, 1.05, 1.1, 1.05, .7); //5.85 total
         else if (type === GodEnum.Poseidon)
-            return new PrimaryStats(.95, .95, 1.075, .95, 1.25, 1.05); //6.225 total
+            return new PrimaryStats(.975, .985, 1.075, .975, 1.1, 1.05); //6.16 total
         else if (type === GodEnum.Aphrodite)
             return new PrimaryStats(1.2, .975, .9, 1.05, 1, 1.05); //6.175 total
         else if (type === GodEnum.Hera)
-            return new PrimaryStats(.875, 1.075, .825, .975, 1.05, 1.1); //5.9 total
+            return new PrimaryStats(.9, 1.075, .825, .975, 1.025, 1.1); //5.9 total
 
         return new PrimaryStats(1, 1, 1, 1, 1, 1);
     }

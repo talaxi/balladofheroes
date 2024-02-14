@@ -66,6 +66,13 @@ export class EnemyDescriptionViewComponent {
   }
 
   getCharacterAttackSpeed() {
+    if (this.character.name === "Adventurer")
+      return "Quick";
+    else if (this.character.name === "Archer" || this.character.name === "Warrior" || this.character.name === "Thaumaturge")
+      return "Average";
+    else if (this.character.name === "Priest" || this.character.name === "Monk")
+      return "Long";
+
     if (this.character.battleInfo.timeToAutoAttack === this.utilityService.enemyAverageAutoAttackSpeed)
       return "Average";
     if (this.character.battleInfo.timeToAutoAttack === this.utilityService.enemyQuickAutoAttackSpeed)

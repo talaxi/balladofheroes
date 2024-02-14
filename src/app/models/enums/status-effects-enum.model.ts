@@ -245,5 +245,6 @@ export enum StatusEffectEnum {
     ElixirOfWill,
     VortexPull,
     Tentative,
-    AgonizingToxin
+    AgonizingToxin,
+    RandomPrimaryStatDownExcludeHpAvoidDuplicate
   }
