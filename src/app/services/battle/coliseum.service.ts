@@ -812,7 +812,6 @@ export class ColiseumService {
 
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.FriendlyCompetition, -1, this.utilityService.friendlyCompetitionDamageReduction, false, true));
 
-      //TODO: have to run through every ability's permanents
       enemy.abilityList.forEach(ability => {
         var permanentUpgrades = member.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
         if (permanentUpgrades !== undefined) {

@@ -20,6 +20,7 @@ export class MenuService {
   selectedProfession: ProfessionEnum;
   keybindModalOpen: boolean = false;
   inTextbox: boolean = false;
+  logDisplayed: boolean = false;
 
   partyMember1: BehaviorSubject<CharacterEnum>;
   partyMember2: BehaviorSubject<CharacterEnum>;

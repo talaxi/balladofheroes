@@ -1,5 +1,5 @@
 import { Component, HostListener, Input, OnInit, ViewChild } from '@angular/core';
-import { MatDialog as MatDialog } from '@angular/material/dialog';
+import { MatDialog as MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
@@ -30,6 +30,7 @@ export class HeaderComponent implements OnInit {
   navigationEnum = NavigationEnum;
   textMode = true;
   tooltipDirection = DirectionEnum.Down;
+  logDialogRef: MatDialogRef<any, any>;
   @ViewChild('logContent') logContent: any;
 
   constructor(private battleService: BattleService, public layoutService: LayoutService, private menuService: MenuService,
@@ -53,7 +54,12 @@ export class HeaderComponent implements OnInit {
     }
 
     if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openLog"))) {
-      this.openLog(this.logContent);
+      if (this.menuService.logDisplayed) {
+        this.dialog.closeAll();
+        this.menuService.logDisplayed = false;
+      }
+      else
+        this.openLog(this.logContent);
     }
   }
 
@@ -149,34 +155,34 @@ export class HeaderComponent implements OnInit {
     const day = now.getDate();
     var zodiacEndDate: Date = new Date();
 
-    if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) {      
+    if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) {
       zodiacEndDate = new Date(year, 1, 18);
-    } else if ((month === 2 && day >= 19) || (month === 3 && day <= 20)) {      
+    } else if ((month === 2 && day >= 19) || (month === 3 && day <= 20)) {
       zodiacEndDate = new Date(year, 2, 20);
-    } else if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) {      
+    } else if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) {
       zodiacEndDate = new Date(year, 3, 19);
-    } else if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) {      
+    } else if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) {
       zodiacEndDate = new Date(year, 4, 20);
-    } else if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) {      
+    } else if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) {
       zodiacEndDate = new Date(year, 5, 20);
-    } else if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) {      
+    } else if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) {
       zodiacEndDate = new Date(year, 6, 22);
-    } else if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) {      
+    } else if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) {
       zodiacEndDate = new Date(year, 7, 22);
-    } else if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) {      
+    } else if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) {
       zodiacEndDate = new Date(year, 8, 22);
-    } else if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) {      
+    } else if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) {
       zodiacEndDate = new Date(year, 9, 22);
-    } else if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) {      
+    } else if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) {
       zodiacEndDate = new Date(year, 10, 21);
-    } else if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) {    
+    } else if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) {
       zodiacEndDate = new Date(year, 11, 21);
     } else if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) {
       zodiacEndDate = new Date(year, 12, 19);
-    } else {      
+    } else {
       zodiacEndDate = new Date(0); // Default to an invalid date
     }
-    
+
     return formatDate(zodiacEndDate, 'MMMM d', 'en-US');
   }
 
@@ -186,7 +192,7 @@ export class HeaderComponent implements OnInit {
 
     bonusGods.forEach(bonusGod => {
       if (this.globalService.globalVar.gods.find(item => item.type === bonusGod) === undefined ||
-      !this.globalService.globalVar.gods.find(item => item.type === bonusGod)?.isAvailable)
+        !this.globalService.globalVar.gods.find(item => item.type === bonusGod)?.isAvailable)
         isHidden = true;
     });
 
@@ -202,7 +208,7 @@ export class HeaderComponent implements OnInit {
       var godName = this.lookupService.getGodNameByType(bonusGod);
       var isGodHidden = false;
       if (this.globalService.globalVar.gods.find(item => item.type === bonusGod) === undefined ||
-       !this.globalService.globalVar.gods.find(item => item.type === bonusGod)?.isAvailable)
+        !this.globalService.globalVar.gods.find(item => item.type === bonusGod)?.isAvailable)
         isGodHidden = true;
 
       godText += "<span class='bold smallCaps " + godName.toLowerCase() + "Color'>" + (isGodHidden ? "???" : godName) + "</span>";
@@ -270,10 +276,15 @@ export class HeaderComponent implements OnInit {
   openLog(content: any) {
     this.dialog.closeAll();
 
+    this.menuService.logDisplayed = true;
     if (this.isMobile)
-      this.dialog.open(content, { width: '95%', height: '80%', id: 'dialogNoPadding' });
+      this.logDialogRef = this.dialog.open(content, { width: '95%', height: '80%', id: 'dialogNoPadding' });
     else
-      this.dialog.open(content, { width: '75%', height: '75%', id: 'dialogNoPadding' });
+      this.logDialogRef = this.dialog.open(content, { width: '75%', height: '75%', id: 'dialogNoPadding' });
+
+      this.logDialogRef.afterClosed().subscribe(dialogResult => {
+        this.menuService.logDisplayed = false;
+      });
   }
 
   getPauseKeybindKey() {

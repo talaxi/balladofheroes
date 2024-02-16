@@ -8554,8 +8554,7 @@ export class EnemyGeneratorService {
       rockfall.cooldown = rockfall.currentCooldown = 100000;
       rockfall.dealsDirectDamage = true;
       rockfall.isAoe = true;
-      rockfall.elementalType = ElementalTypeEnum.Earth;      
-      //blitz.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.StockpileRock, -1, 1, false, true));      
+      rockfall.elementalType = ElementalTypeEnum.Earth;            
       enemy.abilityList.push(rockfall);
     }
     if (type === BestiaryEnum.DivineOwl) {      
@@ -15593,7 +15592,6 @@ export class EnemyGeneratorService {
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DivineProtection, -1, .7, false, true, false));                  
       enemy.battleInfo.elementalType = ElementalTypeEnum.Earth;
 
-      //TODO: rez roots
       var growRoot = new Ability();
       growRoot.name = "Grow Root";
       growRoot.isAvailable = true;

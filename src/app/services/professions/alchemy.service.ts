@@ -989,8 +989,10 @@ export class AlchemyService {
       recipe.ingredients.push(new ResourceValue(ItemsEnum.PotentEssence, 1));      
       recipe.ingredients.push(new ResourceValue(ItemsEnum.MagicDust, 1));      
 
-      recipe.numberOfSteps = 1;
-      recipe.steps.push(ProfessionActionsEnum.RareCrushIngredients); //TODO: this should be something more
+      recipe.numberOfSteps = 3;
+      recipe.steps.push(ProfessionActionsEnum.ExtractEssence);
+      recipe.steps.push(ProfessionActionsEnum.RareCrushIngredients);
+      recipe.steps.push(ProfessionActionsEnum.Infuse);
 
       recipe.expGain = 50;
     }

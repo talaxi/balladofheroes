@@ -123,7 +123,6 @@ export class ColiseumViewComponent implements OnInit {
       tournaments.push(weeklyMelee.type);
     }
 
-    //TODO: bring this and the html back when ready
     tournaments.push(ColiseumTournamentEnum.FriendlyCompetition);
 
     tournaments.sort((a, b) => this.sortColiseumList(a, b));
