@@ -367,7 +367,8 @@ export class LookupService {
       type === ItemsEnum.MagicCore || type === ItemsEnum.EssenceOfHoly || type === ItemsEnum.EssenceOfLightning || type === ItemsEnum.EssenceOfAir ||
       type === ItemsEnum.EssenceOfEarth || type === ItemsEnum.MetalNuggets || type === ItemsEnum.Mandrake || type === ItemsEnum.UnstableElement || 
       type === ItemsEnum.RutileRubyFragment || type === ItemsEnum.RutileEmeraldFragment || type === ItemsEnum.RutileTopazFragment ||
-      type === ItemsEnum.RutileOpalFragment || type === ItemsEnum.RutileAmethystFragment || type === ItemsEnum.RutileAquamarineFragment ) {
+      type === ItemsEnum.RutileOpalFragment || type === ItemsEnum.RutileAmethystFragment || type === ItemsEnum.RutileAquamarineFragment || 
+      type === ItemsEnum.VialOfForeignWaters) {
       return ItemTypeEnum.CraftingMaterial;
     }
 

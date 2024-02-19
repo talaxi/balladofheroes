@@ -47,7 +47,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.8, 0.76, 0.75, 0.71, 0.7, 0.65, 0.64, 0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [0.81, 0.8, 0.76, 0.75, 0.71, 0.7, 0.65, 0.64, 0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -1892,6 +1892,22 @@ export class VersionControlService {
                 this.globalService.globalVar.achievements.push(achievement);
               });
             }
+          }
+        }
+        if (version === .81) {          
+          var AiaiaOpenClearing = this.lookupService.getSubZoneByType(SubZoneEnum.AiaiaOpenClearing);
+          if (AiaiaOpenClearing.isAvailable) {            
+            this.globalService.globalVar.achievements = this.globalService.globalVar.achievements.filter(item => item.subzone !== SubZoneEnum.AiaiaOpenClearing);
+            this.achievementService.createDefaultAchievementsForSubzone(SubZoneEnum.AiaiaOpenClearing).forEach(achievement => {              
+              if (achievement.type === AchievementTypeEnum.HundredVictories && AiaiaOpenClearing !== undefined && AiaiaOpenClearing.victoryCount >= 100)
+                achievement.completed = true;
+              if (achievement.type === AchievementTypeEnum.ThousandVictories && AiaiaOpenClearing !== undefined && AiaiaOpenClearing.victoryCount >= 500)
+                achievement.completed = true;
+              if (achievement.type === AchievementTypeEnum.TenThousandVictories && AiaiaOpenClearing !== undefined && AiaiaOpenClearing.victoryCount >= 2500)
+                achievement.completed = true;
+
+              this.globalService.globalVar.achievements.push(achievement);
+            });
           }
         }
 

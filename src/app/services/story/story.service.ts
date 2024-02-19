@@ -1058,7 +1058,7 @@ export class StoryService {
     }
     if (this.globalService.globalVar.currentStoryId === 49) {
       var openClearing = this.balladService.findSubzone(SubZoneEnum.AiaiaOpenClearing);
-      if (openClearing !== undefined) {
+      if (openClearing !== undefined && !openClearing.isAvailable) {
         openClearing.isAvailable = true;
 
         this.achievementService.createDefaultAchievementsForSubzone(openClearing.type).forEach(achievement => {
