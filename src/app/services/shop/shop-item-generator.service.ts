@@ -463,6 +463,10 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 12));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
     }
+    if (item === ItemsEnum.AphroditesShield) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
     if (item === ItemsEnum.AthenasShield) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
@@ -501,6 +505,9 @@ export class ShopItemGeneratorService {
     }
     if (item === ItemsEnum.PoseidonsShield) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.AphroditesArmor) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
     if (item === ItemsEnum.AthenasArmor) {

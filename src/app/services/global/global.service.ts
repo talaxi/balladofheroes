@@ -4504,6 +4504,11 @@ export class GlobalService {
       if ((losingRound - 1) > this.globalVar.sidequestData.highestWeeklyMeleeRound)
         this.globalVar.sidequestData.highestWeeklyMeleeRound = (losingRound - 1);
 
+      //hack so that it rechecks if you have already surpassed the rounds that give rewards
+      if (this.globalVar.followerData.numberOfFollowersGainedFromColiseum === undefined ||
+        this.globalVar.followerData.numberOfFollowersGainedFromColiseum === 0)
+        previousWeeklyMeleeRoundMax = 0;
+
       this.checkForFirstTimeEternalMeleeRewards(previousWeeklyMeleeRoundMax, this.globalVar.sidequestData.highestWeeklyMeleeRound);
 
       var bonusXpBase = 3250;

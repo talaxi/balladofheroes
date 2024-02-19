@@ -204,7 +204,6 @@ export class SlotMenuViewComponent {
         }
       }
 
-      //this.selectedItem = undefined;
       this.assignResource();
       this.availableGems = this.availableGems.filter(item => item.amount > 0);
       this.removeUnavailableGems();
@@ -287,16 +286,28 @@ export class SlotMenuViewComponent {
     if (this.lookupService.getTotalNumberOfSlots(this.resource) >= 3) {
       this.availableGems = this.availableGems.filter(item => item.item !== ItemsEnum.MinorWeaponSlotAddition && item.item !== ItemsEnum.MinorRingSlotAddition &&
         item.item !== ItemsEnum.MinorNecklaceSlotAddition && item.item !== ItemsEnum.MinorShieldSlotAddition && item.item !== ItemsEnum.MinorArmorSlotAddition);
+
+      if (this.selectedItem !== undefined && (this.selectedItem.item === ItemsEnum.MinorWeaponSlotAddition || this.selectedItem.item === ItemsEnum.MinorRingSlotAddition ||
+        this.selectedItem.item === ItemsEnum.MinorNecklaceSlotAddition || this.selectedItem.item === ItemsEnum.MinorShieldSlotAddition || this.selectedItem.item === ItemsEnum.MinorArmorSlotAddition))
+        this.selectedItem = undefined;
     }
 
     if (this.lookupService.getTotalNumberOfSlots(this.resource) >= 5) {
       this.availableGems = this.availableGems.filter(item => item.item !== ItemsEnum.WeaponSlotAddition && item.item !== ItemsEnum.RingSlotAddition &&
         item.item !== ItemsEnum.NecklaceSlotAddition && item.item !== ItemsEnum.ShieldSlotAddition && item.item !== ItemsEnum.ArmorSlotAddition);
+        
+      if (this.selectedItem !== undefined && (this.selectedItem.item === ItemsEnum.WeaponSlotAddition || this.selectedItem.item === ItemsEnum.RingSlotAddition ||
+        this.selectedItem.item === ItemsEnum.NecklaceSlotAddition || this.selectedItem.item === ItemsEnum.ShieldSlotAddition || this.selectedItem.item === ItemsEnum.ArmorSlotAddition))      
+        this.selectedItem = undefined;
     }
 
     if (this.lookupService.getTotalNumberOfSlots(this.resource) >= 7) {
       this.availableGems = this.availableGems.filter(item => item.item !== ItemsEnum.MajorWeaponSlotAddition && item.item !== ItemsEnum.MajorRingSlotAddition &&
         item.item !== ItemsEnum.MajorNecklaceSlotAddition && item.item !== ItemsEnum.MajorShieldSlotAddition && item.item !== ItemsEnum.MajorArmorSlotAddition);
+        
+      if (this.selectedItem !== undefined && (this.selectedItem.item === ItemsEnum.MajorWeaponSlotAddition || this.selectedItem.item === ItemsEnum.MajorRingSlotAddition ||
+        this.selectedItem.item === ItemsEnum.MajorNecklaceSlotAddition || this.selectedItem.item === ItemsEnum.MajorShieldSlotAddition || this.selectedItem.item === ItemsEnum.MajorArmorSlotAddition))      
+        this.selectedItem = undefined;
     }
 
     this.availableGems = this.availableGems.filter(item => item.amount > 0);

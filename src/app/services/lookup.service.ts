@@ -4206,6 +4206,9 @@ export class LookupService {
       if (abilityName === "Lightning Storm")
         abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage to a target. Your ally also deals <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage to a target. Deal the same amount of damage again after " + relatedUserGainStatusEffectDuration + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
 
+        if (abilityName === "Heavy Waves")
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack + " + this.utilityService.genericRound(effectivenessPercent) + "% of Ally's Attack</strong> damage to all targets. Apply <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> Stagger and Unsteady effects to all targets. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+
       if (abilityName === "Loving Embrace")
         abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Air</span> damage to a target twice. For " + relatedUserGainStatusEffectDuration + " seconds when you Shapeshift, gain a stacking buff increasing all stats of all allies by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> for " + relatedUserGainMaxCount + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
     }
@@ -9414,6 +9417,17 @@ export class LookupService {
       ability.effectiveness = 7.5 + primaryEffectivenessBonus * 1.5;
       ability.elementalType = ElementalTypeEnum.Lightning;
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatDamageAfterDelay, 10, 1, false, true, false));
+    }
+    
+    if (gods.some(item => item === GodEnum.Poseidon) && gods.some(item => item === GodEnum.Aphrodite)) {      
+      ability.name = "Heavy Waves";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;      
+      ability.effectiveness = 7.5 + primaryEffectivenessBonus;            
+      ability.elementalType = ElementalTypeEnum.Water;
+      ability.isAoe = true;
+      ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stagger, 20, .1 + secondaryEffectivenessBonus * .02, false, false, true));
+      ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Unsteady, 20, .1 + secondaryEffectivenessBonus * .02, false, false, true));
     }
 
     if (gods.some(item => item === GodEnum.Hera) && gods.some(item => item === GodEnum.Aphrodite)) {

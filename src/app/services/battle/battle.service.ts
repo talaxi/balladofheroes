@@ -4806,7 +4806,7 @@ export class BattleService {
     var adjustedAllyAttackModifier = 0; //used specifically for Kiss of Death
 
     if (ability !== undefined) {
-      if ((ability.name === "Kiss of Death" || ability.name === "Love to Death" || ability.name === "Begrudging Alliance") && partyMembers !== undefined) {
+      if ((ability.name === "Kiss of Death" || ability.name === "Love to Death" || ability.name === "Begrudging Alliance"  || ability.name === "Heavy Waves") && partyMembers !== undefined) {
         var ally = partyMembers.find(item => item.type !== attacker.type || item.type === CharacterEnum.Enemy);
         if (ally !== undefined) {
           adjustedAllyAttack = ally.battleStats.attack;
