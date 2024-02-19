@@ -6018,7 +6018,7 @@ export class BattleService {
               
               var trueDamageDealt = this.dealTrueDamage(false, potentialTarget, effectiveness, character, undefined, true);
               
-                var gameLogEntry = "<strong>" + potentialTarget.name + "</strong>" + " takes " + this.utilityService.bigNumberReducer(Math.round(trueDamageDealt)) + " damage";                
+                var gameLogEntry = "<strong>" + potentialTarget.name + "</strong>" + " takes " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, Math.round(trueDamageDealt)) + " damage";                
                   gameLogEntry += " from Vegeance of the Wood's effect.";
 
                 if (this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse")) {
