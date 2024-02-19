@@ -41,7 +41,7 @@ export class ColiseumService {
 
   getTournamentDescription(type: ColiseumTournamentEnum) {
     var info = this.dictionaryService.getColiseumInfoFromType(type);
-
+    
     if (type === ColiseumTournamentEnum.WeeklyMelee)
       return "Complete as many rounds as you can in " + info.tournamentTimerLength + " seconds. Each round is progressively more difficult. Gain " + (this.globalService.globalVar.isSubscriber ? "two entries" : "one entry") + " per day. (And " + (this.globalService.globalVar.isSubscriber ? "two extra entries" : "an extra entry") + " for playing on Saturday or Sunday!)";
 

@@ -4,7 +4,12 @@
     <div>Thank you for considering supporting Ballad of Heroes!</div>
     <br />
     <div>
-        For a $3 one time purchase or when signing up for any tier of Patreon, you will gain immediate access to:
+        <span *ngIf="isKongregate">
+            When signing up for any tier of Patreon, you will gain immediate access to:
+        </span>
+        <span *ngIf="!isKongregate">
+            For a $3 one time purchase or when signing up for any tier of Patreon, you will gain immediate access to:
+        </span>
         <br />
         •2 gods, <span class="smallCaps bold dionysusColor">Dionysus</span> and <span
             class="smallCaps bold nemesisColor">Nemesis</span>.<br />

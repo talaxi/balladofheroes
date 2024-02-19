@@ -5210,7 +5210,7 @@ export class BattleService {
         this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenDown, 15, .2, false, true), target, undefined, target);
       }
     }
-
+    
     var buzzingReminder = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.BuzzingReminder);
     if (buzzingReminder !== undefined) {
       buzzingReminder.count += totalDamageDealt;
@@ -6012,18 +6012,18 @@ export class BattleService {
           var party = this.globalService.getActivePartyCharacters(true);
           var potentialTargets = party.filter(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead));
 
-          if (potentialTargets.length > 0) {
-            potentialTargets.forEach(potentialTarget => {
-              var effectiveness = this.lookupService.getAdjustedMaxHp(potentialTarget, false) * vengeanceOfTheWoods!.effectiveness;
-
+          if (potentialTargets.length > 0 && vengeanceOfTheWoods.targetEffect.length > 0) {
+            potentialTargets.forEach(potentialTarget => {              
+              var effectiveness = this.lookupService.getAdjustedMaxHp(potentialTarget, false) * vengeanceOfTheWoods!.targetEffect[0].effectiveness;
+              
               var trueDamageDealt = this.dealTrueDamage(false, potentialTarget, effectiveness, character, undefined, true);
+              
+                var gameLogEntry = "<strong>" + potentialTarget.name + "</strong>" + " takes " + this.utilityService.bigNumberReducer(Math.round(trueDamageDealt)) + " damage";                
+                  gameLogEntry += " from Vegeance of the Wood's effect.";
 
-              var gameLogEntry = "<strong>" + potentialTarget.name + "</strong>" + " takes " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, Math.round(trueDamageDealt)) + " damage";
-              gameLogEntry += " from Vegeance of the Wood's effect.";
-
-              if (this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse")) {
-                this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry, this.globalService.globalVar);
-              }
+                if (this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse")) {
+                  this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry, this.globalService.globalVar);
+                }                          
             });
           }
         }

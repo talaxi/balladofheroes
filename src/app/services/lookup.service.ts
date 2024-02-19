@@ -4863,6 +4863,9 @@ export class LookupService {
     }
     if (ability.name === "Arm Swing") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + ((1 - damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Arm Swing" && character.name.includes("Colossus")) {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack Earth</strong> damage to a target. Damage is randomly modified by " + ((1 - damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Arm Swing" && character.name.includes("Colossus")) {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack Earth</strong> damage to a target. Damage is randomly modified by " + ((1 - damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
@@ -6670,6 +6673,8 @@ export class LookupService {
       description = "Immune to all damage.";
     if (statusEffect.type === StatusEffectEnum.AutoAttackInvulnerable)
       description = "Immune to all auto attack damage.";
+      if (statusEffect.type === StatusEffectEnum.BuzzingReminder)
+      description = "Increasing Rhoecus's Defense and Resistance until " + this.utilityService.bigNumberReducer(statusEffect.maxCount) + " damage is taken. Damage taken: " + this.utilityService.bigNumberReducer(statusEffect.count);
     if (statusEffect.type === StatusEffectEnum.Immobilize)
       description = "Auto attack and ability cooldowns are not charging until immobilize is cancelled by enemy.";
     if (statusEffect.type === StatusEffectEnum.CastingImmobilize)

@@ -1522,7 +1522,6 @@ export class AchievementService {
           achievement.type === AchievementTypeEnum.TenVictoriesHera) {
           return;
         }
-
         relatedAchievements.push(achievement);
       });
     });
