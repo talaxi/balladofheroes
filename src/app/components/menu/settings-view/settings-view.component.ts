@@ -86,7 +86,7 @@ export class SettingsViewComponent implements OnInit {
       this.storyStyle = StoryStyleSettingEnum.Slow;
     else
       this.storyStyle = storyStyle;
-      
+
     var tooltipTheme = this.globalService.globalVar.settings.get("tooltipTheme");
     if (tooltipTheme === undefined)
       this.tooltipTheme = true;
@@ -103,10 +103,10 @@ export class SettingsViewComponent implements OnInit {
     this.showTutorialsAsModals = this.globalService.globalVar.settings.get("showTutorialsAsModals") ?? false;
     this.verboseMode = this.globalService.globalVar.settings.get("verboseMode") ?? false;
     this.showGameLogTimeStamps = this.globalService.globalVar.settings.get("showGameLogTimestamps") ?? false;
-    this.showLowPerformanceAnimationFlash = this.globalService.globalVar.settings.get("showLowPerformanceAnimationFlash") ?? false;    
-    this.showAbilityCooldownPercents = this.globalService.globalVar.settings.get("showAbilityCooldownPercents") ?? true;    
-    this.showBigNumberColors = this.globalService.globalVar.settings.get("showBigNumberColors") ?? false;        
-    this.showPauseMessage = this.globalService.globalVar.settings.get("showPauseMessage") ?? true;        
+    this.showLowPerformanceAnimationFlash = this.globalService.globalVar.settings.get("showLowPerformanceAnimationFlash") ?? false;
+    this.showAbilityCooldownPercents = this.globalService.globalVar.settings.get("showAbilityCooldownPercents") ?? true;
+    this.showBigNumberColors = this.globalService.globalVar.settings.get("showBigNumberColors") ?? false;
+    this.showPauseMessage = this.globalService.globalVar.settings.get("showPauseMessage") ?? true;
   }
 
   public SaveGame() {
@@ -123,7 +123,7 @@ export class SettingsViewComponent implements OnInit {
     if (confirm("This will overwrite your existing game data. Continue?")) {
       var decompressedData = LZString.decompressFromBase64(this.importExportValue);
       var loadDataJson = <GlobalVariables>JSON.parse(decompressedData);
-      if (loadDataJson !== null && loadDataJson !== undefined) {
+      if (loadDataJson !== null && loadDataJson !== undefined && loadDataJson.currentVersion !== undefined) {
         this.globalService.globalVar = plainToInstance(GlobalVariables, loadDataJson);
         this.versionControlService.updatePlayerVersion();
 
@@ -132,6 +132,9 @@ export class SettingsViewComponent implements OnInit {
         this.globalService.globalVar.isBattlePaused = false;
 
         this.getSettings();
+      }
+      if (loadDataJson.currentVersion === undefined) {
+        alert("This file is invalid. Please select a file that contains Ballad of Heroes game data.");
       }
     }
   }
@@ -147,18 +150,23 @@ export class SettingsViewComponent implements OnInit {
     if (confirm("This will overwrite your existing game data. Continue?")) {
       let fileReader = new FileReader();
       fileReader.onload = (e) => {
-        var decompressedData = LZString.decompressFromBase64(fileReader.result);        
-        decompressedData.replace("耬","");
+        var decompressedData = LZString.decompressFromBase64(fileReader.result);
+        decompressedData.replace("耬", "");
         var loadDataJson = <GlobalVariables>JSON.parse(decompressedData);
-        if (loadDataJson !== null && loadDataJson !== undefined) {
-          this.globalService.globalVar = plainToInstance(GlobalVariables, loadDataJson);                
+
+        if (loadDataJson !== null && loadDataJson !== undefined && loadDataJson.currentVersion !== undefined) {          
+          this.globalService.globalVar = plainToInstance(GlobalVariables, loadDataJson);
           this.versionControlService.updatePlayerVersion();
 
           this.globalService.globalVar.playerNavigation.currentSubzone = this.balladService.getActiveSubZone(true);
           this.storyService.showStory = false;
           this.globalService.globalVar.isBattlePaused = false;
-          
+
           this.getSettings();
+        }
+
+        if (loadDataJson.currentVersion === undefined) {
+          alert("This file is invalid. Please select a file that contains Ballad of Heroes game data.");          
         }
       }
       fileReader.readAsText(this.file);
@@ -188,15 +196,15 @@ export class SettingsViewComponent implements OnInit {
     this.globalService.globalVar.settings.set("storyStyle", this.storyStyle);
   }
 
-  setFps() {    
+  setFps() {
     this.globalService.globalVar.settings.set("fps", this.fps);
   }
 
-  setLoadingAccuracy() {    
+  setLoadingAccuracy() {
     this.globalService.globalVar.settings.set("loadingAccuracy", this.loadingAccuracy);
   }
 
-  setLoadingTime() {    
+  setLoadingTime() {
     this.globalService.globalVar.settings.set("loadingTime", this.loadingTime);
   }
 
@@ -215,18 +223,18 @@ export class SettingsViewComponent implements OnInit {
     if (this.isMobile)
       this.dialog.open(content, { width: '75%', height: '75%' });
     else
-    this.dialog.open(content, { width: '60%', height: '75%', panelClass: 'mat-dialog-no-scroll' });
+      this.dialog.open(content, { width: '60%', height: '75%', panelClass: 'mat-dialog-no-scroll' });
   }
 
   resetGame() {
     if (confirm("This will export a copy of your current data and then reset your game back to the start. Continue?")) {
       this.SaveGameToFile();
-      var isSubscriber = this.globalService.globalVar.isSubscriber;      
+      var isSubscriber = this.globalService.globalVar.isSubscriber;
       var subscribedDate = this.globalService.globalVar.subscribedDate;
 
       this.globalService.initializeGlobalVariables();
       this.initializationService.initializeVariables();
-      
+
       if (isSubscriber) {
         this.globalService.setAsSubscriber(subscribedDate);
       }
@@ -265,15 +273,15 @@ export class SettingsViewComponent implements OnInit {
   }
   showAbilityCooldownPercentsToggle() {
     this.globalService.globalVar.settings.set("showAbilityCooldownPercents", this.showAbilityCooldownPercents);
-  }  
+  }
   showBigNumberColorsToggle() {
     this.globalService.globalVar.settings.set("showBigNumberColors", this.showBigNumberColors);
-  }  
+  }
   showPauseMessageToggle() {
     this.globalService.globalVar.settings.set("showPauseMessage", this.showPauseMessage);
   }
 
-  ngOnDestroy() {    
+  ngOnDestroy() {
     this.menuService.inTextbox = false;
   }
 }
