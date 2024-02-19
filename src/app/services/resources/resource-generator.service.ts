@@ -865,6 +865,15 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.VialOfTheLethe) {
       return new ResourceValue(ItemsEnum.VialOfTheLethe, amount);
     }
+    if (type === ItemsEnum.VialOfForeignWaters) {
+      return new ResourceValue(ItemsEnum.VialOfForeignWaters, amount);
+    }
+    if (type === ItemsEnum.UnstableElement) {
+      return new ResourceValue(ItemsEnum.UnstableElement, amount);
+    }
+    if (type === ItemsEnum.Peony) {
+      return new ResourceValue(ItemsEnum.Peony, amount);
+    }
     if (type === ItemsEnum.EssenceOfFire) {
       return new ResourceValue(ItemsEnum.EssenceOfFire, amount);
     }
