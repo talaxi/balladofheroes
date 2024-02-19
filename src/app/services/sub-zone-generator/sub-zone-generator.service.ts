@@ -3692,8 +3692,267 @@ export class SubZoneGeneratorService {
       enemyTeam.isDoubleBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.OrangeFloweredColossus));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WhiteFloweredColossus));
+      battleOptions.push(enemyTeam);      
+    }
+    if (type === SubZoneEnum.StraitsOfMessinaIntoTheNarrowStraits) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AbyssalFish));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AbyssalFish));            
       battleOptions.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DrownedSpirit));
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DrownedSpirit));      
+      battleOptions.push(enemyTeam2);
+
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AbyssalFish));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AbyssalFish));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DrownedSpirit));          
+      battleOptions.push(enemyTeam3);      
+    }
+    if (type === SubZoneEnum.StraitsOfMessinaEdgeOfCharybdis) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AbyssalFish));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AbyssalFish));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AbyssalFish));            
+      battleOptions.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SubmergedAbomination));
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DrownedSpirit));      
+      battleOptions.push(enemyTeam2);
+
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SubmergedAbomination));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SubmergedAbomination));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DrownedSpirit));          
+      battleOptions.push(enemyTeam3);      
       
+      var enemyTeam4: EnemyTeam = new EnemyTeam();
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SubmergedAbomination));
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SubmergedAbomination));      
+      battleOptions.push(enemyTeam4);
+    }
+    if (type === SubZoneEnum.StraitsOfMessinaIntoTheVortex) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DeepSeaMonster));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DeepSeaMonster));                  
+      battleOptions.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SubmergedAbomination));
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.OpenMouthedShark));      
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DeepSeaMonster));
+      battleOptions.push(enemyTeam2);
+
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SubmergedAbomination));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SubmergedAbomination));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SubmergedAbomination));          
+      battleOptions.push(enemyTeam3);      
+      
+      var enemyTeam4: EnemyTeam = new EnemyTeam();
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.OpenMouthedShark));
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.OpenMouthedShark));      
+      battleOptions.push(enemyTeam4);
+    }
+    if (type === SubZoneEnum.StraitsOfMessinaCavernOpening) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ShriekingLamia));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AbyssalFish));                  
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AbyssalFish));                  
+      battleOptions.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ShriekingLamia));
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ShriekingLamia));      
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DeepSeaMonster));
+      battleOptions.push(enemyTeam2);
+
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DeepSeaMonster));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ShriekingLamia));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AbyssalFish));          
+      battleOptions.push(enemyTeam3);            
+    }
+    if (type === SubZoneEnum.StraitsOfMessinaDarkTunnel) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ShriekingLamia));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FrenziedHydra));                  
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DeepSeaMonster));                  
+      battleOptions.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FrenziedHydra));
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FrenziedHydra));            
+      battleOptions.push(enemyTeam2);
+
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FrenziedHydra));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FrenziedHydra));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ShriekingLamia));          
+      battleOptions.push(enemyTeam3);            
+    }
+    if (type === SubZoneEnum.StraitsOfMessinaUnavoidablePath) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Scylla));      
+      battleOptions.push(enemyTeam);
+    }
+    if (type === SubZoneEnum.StraitsOfMessinaMawOfTheMonster) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Charybdis));      
+      battleOptions.push(enemyTeam);
+    }
+    if (type === SubZoneEnum.ReturnToColchisPhasisBeach) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.IridescentSquid));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.IridescentSquid));                        
+      battleOptions.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SpiderSwarm));
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SpiderSwarm));            
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SpiderSwarm));            
+      battleOptions.push(enemyTeam2);
+
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HornedOwl));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HornedOwl));      
+      battleOptions.push(enemyTeam3);            
+    }
+    if (type === SubZoneEnum.ReturnToColchisUnderTheStars) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HornedOwl));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HornedOwl));                        
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SpiderSwarm));                        
+      battleOptions.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.IridescentSquid));
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.IridescentSquid));            
+      battleOptions.push(enemyTeam2);
+
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HornedOwl));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SpiderSwarm));      
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.IridescentSquid));      
+      battleOptions.push(enemyTeam3);            
+    }
+    if (type === SubZoneEnum.ReturnToColchisColchisOutskirts) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.JoltedHusk));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SilentHusk));                              
+      battleOptions.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.JoltedHusk));
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ErraticHusk));            
+      battleOptions.push(enemyTeam2);
+
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ErraticHusk));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SilentHusk));      
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.JoltedHusk));      
+      battleOptions.push(enemyTeam3);            
+      
+      var enemyTeam4: EnemyTeam = new EnemyTeam();
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SilentHusk));
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ErraticHusk));            
+      battleOptions.push(enemyTeam4);
+    }
+    if (type === SubZoneEnum.ReturnToColchisColchisStreets) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.EnflamedHusk));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SilentHusk));                              
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.JoltedHusk));                              
+      battleOptions.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.EnflamedHusk));
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ErraticHusk));            
+      battleOptions.push(enemyTeam2);
+
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.EnflamedHusk));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.EnflamedHusk));      
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.JoltedHusk));      
+      battleOptions.push(enemyTeam3);            
+      
+      var enemyTeam4: EnemyTeam = new EnemyTeam();
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SilentHusk));
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SilentHusk));            
+      battleOptions.push(enemyTeam4);
+    }
+    if (type === SubZoneEnum.ReturnToColchisReturnToTheGrove) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GuardianOfTheGrove));      
+      battleOptions.push(enemyTeam);
+    }
+    if (type === SubZoneEnum.EscapeFromColchisEscape1) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.EnflamedHusk));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.EnflamedHusk));                        
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HulkingHusk));                        
+      battleOptions.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HulkingHusk));
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DiseasedHusk));            
+      battleOptions.push(enemyTeam2);
+
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HulkingHusk));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DiseasedHusk));      
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.EnflamedHusk));      
+      battleOptions.push(enemyTeam3);            
+    }
+    if (type === SubZoneEnum.EscapeFromColchisEscape2) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.EnflamedHusk));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HulkingHusk));                        
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HulkingHusk));                        
+      battleOptions.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HulkingHusk));
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FeralHusk));            
+      battleOptions.push(enemyTeam2);
+
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HulkingHusk));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FeralHusk));      
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.EnflamedHusk));      
+      battleOptions.push(enemyTeam3);            
+    }
+    if (type === SubZoneEnum.EscapeFromColchisInnerPath) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DiseasedHusk));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ExplodingHusk));                        
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FeralHusk));                        
+      battleOptions.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FeralHusk));
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FeralHusk));            
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ExplodingHusk));            
+      battleOptions.push(enemyTeam2);
+
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DiseasedHusk));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DiseasedHusk));      
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FeralHusk));      
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ExplodingHusk));      
+      battleOptions.push(enemyTeam3);            
+    }
+    if (type === SubZoneEnum.EscapeFromColchisBattleAtSea) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Aeetes));      
+      battleOptions.push(enemyTeam);
     }
 
     if (differentiateIndividuals) {
@@ -3819,7 +4078,7 @@ export class SubZoneGeneratorService {
     var rewards: ResourceValue[] = [];
 
     if (type === SubZoneEnum.AigosthenaUpperCoast) {
-      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ThrowingStone, 25));
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ThrowingStone, 50));
     }
     if (type === SubZoneEnum.AigosthenaBay) {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.IronSword, 1));
@@ -3834,7 +4093,7 @@ export class SubZoneGeneratorService {
     //rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ExtraSpeed1Hour, 1));
     //}
     if (type === SubZoneEnum.DodonaMountainOpening) {
-      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ThrowingStone, 40));
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ThrowingStone, 50));
     }
     if (type === SubZoneEnum.DodonaMountainPassOne) {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ThrowingStone, 2));
@@ -3936,11 +4195,9 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.WarForTheMountainThePeak) {
       balladEnums.push(BalladEnum.Labyrinth);
     }
-    //todo: uncomment next version
-    /*
     if (type === SubZoneEnum.TheLabyrinthLabyrinthCenter) {
       balladEnums.push(BalladEnum.Witch);
-    }*/
+    }
 
     return balladEnums;
   }
@@ -4011,15 +4268,13 @@ export class SubZoneGeneratorService {
     }
     if (type === SubZoneEnum.CreteNorthernCretanCoast) {
       zoneEnums.push(ZoneEnum.Labyrinth);
-    }
-    //TODO: uncomment in next version  
-    /*  
+    }    
     if (type === SubZoneEnum.TheLabyrinthLabyrinthCenter) {
       zoneEnums.push(ZoneEnum.Aiaia);
     }
     if (type === SubZoneEnum.AiaiaFlowerGarden) {
       zoneEnums.push(ZoneEnum.StraitsOfMessina);
-    }*/
+    }
 
     return zoneEnums;
   }
@@ -4505,11 +4760,10 @@ export class SubZoneGeneratorService {
     }
     if (type === SubZoneEnum.TheLabyrinthLongPassage2) {
       subZoneEnums.push(SubZoneEnum.TheLabyrinthSolidWall2);
-    }
-    //TODO: uncomment in next version
-    /*if (type === SubZoneEnum.TheLabyrinthLabyrinthCenter) {
+    }    
+    if (type === SubZoneEnum.TheLabyrinthLabyrinthCenter) {
       subZoneEnums.push(SubZoneEnum.AiaiaUnknownWaters);
-    }*/
+    }
     if (type === SubZoneEnum.AiaiaUnknownWaters) {
       subZoneEnums.push(SubZoneEnum.AiaiaBreezyDays);
     }
@@ -4520,8 +4774,7 @@ export class SubZoneGeneratorService {
       subZoneEnums.push(SubZoneEnum.AiaiaForestPath);
     }    
     if (type === SubZoneEnum.AiaiaForestPath) {
-      subZoneEnums.push(SubZoneEnum.AiaiaCircesHome);
-      subZoneEnums.push(SubZoneEnum.AiaiaOpenClearing)
+      subZoneEnums.push(SubZoneEnum.AiaiaCircesHome);      
     }    
     if (type === SubZoneEnum.AiaiaOpenClearing) {
       subZoneEnums.push(SubZoneEnum.AiaiaThornyPath);
@@ -4561,6 +4814,7 @@ export class SubZoneGeneratorService {
     var availableOptionsCrafter: ShopItem[] = [];
     var availableOptionsTraveler: ShopItem[] = [];
     var availableOptionsAugeanStables: ShopItem[] = [];
+    var availableOptionsCirceAlchemy: ShopItem[] = [];
 
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.LinenArmor, SubZoneEnum.DodonaDelphi));
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.IronArmor, SubZoneEnum.DodonaDelphi));
@@ -4631,6 +4885,8 @@ export class SubZoneGeneratorService {
       shopOptions.push(new ShopOption(ShopTypeEnum.Coliseum, []));
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
       shopOptions.push(new ShopOption(ShopTypeEnum.Traveler, availableOptionsTraveler));
+      
+      return shopOptions;
     }
 
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FracturedAmethystRing, SubZoneEnum.PeloposNisosTravelPost));
@@ -4642,6 +4898,8 @@ export class SubZoneGeneratorService {
 
     if (subzoneType === SubZoneEnum.PeloposNisosTravelPost) {
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
+
+      return shopOptions;
     }
 
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HeftyStone, SubZoneEnum.CalydonTownMarket));
@@ -4656,6 +4914,8 @@ export class SubZoneGeneratorService {
     if (subzoneType === SubZoneEnum.CalydonTownMarket) {
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
+
+      return shopOptions;
     }
 
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.GoldenSword, SubZoneEnum.AegeanSeaIolcus));
@@ -4665,6 +4925,8 @@ export class SubZoneGeneratorService {
     if (subzoneType === SubZoneEnum.AegeanSeaIolcus) {
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
       shopOptions.push(new ShopOption(ShopTypeEnum.Jewelcrafter, []));
+
+      return shopOptions;
     }
 
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ScalyRing, SubZoneEnum.AegeanSeaSalmydessus));
@@ -4673,6 +4935,8 @@ export class SubZoneGeneratorService {
 
     if (subzoneType === SubZoneEnum.AegeanSeaSalmydessus) {
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
+
+      return shopOptions;
     }
 
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FeatheredTunic, SubZoneEnum.BlackSeaMariandyna));
@@ -4681,6 +4945,8 @@ export class SubZoneGeneratorService {
 
     if (subzoneType === SubZoneEnum.BlackSeaMariandyna) {
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
+
+      return shopOptions;
     }
 
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.LesserCrackedRuby, SubZoneEnum.ColchisCityCenter));
@@ -4698,11 +4964,15 @@ export class SubZoneGeneratorService {
       shopOptions.push(new ShopOption(ShopTypeEnum.StoryScene24, []));
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
+
+      return shopOptions;
     }
 
     if (subzoneType === SubZoneEnum.NemeaCleonea) {
       if (sidequestData.traderHuntLevel !== undefined)
         shopOptions.push(new ShopOption(ShopTypeEnum.Trader, this.getAvailableTraderOptions(sidequestData.traderHuntLevel)));
+      
+        return shopOptions;
     }
 
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FurArmor, SubZoneEnum.StymphaliaTiryns));
@@ -4712,6 +4982,8 @@ export class SubZoneGeneratorService {
 
     if (subzoneType === SubZoneEnum.StymphaliaTiryns) {
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
+
+      return shopOptions;
     }
 
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BronzeBeakNecklace, SubZoneEnum.CoastOfCreteElis));
@@ -4730,6 +5002,8 @@ export class SubZoneGeneratorService {
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
       if (availableOptionsAugeanStables.length > 0)
         shopOptions.push(new ShopOption(ShopTypeEnum.AugeanStables, availableOptionsAugeanStables));
+
+        return shopOptions;
     }
 
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.SpiritShield, SubZoneEnum.ErytheiaCadiz));
@@ -4739,6 +5013,8 @@ export class SubZoneGeneratorService {
 
     if (subzoneType === SubZoneEnum.ErytheiaCadiz) {
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
+
+      return shopOptions;
     }
 
     if (subzoneType === SubZoneEnum.MountOlympusOlympus) {
@@ -4763,6 +5039,8 @@ export class SubZoneGeneratorService {
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
       shopOptions.push(new ShopOption(ShopTypeEnum.Traveler, availableOptionsTraveler));
       shopOptions.push(new ShopOption(ShopTypeEnum.IslandOfNaxos, []));
+
+      return shopOptions;
     }
 
     if (cloakedStrangerFound && gods !== undefined) {
@@ -4794,7 +5072,25 @@ export class SubZoneGeneratorService {
     
     if (subzoneType === SubZoneEnum.TheLabyrinthCloakedStranger) {
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
+
+      return shopOptions;
     }
+
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.SoothingHerb, SubZoneEnum.AiaiaCircesHome));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.NecklaceOfEndlessWaves, SubZoneEnum.AiaiaCircesHome));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.NecklaceOfStarryNights, SubZoneEnum.AiaiaCircesHome));
+
+    if (sidequestData.circeAlchemyLevel === 0)
+      availableOptionsCirceAlchemy.push(this.shopItemGenerator.generateShopItem(ItemsEnum.CirceAlchemy, SubZoneEnum.AiaiaCircesHome));
+    
+      if (subzoneType === SubZoneEnum.AiaiaCircesHome) {
+        shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
+        if (availableOptionsCirceAlchemy.length > 0)
+          shopOptions.push(new ShopOption(ShopTypeEnum.CirceAlchemy, availableOptionsCirceAlchemy));
+
+          return shopOptions;
+      }
+    
 
     if (returnAllShopOptions) {
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
@@ -4813,6 +5109,9 @@ export class SubZoneGeneratorService {
 
       if (availableOptionsAugeanStables.length > 0 && optionalScenesViewed !== undefined && optionalScenesViewed.some(item => item === OptionalSceneEnum.AugeanStables1))
         shopOptions.push(new ShopOption(ShopTypeEnum.AugeanStables, availableOptionsAugeanStables));
+
+        if (availableOptionsCirceAlchemy.length > 0 && optionalScenesViewed !== undefined && optionalScenesViewed.some(item => item === OptionalSceneEnum.CirceAlchemy))
+        shopOptions.push(new ShopOption(ShopTypeEnum.CirceAlchemy, availableOptionsCirceAlchemy));
     }
 
     return shopOptions;
@@ -4830,19 +5129,47 @@ export class SubZoneGeneratorService {
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BoarHide, SubZoneEnum.NemeaCleonea));
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.Honey, SubZoneEnum.NemeaCleonea));
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.VialOfLakeLerna, SubZoneEnum.NemeaCleonea));
-      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.VialOfTheBlackSea, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.VialOfTheBlackSea, SubZoneEnum.NemeaCleonea));      
     }
     if (level >= 3) {
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.EssenceOfWater, SubZoneEnum.NemeaCleonea));
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ToxicIchor, SubZoneEnum.NemeaCleonea));
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.VialOfTheCretanSea, SubZoneEnum.NemeaCleonea));
+      
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DullRuby, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DullAquamarine, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DullOpal, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DullTopaz, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DullEmerald, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DullAmethyst, SubZoneEnum.NemeaCleonea));      
     }
     if (level >= 4) {
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.MetalNuggets, SubZoneEnum.NemeaCleonea));
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.EssenceOfEarth, SubZoneEnum.NemeaCleonea));
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.EssenceOfAir, SubZoneEnum.NemeaCleonea));
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.MagicTreeBark, SubZoneEnum.NemeaCleonea));
-      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.SerpentScale, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.SerpentScale, SubZoneEnum.NemeaCleonea));    
+      
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FlawedRuby, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FlawedAquamarine, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FlawedOpal, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FlawedTopaz, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FlawedEmerald, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FlawedAmethyst, SubZoneEnum.NemeaCleonea));        
+    }
+    if (level >= 5) {
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.RutileRubyFragment, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.RutileAquamarineFragment, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.RutileOpalFragment, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.RutileTopazFragment, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.RutileEmeraldFragment, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.RutileAmethystFragment, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.RutilatedRuby, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.RutilatedAquamarine, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.RutilatedOpal, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.RutilatedTopaz, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.RutilatedEmerald, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.RutilatedAmethyst, SubZoneEnum.NemeaCleonea));
     }
 
     return shopOptions;
@@ -4887,9 +5214,12 @@ export class SubZoneGeneratorService {
     if (resources.some(item => item.item === ItemsEnum.DarkMoonPendant) && !resources.some(item => item.item === ItemsEnum.DarkMoonPendantUnique))
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DarkMoonPendantUnique, SubZoneEnum.MountOlympusOlympus, isPatron));
     if (resources.some(item => item.item === ItemsEnum.BlazingSunPendantUnique))
-      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BlazingSunPendantUniqueUpgrade, SubZoneEnum.MountOlympusOlympus));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BlazingSunPendantUniqueUpgrade, SubZoneEnum.MountOlympusOlympus, isPatron));
     if (resources.some(item => item.item === ItemsEnum.DarkMoonPendantUnique))
-      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DarkMoonPendantUniqueUpgrade, SubZoneEnum.MountOlympusOlympus));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DarkMoonPendantUniqueUpgrade, SubZoneEnum.MountOlympusOlympus, isPatron));
+
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.TokenOfSupport, SubZoneEnum.MountOlympusOlympus));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.TokenOfFavor, SubZoneEnum.MountOlympusOlympus));
 
     if (gods.some(item => item.type === GodEnum.Athena && item.isAvailable)) {
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AthenasScythe, SubZoneEnum.MountOlympusOlympus));

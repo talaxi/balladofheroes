@@ -286,6 +286,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.VenomousToxin) {
       src += "venomousToxin.svg";
     }
+    if (effect.type === StatusEffectEnum.AgonizingToxin) {
+      src += "agonizingToxin.svg";
+    }
     if (effect.type === StatusEffectEnum.SandToxin) {
       src += "sandToxin.svg";
     }
@@ -294,6 +297,15 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     }
     if (effect.type === StatusEffectEnum.MagicToxin) {
       src += "magicToxin.svg";
+    }
+    if (effect.type === StatusEffectEnum.TidalToxin) {
+      src += "tidalToxin.svg";
+    }
+    if (effect.type === StatusEffectEnum.ElixirOfWill) {
+      src += "elixirOfWill.svg";
+    }
+    if (effect.type === StatusEffectEnum.UnsteadyingToxin) {
+      src += "unsteadyingToxin.svg";
     }
     if (effect.type === StatusEffectEnum.HeroicElixir) {
       src += "heroicElixir.svg";
@@ -439,6 +451,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.RepeatDamageAfterDelay) {
       src += "chainLightning.svg";
     }
+    if (effect.type === StatusEffectEnum.BuzzingReminder) {
+      src += "buzzingReminder.svg";
+    }				
     if (effect.type === StatusEffectEnum.DivineProtection) {
       src += "divineProtection.svg";
     }
@@ -524,21 +539,21 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       src += "passionateRhythmAutoAttack.svg";
     }
     if (effect.type === StatusEffectEnum.BucklerOfPerfectHarmonyAttack || effect.type === StatusEffectEnum.BucklerOfPerfectHarmonyAttackUnique)
-      src += "Libra.svg";
+      src += "libraGold.svg";
     if (effect.type === StatusEffectEnum.Slow)
-      src += "Sagittarius.svg";
+      src += "sagittariusGold.svg";
     if (effect.type === StatusEffectEnum.BoundingBand || effect.type === StatusEffectEnum.BoundingBandUnique)
-      src += "Capricorn.svg";
+      src += "capricornGold.svg";
     if (effect.type === StatusEffectEnum.ScathingBeauty || effect.type === StatusEffectEnum.ScathingBeautyUnique)
-      src += "Aquarius.svg";
+      src += "aquariusGold.svg";
     if (effect.type === StatusEffectEnum.RainbowPlating || effect.type === StatusEffectEnum.RainbowPlatingUnique)
-      src += "Pisces.svg";
+      src += "piscesGold.svg";
     if (effect.type === StatusEffectEnum.EnergyShield || effect.type === StatusEffectEnum.EnergyShieldUnique)
-      src += "Gemini.svg";
+      src += "geminiGold.svg";
     if (effect.type === StatusEffectEnum.SturdyShell)
-      src += "Cancer.svg";
+      src += "cancerGold.svg";
       if (effect.type === StatusEffectEnum.Leo)
-      src += "Leo.svg";
+      src += "leoGold.svg";
       if (effect.type === StatusEffectEnum.BlindedByLove)
       src += "athenaAphroditeDuo.svg";
       if (effect.type === StatusEffectEnum.ReduceNextAbilityCooldown)
@@ -598,7 +613,13 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       if (effect.type === StatusEffectEnum.LovingEmbrace)
       src += "aphroditeHeraDuo.svg";     
       if (effect.type === StatusEffectEnum.AllPrimaryStatsDown && effect.abilityName === "Sickness")
-      src += "dionysusArtemisDuo.svg";      
+      src += "dionysusArtemisDuo.svg";    
+      if (effect.type === StatusEffectEnum.VortexPull)
+      src += "vortexPull.svg";    
+      if (effect.type === StatusEffectEnum.FriendlyCompetition)
+      src += "friendlyCompetition.svg";       
+      if (effect.type === StatusEffectEnum.Tentative)
+      src += "tentative.svg";       
 
     return src;
   }

@@ -41,6 +41,10 @@
     (click)="openShop(option, augeanStablesModal)">{{getOptionText(option.type)}} <app-notification-icon
       *ngIf="!augeanStablesCompleted()" [isButton]="true"
       [notificationColor]="sideQuestNotification"></app-notification-icon></button>
+      <button *ngIf="option.type === shopTypeEnum.CirceAlchemy && circeAlchemyAvailable() && !circeAlchemyCompleted()" class="buttonStyled shopButtonText"
+    (click)="openShop(option, circeAlchemyModal)">{{getOptionText(option.type)}} <app-notification-icon
+      *ngIf="!circeAlchemyCompleted() && circeAlchemyAvailable()" [isButton]="true"
+      [notificationColor]="sideQuestNotification"></app-notification-icon></button>
   <button *ngIf="option.type === shopTypeEnum.Coliseum" class="buttonStyled shopButtonText" [ngClass]="{'stackedButtons': showAllShopOptions}"
     (click)="openShop(option, coliseumModal)">
     {{getOptionText(option.type)}}</button>
@@ -99,6 +103,10 @@
   </div>
   <br/>
   <hr class="noMargin" />
+  <br/>
+  <div class="textCentered">
+    <span class="sectionHeaderText sectionHeading">crafting materials</span>
+  </div>
   <table>
     <tr *ngFor="let cells of shopItemRows;">
       <td class="item" *ngFor="let c of cells;">
@@ -106,9 +114,33 @@
       </td>
     </tr>
   </table>
+<br/>
+<br/>
+<div *ngIf="traderJewelcraftingRows.length > 0">
+  <div class="textCentered">
+    <span class="sectionHeaderText sectionHeading">jewelcrafting</span>
+  </div>
+  <table>
+    <tr *ngFor="let cells of traderJewelcraftingRows;">
+      <td class="item" *ngFor="let c of cells;">
+        <app-shopping-item-view [item]="c" [excludeItemDescriptionLocationText]="true" [totalItemsInShop]="shopItems.length"></app-shopping-item-view>
+      </td>
+    </tr>
+  </table>
+  </div>
 </ng-template>
 
 <ng-template #augeanStablesModal>  
+  <table>
+    <tr *ngFor="let cells of shopItemRows;">
+      <td class="item" *ngFor="let c of cells;">
+        <app-shopping-item-view [item]="c" [totalItemsInShop]="shopItems.length"></app-shopping-item-view>
+      </td>
+    </tr>
+  </table>
+</ng-template>
+
+<ng-template #circeAlchemyModal>  
   <table>
     <tr *ngFor="let cells of shopItemRows;">
       <td class="item" *ngFor="let c of cells;">

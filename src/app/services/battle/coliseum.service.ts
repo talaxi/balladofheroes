@@ -25,6 +25,7 @@ import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { DictionaryService } from '../utility/dictionary.service';
 import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
 import { plainToInstance } from 'class-transformer';
+import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 declare var LZString: any;
 
 @Injectable({
@@ -129,7 +130,11 @@ export class ColiseumService {
       }
     }
     //then reset
-    this.globalService.globalVar.activeBattle.activeTournament = this.globalService.setNewTournament(true);
+    if (type === ColiseumTournamentEnum.FriendlyCompetition) {
+      this.globalService.globalVar.activeBattle.activeTournament = this.globalService.setNewTournament(false);
+    }
+    else
+      this.globalService.globalVar.activeBattle.activeTournament = this.globalService.setNewTournament(true);
   }
 
   unlockNextColiseumTournament(type: ColiseumTournamentEnum) {
@@ -567,10 +572,15 @@ export class ColiseumService {
           continue;
         }
       }
+      else if (round <= 35) {
+        if (this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Olympus && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Labyrinth) {
+          continue;
+        }
+      }
       //eventually add round limiter here when you have more stuff
       else {
         if ((this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Olympus &&
-          this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Labyrinth && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Labors)) {
+          this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Labyrinth && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Witch)) {
           continue;
         }
       }
@@ -672,9 +682,8 @@ export class ColiseumService {
       }
 
       if (enemy.bestiaryType === BestiaryEnum.TheBee) {
-        var buzzingReminder = enemy.abilityList.find(item => item.name === "Buzzing Reminder");        
-        if (buzzingReminder !== undefined)
-        {          
+        var buzzingReminder = enemy.abilityList.find(item => item.name === "Buzzing Reminder");
+        if (buzzingReminder !== undefined) {
           buzzingReminder.maxCount = Math.round(enemy.battleStats.maxHp * .1);
         }
       }
@@ -731,13 +740,14 @@ export class ColiseumService {
     var battleOptions: EnemyTeam[] = [];
 
     //List Begin 
+    //provided by Dragomura
     if (round >= 25) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.isBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ColchianDragon));
       battleOptions.push(enemyTeam);
     }
-    
+
     //provided by Bluebowls
     if (round >= 30) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
@@ -798,14 +808,51 @@ export class ColiseumService {
       enemy.type = member.type;
       enemy.equipmentSet = structuredClone(member.equipmentSet);
       enemy.battleInfo = structuredClone(member.battleInfo);
-      enemy.overdriveInfo = structuredClone(member.overdriveInfo);      
+      enemy.overdriveInfo = structuredClone(member.overdriveInfo);
+
+      enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.FriendlyCompetition, -1, this.utilityService.friendlyCompetitionDamageReduction, false, true));
+
+      enemy.abilityList.forEach(ability => {
+        var permanentUpgrades = member.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
+        if (permanentUpgrades !== undefined) {
+          ability.effectiveness += permanentUpgrades.effectiveness;
+
+          if (permanentUpgrades.targetEffect !== undefined && permanentUpgrades.targetEffect.length > 0) {
+            ability.targetEffect[0].effectiveness += permanentUpgrades.targetEffect[0].effectiveness;
+          }
+
+          if (permanentUpgrades.userEffect !== undefined && permanentUpgrades.userEffect.length > 0) {
+            ability.userEffect[0].effectiveness += permanentUpgrades.userEffect[0].effectiveness;
+          }
+        }
+      });
 
       if (member.assignedGod1 !== undefined && member.assignedGod1 !== GodEnum.None) {
         var god = this.globalService.globalVar.gods.find(item => item.type === member.assignedGod1);
         if (god !== undefined) {
           if (god.abilityList !== undefined && god.abilityList.length > 0)
             god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
-              enemy.abilityList.push(ability);
+              var abilityCopy = ability.makeCopy();
+
+              var permanentAbilityUpgrades = god!.permanentAbilityUpgrades.find(item => item.requiredLevel === abilityCopy.requiredLevel);
+              if (permanentAbilityUpgrades !== undefined) {
+                abilityCopy.effectiveness += permanentAbilityUpgrades.effectiveness;
+
+                if (permanentAbilityUpgrades.targetEffect !== undefined && permanentAbilityUpgrades.targetEffect.length > 0) {
+                  abilityCopy.targetEffect[0].effectiveness += permanentAbilityUpgrades.targetEffect[0].effectiveness;
+                  abilityCopy.targetEffect[0].duration += permanentAbilityUpgrades.targetEffect[0].duration;
+                }
+
+                if (permanentAbilityUpgrades.userEffect !== undefined && permanentAbilityUpgrades.userEffect.length > 0) {
+                  if (abilityCopy.name === "Second Wind")
+                    abilityCopy.userEffect[0].effectiveness *= 1 + permanentAbilityUpgrades.userEffect[0].effectiveness;
+                  else
+                    abilityCopy.userEffect[0].effectiveness += permanentAbilityUpgrades.userEffect[0].effectiveness;
+                  abilityCopy.userEffect[0].duration += permanentAbilityUpgrades.userEffect[0].duration;
+                }
+              }
+
+              enemy.abilityList.push(abilityCopy);
             });
         }
       }
@@ -815,7 +862,37 @@ export class ColiseumService {
         if (god !== undefined) {
           if (god.abilityList !== undefined && god.abilityList.length > 0)
             god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
-              enemy.abilityList.push(ability);
+              var abilityCopy = ability.makeCopy();
+
+              var permanentAbilityUpgrades = god!.permanentAbilityUpgrades.find(item => item.requiredLevel === abilityCopy.requiredLevel);
+              if (permanentAbilityUpgrades !== undefined) {
+                abilityCopy.effectiveness += permanentAbilityUpgrades.effectiveness;
+
+                if (permanentAbilityUpgrades.targetEffect !== undefined && permanentAbilityUpgrades.targetEffect.length > 0) {
+                  abilityCopy.targetEffect[0].effectiveness += permanentAbilityUpgrades.targetEffect[0].effectiveness;
+                  abilityCopy.targetEffect[0].duration += permanentAbilityUpgrades.targetEffect[0].duration;
+
+                  if (permanentAbilityUpgrades.targetEffect.length > 1) {
+                    abilityCopy.targetEffect[1].effectiveness += permanentAbilityUpgrades.targetEffect[0].effectiveness;
+                    abilityCopy.targetEffect[1].duration += permanentAbilityUpgrades.targetEffect[0].duration;
+                  }
+                }
+
+                if (permanentAbilityUpgrades.userEffect !== undefined && permanentAbilityUpgrades.userEffect.length > 0) {
+                  if (abilityCopy.name === "Second Wind")
+                  abilityCopy.userEffect[0].effectiveness *= 1 + permanentAbilityUpgrades.userEffect[0].effectiveness;
+                  else
+                    abilityCopy.userEffect[0].effectiveness += permanentAbilityUpgrades.userEffect[0].effectiveness;
+                  abilityCopy.userEffect[0].duration += permanentAbilityUpgrades.userEffect[0].duration;
+
+                  if (permanentAbilityUpgrades.userEffect.length > 1) {
+                    abilityCopy.userEffect[1].effectiveness += permanentAbilityUpgrades.userEffect[0].effectiveness;
+                    abilityCopy.userEffect[1].duration += permanentAbilityUpgrades.userEffect[0].duration;
+                  }
+                }
+              }
+
+              enemy.abilityList.push(abilityCopy);
             });
         }
       }
@@ -823,6 +900,12 @@ export class ColiseumService {
       competitionParty.party.enemyList.push(enemy);
     });
 
+    if (competitionParty.party.enemyList.length === 1) {
+      competitionParty.party.isBossFight = true;
+    }
+    else if (competitionParty.party.enemyList.length === 2) {
+      competitionParty.party.isDoubleBossFight = true;
+    }
 
     return competitionParty;
   }
@@ -835,7 +918,7 @@ export class ColiseumService {
     var decompressedData = LZString.decompressFromBase64(tournamentData.competitionData);
     var enemyTeamParsed = <CompetitionParty>JSON.parse(decompressedData);
     if (enemyTeamParsed !== null && enemyTeamParsed !== undefined) {
-      var competitionParty = plainToInstance(CompetitionParty, enemyTeamParsed);      
+      var competitionParty = plainToInstance(CompetitionParty, enemyTeamParsed);
       if (competitionParty !== undefined)
         enemyTeam.push(competitionParty.party);
     }

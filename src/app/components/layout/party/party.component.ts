@@ -358,7 +358,7 @@ export class PartyComponent implements OnInit {
 
     dps = this.dpsCalculatorService.calculatePartyDps();
 
-    return this.utilityService.bigNumberReducer(Math.round(dps));
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, Math.round(dps));
   }
 
   getEnemyDps() {
@@ -366,7 +366,7 @@ export class PartyComponent implements OnInit {
 
     dps = this.dpsCalculatorService.calculateEnemyDps();
 
-    return this.utilityService.bigNumberReducer(Math.round(dps));
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, Math.round(dps));
   }
 
   getXps() {
@@ -374,7 +374,7 @@ export class PartyComponent implements OnInit {
 
     xps = this.dpsCalculatorService.calculateXps();
 
-    return this.utilityService.bigNumberReducer(Math.round(xps));
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, Math.round(xps));
   }
 
   getCharacterRemainingLinks(character: Character) {
@@ -743,6 +743,9 @@ export class PartyComponent implements OnInit {
   }
 
   isDuoAvailable(character: Character) {
+    if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead))
+      return false;
+
     var god1ConditionMet = false;
     var god2ConditionMet = false;
     var gods = [];
@@ -965,11 +968,11 @@ export class PartyComponent implements OnInit {
   }
 
   getCurrentHp(character: Character) {
-    return this.utilityService.bigNumberReducer(Math.ceil(character.battleStats.currentHp + this.getCharacterBarrierValue(character)));
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, Math.ceil(character.battleStats.currentHp + this.getCharacterBarrierValue(character)));
   }
 
   getMaxHp(character: Character) {
-    return this.utilityService.bigNumberReducer(Math.ceil(this.lookupService.getAdjustedMaxHp(character)));
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, Math.ceil(this.lookupService.getAdjustedMaxHp(character)));
   }
 
   characterDpsBreakdown(which: number) {
@@ -978,7 +981,7 @@ export class PartyComponent implements OnInit {
     var breakdown = this.dpsCalculatorService.getCharacterDps(character.type);
     var percent = this.dpsCalculatorService.getCharacterDpsPercent(character.type);
 
-    return "<span class='bold smallCaps " + character.name.toLowerCase() + "Color'>" + character.name + ":</span> " + this.utilityService.bigNumberReducer(breakdown) + " (" + this.utilityService.roundTo(percent * 100, 1) + "%)";
+    return "<span class='bold smallCaps " + character.name.toLowerCase() + "Color'>" + character.name + ":</span> " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, breakdown) + " (" + this.utilityService.roundTo(percent * 100, 1) + "%)";
   }
 
   godDpsBreakdown(whichCharacter: number, whichGod: number) {
@@ -997,7 +1000,7 @@ export class PartyComponent implements OnInit {
     var breakdown = this.dpsCalculatorService.getGodDps(godEnum);
     //var percent = this.dpsCalculatorService.getGodDpsPercent(godEnum);
 
-    return "<span class='bold smallCaps " + god.name.toLowerCase() + "Color'>" + god.name + ":</span> " + this.utilityService.bigNumberReducer(breakdown);
+    return "<span class='bold smallCaps " + god.name.toLowerCase() + "Color'>" + god.name + ":</span> " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, breakdown);
   }
 
   triggerDuo(character: Character) {

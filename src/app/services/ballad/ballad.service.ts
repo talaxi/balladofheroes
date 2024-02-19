@@ -45,10 +45,14 @@ export class BalladService {
       name = "Ballad of Olympus";
     if (type === BalladEnum.Labyrinth)
       name = "Ballad of the Labyrinth";
+    if (type === BalladEnum.Witch)
+      name = "Ballad of the Witch";
+      if (type === BalladEnum.Eagle)
+      name = "Ballad of the Eagle";
 
     return name;
   }
-  
+
   getShortBalladName(type?: BalladEnum) {
     var name = "";
 
@@ -68,6 +72,10 @@ export class BalladService {
       name = "Olympus";
     if (type === BalladEnum.Labyrinth)
       name = "Labyrinth";
+    if (type === BalladEnum.Witch)
+      name = "Witch";
+      if (type === BalladEnum.Eagle)
+      name = "Eagle";
 
     return name;
   }
@@ -314,12 +322,12 @@ export class BalladService {
     return inZone;
   }
 
-  getLatestSubzone() {    
+  getLatestSubzone() {
     var reverseOrderBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable).sort(function (a, b) {
       return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > b.displayOrder ? 1 : 0;
     }).slice().reverse();
 
-    var reverseZones =  reverseOrderBallads[0].zones.filter(item => item.isAvailable).slice().reverse();
+    var reverseZones = reverseOrderBallads[0].zones.filter(item => item.isAvailable).slice().reverse();
     var lastSubzone = reverseZones[0].subzones.filter(item => item.isAvailable).slice().reverse()[0].type;
 
     return lastSubzone;
@@ -884,40 +892,62 @@ export class BalladService {
       name = "Solid Wall 4";
     if (type === SubZoneEnum.TheLabyrinthCloakedStranger)
       name = "Cloaked Stranger";
-      if (type === SubZoneEnum.AiaiaUnknownWaters)
+    if (type === SubZoneEnum.AiaiaUnknownWaters)
       name = "Unknown Waters";
-      if (type === SubZoneEnum.AiaiaBreezyDays)
+    if (type === SubZoneEnum.AiaiaBreezyDays)
       name = "Breezy Days";
-      if (type === SubZoneEnum.AiaiaShoreline)
+    if (type === SubZoneEnum.AiaiaShoreline)
       name = "Shoreline";
-      if (type === SubZoneEnum.AiaiaForestPath)
+    if (type === SubZoneEnum.AiaiaForestPath)
       name = "Forest Path";
-      if (type === SubZoneEnum.AiaiaCircesHome)
+    if (type === SubZoneEnum.AiaiaCircesHome)
       name = "Circe's Home";
-      if (type === SubZoneEnum.AiaiaOpenClearing)
+    if (type === SubZoneEnum.AiaiaOpenClearing)
       name = "Open Clearing";
-      if (type === SubZoneEnum.AiaiaThornyPath)
+    if (type === SubZoneEnum.AiaiaThornyPath)
       name = "Thorny Path";
-      if (type === SubZoneEnum.AiaiaWildThicket)
+    if (type === SubZoneEnum.AiaiaWildThicket)
       name = "Wild Thicket";
-      if (type === SubZoneEnum.AiaiaFlowerGarden)
+    if (type === SubZoneEnum.AiaiaFlowerGarden)
       name = "Flower Garden";
-      if (type === SubZoneEnum.StraitsOfMessinaIntoTheNarrowStraits)
+    if (type === SubZoneEnum.StraitsOfMessinaIntoTheNarrowStraits)
       name = "Into the Narrow Straits";
-      if (type === SubZoneEnum.StraitsOfMessinaEdgeOfCharybdis)
+    if (type === SubZoneEnum.StraitsOfMessinaEdgeOfCharybdis)
       name = "Edge of Charybdis";
-      if (type === SubZoneEnum.StraitsOfMessinaIntoTheVortex)
+    if (type === SubZoneEnum.StraitsOfMessinaIntoTheVortex)
       name = "Into the Vortex";
-      if (type === SubZoneEnum.StraitsOfMessinaMawOfTheMonster)
+    if (type === SubZoneEnum.StraitsOfMessinaMawOfTheMonster)
       name = "Maw of the Monster";
-      if (type === SubZoneEnum.StraitsOfMessinaCavernOpening)
+    if (type === SubZoneEnum.StraitsOfMessinaCavernOpening)
       name = "Cavern Opening";
-      if (type === SubZoneEnum.StraitsOfMessinaIntoTheNarrowStraits)
+    if (type === SubZoneEnum.StraitsOfMessinaIntoTheNarrowStraits)
       name = "Into the Narrow Straits";
-      if (type === SubZoneEnum.StraitsOfMessinaDarkTunnel)
+    if (type === SubZoneEnum.StraitsOfMessinaDarkTunnel)
       name = "Dark Tunnel";
-      if (type === SubZoneEnum.StraitsOfMessinaUnavoidablePath)
+    if (type === SubZoneEnum.StraitsOfMessinaUnavoidablePath)
       name = "Unavoidable Path";
+    if (type === SubZoneEnum.ReturnToColchisPhasisBeach)
+      name = "Phasis Beach";
+    if (type === SubZoneEnum.ReturnToColchisUnderTheStars)
+      name = "Under the Stars";
+    if (type === SubZoneEnum.ReturnToColchisParanoidMerchant)
+      name = "Paranoid Merchant";
+    if (type === SubZoneEnum.ReturnToColchisColchisOutskirts)
+      name = "Colchis Outskirts";
+    if (type === SubZoneEnum.ReturnToColchisColchisStreets)
+      name = "Colchis Streets";
+    if (type === SubZoneEnum.ReturnToColchisReturnToTheGrove)
+      name = "Return to the Grove";
+    if (type === SubZoneEnum.EscapeFromColchisEscape1)
+      name = "Escape 1";
+    if (type === SubZoneEnum.EscapeFromColchisEscape2)
+      name = "Escape 2";
+    if (type === SubZoneEnum.EscapeFromColchisInnerPath)
+      name = "Inner Path";
+    if (type === SubZoneEnum.EscapeFromColchisBackAgainstTheWall)
+      name = "Back Against the Wall";
+    if (type === SubZoneEnum.EscapeFromColchisBattleAtSea)
+      name = "Battle at Sea";
 
     return name;
   }
@@ -1123,20 +1153,33 @@ export class BalladService {
 
     if (type === SubZoneEnum.TheLabyrinthLabyrinthCenter)
       victories = bossVictories;
-    
-      if (type === SubZoneEnum.AiaiaUnknownWaters || type === SubZoneEnum.AiaiaBreezyDays || type === SubZoneEnum.AiaiaShoreline ||
-        type === SubZoneEnum.AiaiaForestPath || type === SubZoneEnum.AiaiaOpenClearing || type === SubZoneEnum.AiaiaThornyPath ||
-        type === SubZoneEnum.AiaiaWildThicket)
-        victories = defaultVictories;
-  
-      if (type === SubZoneEnum.AiaiaFlowerGarden)
-        victories = bossVictories;
-      
+
+    if (type === SubZoneEnum.AiaiaUnknownWaters || type === SubZoneEnum.AiaiaBreezyDays || type === SubZoneEnum.AiaiaShoreline ||
+      type === SubZoneEnum.AiaiaForestPath || type === SubZoneEnum.AiaiaOpenClearing || type === SubZoneEnum.AiaiaThornyPath ||
+      type === SubZoneEnum.AiaiaWildThicket)
+      victories = defaultVictories;
+
+    if (type === SubZoneEnum.AiaiaFlowerGarden)
+      victories = bossVictories;
+
     if (type === SubZoneEnum.StraitsOfMessinaIntoTheNarrowStraits || type === SubZoneEnum.StraitsOfMessinaEdgeOfCharybdis || type === SubZoneEnum.StraitsOfMessinaIntoTheVortex ||
       type === SubZoneEnum.StraitsOfMessinaCavernOpening || type === SubZoneEnum.StraitsOfMessinaDarkTunnel)
       victories = defaultVictories;
 
     if (type === SubZoneEnum.StraitsOfMessinaMawOfTheMonster || type === SubZoneEnum.StraitsOfMessinaUnavoidablePath)
+      victories = bossVictories;
+
+    if (type === SubZoneEnum.ReturnToColchisPhasisBeach || type === SubZoneEnum.ReturnToColchisUnderTheStars || type === SubZoneEnum.ReturnToColchisColchisOutskirts ||
+      type === SubZoneEnum.ReturnToColchisColchisStreets)
+      victories = defaultVictories;
+
+    if (type === SubZoneEnum.ReturnToColchisReturnToTheGrove)
+      victories = bossVictories;
+
+    if (type === SubZoneEnum.EscapeFromColchisEscape1 || type === SubZoneEnum.EscapeFromColchisEscape2 || type === SubZoneEnum.EscapeFromColchisInnerPath)
+      victories = defaultVictories;
+
+    if (type === SubZoneEnum.EscapeFromColchisBackAgainstTheWall || type === SubZoneEnum.EscapeFromColchisBattleAtSea)
       victories = bossVictories;
 
     return victories;
@@ -1149,7 +1192,7 @@ export class BalladService {
       type === SubZoneEnum.BlackSeaMariandyna || type === SubZoneEnum.ColchisCityCenter || type === SubZoneEnum.NemeaCleonea ||
       type === SubZoneEnum.StymphaliaTiryns || type === SubZoneEnum.CoastOfCreteElis || type === SubZoneEnum.ErytheiaCadiz ||
       type === SubZoneEnum.MountOlympusOlympus || type === SubZoneEnum.CreteKnossos || type === SubZoneEnum.TheLabyrinthCloakedStranger ||
-      type === SubZoneEnum.AiaiaCircesHome) {
+      type === SubZoneEnum.AiaiaCircesHome || type === SubZoneEnum.ReturnToColchisParanoidMerchant) {
       return true;
     }
 
@@ -1160,7 +1203,7 @@ export class BalladService {
     if (type === SubZoneEnum.ElysiumWindingPaths || type === SubZoneEnum.ElysiumWaterloggedMarsh || type === SubZoneEnum.ElysiumWavesOfOceanus ||
       type === SubZoneEnum.CalydonAltarOfAsclepius || type === SubZoneEnum.TheLetheLetheBasin2 || type === SubZoneEnum.TheLetheFerryRide ||
       type === SubZoneEnum.TheLetheRiverDivergence || type === SubZoneEnum.TheLetheStillWaters || type === SubZoneEnum.TheLetheHypnosIsland ||
-      type === SubZoneEnum.StraitsOfMessinaIntoTheVortex || type === SubZoneEnum.StraitsOfMessinaMawOfTheMonster)
+      type === SubZoneEnum.StraitsOfMessinaIntoTheVortex || type === SubZoneEnum.StraitsOfMessinaMawOfTheMonster || type === SubZoneEnum.EscapeFromColchisBackAgainstTheWall)
       return NotificationTypeEnum.SideQuest;
 
     return NotificationTypeEnum.Story;

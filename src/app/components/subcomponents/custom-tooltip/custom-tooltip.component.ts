@@ -30,6 +30,7 @@ export class CustomTooltipComponent implements OnInit {
   @Input() isSticky: boolean = false;
   @Input() isLargeTooltip: boolean = false;
   @Input() isSmallTooltip: boolean = false;
+  @Input() isBossTooltip: boolean = false;
   @Input() elementRef: ElementRef;
   @Input() isFlippedLeft: boolean = false;
   @Input() tooltipDirection: DirectionEnum = DirectionEnum.Right;

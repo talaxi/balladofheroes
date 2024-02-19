@@ -24,9 +24,9 @@
                             </div>
                             <span class="hpMpText hpAmount" *ngIf="!showPartyHpAsPercent">
                                 <span
-                                    [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCurrentHp(character)}}</span>
+                                    [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}" [innerHTML]="getCurrentHp(character)"></span>
                                 /
-                                {{getMaxHp(character)}}
+                                <span [innerHTML]="getMaxHp(character)"></span>
                             </span>
                             <span class="hpMpText hpAmount" *ngIf="showPartyHpAsPercent">
                                 <span
@@ -40,9 +40,9 @@
                             </span>
                             <span [ngClass]="{'kod': character.battleStats.currentHp <= 0}" class="hpAmount statValue" *ngIf="!showPartyHpAsPercent">
                                 <span
-                                    [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCurrentHp(character)}}</span>
+                                    [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}" [innerHTML]="getCurrentHp(character)"></span>
                                 /
-                                {{getMaxHp(character)}}
+                                <span [innerHTML]="getMaxHp(character)"></span>
                             </span>
                             <span [ngClass]="{'kod': character.battleStats.currentHp <= 0}" class="hpAmount statValue" *ngIf="showPartyHpAsPercent">
                                 <span
@@ -148,13 +148,13 @@
     <div *ngIf="!isMobile">
         <div *ngIf="displayDps" class="dps" class="s4Heading textCentered pageHeader dpsChecks">
             <span class='smallText partyDps' customToolTip [contentTemplate]="outgoingDpsTemplate">
-                Party DPS: {{getPartyDps()}}
+                Party DPS: <span [innerHTML]="getPartyDps()"></span>
             </span>
             <span class='smallText enemyDps' customToolTip [contentTemplate]="dpsTemplate">
-                Incoming DPS: {{getEnemyDps()}}
+                Incoming DPS: <span [innerHTML]="getEnemyDps()"></span>
             </span>
             <span class='smallText xps' customToolTip [contentTemplate]="xpsTemplate">
-                XPS: {{getXps()}}
+                XPS: <span [innerHTML]="getXps()"></span>
             </span>
         </div>
         <hr *ngIf="unlockedBattleItems" class="noMargin" />

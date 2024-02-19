@@ -6,5 +6,6 @@ export enum DirectionEnum {
   DownRight,
   DownLeft,
   UpRight,
-  UpLeft
+  UpLeft,
+  DownRightAdjacent
 }

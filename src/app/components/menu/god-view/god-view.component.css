@@ -3,6 +3,11 @@
     justify-content: space-between;
 }
 
+.buttonOffset {
+    margin-left: 2rem;
+    vertical-align: middle;
+}
+
 .gridContainer {
     display: grid;    
     height: 100%;

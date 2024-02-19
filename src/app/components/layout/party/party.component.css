@@ -455,19 +455,19 @@ table tr td:nth-child(4n-3) {
     }
 
     .overdriveProgressBar {
-        width: 68%;
+        width: 66.25%;
     }
 
     .characterHp {
-        grid-template-columns: 68% 1fr;
+        grid-template-columns: 66.25% 1fr;
     }
 
     .manualOverdriveText {
-        width: 68%;
+        width: 66.25%;
     }
 
     .hpMpText {
-        font-size: .9rem;
+        font-size: .895rem;
     }
     
 .lowPerfHpMpText {

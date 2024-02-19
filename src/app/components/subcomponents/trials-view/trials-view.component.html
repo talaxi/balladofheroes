@@ -34,7 +34,7 @@
                 <span [innerHtml]="getTrialOfResolveDescription()"></span>
                 <hr />
                 <div>
-                    <span>Current Stage: {{getTrialOfResolveStage()}}</span>
+                    <span><b>Current Stage:</b> {{getTrialOfResolveStage()}}</span>
                     <br />
                     <div *ngFor="let enemy of resolveEnemies">
                         <span class="smallCaps bold" customToolTip
@@ -45,11 +45,14 @@
                             </ng-template>
                         </span>
                     </div>
+                    <br/>
+                    <span *ngIf="isTrialAvailable()"><b>Reward: </b> <span [innerHTML]="getTrialOfResolveReward()"></span></span>
+                    <span *ngIf="!isTrialAvailable()">New battles coming soon!</span>
                     <hr />
                     <div>
                         <br />
                         <br />
-                        <button class="buttonStyled" (click)="startTrial()">Start Trial</button>
+                        <button class="buttonStyled" [disabled]="!isTrialAvailable()" (click)="startTrial()">Start Trial</button>
                     </div>
                 </div>
             </div>

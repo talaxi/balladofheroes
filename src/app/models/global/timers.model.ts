@@ -23,7 +23,7 @@ export class Timers {
 
     constructor() {
         this.scenePageTimer = 0;
-        this.scenePageLength = this.mediumStorySpeed; 
+        this.scenePageLength = this.slowStorySpeed; 
         
         this.followerSearchZoneTimer = 0;
         this.followerSearchZoneTimerLength = 60;

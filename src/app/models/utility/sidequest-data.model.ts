@@ -17,6 +17,8 @@ export class SidequestData {
     sparringMatchMultiplier: number;
     sparringMatchTimer: number;
     trialStage: number;
+    displayCirceAlchemyPayScene: boolean;
+    circeAlchemyLevel: number;
 
     constructor() {       
         this.isAltarOfAsclepiusUnlocked = false; 
@@ -31,10 +33,12 @@ export class SidequestData {
         this.goldenApplesObtained = 0;
         this.augeanStablesLevel = 0;
         this.displayAugeanStablesPayScene = false;
+        this.displayCirceAlchemyPayScene = false;
         this.maxAugeanStablesLevel = 3;
         this.levelsForNextAmbrosia = 50;
         this.sparringMatchMultiplier = 1;
         this.sparringMatchTimer = 0;
         this.trialStage = 1;
+        this.circeAlchemyLevel = 0;
     }
 }

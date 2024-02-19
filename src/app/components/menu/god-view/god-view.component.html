@@ -12,7 +12,7 @@
             <button class="buttonAsText clickableText" (click)="openPermanentStatBreakdown(permanentStatBreakdownContent)" customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="godXpPopover">Level
                 {{god.level}}</button>
             <br />
-            <span customToolTip [tooltipDirection]="tooltipDirection" (click)="openPermanentStatBreakdown(permanentStatBreakdownContent)" [contentTemplate]="godXpPopover">{{getGodXp()}} / {{getGodXpToNextLevel()}} XP to Level {{god.level +
+            <span customToolTip [tooltipDirection]="tooltipDirection" (click)="openPermanentStatBreakdown(permanentStatBreakdownContent)" [contentTemplate]="godXpPopover"><span [innerHTML]="getGodXp()"></span> / <span [innerHTML]="getGodXpToNextLevel()"></span> XP to Level {{god.level +
                 1}}</span>
         </div>
         <div class="traverseDown">
@@ -280,14 +280,15 @@
                             </strong> <span class="statValue">{{getPartyResistanceMultiplierBonus() * 100 | number :
                                 '1.0-2'}}%</span><br /></span>
                                 <span *ngIf="getDuoEffectivenessBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                                    [contentTemplate]="duoEffectivenessPopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Duo Ability Effectiveness Bonus:
-                                    </strong> <span class="statValue">{{getDuoEffectivenessBonus() * 100 | number :
-                                        '1.0-2'}}%</span><br /></span>
+                                    [contentTemplate]="duoEffectivenessPopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Duo Ability Upgrades:
+                                    </strong> <span class="statValue">{{getDuoEffectivenessBonus() | number :
+                                        '1.0-2'}}</span><br /></span>
         </div>
     </div>
 
     <div class="godUpcoming">
-        <span class="sectionHeaderText sectionHeading">Upcoming Level Rewards</span>
+        <span class="sectionHeaderText sectionHeading" customToolTip [tooltipDirection]="tooltipDirection"
+        [contentTemplate]="godStatAllocationPopover">Upcoming Level Rewards</span>
         <div class="sectionInfo">
             <div [innerHtml]="getGodLevelRewards()">
             </div>
@@ -295,12 +296,12 @@
     </div>
 
     <div class="godAbilities">
-        <span class="sectionHeaderText sectionHeading">Abilities</span>
+        <span class="sectionHeaderText sectionHeading">Abilities</span> <button class="buttonStyled buttonOffset" *ngIf="isDuoAbilityAvailable()" (click)="openDuoAbilityBreakdown(duoAbilityBreakdownContent)">View All Duo Abilities</button>
         <div class="sectionInfo">
             <div *ngFor="let ability of abilityList">
                 <strong class="statLabel" [ngClass]="getGodColor()" customToolTip [isLargeTooltip]="true"
                     [tooltipDirection]="affinityTooltipDirection"
-                    [contentTemplate]="abilityPopover">{{ability.name}}</strong> - <span class="statValue"
+                    [contentTemplate]="abilityPopover">{{ability.name}}</strong> <span class="statValue" *ngIf="isDuoAbility(ability)" [innerHtml]="getPartnerGod()"></span> - <span class="statValue"
                     [innerHtml]="getGodAbilityDescription(ability.name, ability)"></span>
                 <ng-template #abilityPopover>
                     <div>
@@ -373,10 +374,19 @@
                         <div *ngIf="getAbilityCooldownReduction(ability) !== 0"><span class="statLabel">Cooldown
                                 Reduction: </span> <span class="statValue"
                                 [innerHtml]="getAbilityCooldownReduction(ability)"></span> seconds</div>
+                                <div
+                            *ngIf="getPermanentAbilityUserMaxCountIncrease(ability) !== 0 && getPermanentAbilityUserMaxCountIncrease(ability) !== '0%'">
+                            <span class="statLabel">Permanent User Additional Effect Increase: </span> <span class="statValue"
+                                [innerHtml]="getPermanentAbilityUserMaxCountIncrease(ability)"></span></div>
+                                <div
+                            *ngIf="getPermanentAbilityTargetMaxCountIncrease(ability) !== 0 && getPermanentAbilityTargetMaxCountIncrease(ability) !== '0%'">
+                            <span class="statLabel">Permanent Target Additional Effect Increase: </span> <span class="statValue"
+                                [innerHtml]="getPermanentAbilityTargetMaxCountIncrease(ability)"></span></div>
+                                
                     </div>
                 </ng-template>
 
-            </div>
+            </div>            
         </div>
         <br /><br />
         <span class="sectionHeaderText sectionHeading">Affinity</span>
@@ -985,6 +995,26 @@
     </div>
     <hr/>
     <div [innerHtml]="this.getPermanentStatBreakdown()">
+        
+    </div>
+</ng-template>
+
+<ng-template #duoAbilityBreakdownContent>
+    <div class="s4Heading flexBetween">
+        <span>Duo Abilities</span>        
+    </div>
+    <hr/>
+    <div [innerHtml]="this.getDuoAbilityBreakdown()">
+        
+    </div>
+</ng-template>
+
+<ng-template #godStatAllocationPopover>
+    <div class="flexBetween">
+        <span>Each god specializes in different Primary Stat Bonuses. The stat increases gained from leveling start as the same amount regardless of god, and then are modified by the god's multipliers. This god's multipliers are:</span>        
+    </div>
+    <hr/>
+    <div [innerHtml]="this.statAllocationBreakdown()">
         
     </div>
 </ng-template>

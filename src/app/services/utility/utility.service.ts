@@ -9,12 +9,18 @@ import { ConfirmationBoxComponent } from 'src/app/components/subcomponents/utili
   providedIn: 'root'
 })
 export class UtilityService {
+  public shopBuyMultiplier = 1;
+  public ctrlPressed: boolean = false;
+  public shiftPressed: boolean = false;
+  public altPressed: boolean = false;
+
   //glossary
   public lowActiveTimeLimit = 1 * 30 * 60;
   public averageActiveTimeLimit = 1 * 60 * 60;
   public highActiveTimeLimit = 2 * 60 * 60;
   public veryHighActiveTimeLimit = 4 * 60 * 60;
   public extremelyHighActiveTimeLimit = 8 * 60 * 60;
+  public maximumActiveTimeLimit = 24 * 60 * 60;
 
   public extraSpeedTimeLimit = 12 * 60 * 60;
   public patronExtraSpeedTimeLimit = 24 * 60 * 60;
@@ -25,6 +31,8 @@ export class UtilityService {
 
   public timeFragmentClearRateMinimumSeconds = 3;
   public duoAbilityCooldown = 1;
+  public friendlyCompetitionDamageReduction = .2;
+  public trialOfSkillBuffHours = 6;
 
   public lowLoadingAccuracy = 10;
   public averageLoadingAccuracy = 5;
@@ -59,6 +67,7 @@ export class UtilityService {
   public permanentPassiveGodLevel = 125;
   public permanentGodAbility2Level = 175;
   public permanentGodAbility3Level = 375;
+  public duoAbilityLevel = 3000;
 
   public godStatGainLevelIncrement = (1 / 25);
   public godStatGainBaseAmount = 6;
@@ -145,6 +154,7 @@ export class UtilityService {
 
   public trialAffinityXpGain = 200;
   public timeFragmentEfficiency = .2;
+  public supporterTimeFragmentEfficiency = .3;
 
   constructor(public sanitizer: DomSanitizer, public dialog: MatDialog) { }
 
@@ -169,6 +179,8 @@ export class UtilityService {
 
   getRandomSeededInteger(min: number, max: number, seedValue: string = "seeded"): number {
     var prng = seedrandom(seedValue);
+    min -= .500000001;
+    max += .499999999;
     return Math.round(prng() * (max - min) + min);
   }
 
@@ -367,10 +379,10 @@ export class UtilityService {
     return fib[level + 2];
   }
 
-  bigNumberReducer(originalAmount: number) {
+  bigNumberReducer(includeSpan: boolean, originalAmount: number) {
     var originalAmount = Math.round(originalAmount);
     var reducedNumber = "";
-
+    
     if (this.getDigitCount(originalAmount) <= 3)
       reducedNumber = originalAmount.toString();
     else if (this.getDigitCount(originalAmount) <= 6) {
@@ -381,7 +393,10 @@ export class UtilityService {
         reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
       }
 
-      reducedNumber += "K";
+      if (includeSpan)
+        reducedNumber += "<span class='thousandsNumber'>K</span>";
+      else
+        reducedNumber += "K";
     }
     else if (this.getDigitCount(originalAmount) <= 9) {
       var leadingNumberCount = this.getDigitCount(originalAmount) - 6;
@@ -391,7 +406,10 @@ export class UtilityService {
         reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
       }
 
-      reducedNumber += "M";
+      if (includeSpan)
+        reducedNumber += "<span class='millionsNumber'>M</span>";
+      else
+        reducedNumber += "M";
     }
     else if (this.getDigitCount(originalAmount) <= 12) {
       var leadingNumberCount = this.getDigitCount(originalAmount) - 9;
@@ -401,7 +419,10 @@ export class UtilityService {
         reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
       }
 
-      reducedNumber += "B";
+      if (includeSpan)
+        reducedNumber += "<span class='billionsNumber'>B</span>";
+      else
+        reducedNumber += "B";
     }
     else if (this.getDigitCount(originalAmount) <= 15) {
       var leadingNumberCount = this.getDigitCount(originalAmount) - 12;
@@ -411,7 +432,10 @@ export class UtilityService {
         reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
       }
 
-      reducedNumber += "T";
+      if (includeSpan)
+        reducedNumber += "<span class='trillionsNumber'>T</span>";
+      else
+        reducedNumber += "T";
     }
     else if (this.getDigitCount(originalAmount) <= 18) {
       var leadingNumberCount = this.getDigitCount(originalAmount) - 15;
@@ -421,7 +445,23 @@ export class UtilityService {
         reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
       }
 
-      reducedNumber += "AA";
+      if (includeSpan)
+        reducedNumber += "<span class='aaNumber'>AA</span>";
+      else
+        reducedNumber += "AA";
+    }
+    else if (this.getDigitCount(originalAmount) <= 21) {
+      var leadingNumberCount = this.getDigitCount(originalAmount) - 18;
+      reducedNumber = originalAmount.toString().substring(0, leadingNumberCount);
+      if (3 - leadingNumberCount > 0) {
+        var remainingCount = 3 - leadingNumberCount;
+        reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
+      }
+
+      if (includeSpan)
+        reducedNumber += "<span class='abNumber'>AB</span>";
+      else
+        reducedNumber += "AB";
     }
 
     return reducedNumber;

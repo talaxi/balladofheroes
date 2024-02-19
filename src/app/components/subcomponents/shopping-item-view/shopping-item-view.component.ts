@@ -44,63 +44,6 @@ export class ShoppingItemViewComponent implements OnInit {
   @Input() excludeItemDescriptionLocationText = false;
   @Input() totalItemsInShop = 0;
   buyMultiplier: number = 1;
-  ctrlPressed: boolean = false;
-  shiftPressed: boolean = false;
-  altPressed: boolean = false;
-
-  @HostListener('window:keydown', ['$event'])
-  keyEventDown(event: KeyboardEvent) {
-    if (this.cannotMultiply())
-      return;
-
-    if (event.key === "Shift") { //multiply by 25
-      event.preventDefault();
-      if (!this.shiftPressed) {
-        this.buyMultiplier *= 25;
-        this.shiftPressed = true;
-      }
-    }
-    if (event.key === "Control") { //multiply by 10
-      event.preventDefault();
-      if (!this.ctrlPressed) {
-        this.buyMultiplier *= 10;
-        this.ctrlPressed = true;
-      }
-    }
-    if (event.key === "Alt") { //multiply by 100
-      event.preventDefault();
-      if (!this.altPressed) {
-        this.buyMultiplier *= 100;
-        this.altPressed = true;
-      }
-    }
-  }
-
-  @HostListener('window:keyup', ['$event'])
-  keyEventUp(event: KeyboardEvent) {
-    if (this.cannotMultiply())
-      return;
-
-    event.preventDefault();
-    if (event.key === "Shift") { //divide by 25
-      if (this.shiftPressed) {
-        this.buyMultiplier /= 25;
-        this.shiftPressed = false;
-      }
-    }
-    if (event.key === "Control") { //divide by 10
-      if (this.ctrlPressed) {
-        this.buyMultiplier /= 10;
-        this.ctrlPressed = false;
-      }
-    }
-    if (event.key === "Alt") { //divide by 100
-      if (this.altPressed) {
-        this.buyMultiplier /= 100;
-        this.altPressed = false;
-      }
-    }
-  }
 
   constructor(public lookupService: LookupService, private resourceGeneratorService: ResourceGeneratorService,
     private utilityService: UtilityService, private globalService: GlobalService, private gameLoopService: GameLoopService,
@@ -133,7 +76,8 @@ export class ShoppingItemViewComponent implements OnInit {
       this.item.shopItem === ItemsEnum.AthenasSigil || this.item.shopItem === ItemsEnum.ArtemissSigil || this.item.shopItem === ItemsEnum.HermessSigil ||
       this.item.shopItem === ItemsEnum.ApollosSigil || this.item.shopItem === ItemsEnum.AressSigil || this.item.shopItem === ItemsEnum.HadessSigil ||
       this.item.shopItem === ItemsEnum.DionysussSigil || this.item.shopItem === ItemsEnum.NemesissSigil || this.item.shopItem === ItemsEnum.ZeussSigil ||
-      this.item.shopItem === ItemsEnum.PoseidonsSigil || this.item.shopItem === ItemsEnum.AphroditesSigil || this.item.shopItem === ItemsEnum.HerasSigil)
+      this.item.shopItem === ItemsEnum.PoseidonsSigil || this.item.shopItem === ItemsEnum.AphroditesSigil || this.item.shopItem === ItemsEnum.HerasSigil ||
+      this.item.shopItem === ItemsEnum.CirceAlchemy)
       cannotMultiply = true;
 
     return cannotMultiply;
@@ -151,6 +95,8 @@ export class ShoppingItemViewComponent implements OnInit {
     if (this.item.shopItem === ItemsEnum.AugeanStables2 && this.globalService.globalVar.sidequestData.augeanStablesLevel >= 2)
       outOfStock = true;
     if (this.item.shopItem === ItemsEnum.AugeanStables3 && this.globalService.globalVar.sidequestData.augeanStablesLevel >= 3)
+      outOfStock = true;
+    if (this.item.shopItem === ItemsEnum.CirceAlchemy && this.globalService.globalVar.sidequestData.circeAlchemyLevel >= 1)
       outOfStock = true;
     if (this.item.shopItem === ItemsEnum.Nemesis && this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis)?.isAvailable)
       outOfStock = true;
@@ -199,6 +145,10 @@ export class ShoppingItemViewComponent implements OnInit {
   }
 
   setItemPurchasePrice() {
+    this.buyMultiplier = this.utilityService.shopBuyMultiplier;
+    if (this.cannotMultiply())
+      this.buyMultiplier = 1;
+
     this.purchaseResourcesRequired = "";
     if (this.item.purchasePrice.some(item => item.item === ItemsEnum.Ambrosia)) {
       this.item.purchasePrice = this.item.purchasePrice.filter(item => item.item !== ItemsEnum.Coin);
@@ -251,7 +201,7 @@ export class ShoppingItemViewComponent implements OnInit {
           for (var i = 0; i < this.buyMultiplier; i++) {
             this.globalService.giveCharactersBonusExp(5000);
             this.globalService.globalVar.sidequestData.sparringMatchMultiplier *= 1.1;
-          }          
+          }
           /*this.globalService.globalVar.uniques.forEach(item => {
             item.level += 99;
             this.lookupService.levelUpUnique(item);
@@ -261,14 +211,14 @@ export class ShoppingItemViewComponent implements OnInit {
           for (var i = 0; i < this.buyMultiplier; i++) {
             var unique = this.globalService.globalVar.uniques.find(item => item.type === ItemsEnum.DarkMoonPendantUnique);
             if (unique !== undefined)
-              this.lookupService.giveUniqueXp(unique, 1);
+              this.lookupService.giveUniqueXp(unique, 10);
           }
         }
         else if (resource.item === ItemsEnum.BlazingSunPendantUniqueUpgrade) {
           for (var i = 0; i < this.buyMultiplier; i++) {
             var unique = this.globalService.globalVar.uniques.find(item => item.type === ItemsEnum.BlazingSunPendantUnique);
             if (unique !== undefined)
-              this.lookupService.giveUniqueXp(unique, 1);
+              this.lookupService.giveUniqueXp(unique, 10);
           }
         }
         else if (resource.item === ItemsEnum.WarriorClass || resource.item === ItemsEnum.PriestClass || resource.item === ItemsEnum.MonkClass || resource.item === ItemsEnum.ThaumaturgeClass) {
@@ -301,6 +251,17 @@ export class ShoppingItemViewComponent implements OnInit {
             this.globalService.globalVar.sidequestData.augeanStablesLevel += 1;
             this.dialog.closeAll();
             this.storyService.displayOptionalScene(OptionalSceneEnum.AugeanStables6);
+            this.battleService.checkScene();
+          }
+        }
+        else if (resource.item === ItemsEnum.CirceAlchemy) {
+          var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+          if (alchemy !== undefined) {
+            alchemy.maxLevel += 25;
+            this.globalService.globalVar.sidequestData.circeAlchemyLevel += 1;
+            this.dialog.closeAll();
+
+            this.storyService.displayOptionalScene(OptionalSceneEnum.CirceAlchemy2);
             this.battleService.checkScene();
           }
         }

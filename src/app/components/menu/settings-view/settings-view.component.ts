@@ -16,6 +16,7 @@ import { PatreonAccessService } from 'src/app/services/utility/patreon-access.se
 import { LookupService } from 'src/app/services/lookup.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
 import { InitializationService } from 'src/app/services/global/initialization.service';
+import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 
 @Component({
   selector: 'app-settings-view',
@@ -35,7 +36,7 @@ export class SettingsViewComponent implements OnInit {
   quickViewOverlayFlipped: boolean = false;
   showPartyHpAsPercent: boolean = false;
   showEnemyHpAsPercent: boolean = false;
-  autoExportOnUpdate: boolean = true;
+  autoExportOnUpdate: boolean = false;
   showTutorialsAsModals: boolean = false;
   verboseMode: boolean = false;
   @Input() isMobile = false;
@@ -45,6 +46,9 @@ export class SettingsViewComponent implements OnInit {
   showGameLogTimeStamps = false;
   showLowPerformanceAnimationFlash = false;
   showAbilityCooldownPercents = true;
+  showBigNumberColors = false;
+  showPauseMessage = true;
+  tooltipDirection = DirectionEnum.Down;
 
   constructor(private globalService: GlobalService, private balladService: BalladService, private storyService: StoryService,
     public utilityService: UtilityService, public dialog: MatDialog, private deploymentService: DeploymentService,
@@ -79,7 +83,7 @@ export class SettingsViewComponent implements OnInit {
   getSettings() {
     var storyStyle = this.globalService.globalVar.settings.get("storyStyle");
     if (storyStyle === undefined)
-      this.storyStyle = StoryStyleSettingEnum.Medium;
+      this.storyStyle = StoryStyleSettingEnum.Slow;
     else
       this.storyStyle = storyStyle;
       
@@ -95,12 +99,14 @@ export class SettingsViewComponent implements OnInit {
     this.quickViewOverlayFlipped = this.globalService.globalVar.settings.get("quickViewOverlayFlipped") ?? false;
     this.showPartyHpAsPercent = this.globalService.globalVar.settings.get("showPartyHpAsPercent") ?? false;
     this.showEnemyHpAsPercent = this.globalService.globalVar.settings.get("showEnemyHpAsPercent") ?? false;
-    this.autoExportOnUpdate = this.globalService.globalVar.settings.get("autoExportOnUpdate") ?? true;
+    this.autoExportOnUpdate = this.globalService.globalVar.settings.get("autoExportOnUpdate") ?? false;
     this.showTutorialsAsModals = this.globalService.globalVar.settings.get("showTutorialsAsModals") ?? false;
     this.verboseMode = this.globalService.globalVar.settings.get("verboseMode") ?? false;
     this.showGameLogTimeStamps = this.globalService.globalVar.settings.get("showGameLogTimestamps") ?? false;
     this.showLowPerformanceAnimationFlash = this.globalService.globalVar.settings.get("showLowPerformanceAnimationFlash") ?? false;    
     this.showAbilityCooldownPercents = this.globalService.globalVar.settings.get("showAbilityCooldownPercents") ?? true;    
+    this.showBigNumberColors = this.globalService.globalVar.settings.get("showBigNumberColors") ?? false;        
+    this.showPauseMessage = this.globalService.globalVar.settings.get("showPauseMessage") ?? true;        
   }
 
   public SaveGame() {
@@ -259,6 +265,12 @@ export class SettingsViewComponent implements OnInit {
   }
   showAbilityCooldownPercentsToggle() {
     this.globalService.globalVar.settings.set("showAbilityCooldownPercents", this.showAbilityCooldownPercents);
+  }  
+  showBigNumberColorsToggle() {
+    this.globalService.globalVar.settings.set("showBigNumberColors", this.showBigNumberColors);
+  }  
+  showPauseMessageToggle() {
+    this.globalService.globalVar.settings.set("showPauseMessage", this.showPauseMessage);
   }
 
   ngOnDestroy() {    

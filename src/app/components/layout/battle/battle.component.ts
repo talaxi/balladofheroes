@@ -46,11 +46,13 @@ export class BattleComponent implements OnInit {
   scrollButtonDelay = 0;
   scrollButtonDelayTotalCount = 5;
   showSkipButtonMessage = false;
+  showSkipButtonMessage2 = false;
   showStoryAnimation = false;
   storyAnimationTimerCap = .5;
   @Input() isMobile = false;
   notificationOverlayMessage = "";
   repeatColiseumFight: boolean = false;
+  isGamePaused: boolean = false;
 
   constructor(public globalService: GlobalService, private gameLoopService: GameLoopService, private battleService: BattleService,
     private utilityService: UtilityService, private gameLogService: GameLogService, public storyService: StoryService,
@@ -59,12 +61,9 @@ export class BattleComponent implements OnInit {
     private menuService: MenuService) { }
 
   ngOnInit(): void {
-    if (this.globalService.globalVar.currentStoryId === 0 && this.globalService.globalVar.isBattlePaused)
-      this.showSkipButtonMessage = true;
-
     this.activeSubzone = this.balladService.getActiveSubZone();
     this.showDevStats = this.deploymentService.showStats;
-    this.repeatColiseumFight = this.globalService.globalVar.settings.get("repeatColiseumFight") ?? false;    
+    this.repeatColiseumFight = this.globalService.globalVar.settings.get("repeatColiseumFight") ?? false;
 
     if (this.globalService.globalVar.activeBattle !== undefined)
       this.currentEnemies = this.globalService.globalVar.activeBattle?.currentEnemies;
@@ -74,10 +73,20 @@ export class BattleComponent implements OnInit {
         this.checkForNotificationOverlayMessage(deltaTime);
       }
 
-      if (this.globalService.globalVar.currentStoryId === 0 && this.globalService.globalVar.isBattlePaused)
+      this.isGamePaused = this.globalService.globalVar.isGamePaused;
+      
+      if (this.globalService.globalVar.currentStoryId === 0 && this.storyService.currentPage === 1 && this.globalService.globalVar.isBattlePaused) {
         this.showSkipButtonMessage = true;
-      else
+        this.showSkipButtonMessage2 = false;
+      }
+      else if (this.globalService.globalVar.currentStoryId === 0 && this.storyService.currentPage === 2 && this.globalService.globalVar.isBattlePaused) {
         this.showSkipButtonMessage = false;
+        this.showSkipButtonMessage2 = true;
+      }
+      else {
+        this.showSkipButtonMessage = false;
+        this.showSkipButtonMessage2 = false;
+      }
 
       this.activeSubzone = this.balladService.getActiveSubZone();
 
@@ -118,8 +127,8 @@ export class BattleComponent implements OnInit {
       this.skipToBottom(this.gameLogScroll.nativeElement);
   }
 
-  
-  repeatColiseumFightToggle() {    
+
+  repeatColiseumFightToggle() {
     this.repeatColiseumFight = !this.repeatColiseumFight;
     this.globalService.globalVar.settings.set("repeatColiseumFight", this.repeatColiseumFight);
   }
@@ -142,24 +151,33 @@ export class BattleComponent implements OnInit {
     return false;
   }
 
-  doingColiseumFight() {
-    if (this.globalService.globalVar.activeBattle !== undefined)
-      return this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.None;
+  doingColiseumFight(ignoreFriendlyCompetition: boolean = false) {
+    if (this.globalService.globalVar.activeBattle !== undefined) {
+      if (ignoreFriendlyCompetition)
+        return this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.None && this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.FriendlyCompetition;
+      else
+        return this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.None;
+    }
 
     return false;
   }
 
-  doingColiseumOrTrialFight() {
-    if (this.globalService.globalVar.activeBattle !== undefined)
-      return this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.None ||
-        this.globalService.globalVar.activeBattle.activeTrial.type !== TrialEnum.None;
+  doingColiseumOrTrialFight(ignoreFriendlyCompetition: boolean = false) {
+    if (this.globalService.globalVar.activeBattle !== undefined) {
+      if (ignoreFriendlyCompetition)
+        return (this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.None && this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.FriendlyCompetition) ||
+          this.globalService.globalVar.activeBattle.activeTrial.type !== TrialEnum.None;
+      else
+        return this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.None ||
+          this.globalService.globalVar.activeBattle.activeTrial.type !== TrialEnum.None;
+    }
 
     return false;
   }
-  
-  doingEternalMeleeFight() {    
-    this.repeatColiseumFight = this.globalService.globalVar.settings.get("repeatColiseumFight") ?? false;    
-    return this.globalService.globalVar.activeBattle !== undefined && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.WeeklyMelee;        
+
+  doingEternalMeleeFight() {
+    this.repeatColiseumFight = this.globalService.globalVar.settings.get("repeatColiseumFight") ?? false;
+    return this.globalService.globalVar.activeBattle !== undefined && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.WeeklyMelee;
   }
 
   isAtStoryScene() {
@@ -329,7 +347,7 @@ export class BattleComponent implements OnInit {
       if (ballad.isAvailable) {
         ballad.zones.forEach(zone => {
           zone.subzones.forEach(subzone => {
-            if (subzone.notify && (!shouldHideCountryRoads1 || (shouldHideCountryRoads1 && subzone.type !== SubZoneEnum.NemeaCountryRoadsOne))) {              
+            if (subzone.notify && (!shouldHideCountryRoads1 || (shouldHideCountryRoads1 && subzone.type !== SubZoneEnum.NemeaCountryRoadsOne))) {
               newSubzoneAvailable = true;
             }
           });
@@ -368,7 +386,7 @@ export class BattleComponent implements OnInit {
       nextMessage[0] = nextMessage[0].replace("gameText", "fading gameText");
     }
 
-    if (nextMessage[2] <= 0 && nextMessage[3] === AnimationStateEnum.Hiding) {      
+    if (nextMessage[2] <= 0 && nextMessage[3] === AnimationStateEnum.Hiding) {
       removeMessage = true;
     }
 
@@ -393,7 +411,7 @@ export class BattleComponent implements OnInit {
         }
 
         if (additionalMessage[2] <= 0 && additionalMessage[3] === AnimationStateEnum.Hiding) {
-          this.gameLogService.notificationOverlayBuffer = this.gameLogService.notificationOverlayBuffer.filter(item => item !== additionalMessage);          
+          this.gameLogService.notificationOverlayBuffer = this.gameLogService.notificationOverlayBuffer.filter(item => item !== additionalMessage);
         }
         else
           extraItemCount += 1;
@@ -469,7 +487,12 @@ export class BattleComponent implements OnInit {
   jumpToBestiary() {
     this.layoutService.changeLayout(NavigationEnum.Menu);
     this.menuService.selectedMenuDisplay = MenuEnum.Bestiary;
-    this.menuService.setBestiaryPresets(this.balladService.getActiveBallad(), this.balladService.getActiveZone(), this.balladService.getActiveSubZone());
+    var activeSubzone = this.balladService.getActiveSubZone();
+    if (activeSubzone !== undefined) {
+      var zone = this.balladService.findZoneOfSubzone(activeSubzone.type);
+      var ballad = this.balladService.findBalladOfSubzone(activeSubzone.type);
+      this.menuService.setBestiaryPresets(ballad, zone, activeSubzone);
+    }
   }
 
   globalStatusEffectsActive() {
@@ -485,7 +508,7 @@ export class BattleComponent implements OnInit {
       if (effect.resolution !== undefined) {
         if (effect.resolution === EffectResolutionEnum.AlwaysActiveEquipment)
           return "Always Active - " + this.dictionaryService.getItemName(Number(effect.caster));
-          else if (effect.resolution === EffectResolutionEnum.AlwaysActive)
+        else if (effect.resolution === EffectResolutionEnum.AlwaysActive)
           return "Always Active";
       }
       else

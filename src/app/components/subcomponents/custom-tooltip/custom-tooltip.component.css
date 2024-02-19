@@ -12,6 +12,10 @@
     max-width: 49.5vw;    
 }
 
+.bossTooltip {
+    max-width: 43vw;    
+}
+
 .smallTooltip {
     max-width: 31vw;    
 }
@@ -63,6 +67,10 @@
     
     .largeTooltip {
         max-width: 70vw;    
+    }
+    
+    .bossTooltip {
+        max-width: 80vw;    
     }
     
     .smallTooltip {

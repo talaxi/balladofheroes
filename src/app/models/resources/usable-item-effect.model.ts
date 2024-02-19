@@ -9,6 +9,7 @@ export class UsableItemEffect {
     trueDamagePercent: number;   
     maxThreshold: number;
     healAmount: number; 
+    healPercent: number;
     isAoe: boolean;
     trigger: EffectTriggerEnum;
     @Type(() => StatusEffect)
@@ -29,5 +30,6 @@ export class UsableItemEffect {
         this.elementalProperty = ElementalTypeEnum.None;
         this.trueDamagePercent = 0;
         this.maxThreshold = 0;
+        this.healPercent = 0;
     }
 }

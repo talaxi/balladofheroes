@@ -52,11 +52,11 @@ export class CharmService {
   }
 
   getSmallCharmOfVulnerabilityValue() {
-    return .05;
+    return .0375;
   }
 
   getLargeCharmOfVulnerabilityValue() {
-    return .15;
+    return .1125;
   }
 
   getTotalOverdriveGainAdditionFromCharms(resources: ResourceValue[]) {

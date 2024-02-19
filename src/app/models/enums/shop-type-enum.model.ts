@@ -15,5 +15,6 @@ export enum ShopTypeEnum {
   Trials,
   StoryZeus,
   Hephaestus,
-  IslandOfNaxos
+  IslandOfNaxos,
+  CirceAlchemy
 }

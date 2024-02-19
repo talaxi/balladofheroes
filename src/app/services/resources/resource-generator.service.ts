@@ -172,6 +172,12 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.DarkMoonPendant) {
       return new ResourceValue(ItemsEnum.DarkMoonPendant, amount);
     }
+    if (type === ItemsEnum.NecklaceOfEndlessWaves) {
+      return new ResourceValue(ItemsEnum.NecklaceOfEndlessWaves, amount);
+    }
+    if (type === ItemsEnum.NecklaceOfStarryNights) {
+      return new ResourceValue(ItemsEnum.NecklaceOfStarryNights, amount);
+    }
 
     //rings
     if (type === ItemsEnum.MoltenRing) {
@@ -474,6 +480,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.RagingBull) {
       return new ResourceValue(ItemsEnum.RagingBull, amount);
     }
+    if (type === ItemsEnum.StingrayTip) {
+      return new ResourceValue(ItemsEnum.StingrayTip, amount);
+    }
     if (type === ItemsEnum.ScorpionStingerEpic) {
       return new ResourceValue(ItemsEnum.ScorpionStingerEpic, amount);
     }
@@ -671,6 +680,12 @@ export class ResourceGeneratorService {
     }
 
     //equippables
+    if (type === ItemsEnum.TokenOfSupport) {
+      return new ResourceValue(ItemsEnum.TokenOfSupport, amount);
+    }
+    if (type === ItemsEnum.TokenOfFavor) {
+      return new ResourceValue(ItemsEnum.TokenOfFavor, amount);
+    }
     if (type === ItemsEnum.HealingHerb) {
       return new ResourceValue(ItemsEnum.HealingHerb, amount);
     }
@@ -716,6 +731,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.RestorativeHerb) {
       return new ResourceValue(ItemsEnum.RestorativeHerb, amount);
     }
+    if (type === ItemsEnum.SoothingHerb) {
+      return new ResourceValue(ItemsEnum.SoothingHerb, amount);
+    }
     if (type === ItemsEnum.FocusPotion) {
       return new ResourceValue(ItemsEnum.FocusPotion, amount);
     }
@@ -724,6 +742,9 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.VenomousToxin) {
       return new ResourceValue(ItemsEnum.VenomousToxin, amount);
+    }
+    if (type === ItemsEnum.AgonizingToxin) {
+      return new ResourceValue(ItemsEnum.AgonizingToxin, amount);
     }
     if (type === ItemsEnum.ElixirOfFortitude) {
       return new ResourceValue(ItemsEnum.ElixirOfFortitude, amount);
@@ -781,6 +802,27 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.ElixirOfFortune) {
       return new ResourceValue(ItemsEnum.ElixirOfFortune, amount);
+    }
+    if (type === ItemsEnum.ElixirOfWill) {
+      return new ResourceValue(ItemsEnum.ElixirOfWill, amount);
+    }
+    if (type === ItemsEnum.TidalToxin) {
+      return new ResourceValue(ItemsEnum.TidalToxin, amount);
+    }
+    if (type === ItemsEnum.UnsteadyingToxin) {
+      return new ResourceValue(ItemsEnum.UnsteadyingToxin, amount);
+    }
+    if (type === ItemsEnum.WildPotion) {
+      return new ResourceValue(ItemsEnum.WildPotion, amount);
+    }
+    if (type === ItemsEnum.PeonyPoultice) {
+      return new ResourceValue(ItemsEnum.PeonyPoultice, amount);
+    }
+    if (type === ItemsEnum.PeonySalve) {
+      return new ResourceValue(ItemsEnum.PeonySalve, amount);
+    }
+    if (type === ItemsEnum.RareToEpicTransmutation) {
+      return new ResourceValue(ItemsEnum.RareToEpicTransmutation, amount);
     }
     if (type === ItemsEnum.WaterAbsorptionPotion) {
       return new ResourceValue(ItemsEnum.WaterAbsorptionPotion, amount);
@@ -891,6 +933,24 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.RoughAmethystFragment) {
       return new ResourceValue(ItemsEnum.RoughAmethystFragment, amount);
+    }
+    if (type === ItemsEnum.RutileEmeraldFragment) {
+      return new ResourceValue(ItemsEnum.RutileEmeraldFragment, amount);
+    }
+    if (type === ItemsEnum.RutileRubyFragment) {
+      return new ResourceValue(ItemsEnum.RutileRubyFragment, amount);
+    }
+    if (type === ItemsEnum.RutileOpalFragment) {
+      return new ResourceValue(ItemsEnum.RutileOpalFragment, amount);
+    }
+    if (type === ItemsEnum.RutileAquamarineFragment) {
+      return new ResourceValue(ItemsEnum.RutileAquamarineFragment, amount);
+    }
+    if (type === ItemsEnum.RutileTopazFragment) {
+      return new ResourceValue(ItemsEnum.RutileTopazFragment, amount);
+    }
+    if (type === ItemsEnum.RutileAmethystFragment) {
+      return new ResourceValue(ItemsEnum.RutileAmethystFragment, amount);
     }
     if (type === ItemsEnum.PetrifiedBark) {
       return new ResourceValue(ItemsEnum.PetrifiedBark, amount);
@@ -1423,6 +1483,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.AugeanStables3) {
       return new ResourceValue(ItemsEnum.AugeanStables3, amount);
     }
+    if (type === ItemsEnum.CirceAlchemy) {
+      return new ResourceValue(ItemsEnum.CirceAlchemy, amount);
+    }
     if (type === ItemsEnum.DarkOrb) {
       return new ResourceValue(ItemsEnum.DarkOrb, amount);
     }
@@ -1718,7 +1781,7 @@ export class ResourceGeneratorService {
       return new CharacterStats(baseRutilatedStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
-    var basePerfectRutilatedStatValue = .135;
+    var basePerfectRutilatedStatValue = .15;
     if (item === ItemsEnum.PerfectRutilatedOpal) {
       return new CharacterStats(0, basePerfectRutilatedStatValue, 0, 0, 0, 0);
     }
@@ -1738,7 +1801,7 @@ export class ResourceGeneratorService {
       return new CharacterStats(basePerfectRutilatedStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
-    var baseBrilliantStatValue = .15;
+    var baseBrilliantStatValue = .18;
     if (item === ItemsEnum.BrilliantOpal) {
       return new CharacterStats(0, baseBrilliantStatValue, 0, 0, 0, 0);
     }
@@ -1758,7 +1821,7 @@ export class ResourceGeneratorService {
       return new CharacterStats(baseBrilliantStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
-    var basePerfectBrilliantStatValue = .165;
+    var basePerfectBrilliantStatValue = .21;
     if (item === ItemsEnum.PerfectBrilliantOpal) {
       return new CharacterStats(0, basePerfectBrilliantStatValue, 0, 0, 0, 0);
     }
@@ -1778,7 +1841,7 @@ export class ResourceGeneratorService {
       return new CharacterStats(basePerfectBrilliantStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
-    var baseFlawlessStatValue = .18;
+    var baseFlawlessStatValue = .25;
     if (item === ItemsEnum.FlawlessOpal) {
       return new CharacterStats(0, baseFlawlessStatValue, 0, 0, 0, 0);
     }
@@ -1798,7 +1861,7 @@ export class ResourceGeneratorService {
       return new CharacterStats(baseFlawlessStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
-    var basePerfectFlawlessStatValue = .195;
+    var basePerfectFlawlessStatValue = .3;
     if (item === ItemsEnum.PerfectFlawlessOpal) {
       return new CharacterStats(0, basePerfectFlawlessStatValue, 0, 0, 0, 0);
     }
@@ -1818,7 +1881,7 @@ export class ResourceGeneratorService {
       return new CharacterStats(basePerfectFlawlessStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
-    var baseAdamantineStatValue = .21;
+    var baseAdamantineStatValue = .4;
     if (item === ItemsEnum.AdamantineOpal) {
       return new CharacterStats(0, baseAdamantineStatValue, 0, 0, 0, 0);
     }
@@ -1838,7 +1901,7 @@ export class ResourceGeneratorService {
       return new CharacterStats(baseAdamantineStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
-    var basePerfectAdamantineStatValue = .225;
+    var basePerfectAdamantineStatValue = .5;
     if (item === ItemsEnum.PerfectAdamantineOpal) {
       return new CharacterStats(0, basePerfectAdamantineStatValue, 0, 0, 0, 0);
     }

@@ -1,5 +1,6 @@
 <!-- web version -->
 <div *ngIf="!isMobile" class="gridContainer webVersion">
+    <div *ngIf="isGamePaused && viewingBattle && showPauseMessage" class="absolutePositionedMiddle bold smallCaps textCentered"><span class="s4Heading bold">game paused</span><br/><i>click play in the header to resume</i></div>
     <div class="headerArea">
         <app-header [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }"></app-header>
     </div>
@@ -48,6 +49,7 @@
 
 <!-- mobile version -->
 <div *ngIf="isMobile" class="gridContainer mobileVersion">
+    <!--<div *ngIf="isGamePaused && showPauseMessage && viewingBattle" class="absolutePositionedMiddle bold smallCaps textCentered"><span class="s4Heading bold">game paused</span><br/><i>click play in the header to resume</i></div>-->
     <div class="headerArea">
         <app-header [isMobile]="true" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }"></app-header>
     </div>

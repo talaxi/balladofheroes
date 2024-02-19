@@ -210,10 +210,14 @@
     margin: auto;
 }
 
+.logColor {
+    color: var(--foreground-quaternary);
+}
+
 .text {
     grid-area: text;
     margin: auto;
-    font-size: 1.05rem;
+    font-size: 1.07rem;
 }
 
 .storyTextAnimation {

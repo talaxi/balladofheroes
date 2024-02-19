@@ -28,6 +28,7 @@ import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ZodiacEnum } from 'src/app/models/enums/zodiac-enum.model';
+import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
 import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
 import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
 import { EnemyGeneratorService } from 'src/app/services/enemy-generator/enemy-generator.service';
@@ -50,6 +51,7 @@ export class BestiaryViewComponent {
   isMobile: boolean = false;
   enemyList: Enemy[] = [];
   enemyEncounters: EnemyTeam[] = [];
+  coliseumPatronList: EnemyTeam[] = [];
   availableItems: LootItem[] = [];
   availableTreasure: ResourceValue[] = [];
   tooltipDirection = DirectionEnum.DownRight;
@@ -76,6 +78,8 @@ export class BestiaryViewComponent {
     var presetZone = this.selectedZone?.type;
     var presetSubzone = this.selectedSubzone?.type;
 
+    this.setupColiseumPatronList();
+
     if (presetBallad !== undefined)
       this.selectBallad(presetBallad);
     if (presetZone !== undefined)
@@ -90,6 +94,21 @@ export class BestiaryViewComponent {
     }).forEach(item => {
       this.availableBallads.push(item.type);
     });
+  }
+
+  setupColiseumPatronList() {
+    this.coliseumPatronList = [];
+
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ColchianDragon));
+      this.coliseumPatronList.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.isDoubleBossFight = true;
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Rhoecus));
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.TheBee));
+      this.coliseumPatronList.push(enemyTeam2);    
   }
 
   selectBallad(type: BalladEnum) {
@@ -269,6 +288,10 @@ export class BestiaryViewComponent {
     return trialType.count;
   }
 
+  isShopOptionColiseum(option: ShopOption) {    
+    return option.type === ShopTypeEnum.Coliseum;
+  }
+
   isShopOptionTrialOfSkill(option: ShopOption) {
     return option.type === ShopTypeEnum.Trials;
   }
@@ -291,7 +314,7 @@ export class BestiaryViewComponent {
     if (trialType === undefined)
       return 0;
 
-    return this.utilityService.bigNumberReducer(trialType.highestXps);
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, trialType.highestXps);
   }
 
   getHighestDpsForTrialGod() {
@@ -299,7 +322,7 @@ export class BestiaryViewComponent {
     if (trialType === undefined)
       return 0;
 
-    return this.utilityService.bigNumberReducer(trialType.highestDps);
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, trialType.highestDps);
   }
 
   getTrialOfTheStarsDefeatCount() {
@@ -335,7 +358,7 @@ export class BestiaryViewComponent {
     if (trialType === undefined)
       return 0;
 
-    return this.utilityService.bigNumberReducer(trialType.highestXps);
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, trialType.highestXps);
 
     return 0;
   }
@@ -355,7 +378,7 @@ export class BestiaryViewComponent {
     if (trialType === undefined)
       return 0;
 
-    return this.utilityService.bigNumberReducer(trialType.highestDps);
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, trialType.highestDps);
 
     return 0;
   }
@@ -484,14 +507,14 @@ export class BestiaryViewComponent {
     this.utilityService.removeExcessOverlayDivs();
   }
 
-  getEnemyName(enemy: Enemy) {
+  getEnemyName(enemy: Enemy, bypassHiddenName: boolean = false) {
     var defeatCount = 0;
     var name = this.nameHiddenText;
     var defeatCountStat = this.globalService.globalVar.enemyDefeatCount.find(item => item.bestiaryEnum === enemy.bestiaryType);
     if (defeatCountStat !== undefined)
       defeatCount = defeatCountStat.count;
 
-    if (defeatCount > 0)
+    if (defeatCount > 0 || bypassHiddenName)
       name = enemy.name;
 
     return name;
@@ -658,11 +681,11 @@ export class BestiaryViewComponent {
   }
 
   getHighestXps(subzone: SubZone) {
-    return this.utilityService.bigNumberReducer(subzone.maxXps);
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, subzone.maxXps);
   }
 
   getHighestDps(subzone: SubZone) {
-    return this.utilityService.bigNumberReducer(subzone.maxDps);
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, subzone.maxDps);
   }
 
   itemIsMaterial(item: ItemsEnum) {
@@ -810,6 +833,12 @@ export class BestiaryViewComponent {
     });
 
     return achievementCount;
+  }
+
+  jumpToAchievements() {
+    this.menuService.selectedMenuDisplay = MenuEnum.Achievements;
+    console.log("Selected ballad: " + this.selectedBallad?.type);
+    this.menuService.setAchievementPresets(this.selectedBallad, this.selectedZone, this.selectedSubzone);
   }
 
   overlayEmitter(overlayRef: OverlayRef) {

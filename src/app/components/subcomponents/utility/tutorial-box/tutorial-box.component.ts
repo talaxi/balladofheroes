@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { LogViewEnum } from 'src/app/models/enums/log-view-enum.model';
-import { BattleService } from 'src/app/services/battle/battle.service';
+import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
+import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { TutorialService } from 'src/app/services/global/tutorial.service';
+import { SupportViewComponent } from 'src/app/components/subcomponents/support-view/support-view.component';
+import { MenuService } from 'src/app/services/menu/menu.service';
+import { LayoutService } from 'src/app/models/global/layout.service';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-tutorial-box',
@@ -15,7 +20,7 @@ export class TutorialBoxComponent {
   wasGamePaused = false;
 
   constructor(private globalService: GlobalService, private tutorialService: TutorialService, public dialogRef: MatDialogRef<TutorialBoxComponent>, 
-    public dialog: MatDialog) {
+    public dialog: MatDialog, private layoutService: LayoutService, private menuService: MenuService, private deviceDetectorService: DeviceDetectorService) {
 
   }
 
@@ -30,7 +35,18 @@ export class TutorialBoxComponent {
 
     this.confirmationText = this.tutorialService.getTutorialText(tutorialData.relevantEnumValue, undefined, undefined, false);
   }
- 
+
+  ngAfterViewInit() {
+    var divs = document.querySelectorAll('.supportClickableItem');
+    divs.forEach(el => el.addEventListener('click', event => {
+      var className = el.getAttribute("class");
+      var value = className?.split(" ")[1];
+      if (value !== undefined) {
+          this.handleSupportModal();               
+      }
+    }));
+  }
+
   continue(): void {
     if (!this.wasGamePaused)
       this.globalService.globalVar.isGamePaused = false;
@@ -50,5 +66,13 @@ export class TutorialBoxComponent {
     if (!this.wasGamePaused) {
       this.globalService.globalVar.isGamePaused = false;
     }
+  }
+
+  
+  handleSupportModal() {    
+    if (this.deviceDetectorService.isMobile())
+      return this.dialog.open(SupportViewComponent, { width: '80%', height: 'auto' });
+    else
+      return this.dialog.open(SupportViewComponent, { width: '80%', height: 'auto' });
   }
 }

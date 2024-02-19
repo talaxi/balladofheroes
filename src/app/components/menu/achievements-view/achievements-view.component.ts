@@ -3,12 +3,15 @@ import { AchievementTypeEnum } from 'src/app/models/enums/achievement-type-enum.
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
+import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { Achievement } from 'src/app/models/global/achievement.model';
 import { AchievementService } from 'src/app/services/achievements/achievement.service';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
 import { GlobalService } from 'src/app/services/global/global.service';
+import { MenuService } from 'src/app/services/menu/menu.service';
 import { LookupService } from 'src/app/services/lookup.service';
+import { LayoutService } from 'src/app/models/global/layout.service';
 
 @Component({
   selector: 'app-achievements-view',
@@ -33,9 +36,24 @@ export class AchievementsViewComponent implements OnInit {
   showUncompleted = false;
 
   constructor(private globalService: GlobalService, public balladService: BalladService, private lookupService: LookupService,
-    private achievementService: AchievementService) { }
+    private achievementService: AchievementService, private menuService: MenuService, private layoutService: LayoutService) { }
 
   ngOnInit(): void {
+    if (this.menuService.selectedAchievementBallad !== undefined) {      
+      console.log("Ballad type: " + this.menuService.selectedAchievementBallad.type);
+      this.selectedBallad = this.menuService.selectedAchievementBallad.type;
+      this.populateZones();
+    }
+    if (this.menuService.selectedAchievementZone !== undefined) {      
+      this.selectedZone = this.menuService.selectedAchievementZone.type;
+      this.populateSubzones();
+    }
+    if (this.menuService.selectedAchievementSubzone !== undefined) {
+      this.selectedSubzone = this.menuService.selectedAchievementSubzone.type;      
+    }
+
+    this.menuService.setAchievementPresets(undefined, undefined, undefined);
+
     if (this.isMobile)
       this.cellsPerRow = 2;
 
@@ -179,12 +197,11 @@ export class AchievementsViewComponent implements OnInit {
     this.zones.push(ZoneEnum.None);
     this.subzones.push(SubZoneEnum.None);
 
-    var selectedBallad = this.balladService.findBallad(parseInt(this.selectedBallad.toString()));    
-    if (selectedBallad !== undefined)
-    {
+    var selectedBallad = this.balladService.findBallad(parseInt(this.selectedBallad.toString()));
+    if (selectedBallad !== undefined) {
       selectedBallad.zones.filter(item => item.isAvailable).forEach(zone => {
         this.zones.push(zone.type);
-      });      
+      });
     }
 
     if (parseInt(this.selectedBallad.toString()) === BalladEnum.None) {
@@ -197,13 +214,12 @@ export class AchievementsViewComponent implements OnInit {
     this.subzones = [];
     this.subzones.push(SubZoneEnum.None);
 
-    var selectedZone = this.balladService.findZone(parseInt(this.selectedZone.toString()));    
-    if (selectedZone !== undefined)
-    {
+    var selectedZone = this.balladService.findZone(parseInt(this.selectedZone.toString()));
+    if (selectedZone !== undefined) {
       selectedZone.subzones.filter(item => item.isAvailable).forEach(subzone => {
         this.subzones.push(subzone.type);
-      });      
-    }    
+      });
+    }
 
     if (parseInt(this.selectedZone.toString()) === ZoneEnum.None) {
       this.selectedSubzone = this.subzones[0];
@@ -237,51 +253,51 @@ export class AchievementsViewComponent implements OnInit {
 
     //check for specific gods
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena) === undefined ||
-    !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena)?.isAvailable) {
+      !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena)?.isAvailable) {
       mainList = mainList.filter(item => item.type !== AchievementTypeEnum.TenVictoriesAthena);
     }
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis) === undefined ||
-    !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis)?.isAvailable) {
+      !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis)?.isAvailable) {
       mainList = mainList.filter(item => item.type !== AchievementTypeEnum.TenVictoriesArtemis);
     }
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes) === undefined ||
-    !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes)?.isAvailable) {
+      !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes)?.isAvailable) {
       mainList = mainList.filter(item => item.type !== AchievementTypeEnum.TenVictoriesHermes);
     }
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo) === undefined ||
-    !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo)?.isAvailable) {
+      !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo)?.isAvailable) {
       mainList = mainList.filter(item => item.type !== AchievementTypeEnum.TenVictoriesApollo);
     }
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares) === undefined ||
-    !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares)?.isAvailable) {
+      !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares)?.isAvailable) {
       mainList = mainList.filter(item => item.type !== AchievementTypeEnum.TenVictoriesAres);
     }
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades) === undefined ||
-    !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades)?.isAvailable) {
+      !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades)?.isAvailable) {
       mainList = mainList.filter(item => item.type !== AchievementTypeEnum.TenVictoriesHades);
     }
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis) === undefined ||
-    !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis)?.isAvailable) {
+      !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis)?.isAvailable) {
       mainList = mainList.filter(item => item.type !== AchievementTypeEnum.TenVictoriesNemesis);
     }
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus) === undefined ||
-    !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus)?.isAvailable) {
+      !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus)?.isAvailable) {
       mainList = mainList.filter(item => item.type !== AchievementTypeEnum.TenVictoriesDionysus);
     }
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Zeus) === undefined ||
-    !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Zeus)?.isAvailable) {
+      !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Zeus)?.isAvailable) {
       mainList = mainList.filter(item => item.type !== AchievementTypeEnum.TenVictoriesZeus);
     }
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Poseidon) === undefined ||
-    !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Poseidon)?.isAvailable) {
+      !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Poseidon)?.isAvailable) {
       mainList = mainList.filter(item => item.type !== AchievementTypeEnum.TenVictoriesPoseidon);
     }
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Aphrodite) === undefined ||
-    !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Aphrodite)?.isAvailable) {
+      !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Aphrodite)?.isAvailable) {
       mainList = mainList.filter(item => item.type !== AchievementTypeEnum.TenVictoriesAphrodite);
     }
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hera) === undefined ||
-    !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hera)?.isAvailable) {
+      !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hera)?.isAvailable) {
       mainList = mainList.filter(item => item.type !== AchievementTypeEnum.TenVictoriesHera);
     }
 
@@ -329,9 +345,18 @@ export class AchievementsViewComponent implements OnInit {
   setPageAmount(amount: number) {
     this.itemsPerPage = amount;
     this.currentPage = 1;
-    this.lastPage = Math.ceil(this.achievementsBySubZone.length / this.itemsPerPage);    
+    this.lastPage = Math.ceil(this.achievementsBySubZone.length / this.itemsPerPage);
     this.globalService.globalVar.settings.set("achievementsPerPage", this.itemsPerPage);
     this.getAchievementsByPage();
+  }
+
+  jumpToSubzone(type: SubZoneEnum) {  
+    var subzone = this.balladService.findSubzone(type);  
+    var zone = this.balladService.findZoneOfSubzone(type);
+    if (subzone !== undefined && zone !== undefined) {      
+      this.balladService.selectSubZone(subzone, zone);
+      this.layoutService.changeLayout(NavigationEnum.Default);
+    }     
   }
 
   preventRightClick() {

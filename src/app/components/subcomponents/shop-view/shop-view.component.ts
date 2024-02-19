@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, HostListener } from '@angular/core';
 import { MatDialog as MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
@@ -14,6 +14,7 @@ import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { ResourceViewSortEnum } from 'src/app/models/enums/resource-view-sort-enum.model';
 import { ShopTypeEnum } from 'src/app/models/enums/shop-type-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
+import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { LayoutService } from 'src/app/models/global/layout.service';
 import { Profession } from 'src/app/models/professions/profession.model';
 import { ShopItem } from 'src/app/models/shop/shop-item.model';
@@ -59,11 +60,61 @@ export class ShopViewComponent implements OnInit {
   newItems: ShopItem[];
   shopItemRows: ShopItem[][];
   shopItemCells: ShopItem[];
+  traderJewelcraftingRows: ShopItem[][];
   filterEquipment = false;
   filterBattleItems = false;
   dialogRef: MatDialogRef<any, any>;
   sortType: ResourceViewSortEnum = ResourceViewSortEnum.Type;
   ascendingSort: boolean = true;
+
+  
+  @HostListener('window:keydown', ['$event'])
+  keyEventDown(event: KeyboardEvent) {          
+    if (event.key === "Shift") { //multiply by 25
+      event.preventDefault();
+      if (!this.utilityService.shiftPressed) {
+        this.utilityService.shopBuyMultiplier *= 25;
+        this.utilityService.shiftPressed = true;
+      }
+    }
+    if (event.key === "Control") { //multiply by 10
+      event.preventDefault();
+      if (!this.utilityService.ctrlPressed) {        
+        this.utilityService.shopBuyMultiplier *= 10;
+        this.utilityService.ctrlPressed = true;
+      }
+    }
+    if (event.key === "Alt") { //multiply by 100
+      event.preventDefault();
+      if (!this.utilityService.altPressed) {
+        this.utilityService.shopBuyMultiplier *= 100;
+        this.utilityService.altPressed = true;
+      }
+    }
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  keyEventUp(event: KeyboardEvent) {    
+    event.preventDefault();
+    if (event.key === "Shift") { //divide by 25
+      if (this.utilityService.shiftPressed) {
+        this.utilityService.shopBuyMultiplier /= 25;
+        this.utilityService.shiftPressed = false;
+      }
+    }
+    if (event.key === "Control") { //divide by 10
+      if (this.utilityService.ctrlPressed) {
+        this.utilityService.shopBuyMultiplier /= 10;
+        this.utilityService.ctrlPressed = false;
+      }
+    }
+    if (event.key === "Alt") { //divide by 100
+      if (this.utilityService.altPressed) {
+        this.utilityService.shopBuyMultiplier /= 100;
+        this.utilityService.altPressed = false;
+      }
+    }
+  }
 
   constructor(private subzoneGeneratorService: SubZoneGeneratorService, private balladService: BalladService, public dialog: MatDialog,
     private gameLoopService: GameLoopService, private storyService: StoryService, private battleService: BattleService,
@@ -78,11 +129,11 @@ export class ShopViewComponent implements OnInit {
     this.alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
     this.jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
 
-    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {      
+    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       if (!this.showAllShopOptions && this.activeSubzoneType !== this.balladService.getActiveSubZone().type) {
         //if (this.activeSubzoneType !== this.balladService.getActiveSubZone().type) {
         this.activeSubzoneType = this.balladService.getActiveSubZone().type;
-        this.getShopOptions(); 
+        this.getShopOptions();
       }
     });
   }
@@ -98,9 +149,23 @@ export class ShopViewComponent implements OnInit {
     return this.globalService.globalVar.sidequestData.augeanStablesLevel >= this.globalService.globalVar.sidequestData.maxAugeanStablesLevel;
   }
 
+  circeAlchemyCompleted() {
+    return this.globalService.globalVar.sidequestData.circeAlchemyLevel >= 1;
+  }
+
+  circeAlchemyAvailable() {
+    var straitsOfMessinaZone = this.balladService.findZone(ZoneEnum.StraitsOfMessina);
+    
+    if (straitsOfMessinaZone === undefined || straitsOfMessinaZone.isAvailable === undefined) {
+      console.log("Returning false");
+      return false;
+    }
+
+    return straitsOfMessinaZone?.isAvailable;
+  }
+
   getShopOptions() {
-    if (this.showAllShopOptions)
-    {
+    if (this.showAllShopOptions) {
       this.activeSubzoneType = this.balladService.getLatestSubzone();
       this.isDisplayingNewItems = false;
     }
@@ -120,7 +185,7 @@ export class ShopViewComponent implements OnInit {
     if (this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.HephaestusJewelcrafting))
       this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.Hephaestus);
 
-      if (this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.IslandOfNaxos))
+    if (this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.IslandOfNaxos))
       this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.IslandOfNaxos);
   }
 
@@ -129,12 +194,12 @@ export class ShopViewComponent implements OnInit {
       return DirectionEnum.Right;
     else if (index % 4 === 1)
       return DirectionEnum.Right;
-      else if (index % 4 === 2)
+    else if (index % 4 === 2)
       return DirectionEnum.Left;
-      else if (index % 4 === 3)
+    else if (index % 4 === 3)
       return DirectionEnum.Left;
 
-      return DirectionEnum.Right;
+    return DirectionEnum.Right;
   }
 
   getOptionText(type: ShopTypeEnum) {
@@ -175,7 +240,7 @@ export class ShopViewComponent implements OnInit {
       else
         this.dialog.open(content, { width: '75%', maxHeight: '85%' });
     }
-    else if (option.type === ShopTypeEnum.AugeanStables) {
+    else if (option.type === ShopTypeEnum.AugeanStables || option.type === ShopTypeEnum.CirceAlchemy) {
       if (this.deviceDetectorService.isMobile())
         dialogRef = this.dialog.open(content, { width: '95%', minHeight: '60vh', height: '60%', id: "dialogNoPadding" });
       else
@@ -198,7 +263,7 @@ export class ShopViewComponent implements OnInit {
       this.jewelcraftingService.checkForNewRecipes();
     }
 
-    if (option.type === ShopTypeEnum.AugeanStables) {
+    if (option.type === ShopTypeEnum.AugeanStables || option.type === ShopTypeEnum.CirceAlchemy) {
       this.isDisplayingNewItems = false;
     }
 
@@ -231,7 +296,7 @@ export class ShopViewComponent implements OnInit {
     }
 
     if (option.type === ShopTypeEnum.Crafter || option.type === ShopTypeEnum.General || option.type === ShopTypeEnum.Traveler ||
-      option.type === ShopTypeEnum.Trader || option.type === ShopTypeEnum.AugeanStables) {
+      option.type === ShopTypeEnum.Trader || option.type === ShopTypeEnum.AugeanStables || option.type === ShopTypeEnum.CirceAlchemy) {
       this.allItems = option.availableItems.sort((a, b) => this.sortFunction(a, b));
       this.newItems = option.availableItems.sort((a, b) => this.sortFunction(a, b)).filter(item => item.originalStore === this.activeSubzoneType);
 
@@ -240,7 +305,10 @@ export class ShopViewComponent implements OnInit {
       else
         this.shopItems = this.allItems;
 
-      this.setupDisplayShopItems();
+      if (option.type === ShopTypeEnum.Trader)
+        this.setupDisplayTraderItems();
+      else
+        this.setupDisplayShopItems();
     }
   }
 
@@ -346,6 +414,51 @@ export class ShopViewComponent implements OnInit {
 
     if (this.shopItemCells.length !== 0)
       this.shopItemRows.push(this.shopItemCells);
+  }
+
+  setupDisplayTraderItems(): void {
+    this.shopItemCells = [];
+    this.shopItemRows = [];
+    var traderJewelcraftingCells: ShopItem[] = [];
+    this.traderJewelcraftingRows = [];
+
+    this.shopItems = this.shopItems.filter(item => this.balladService.findSubzone(item.originalStore)?.isAvailable);
+    this.shopItems.sort((a, b) => this.sortFunction(a, b));
+
+    var filteredItems = this.filterItems(this.shopItems);
+
+    var maxColumns = this.deviceDetectorService.isMobile() ? 2 : 4;
+
+    var resourceItems = filteredItems.filter(item => this.lookupService.getItemTypeFromItemEnum(item.shopItem) !== ItemTypeEnum.SlotItem && item.shopItem !== ItemsEnum.RutileRubyFragment &&
+      item.shopItem !== ItemsEnum.RutileOpalFragment && item.shopItem !== ItemsEnum.RutileAquamarineFragment && item.shopItem !== ItemsEnum.RutileTopazFragment &&
+      item.shopItem !== ItemsEnum.RutileAmethystFragment && item.shopItem !== ItemsEnum.RutileEmeraldFragment);
+
+    for (var i = 1; i <= resourceItems.length; i++) {
+      this.shopItemCells.push(resourceItems[i - 1]);
+      if ((i % maxColumns) == 0) {
+        this.shopItemRows.push(this.shopItemCells);
+        this.shopItemCells = [];
+      }
+    }
+
+    if (this.shopItemCells.length !== 0)
+      this.shopItemRows.push(this.shopItemCells);
+
+
+    var jewelcraftingItems = filteredItems.filter(item => this.lookupService.getItemTypeFromItemEnum(item.shopItem) === ItemTypeEnum.SlotItem || item.shopItem === ItemsEnum.RutileRubyFragment ||
+      item.shopItem === ItemsEnum.RutileOpalFragment || item.shopItem === ItemsEnum.RutileAquamarineFragment || item.shopItem === ItemsEnum.RutileTopazFragment ||
+      item.shopItem === ItemsEnum.RutileAmethystFragment || item.shopItem === ItemsEnum.RutileEmeraldFragment);
+
+    for (var i = 1; i <= jewelcraftingItems.length; i++) {
+      traderJewelcraftingCells.push(jewelcraftingItems[i - 1]);
+      if ((i % maxColumns) == 0) {
+        this.traderJewelcraftingRows.push(traderJewelcraftingCells);
+        traderJewelcraftingCells = [];
+      }
+    }
+
+    if (traderJewelcraftingCells.length !== 0)
+      this.traderJewelcraftingRows.push(traderJewelcraftingCells);
   }
 
   toggleDisplayNewItemsView() {
@@ -534,6 +647,15 @@ export class ShopViewComponent implements OnInit {
       !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.IslandOfNaxos)) {
       scene = OptionalSceneEnum.IslandOfNaxos;
     }
+    if (option.type === ShopTypeEnum.CirceAlchemy && this.globalService.globalVar.sidequestData.circeAlchemyLevel === 0 && this.balladService.getActiveSubZone().type === SubZoneEnum.AiaiaCircesHome &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.CirceAlchemy)) {
+      scene = OptionalSceneEnum.CirceAlchemy;
+    }
+    if (option.type === ShopTypeEnum.CirceAlchemy && this.globalService.globalVar.sidequestData.circeAlchemyLevel === 0 &&
+      this.globalService.globalVar.sidequestData.displayCirceAlchemyPayScene && this.balladService.getActiveSubZone().type === SubZoneEnum.AiaiaCircesHome &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.CirceAlchemy2)) {
+      scene = OptionalSceneEnum.CirceAlchemy2;
+    }
 
     return scene;
   }
@@ -544,8 +666,8 @@ export class ShopViewComponent implements OnInit {
     this.battleService.checkScene();
   }
 
-  handleIslandOfNaxos(option: ShopOption) {    
-    var optionalSceneToDisplay = this.optionalSceneToDisplay(option);    
+  handleIslandOfNaxos(option: ShopOption) {
+    var optionalSceneToDisplay = this.optionalSceneToDisplay(option);
     this.storyService.displayOptionalScene(optionalSceneToDisplay);
     this.battleService.checkScene();
   }
@@ -574,6 +696,7 @@ export class ShopViewComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    this.utilityService.shopBuyMultiplier = 1;
     this.layoutService.jumpedToColiseum = false;
 
     if (this.subscription !== undefined)

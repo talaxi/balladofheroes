@@ -239,5 +239,12 @@ export enum StatusEffectEnum {
     DefensiveShapeshifting,
     LovingEmbrace,
     FriendlyCompetition,
-    BuzzingReminder
+    BuzzingReminder,
+    TidalToxin,
+    UnsteadyingToxin,
+    ElixirOfWill,
+    VortexPull,
+    Tentative,
+    AgonizingToxin,
+    RandomPrimaryStatDownExcludeHpAvoidDuplicate
   }

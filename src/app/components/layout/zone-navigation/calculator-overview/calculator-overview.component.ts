@@ -19,7 +19,7 @@ export class CalculatorOverviewComponent {
 
     dps = this.dpsCalculatorService.calculatePartyDps();
 
-    return this.utilityService.bigNumberReducer(Math.round(dps));
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, Math.round(dps));
   }
 
   getEnemyDps() {
@@ -27,7 +27,7 @@ export class CalculatorOverviewComponent {
 
     dps = this.dpsCalculatorService.calculateEnemyDps();
 
-    return this.utilityService.bigNumberReducer(Math.round(dps));
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, Math.round(dps));
   }
 
   getXps() {
@@ -35,7 +35,7 @@ export class CalculatorOverviewComponent {
 
     xps = this.dpsCalculatorService.calculateXps();
 
-    return this.utilityService.bigNumberReducer(Math.round(xps));
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, Math.round(xps));
   }
 
   characterDpsBreakdown(which: number) {
@@ -45,7 +45,7 @@ export class CalculatorOverviewComponent {
     var breakdown = this.dpsCalculatorService.getCharacterDps(character.type);
     var percent = this.dpsCalculatorService.getCharacterDpsPercent(character.type);
 
-    return "<span class='bold smallCaps " + character.name.toLowerCase() + "Color'>" + character.name + ":</span> " + this.utilityService.bigNumberReducer(breakdown) + " (" + this.utilityService.roundTo(percent * 100, 1) + "%)";
+    return "<span class='bold smallCaps " + character.name.toLowerCase() + "Color'>" + character.name + ":</span> " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, breakdown) + " (" + this.utilityService.roundTo(percent * 100, 1) + "%)";
   }
 
   godDpsBreakdown(whichCharacter: number, whichGod: number) {
@@ -65,7 +65,7 @@ export class CalculatorOverviewComponent {
     var breakdown = this.dpsCalculatorService.getGodDps(godEnum);
     //var percent = this.dpsCalculatorService.getGodDpsPercent(godEnum);
 
-    return "<span class='bold smallCaps " + god.name.toLowerCase() + "Color'>" + god.name + ":</span> " + this.utilityService.bigNumberReducer(breakdown);
+    return "<span class='bold smallCaps " + god.name.toLowerCase() + "Color'>" + god.name + ":</span> " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, breakdown);
   }
 
 }

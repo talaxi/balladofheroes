@@ -165,11 +165,11 @@ export class EnemyViewComponent implements OnInit {
   }
 
   getCharacterCurrentHp() {
-    return this.utilityService.bigNumberReducer(Math.ceil(this.character.battleStats.currentHp + this.getCharacterBarrierValue(this.character)));
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, Math.ceil(this.character.battleStats.currentHp + this.getCharacterBarrierValue(this.character)));
   }
 
   getCharacterMaxHp() {
-    return this.utilityService.bigNumberReducer(this.lookupService.getAdjustedMaxHp(this.character, false));
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, this.lookupService.getAdjustedMaxHp(this.character, false));
   }
 
   getLootItem(loot: LootItem) {

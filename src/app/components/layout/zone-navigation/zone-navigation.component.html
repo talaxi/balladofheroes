@@ -1,9 +1,9 @@
 <div class="navigationGrid">
     <div class="header">
         <div class="balladHeader header">
-            <span class="s4Heading balladTitle mainPageSectionHeader" customToolTip [contentTemplate]="balladPopover">Ballads</span>
+            <span class="s4Heading balladTitle mainPageSectionHeader" customToolTip [contentTemplate]="balladPopover" [tooltipDirection]="tooltipDirectionDown">Ballads</span>
             <span class='flexBalladHeader'>
-                <mat-checkbox class="example-margin smallCaps" [(ngModel)]="autoProgress" (input)="autoProgressToggle()">Auto
+                <mat-checkbox class="example-margin smallCaps bold" [(ngModel)]="autoProgress" (input)="autoProgressToggle()">Auto
                     Progress
                 </mat-checkbox>
                 <button *ngIf="areAltarsAvailable()" (click)="openAutoProgressOptions(autoProgressModal)" class="autoProgressButton buttonStyled"><img
@@ -15,41 +15,42 @@
     <div class="navigation">
         <div class="zoneGrid">
             <div class="balladList">
-                <div class="eachBallad unavailableBallad" *ngFor="let ballad of temporarilyUnavailableBallads" customToolTip [contentTemplate]="unavailableUnderworldPopover">
-                    <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading" [disabled]="true"
+                <div class="eachBallad unavailableBallad" *ngFor="let ballad of temporarilyUnavailableBallads" customToolTip [contentTemplate]="unavailableUnderworldPopover"
+                [tooltipDirection]="tooltipDirectionDown">
+                    <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading bold" [disabled]="true"
                             [ngClass]="getBalladClass(ballad)"
                             (click)="balladService.selectBallad(ballad)">{{balladService.getBalladName(ballad.type)}}</button>
                 </div>
                 <div class="eachBallad" *ngFor="let ballad of availableBallads">
                     <div *ngIf="!ballad.isSelected">
-                        <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading"
+                        <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading bold"
                             [ngClass]="getBalladClass(ballad)"
                             (click)="balladService.selectBallad(ballad)">{{balladService.getBalladName(ballad.type)}}
                             <app-notification-icon *ngIf="ballad.notify"></app-notification-icon>
                         </button>
                     </div>
                     <div *ngIf="ballad.isSelected" [ngClass]="{'flexBetween': !isMobile}">
-                        <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading selected"><strong
+                        <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading selected bold"><strong
                                 [ngClass]="getBalladClass(ballad)">{{balladService.getBalladName(ballad.type)}}</strong></button>
                         <span *ngIf="!isMobile" class="selectedArrow textRightAligned">
                             <strong class="selected">&#8594;</strong>
                         </span>
                         <!--TODO: Should this all be its own component? vvv-->
                         <div *ngIf="isMobile" class="zoneList mobileList">
-                            <div *ngFor="let zone of availableZones">
+                            <div class="eachZone" *ngFor="let zone of availableZones">
                                 <div *ngIf="!zone.isSelected">
-                                    <span class="zoneSpacer">&#8618;</span><button class="buttonAsTextKeepColor z2Heading clickableText"
+                                    <span class="zoneSpacer">&#8618;</span><button class="bold buttonAsTextKeepColor z2Heading clickableText"
                                         [ngClass]="getZoneClass(zone)" (click)="selectZone(zone)" [disabled]="isSubZoneChangingDisabled()">{{zone.zoneName}}
                                         <app-notification-icon *ngIf="zone.notify" [notificationColor]="zone.notificationType"></app-notification-icon>
                                     </button>
                                 </div>
                                 <div *ngIf="zone.isSelected">
-                                    <span class="zoneSpacer">&#8618;</span><button class="buttonAsTextKeepColor z2Heading clickableText selected"><strong
+                                    <span class="zoneSpacer">&#8618;</span><button class="bold buttonAsTextKeepColor z2Heading clickableText selected"><strong
                                             [ngClass]="getZoneClass(zone)">{{zone.zoneName}}</strong></button>
-                                    <div *ngFor="let subzone of availableSubZones">
+                                    <div class="eachSubzone" *ngFor="let subzone of availableSubZones">
                                         <div *ngIf="!subzone.isSelected">
                                             <span class="subzoneSpacer">&#8618;</span><span><button
-                                                    class="buttonAsTextKeepColor z3Heading clickableText"
+                                                    class="buttonAsTextKeepColor z3Heading clickableText bold"
                                                     [ngClass]="getSubzoneClass(subzone)"
                                                     (click)="selectSubZone(subzone, zone)">{{balladService.isSubZoneToBeContinued(subzone)
                                                     ? "To Be Continued!" :
@@ -64,7 +65,7 @@
                                         </div>
                                         <div *ngIf="subzone.isSelected">
                                             <strong><button
-                                                    class="buttonAsTextKeepColor z3Heading clickableText selected"><span
+                                                    class="buttonAsTextKeepColor z3Heading clickableText selected bold"><span
                                                         class="subzoneSpacer">&#8618;</span><strong><span
                                                             [ngClass]="getSubzoneClass(subzone)">{{getSubzoneName(subzone)}}
                                                             {{getSubZoneSubText(subzone)}}</span></strong></button></strong>
@@ -79,20 +80,20 @@
                 </div>
             </div>
             <div *ngIf="!isMobile" class="zoneList">
-                <div *ngFor="let zone of availableZones">
+                <div class="eachZone" *ngFor="let zone of availableZones">
                     <div *ngIf="!zone.isSelected">
-                        <button class="buttonAsTextKeepColor z2Heading clickableText" [ngClass]="getZoneClass(zone)"
+                        <button class="buttonAsTextKeepColor z2Heading clickableText bold" [ngClass]="getZoneClass(zone)"
                             (click)="selectZone(zone)">{{zone.zoneName}}
                             <app-notification-icon *ngIf="zone.notify" [notificationColor]="zone.notificationType"></app-notification-icon>
                         </button>
                     </div>
                     <div *ngIf="zone.isSelected">
-                        <button class="buttonAsTextKeepColor z2Heading clickableText selected"><strong
+                        <button class="buttonAsTextKeepColor z2Heading clickableText selected bold"><strong
                                 [ngClass]="getZoneClass(zone)">{{zone.zoneName}}</strong></button>
-                        <div *ngFor="let subzone of availableSubZones">
+                        <div class="eachSubzone" *ngFor="let subzone of availableSubZones">
                             <div *ngIf="!subzone.isSelected">
                                 <span class="subzoneSpacer">&#8618;</span><span><button
-                                        class="buttonAsTextKeepColor z3Heading clickableText"
+                                        class="buttonAsTextKeepColor z3Heading clickableText bold"
                                         [ngClass]="getSubzoneClass(subzone)" [disabled]="isSubZoneChangingDisabled()"
                                         (click)="selectSubZone(subzone, zone)">{{balladService.isSubZoneToBeContinued(subzone) ? "To Be Continued!" :
                                         getSubzoneName(subzone)}}
@@ -105,7 +106,7 @@
                                 </span>
                             </div>
                             <div *ngIf="subzone.isSelected">
-                                <strong><button class="buttonAsTextKeepColor z3Heading clickableText selected"><span
+                                <strong><button class="buttonAsTextKeepColor z3Heading clickableText selected bold"><span
                                             class="subzoneSpacer">&#8618;</span><strong><span
                                                 [ngClass]="getSubzoneClass(subzone)">{{getSubzoneName(subzone)}}
                                                 {{getSubZoneSubText(subzone)}}</span></strong></button></strong>

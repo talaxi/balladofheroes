@@ -454,6 +454,35 @@ export class FollowersService {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Coin, 200));
       }
     }
+     
+    if (type === ZoneEnum.Aiaia) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.VialOfForeignWaters, 3));
+
+      if (rewardLevel >= 2) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RutileOpalFragment, 3));
+      }
+      if (rewardLevel >= 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Peony, 4));
+      }
+      if (rewardLevel >= 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RutileAmethystFragment, 3));
+      }
+    }
+     
+    if (type === ZoneEnum.StraitsOfMessina) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.UnstableElement, 3));
+
+      if (rewardLevel >= 2) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RutileAquamarineFragment, 3));
+      }
+      if (rewardLevel >= 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RutileTopazFragment, 3));
+      }
+      if (rewardLevel >= 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RutileEmeraldFragment, 3));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RutileRubyFragment, 3));
+      }
+    }
 
     return rewards;
   }

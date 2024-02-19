@@ -29,6 +29,13 @@
     grid-area: god2;
 }
 
+.slightlySmallName {
+    font-size: 1.4rem;
+}
+.smallName {
+    font-size: 1.3rem;
+}
+
 .flex {
     display: flex;
     justify-content: space-between;
@@ -84,11 +91,11 @@
 
 @media (max-width: 800px) {
     .xpBarWidth {
-        width: 68%;
+        width: 66.6%;
     }
 
     .flex {
-        width: 68%;
+        width: 66.6%;
     }
     
     .extraClickSpace {

@@ -62,7 +62,7 @@
     <div class="achievements">
         <div *ngFor="let subsection of achievementsBySubZonePaged; let i = index">
             <div class="grid">
-                <div class="subzoneName">
+                <div class="subzoneName clickableText" (click)="jumpToSubzone(subsection[0].subzone)">
                     <span class="s7Heading" [innerHtml]="getSubZoneBalladName(subsection[0].subzone)"></span>
                     <br />
                     <span [innerHtml]="getSubZoneName(subsection[0].subzone)" class="sectionHeading"></span>

@@ -47,6 +47,7 @@ export class ZoneNavigationComponent implements OnInit {
   trackedResourcesColumn1: ItemsEnum[] = [];
   trackedResourcesColumn2: ItemsEnum[] = [];
   tooltipDirection = DirectionEnum.Up;
+  tooltipDirectionDown = DirectionEnum.Down;
   quickLinksUnlocked = false;
   isMobile = false;
 
@@ -536,17 +537,7 @@ export class ZoneNavigationComponent implements OnInit {
   }
 
   selectSubZone(subzone: SubZone, zone: Zone) {
-    this.balladService.selectSubZone(subzone, zone);
-
-    /*this.availableBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable).sort(function (a, b) {
-      return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > b.displayOrder ? 1 : 0;
-    });
-    var selectedBallad = this.balladService.getActiveBallad();
-    if (selectedBallad !== undefined)
-      this.availableZones = selectedBallad.zones.filter(item => item.isAvailable);
-    var selectedZone = this.balladService.getActiveZone();
-    if (selectedZone !== undefined)
-      this.availableSubZones = selectedZone.subzones.filter(item => item.isAvailable);*/
+    this.balladService.selectSubZone(subzone, zone);   
   }
 
   openAutoProgressOptions(content: any) {

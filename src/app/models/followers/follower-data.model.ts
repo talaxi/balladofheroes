@@ -7,12 +7,14 @@ export class FollowerData {
     followers: IndividualFollower[];
     numberOfFollowersPurchased: number;
     numberOfFollowersGainedFromAchievements: number;
+    numberOfFollowersGainedFromColiseum: number;
     achievementCompletionCounter: number;
 
     constructor() {
         this.availableFollowers = 0; 
         this.numberOfFollowersGainedFromAchievements = 0;
         this.numberOfFollowersPurchased = 0;
+        this.numberOfFollowersGainedFromColiseum = 0;
         this.achievementCompletionCounter = 0;
         this.followers = [];
     }

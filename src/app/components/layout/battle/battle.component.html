@@ -1,16 +1,21 @@
-<div [ngClass]="{'storyGridContainer': isAtStoryScene() && !isMobile, 'gridContainer': !isAtStoryScene() || isMobile}" class="gridContainer">
+<div [ngClass]="{'storyGridContainer': isAtStoryScene() && !isMobile, 'gridContainer': !isAtStoryScene() || isMobile}"
+    class="gridContainer">
     <div class="header">
-        <div [ngClass]="{'extraInfoHeaderFlex': doingColiseumOrTrialFight(), 'headerFlex': !doingColiseumOrTrialFight() }">
-            <div class="alignCenter coliseumRound" *ngIf="doingColiseumFight()">
-                round {{globalService.globalVar.activeBattle.activeTournament.currentRound}} <span *ngIf="globalService.globalVar.activeBattle.activeTournament.maxRounds !== -1">of
-                {{globalService.globalVar.activeBattle.activeTournament.maxRounds}}</span></div>            
-                <button *ngIf="isMobile" class="buttonStyled zoneDropdown"
+        <div
+            [ngClass]="{'extraInfoHeaderFlex': doingColiseumOrTrialFight(), 'headerFlex': !doingColiseumOrTrialFight() }">
+            <div class="alignCenter coliseumRound" *ngIf="doingColiseumFight(true)">
+                round {{globalService.globalVar.activeBattle.activeTournament.currentRound}} <span
+                    *ngIf="globalService.globalVar.activeBattle.activeTournament.maxRounds !== -1">of
+                    {{globalService.globalVar.activeBattle.activeTournament.maxRounds}}</span></div>
+            <button *ngIf="isMobile" class="buttonStyled zoneDropdown"
                 (click)="openZoneNavigation(zoneNavigationContent)">
                 <img class="dropdownIcon" src="assets/svg/dropdown.svg">
             </button>
             <div class="s4Heading textCentered selectedSubzone pageHeader">
-                <strong class="clickableText" [ngClass]="{'subzoneName': globalStatusEffectsActive()}" customToolTip [contentTemplate]="subzonePopover" (click)="jumpToBestiary()">{{getActiveSubzoneName()}}</strong>
-                <div *ngIf="globalStatusEffectsActive()" class="buffEffects" customToolTip [contentTemplate]="globalEffectsPopover">
+                <strong class="clickableText" [ngClass]="{'subzoneName': globalStatusEffectsActive()}" customToolTip
+                    [contentTemplate]="subzonePopover" (click)="jumpToBestiary()">{{getActiveSubzoneName()}}</strong>
+                <div *ngIf="globalStatusEffectsActive()" class="buffEffects" customToolTip
+                    [contentTemplate]="globalEffectsPopover">
                     <img (contextmenu)="preventRightClick()" class="buffImage" src="assets/svg/statUpSE.svg" />
                 </div>
             </div>
@@ -18,7 +23,8 @@
                 (click)="goToNextSubzone()">
                 <img class="dropdownIcon" src="assets/svg/rightarrow.svg">
             </button>
-            <div class="alignCenter coliseumTime" *ngIf="doingColiseumOrTrialFight()">{{getTournamentTimeRemaining()}}
+            <div class="alignCenter coliseumTime" *ngIf="doingColiseumOrTrialFight(true)">
+                {{getTournamentTimeRemaining()}}
                 remaining</div>
             <div class="victoryCount" *ngIf="isMobile">
                 {{getSubzoneVictoryCount()}}
@@ -77,7 +83,8 @@
                 [innerHtml]="this.displayStorySegment()"></div>
             <div class="skipButton">
                 <span *ngIf="showSkipButtonMessage"><i><strong>Click the arrow button to the right to skip to the next
-                            page</strong></i></span>                
+                            page</strong></i></span>
+                <span *ngIf="showSkipButtonMessage2"><i><strong>Click the <span class="logColor">'LOG'</span> button on the top right to review story scenes</strong></i></span>
                 <button class="floatRight arrow buttonStyled" (click)="skipStory()">&#10145;</button>
             </div>
             <div class="loadingBar">
@@ -107,20 +114,23 @@
         <div *ngIf="isAtTown() && !isAtChestScene() && !isAtStoryScene() && !isAtSideQuestScene()" class="shopGrid">
             <app-shop-view></app-shop-view>
         </div>
+        <!--<div *ngIf="isGamePaused" class="smallCaps bold">game paused</div>-->
     </div>
-    <div *ngIf="isMobile && !isAtChestScene() && !isAtStoryScene()"
-        class="notificationOverlay" [ngClass]="{ 'opaque': notificationOverlayMessage.length > 0 }">
+    <div *ngIf="isMobile && !isAtChestScene() && !isAtStoryScene()" class="notificationOverlay"
+        [ngClass]="{ 'opaque': notificationOverlayMessage.length > 0 }">
         <div class="notificationMessage">
             <span [innerHtml]="notificationOverlayMessage"></span>
             <span class="buttonStyled skipOverlay" (click)="skipOverlayMessage()">X</span>
         </div>
     </div>
     <hr *ngIf="!isMobile && !isAtStoryScene()" class='gap hr' />
-    <div *ngIf="!isMobile && !isAtStoryScene()" class="battleUpdates" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }">
+    <div *ngIf="!isMobile && !isAtStoryScene()" class="battleUpdates"
+        [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }">
         <div class="innerContainer" #scrollToTop [scrollTop]="getScrollHeight(scrollToTop)"
             [innerHtml]="this.displayGameUpdates()"></div>
-        <button (click)="openGameLogEditor(gameLogEditorModal)" class="gameLogEditor gameLogButton showOnHover buttonStyled"><img
-                class="settingsIcon icon" src="assets/svg/gearWhite.svg"></button>
+        <button (click)="openGameLogEditor(gameLogEditorModal)"
+            class="gameLogEditor gameLogButton showOnHover buttonStyled"><img class="settingsIcon icon"
+                src="assets/svg/gearWhite.svg"></button>
         <button (click)="clearGameLog()" class="gameLogClear gameLogButton showOnHover buttonStyled"><img
                 class="settingsIcon icon" src="assets/svg/clear.svg"></button>
         <button *ngIf="displayScrollToBottom(scrollToTop)" (click)="skipToBottom(scrollToTop)"
@@ -146,7 +156,7 @@
 
 <ng-template #globalEffectsPopover>
     <strong>All Global Effects</strong>
-    <hr/>    
-    <div [innerHtml]="getAllGlobalEffects()"> 
-    </div>   
+    <hr />
+    <div [innerHtml]="getAllGlobalEffects()">
+    </div>
 </ng-template>

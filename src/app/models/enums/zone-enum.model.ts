@@ -24,5 +24,7 @@ export enum ZoneEnum {
   Crete,
   Labyrinth,
   Aiaia,
-  StraitsOfMessina
+  StraitsOfMessina,
+  ReturnToColchis,
+  EscapeFromColchis
 }

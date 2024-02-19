@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
-import { MatDialog as MatDialog } from '@angular/material/dialog';
+import { MatDialog as MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
@@ -34,6 +34,8 @@ export class ColiseumViewComponent implements OnInit {
   transactionEnabled: boolean = true;
   transactionConfirmationText = "";
   battleData = "";
+  dialogRef: MatDialogRef<any, any>;
+  file: any;
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -121,8 +123,7 @@ export class ColiseumViewComponent implements OnInit {
       tournaments.push(weeklyMelee.type);
     }
 
-    //TODO: bring this and the html back when ready
-    //tournaments.push(ColiseumTournamentEnum.FriendlyCompetition);
+    tournaments.push(ColiseumTournamentEnum.FriendlyCompetition);
 
     tournaments.sort((a, b) => this.sortColiseumList(a, b));
 
@@ -146,7 +147,7 @@ export class ColiseumViewComponent implements OnInit {
   }
 
   getRequiredDpsForSelectedTournament() {
-    return this.utilityService.bigNumberReducer(this.coliseumService.getRequiredDps(this.selectedTournament.type));
+    return this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, this.coliseumService.getRequiredDps(this.selectedTournament.type));
   }
 
   getFirstTimeCompletionRewards() {
@@ -319,6 +320,14 @@ export class ColiseumViewComponent implements OnInit {
     this.globalService.globalVar.settings.set("automateEternalMelee", this.automateEternalMelee);
   }
 
+  isRoundComplete(round: number) {
+    if (this.getHighestWeeklyMeleeRoundCompleted() >= round) {
+      return { 'crossed': true };
+    }
+
+    return {};
+  }
+
   setRewardsText() {
     var rewardsText = "";
 
@@ -328,14 +337,24 @@ export class ColiseumViewComponent implements OnInit {
       "Completing Round 15: +25-100 Metal Scraps<br/>" +
       "Completing Round 20: +25-150 Chthonic Favor<br/>" +
       "Completing Round 25: +30-70 Uncommon Crafting Materials<br/>" +
-      "Every successive boss fight: +100 Rough Gem Fragments<br/><br/>" +
+      "Completing Round 30: +200 Rough Gem Fragments<br/>" +
+      "Completing Round 35: +100K Coins<br/>" +
+      "Completing Round 40: +30-70 Rare Crafting Materials<br/>" +
+      "Completing Round 45: +25-100 Metal Nuggets<br/>" +
+      "Every successive boss fight: +100 Rutile Gem Fragments<br/><br/>" +
       "<b><i>Rewards will continue to be adjusted as future content is added to the game</i></b>"
 
     return rewardsText;
   }
 
   openModal(content: any) {
-    return this.dialog.open(content, { width: '40%', height: 'auto' });
+    this.dialogRef = this.dialog.open(content, { width: '75%', height: 'auto' });
+    return this.dialogRef;
+  }
+
+  closeDialog() {
+    if (this.dialogRef !== undefined)
+      this.dialogRef.close(true);
   }
 
   openTransactionModal() {
@@ -406,5 +425,42 @@ export class ColiseumViewComponent implements OnInit {
     var battleData = JSON.stringify(party);
     var compressedData = LZString.compressToBase64(battleData);
     this.battleData = compressedData;
+  }
+
+  public exportBattleDataToFile() {
+    var party = this.coliseumService.setupCompetitionParty();
+
+    var battleData = JSON.stringify(party);
+    var compressedData = LZString.compressToBase64(battleData);
+
+    let file = new Blob([compressedData], { type: '.txt' });
+    let a = document.createElement("a"),
+      url = URL.createObjectURL(file);
+    a.href = url;
+    a.download = "BalladOfHeroes-FriendlyCompetitionData-" + new Date().toLocaleDateString();
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, 0);
+  }
+
+  public startFriendlyCompetitionFromFile() {    
+    if (this.file === null || this.file === undefined || this.file.length === 0)
+      alert("First select a file to import.");
+
+    let fileReader = new FileReader();
+    fileReader.onload = (e) => {
+      if (fileReader.result !== null) {
+        this.selectedTournament.competitionData = fileReader.result.toString();        
+        this.startTournament();
+      }      
+    }
+    fileReader.readAsText(this.file);
+  }
+
+  fileChanged(e: any) {
+    this.file = e.target.files[0];
   }
 }

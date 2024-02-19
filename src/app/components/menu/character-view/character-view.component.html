@@ -11,8 +11,8 @@
             <br />
             <span customToolTip class="buttonAsText clickableText" [tooltipDirection]="tooltipDirection" (click)="openPermanentStatBreakdown(permanentStatBreakdownContent)" [contentTemplate]="characterXpPopover">Level {{character.level}}</span>
             <br />
-            <span customToolTip [tooltipDirection]="tooltipDirection" (click)="openPermanentStatBreakdown(permanentStatBreakdownContent)" [contentTemplate]="characterXpPopover" *ngIf="character.level < character.maxLevel">{{getCharacterXp()}} /
-                {{getCharacterXpToNextLevel()}} XP to Level
+            <span customToolTip [tooltipDirection]="tooltipDirection" (click)="openPermanentStatBreakdown(permanentStatBreakdownContent)" [contentTemplate]="characterXpPopover" *ngIf="character.level < character.maxLevel"><span [innerHTML]="getCharacterXp()"></span> /
+                <span [innerHTML]="getCharacterXpToNextLevel()"></span> XP to Level
                 {{character.level + 1}}</span>
             <span class="bold" *ngIf="character.level === character.maxLevel">
                 MAX
@@ -355,9 +355,11 @@
                             </ng-template>
                 </div>
                 <div *ngFor="let ability of god2AbilityList">
-                    <strong class="statLabel" [ngClass]="getAbilityColor(true, 2)" customToolTip [isLargeTooltip]="true"
-                    [tooltipDirection]="abilityTooltipDirection" [contentTemplate]="abilityPopover">{{ability.name}}</strong><span
-                        class="statValue"> - <span
+                    <strong *ngIf="!isDuoAbility(ability)" class="statLabel" [ngClass]="getAbilityColor(true, 2)" customToolTip [isLargeTooltip]="true"
+                    [tooltipDirection]="abilityTooltipDirection" [contentTemplate]="abilityPopover">{{ability.name}}</strong>
+                    <span class="statValue" *ngIf="isDuoAbility(ability)" [ngClass]="getAbilityColor(false)" [innerHtml]="getDuoAbilityName(ability)" customToolTip [isLargeTooltip]="true"
+                    [tooltipDirection]="abilityTooltipDirection" [contentTemplate]="abilityPopover"></span>
+                    <span class="statValue"> - <span
                             [innerHtml]="getGodAbilityDescription(ability.name, character, 2, ability)"></span></span>
 
                             <ng-template #abilityPopover>
@@ -414,6 +416,14 @@
                                     class="statValue" [innerHtml]="getGodAbilityTargetEffectDurationIncrease(ability, 2)"></span> seconds</div>
                                     <div *ngIf="getGodAbilityCooldownReduction(ability, 2) !== 0"><span class="statLabel">Cooldown Reduction: </span> <span
                                         class="statValue" [innerHtml]="getGodAbilityCooldownReduction(ability, 2)"></span> seconds</div>
+                                        <div
+                            *ngIf="getPermanentAbilityUserMaxCountIncrease(ability) !== 0 && getPermanentAbilityUserMaxCountIncrease(ability) !== '0%'">
+                            <span class="statLabel">Permanent User Additional Effect Increase: </span> <span class="statValue"
+                                [innerHtml]="getPermanentAbilityUserMaxCountIncrease(ability)"></span></div>
+                                <div
+                            *ngIf="getPermanentAbilityTargetMaxCountIncrease(ability) !== 0 && getPermanentAbilityTargetMaxCountIncrease(ability) !== '0%'">
+                            <span class="statLabel">Permanent Target Additional Effect Increase: </span> <span class="statValue"
+                                [innerHtml]="getPermanentAbilityTargetMaxCountIncrease(ability)"></span></div>
                                 </div>
                             </ng-template>
                 </div>

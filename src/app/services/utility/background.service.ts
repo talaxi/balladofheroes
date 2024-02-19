@@ -845,11 +845,11 @@ export class BackgroundService {
 
         if (trialType === undefined || trialType.count === 0)
           return;
-
+        
         run.clearTime = this.getTimeFragmentClearRate(run);
       }
 
-      if (run.selectedTrial === TrialEnum.TrialOfTheStarsNormal || run.selectedTrial === TrialEnum.TrialOfTheStarsHard || run.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard) {
+      if (run.selectedTrial === TrialEnum.TrialOfTheStarsNormal || run.selectedTrial === TrialEnum.TrialOfTheStarsHard || run.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard) {        
         var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
           item.zodiacType === this.zodiacService.getCurrentZodiac());
 
@@ -868,7 +868,8 @@ export class BackgroundService {
         this.globalService.giveCharactersExp(this.globalService.getActivePartyCharacters(true), xpGain);
 
         if (run.selectedTrial === TrialEnum.TrialOfSkill) {
-          var affinityXpGain = this.utilityService.trialAffinityXpGain * .2;
+          var efficiency = this.globalService.globalVar.isSubscriber ? this.utilityService.supporterTimeFragmentEfficiency : this.utilityService.timeFragmentEfficiency;
+          var affinityXpGain = this.utilityService.trialAffinityXpGain * efficiency;
 
           var god = this.globalService.globalVar.gods.find(item => item.type === this.trialService.getGodEnumFromTrialOfSkillBattle());
           if (god !== undefined) {
@@ -998,18 +999,18 @@ export class BackgroundService {
     var xpList: number[] = [];
     var coinList: number[] = [];
     var xpGained = 0;
-    var coinsGained = 0;
-    var fragmentEfficiency = .2;
+    var coinsGained = 0;    
+    var fragmentEfficiency =  this.globalService.globalVar.isSubscriber ? this.utilityService.supporterTimeFragmentEfficiency : this.utilityService.timeFragmentEfficiency;
 
     if (run.selectedTrial !== undefined) {
-      var trialType: TrialDefeatCount | undefined;
+      /*var trialType: TrialDefeatCount | undefined;
       if (run.selectedTrial === TrialEnum.TrialOfSkill) {
         trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
           item.godType === this.trialService.getGodEnumFromTrialOfSkillBattle());
       }
       else {
         trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial);
-      }
+      }*/
 
       var trial = this.dictionaryService.getTrialInfoFromType(run.selectedTrial);
       enemyOptions = this.trialService.generateBattleOptions(trial);
