@@ -6674,7 +6674,7 @@ export class LookupService {
     if (statusEffect.type === StatusEffectEnum.AutoAttackInvulnerable)
       description = "Immune to all auto attack damage.";
       if (statusEffect.type === StatusEffectEnum.BuzzingReminder)
-      description = "Increasing Rhoecus's Defense and Resistance until " + this.utilityService.bigNumberReducer(statusEffect.maxCount) + " damage is taken. Damage taken: " + this.utilityService.bigNumberReducer(statusEffect.count);
+      description = "Increasing Rhoecus's Defense and Resistance until " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, statusEffect.maxCount) + " damage is taken. Damage taken: " + this.utilityService.bigNumberReducer(statusEffect.count);
     if (statusEffect.type === StatusEffectEnum.Immobilize)
       description = "Auto attack and ability cooldowns are not charging until immobilize is cancelled by enemy.";
     if (statusEffect.type === StatusEffectEnum.CastingImmobilize)

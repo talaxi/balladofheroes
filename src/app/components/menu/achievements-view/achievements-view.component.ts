@@ -39,8 +39,7 @@ export class AchievementsViewComponent implements OnInit {
     private achievementService: AchievementService, private menuService: MenuService, private layoutService: LayoutService) { }
 
   ngOnInit(): void {
-    if (this.menuService.selectedAchievementBallad !== undefined) {      
-      console.log("Ballad type: " + this.menuService.selectedAchievementBallad.type);
+    if (this.menuService.selectedAchievementBallad !== undefined) {            
       this.selectedBallad = this.menuService.selectedAchievementBallad.type;
       this.populateZones();
     }
