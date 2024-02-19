@@ -41,7 +41,7 @@
     (click)="openShop(option, augeanStablesModal)">{{getOptionText(option.type)}} <app-notification-icon
       *ngIf="!augeanStablesCompleted()" [isButton]="true"
       [notificationColor]="sideQuestNotification"></app-notification-icon></button>
-      <button *ngIf="option.type === shopTypeEnum.CirceAlchemy" class="buttonStyled shopButtonText"
+      <button *ngIf="option.type === shopTypeEnum.CirceAlchemy && circeAlchemyAvailable() && !circeAlchemyCompleted()" class="buttonStyled shopButtonText"
     (click)="openShop(option, circeAlchemyModal)">{{getOptionText(option.type)}} <app-notification-icon
       *ngIf="!circeAlchemyCompleted() && circeAlchemyAvailable()" [isButton]="true"
       [notificationColor]="sideQuestNotification"></app-notification-icon></button>

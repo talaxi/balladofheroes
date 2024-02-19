@@ -1751,7 +1751,6 @@ export class VersionControlService {
             }
           }
 
-          var monkClass = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Monk);
           if (monkClass !== undefined) {           
             var permanentAbility1Upgrades = monkClass.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
             if (permanentAbility1Upgrades !== undefined) {
@@ -1821,7 +1820,6 @@ export class VersionControlService {
             }
           }
 
-          //increase warrior battle cry thorns dmg maybe
           var warriorClass = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Warrior);
           if (warriorClass !== undefined) {  
             var permanentAbility1Upgrades = warriorClass.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);

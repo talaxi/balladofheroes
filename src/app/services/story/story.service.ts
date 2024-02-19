@@ -657,24 +657,24 @@ export class StoryService {
           "<div class='sceneDiv'>Outside of the house, Zosime notices a woman flanked by a lioness. Her focus had been entirely on Thales, but now shifts. Zosime quickly draws her bow at the ready, but does not yet raise it to attack.</div>" +
           "<div>" + this.commonCharacterText("“Who are you, and why are you here?”") + " The woman, Circe, demanded. To Zosime's surprise, she spoke with a mortal voice unlike the booming voice of her brother. </div>";
       else if (pageCount === 3)
-        sceneText = "<div class='sceneDiv'>" + this.zosimeText("“I am Zosime, and he is Thales. We've come to ask for your help, and he has done nothing against you! Return him!”") + " Zosime replies, raising her bow slightly, unsure how best to proceed with the Witch.</div>" +
-          "<div class='sceneDiv'>" + this.commonCharacterText("“He is not the first man to wander onto my island in search of 'help' only to show his true desires. His desires are much simpler now.”") + " the Witch says coldly.</div>" +
+        sceneText = "<div class='sceneDiv'>" + this.zosimeText("“I am Zosime, and he is Thales. We've come to ask for your help, and he has done nothing against you! Return him!”") + " Zosime replies, her mind racing, unsure how best to proceed with the Witch.</div>" +
+          "<div class='sceneDiv'>" + this.commonCharacterText("“He is not the first man to wander onto my island in search of <i>help</i>. In my experience, they all seem to have the same desire.”") + " the Witch says unyieldingly.</div>" +
           "<div class='sceneDiv'>Circe steps forward from her home, the lioness still at her flank.</div>" +
           "<div>" + this.commonCharacterText("“I must confess, I did not notice you at first. I ask again, why are you here?”") + "</div>";
       else if (pageCount === 4)
         sceneText = "<div class='sceneDiv'>Zosime hurriedly tells the story of her journey so far. The chance meeting in Delphi, the magic attached to Thales by Athena and Khronos, their conquests over monsters, and the fall of Olympus.</div>" +
           "<div class='sceneDiv'>Circe listened patiently for the story to end. She paused for a moment upon its completion, mulling over what she had heard. Zosime thought she noticed the Witch flinch upon the mention of Athena, but otherwise Circe gave nothing away.</div>" +
-          "<div>Circe and her lionness continued to step forward, stalking closer to Zosime. " + this.commonCharacterText("“I have no love for the Olympians or the games they play. What difference does it make to me who lives on the mountain while I live on Aiaia?”") + "</div>"; 
+          "<div>Circe and her lionness continued to step forward, stalking closer to Zosime. " + this.commonCharacterText("“I have no love for the Olympians or the games they play. What difference does it make to me who lives on the mountain while I am forced to live here?”") + "</div>"; 
       else if (pageCount === 5)
-        sceneText = "<div class='sceneDiv'>As Circe approaches, Zosime finally began to feel alarm. She points her bow at the lionness, but stops short when noticing the look of surprise on the Witch's face.</div>" +
-          "<div class='sceneDiv'>Zosime turned to see what they were staring at and noticed her own lioness by her side. After swallowing down a brief instinct to move, she saw that her lioness had a slight golden glow. Artemis.</div>" +
+        sceneText = "<div class='sceneDiv'>As Circe approaches, Zosime finally began to feel alarm. She decides that this will likely come to combat, but a warm radiance from behind stops her from raising her bow.</div>" +
+          "<div class='sceneDiv'>Zosime turns to see the source of this aura, and notices her own lioness by her side. After swallowing down a brief instinct to move, she saw that her lioness had a slight golden glow. Artemis.</div>" +
           "<div class='sceneDiv'>" + this.commonCharacterText("“I believe this is the first time we have met. Your brothers and sisters have all been by to make their demands or have their fun of course. I wondered if your absence was out of respect or indifference.”") + "</div>" +
-          "<div class='sceneDiv'>With a slight frown, she continues. </div>" + 
+          "<div class='sceneDiv'>With a sigh, she turns to Zosime and continues. </div>" + 
           "<div>" + this.commonCharacterText("“I will return your friend to you, and you will leave this place. I do not want Athena's ire, but I will not be a pawn in her games. She has taken enough from me.”") + "</div>"; 
       else if (pageCount === 6)
         sceneText = "<div class='sceneDiv'>Feeling her chance slipping away, Zosime decides to push her luck.</div>" +
-          "<div class='sceneDiv'>" + this.zosimeText("“It's not just about the gods. It's about your brother, Aeëtes. He spreads corruption to all around him, keeping the dead alive for his bidding. I aim to stop him and the terrors he inflicts upon those around him, and I cannot do it without Thales.”") + "</div>" +
-          "<div class='sceneDiv'>Zosime believed she had piqued the Witch's interest. Circe moves to Thales and kneels down, covering his snout with oil and muttering an unintelligible phrase. Thales began to take shape once more.</div>" +
+          "<div class='sceneDiv'>" + this.zosimeText("“It's not just about the gods. It's about your brother, Aeëtes. He spreads corruption to all around him, keeping the dead alive for his bidding. I aim to stop him and the terrors he inflicts upon those around him, and I cannot do it without your help.”") + "</div>" +
+          "<div class='sceneDiv'>This seems to pique the Witch's interest. Circe moves to Thales and kneels down, covering his snout with oil and muttering an unintelligible phrase. Thales began to take shape once more.</div>" +
           "<div class='sceneDiv'>" + this.commonCharacterText("“I will say that I am interested in this magic over time you speak of. This island is full of potent herbs. Deep in the forest, you will find a rare flower of deep yellow and green. I have avoided collecting it to due to its scarcity, but if what you say is true then you should be able to bring me a bundle of them. Go now and bring them to me.”") + "</div>" +
           "<div>Seizing on this small opportunity, Zosime hurries Thales along the trail while filling him on what he missed.</div>";
     }
@@ -711,7 +711,7 @@ export class StoryService {
         "<div class='sceneDiv'>" + this.commonCharacterText("And proof. Aeëtes was the strongest of us. If you could not defeat Scylla, you could not withstand him.”") + "</div>" +
         "<div>She proffers a bushel of herbs with dark black roots and white leaves to Thales.</div>";
       else if (pageCount === 3)
-        sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“This is what you need. Do not lose them -- you will never find more, as a mortal cannot pick Moly. Take this when you want the magic to stop for a time, and it will.”") + "</div>" +
+        sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“This is what you need. Do not lose them -- you will never find more, as a mortal cannot pick Moly. The gods use it to protect themselves from magic and poisons. Take this when you want the magic to stop for a time, and it will.”") + "</div>" +
       "<div class='sceneDiv'>You take the herbs and give thanks.</div>" + 
       "<div>" + this.commonCharacterText("“He is more powerful than even I realize. Good luck. You will need it.”") + "</div>";
     }
