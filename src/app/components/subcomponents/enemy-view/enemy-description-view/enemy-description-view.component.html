@@ -10,18 +10,18 @@
     <div #infoView *ngIf="this.defeatCount >= this.utilityService.killCountDisplayEnemyStatsAbilities">
         <div class="stats">
             <div class="statColumn1">
-                <span class='statLabel'>Attack:</span> {{getAttack()}}
+                <span class='statLabel'>Attack: </span> <span [innerHtml]="getAttack()"></span>
                 <br />
-                <span class='statLabel'>Agility:</span> {{getAgility()}}
+                <span class='statLabel'>Agility: </span> <span [innerHtml]="getAgility()"></span>
                 <br />
-                <span class='statLabel'>Luck:</span> {{getLuck()}}
+                <span class='statLabel'>Luck: </span> <span [innerHtml]="getLuck()"></span>
             </div>
             <div class="statColumn2">
-                <span class='statLabel'>Max HP:</span> {{getMaxHp()}}
+                <span class='statLabel'>Max HP: </span> <span [innerHtml]="getMaxHp()"></span>
                 <br />
-                <span class='statLabel'>Defense:</span> {{getDefense()}}
+                <span class='statLabel'>Defense: </span> <span [innerHtml]="getDefense()"></span>
                 <br />
-                <span class='statLabel'>Resistance:</span> {{getResistance()}}
+                <span class='statLabel'>Resistance: </span> <span [innerHtml]="getResistance()"></span>
             </div>
         </div>
         <br *ngIf="getElementalStrengths() !== '' || getElementalWeaknesses() !== ''" />

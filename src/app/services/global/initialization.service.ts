@@ -1476,7 +1476,7 @@ export class InitializationService {
         nemesis!.statGainCount = 0;
         nemesis!.expToNextLevel = 200;
         this.globalService.assignGodAbilityInfo(nemesis!);
-        for (var i = 0; i < 3060; i++) {
+        for (var i = 0; i < godLevel; i++) {
           this.globalService.levelUpGod(nemesis!);
         }
         nemesis!.exp = 0;

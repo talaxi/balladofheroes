@@ -802,6 +802,8 @@ export class ColiseumService {
       this.globalService.calculateCharacterBattleStats(member);
       var enemy = new Enemy();
       enemy.name = member.name;
+      enemy.xpGainFromDefeat = 0;
+      enemy.coinGainFromDefeat = 0;      
       enemy.battleStats = structuredClone(member.battleStats);
       enemy.baseStats = structuredClone(member.baseStats);
       enemy.abilityList = structuredClone(member.abilityList);

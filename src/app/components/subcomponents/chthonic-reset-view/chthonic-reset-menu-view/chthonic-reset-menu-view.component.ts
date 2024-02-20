@@ -190,8 +190,8 @@ export class ChthonicResetMenuViewComponent implements OnInit {
     });
 
     var resetRetainAmount = this.globalService.globalVar.chthonicPowers.getRetainGodLevelPercent();
-    if (resetRetainAmount > 0) {      
-      var xp = this.lookupService.getTotalExpRequiredForGodLevel(originalLevel);      
+    if (resetRetainAmount > 0) {            
+      var xp = this.lookupService.getTotalExpRequiredForGodLevel(originalLevel);            
       god.exp += xp * resetRetainAmount;
 
       var previousXp: number | undefined = undefined;

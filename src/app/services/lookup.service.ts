@@ -6422,7 +6422,7 @@ export class LookupService {
       description = "Increase the damage multiplier of Link abilities by " + Math.round((statusEffect.effectiveness) * 100) + "%. Reduce the cooldown after using all Links by " + statusEffect.count + " second" + (statusEffect.count === 1 ? "" : "s") + ".";
 
     if (statusEffect.type === StatusEffectEnum.ItemBoost)
-      description = "Increase healing or damage dealt by battle items by " + Math.round((statusEffect.effectiveness) * 100) + "%. Reduce any cooldowns an item may have by " + (statusEffect.count * 100) + "%. (Does not increase effectiveness of items that grant effects)";
+      description = "Increase healing or damage dealt by battle items by " + Math.round((statusEffect.effectiveness) * 100) + "%. Reduce any cooldowns an item may have by " + this.utilityService.genericRound(statusEffect.count * 100) + "%. (Does not increase effectiveness of items that grant effects)";
 
     if (statusEffect.type === StatusEffectEnum.PalmStrike)
       description = "Current stack count: " + statusEffect.stackCount + ". When this reaches 3 stacks, the Palm Strike that caused it will hit all targets and deal increased damage.";
@@ -11773,7 +11773,7 @@ export class LookupService {
     }
 
     var equipmentAbilityCooldownReductionGain = this.equipmentService.getTotalAbilityCooldownReductionGain(character.equipmentSet);
-    var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+    var setStats = this.globalService.checkForSetBonuses(character.equipmentSet, undefined, true);    
     if (setStats !== undefined && setStats.abilityCooldownReduction > 0) {
       equipmentAbilityCooldownReductionGain += setStats.abilityCooldownReduction;
     }
@@ -11810,7 +11810,7 @@ export class LookupService {
     }
 
     var equipmentAutoAttackCooldownReductionGain = this.equipmentService.getTotalAutoAttackCooldownReductionGain(character.equipmentSet);
-    var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+    var setStats = this.globalService.checkForSetBonuses(character.equipmentSet, undefined, true);
     if (setStats !== undefined && setStats.autoAttackCooldownReduction > 0)
       equipmentAutoAttackCooldownReductionGain += setStats.autoAttackCooldownReduction;
 
@@ -12690,8 +12690,8 @@ export class LookupService {
 
   getTotalExpRequiredForGodLevel(level: number) {
     var totalAmount = 0;
-    for (var i = 2; i <= level; i++) {
-      totalAmount += this.globalService.getGodXpToNextLevel(i);
+    for (var i = 2; i < level; i++) {
+      totalAmount += this.globalService.getGodXpToNextLevel(i);      
     }
 
     return totalAmount;

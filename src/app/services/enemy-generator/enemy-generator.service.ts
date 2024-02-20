@@ -8134,7 +8134,7 @@ export class EnemyGeneratorService {
       sparkfield.name = "Spark Field";
       sparkfield.isAvailable = true;
       sparkfield.cooldown = 30;
-      sparkfield.currentCooldown = 0;
+      sparkfield.currentCooldown = .25;
       sparkfield.dealsDirectDamage = true;
       sparkfield.effectiveness = 4.25;
       sparkfield.isAoe = true;      

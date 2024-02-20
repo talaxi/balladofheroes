@@ -47,7 +47,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.81, 0.8, 0.76, 0.75, 0.71, 0.7, 0.65, 0.64, 0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [0.82, 0.81, 0.8, 0.76, 0.75, 0.71, 0.7, 0.65, 0.64, 0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -1908,6 +1908,16 @@ export class VersionControlService {
 
               this.globalService.globalVar.achievements.push(achievement);
             });
+          }
+        }
+        if (version === .82) {          
+          var aphroditeGod = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Aphrodite);
+          if (aphroditeGod !== undefined) {            
+            var permanentAbility1 = aphroditeGod.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
+            if (permanentAbility1 !== undefined && permanentAbility1.userEffect.length > 0) {
+              permanentAbility1.userEffect[0].effectiveness = permanentAbility1.userEffect[0].threshold;
+              permanentAbility1.userEffect[0].threshold = 0;
+            }
           }
         }
 

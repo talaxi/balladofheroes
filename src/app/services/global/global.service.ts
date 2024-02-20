@@ -56,7 +56,7 @@ export class GlobalService {
     private deviceDetectorService: DeviceDetectorService, private zodiacService: ZodiacService) { }
 
   getCurrentVersion() {
-    return .81;
+    return .82;
   }
 
   initializeGlobalVariables() {
@@ -3049,7 +3049,7 @@ export class GlobalService {
         else if (god.type === GodEnum.Aphrodite) {
           ability.userEffect.push(new StatusEffect(StatusEffectEnum.None));
           var userGainsEffect = ability.userEffect[0];
-          userGainsEffect.threshold = .025;
+          userGainsEffect.effectiveness = .025;
         }
       }
       else if (godLevel % 200 === 100) //passive  
@@ -4192,7 +4192,7 @@ export class GlobalService {
     return 0;
   }
 
-  checkForSetBonuses(equipmentSet: EquipmentSet, stats?: CharacterStats) {
+  checkForSetBonuses(equipmentSet: EquipmentSet, stats?: CharacterStats, displayCooldownReductionAsAdditive: boolean = false) {
     if (stats === undefined)
       stats = new CharacterStats(0, 0, 0, 0, 0, 0);
 
@@ -4217,8 +4217,12 @@ export class GlobalService {
       }
 
       if (setCount[0] === EquipmentSetEnum.Hermes) {
-        if (setCount[1] >= 2)
-          stats!.autoAttackCooldownReduction *= this.getSetBonusAmount(setCount[0], 2);
+        if (setCount[1] >= 2) {
+          if (displayCooldownReductionAsAdditive)
+            stats!.autoAttackCooldownReduction += 1 - this.getSetBonusAmount(setCount[0], 2);
+          else
+            stats!.autoAttackCooldownReduction *= this.getSetBonusAmount(setCount[0], 2);
+        }
         if (setCount[1] >= 3)
           stats!.elementIncrease.air += this.getSetBonusAmount(setCount[0], 3);
       }
@@ -4268,8 +4272,12 @@ export class GlobalService {
       }
 
       if (setCount[0] === EquipmentSetEnum.Poseidon) {
-        if (setCount[1] >= 2)
-          stats!.abilityCooldownReduction *= this.getSetBonusAmount(setCount[0], 2);
+        if (setCount[1] >= 2) {
+          if (displayCooldownReductionAsAdditive)
+            stats!.abilityCooldownReduction += 1 - this.getSetBonusAmount(setCount[0], 2);
+          else
+            stats!.abilityCooldownReduction *= this.getSetBonusAmount(setCount[0], 2);
+        }
         if (setCount[1] >= 3)
           stats!.elementIncrease.water += this.getSetBonusAmount(setCount[0], 3);
       }
@@ -4287,8 +4295,12 @@ export class GlobalService {
       }
 
       if (setCount[0] === EquipmentSetEnum.Aphrodite) {
-        if (setCount[1] >= 2)
-          stats!.abilityCooldownReduction *= this.getSetBonusAmount(setCount[0], 2);
+        if (setCount[1] >= 2) {
+          if (displayCooldownReductionAsAdditive)
+            stats!.abilityCooldownReduction += 1 - this.getSetBonusAmount(setCount[0], 2);
+          else
+            stats!.abilityCooldownReduction *= this.getSetBonusAmount(setCount[0], 2);
+        }
         if (setCount[1] >= 3)
           stats!.allyDamageBonus += this.getSetBonusAmount(setCount[0], 3);
       }
