@@ -3869,10 +3869,11 @@ export class GlobalService {
     return undefined;
   }
 
-  resetCooldowns() {
+  resetCooldowns() {    
     var party = this.globalVar.characters.filter(item => item.isAvailable);
-
+    
     party.forEach(member => {
+      this.calculateCharacterBattleStats(member);      
       member.battleInfo.autoAttackTimer = 0;
       member.battleInfo.barrierValue = 0;
       member.battleInfo.duoAbilityUsed = false;
@@ -3915,7 +3916,7 @@ export class GlobalService {
         dispenserOfDues.effectiveness = 0;
     });
 
-    this.globalVar.characters.forEach(character => {
+    this.globalVar.characters.forEach(character => {      
       if (character.abilityList !== undefined && character.abilityList.length > 0)
         character.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
           ability.currentCooldown = this.getAbilityCooldown(ability, character, true);
@@ -3924,16 +3925,22 @@ export class GlobalService {
 
     this.globalVar.gods.forEach(god => {
       var equippedCharacterEnum = CharacterEnum.Adventurer;
-      if (party[0].assignedGod1 === god.type || party[0].assignedGod2 === god.type) {
+      /*if (party[0].assignedGod1 === god.type || party[0].assignedGod2 === god.type) {
         equippedCharacterEnum = party[0].type;
       }
       if (party[1] !== undefined && (party[1].assignedGod1 === god.type || party[1].assignedGod2 === god.type)) {
         equippedCharacterEnum = party[1].type;
-      }
+      }*/
+
+      party.forEach(partyMember => {
+        if (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type)
+          equippedCharacterEnum = partyMember.type;
+      })
+
       var equippedCharacter = this.globalVar.characters.find(item => item.type === equippedCharacterEnum);
 
       if (god.abilityList !== undefined && god.abilityList.length > 0)
-        god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
+        god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {          
           ability.currentCooldown = this.getAbilityCooldown(ability, equippedCharacter !== undefined ? equippedCharacter : new Character(), true);
         });
     });

@@ -41,7 +41,7 @@ export class ColiseumService {
 
   getTournamentDescription(type: ColiseumTournamentEnum) {
     var info = this.dictionaryService.getColiseumInfoFromType(type);
-    
+
     if (type === ColiseumTournamentEnum.WeeklyMelee)
       return "Complete as many rounds as you can in " + info.tournamentTimerLength + " seconds. Each round is progressively more difficult. Gain " + (this.globalService.globalVar.isSubscriber ? "two entries" : "one entry") + " per day. (And " + (this.globalService.globalVar.isSubscriber ? "two extra entries" : "an extra entry") + " for playing on Saturday or Sunday!)";
 
@@ -803,7 +803,7 @@ export class ColiseumService {
       var enemy = new Enemy();
       enemy.name = member.name;
       enemy.xpGainFromDefeat = 0;
-      enemy.coinGainFromDefeat = 0;      
+      enemy.coinGainFromDefeat = 0;
       enemy.battleStats = structuredClone(member.battleStats);
       enemy.baseStats = structuredClone(member.baseStats);
       enemy.abilityList = structuredClone(member.abilityList);
@@ -882,7 +882,7 @@ export class ColiseumService {
 
                 if (permanentAbilityUpgrades.userEffect !== undefined && permanentAbilityUpgrades.userEffect.length > 0) {
                   if (abilityCopy.name === "Second Wind")
-                  abilityCopy.userEffect[0].effectiveness *= 1 + permanentAbilityUpgrades.userEffect[0].effectiveness;
+                    abilityCopy.userEffect[0].effectiveness *= 1 + permanentAbilityUpgrades.userEffect[0].effectiveness;
                   else
                     abilityCopy.userEffect[0].effectiveness += permanentAbilityUpgrades.userEffect[0].effectiveness;
                   abilityCopy.userEffect[0].duration += permanentAbilityUpgrades.userEffect[0].duration;
@@ -921,8 +921,16 @@ export class ColiseumService {
     var enemyTeamParsed = <CompetitionParty>JSON.parse(decompressedData);
     if (enemyTeamParsed !== null && enemyTeamParsed !== undefined) {
       var competitionParty = plainToInstance(CompetitionParty, enemyTeamParsed);
-      if (competitionParty !== undefined)
+      if (competitionParty !== undefined) {
+        if (competitionParty.party !== undefined && competitionParty.party.enemyList !== undefined) {
+          competitionParty.party.enemyList.forEach(enemy => {
+            enemy.xpGainFromDefeat = 0;
+            enemy.coinGainFromDefeat = 0;
+          });
+        }
+
         enemyTeam.push(competitionParty.party);
+      }
     }
 
     return enemyTeam;
