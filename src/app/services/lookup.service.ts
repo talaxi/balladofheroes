@@ -726,6 +726,8 @@ export class LookupService {
       name = "Gain <span class='aresColor smallCaps'>Ares</span> as an equippable god";
     else if (type === ItemsEnum.GoldenApple)
       name = "Each Golden Apple increase max Alchemy level by 1. Can only obtain 25 Golden Apples.";
+      else if (type === ItemsEnum.TimeFragment)
+      name = "Each Time Fragment allows you to automatically run any completed subzone or certain battles in the background. You will gain their rewards, including Coins and XP, at a reduced rate. Open the Time Fragment overview option in the Quick View section for more information.";
     else if (type === ItemsEnum.OlympicCommendation)
       name = "Increase unequipped god XP gain by 5%. Current total is " + (this.globalService.getInactiveGodXpRate() * 100) + "%. Can only obtain 5 Olympic Commendations.";
     else if (type === ItemsEnum.BlazingSunPendantUniqueUpgrade || type === ItemsEnum.DarkMoonPendantUniqueUpgrade)

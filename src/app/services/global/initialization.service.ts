@@ -220,7 +220,7 @@ export class InitializationService {
     this.initializeBalladOfOlympus();
     this.initializeBalladOfTheLabyrinth();
     this.initializeBalladOfTheWitch();
-    //this.initializeBalladOfTheEagle();
+    //this.initializeBalladOfTheEagle(); //TODO: gotta turn this back off
   }
 
   initializeSettings() {

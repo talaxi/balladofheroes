@@ -182,11 +182,22 @@ export class AppComponent {
     var batchTime = this.getBatchRunTime(subzone, deltaTime); //runs the game in batches of 5 seconds max    
     //user was afk, run battle in batches until you're caught up
     if (deltaTime > batchTime) {
+      //this.dialog.closeAll(); //modals supercede loading screen but is that a bad thing?
       this.lookupService.isUIHidden = true;
       this.globalService.globalVar.isCatchingUp = true;
       this.gameLogService.disableOverlayBuffer = true;
       this.globalService.bankedTime += deltaTime - batchTime;
       deltaTime = batchTime;
+
+      var dialogDivs = document.querySelectorAll('.mdc-dialog__surface');      
+      dialogDivs.forEach(div => {        
+        div.classList.add('hide');
+      });
+
+      var dialogBackdropDivs = document.querySelectorAll('.cdk-overlay-backdrop');
+      dialogBackdropDivs.forEach(div => {        
+        div.classList.add('hide');
+      });
 
       if (this.globalService.bankedTime > this.globalService.maxBankedTime)
         this.globalService.maxBankedTime = this.globalService.bankedTime;
@@ -203,6 +214,16 @@ export class AppComponent {
         this.globalService.globalVar.isCatchingUp = false;
         this.gameLogService.disableOverlayBuffer = false;
         this.gameSaveService.saveGame();
+
+        var dialogDivs = document.querySelectorAll('.mdc-dialog__surface');
+        dialogDivs.forEach(div => {
+          div.classList.remove('hide');
+        });
+  
+        var dialogBackdropDivs = document.querySelectorAll('.cdk-overlay-backdrop');
+        dialogBackdropDivs.forEach(div => {
+          div.classList.remove('hide');
+        });
 
         if (this.catchupDialog !== undefined) {
           this.catchupDialog.close();

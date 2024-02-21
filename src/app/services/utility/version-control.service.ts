@@ -1920,6 +1920,33 @@ export class VersionControlService {
             }
           }
         }
+        if (version === .85) {
+          //TODO: make sure you aren't actually on this
+          this.initializationService.initializeBalladOfTheEagle();
+          var unavoidablePathSubZone = this.balladService.findSubzone(SubZoneEnum.StraitsOfMessinaUnavoidablePath);
+          if (unavoidablePathSubZone !== undefined && unavoidablePathSubZone.isAvailable && unavoidablePathSubZone.victoryCount > 0) {
+            var eagle = this.balladService.findBallad(BalladEnum.Eagle);
+            var returnToColchis = this.balladService.findZone(ZoneEnum.ReturnToColchis);
+            var phasisBeach = this.balladService.findSubzone(SubZoneEnum.ReturnToColchisPhasisBeach);
+
+            if (eagle !== undefined) {
+              eagle.isAvailable = true;
+              eagle.notify = true;
+            }
+            if (returnToColchis !== undefined) {
+              returnToColchis.isAvailable = true;
+              returnToColchis.notify = true;
+            }
+            if (phasisBeach !== undefined) {
+              phasisBeach.isAvailable = true;
+              phasisBeach.notify = true;
+
+              this.achievementService.createDefaultAchievementsForSubzone(phasisBeach.type).forEach(achievement => {
+                this.globalService.globalVar.achievements.push(achievement);
+              });
+            }
+          }
+        }
 
         this.globalService.globalVar.currentVersion = version;
       }

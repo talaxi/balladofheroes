@@ -311,6 +311,9 @@ export class SlotMenuViewComponent {
     }
 
     this.availableGems = this.availableGems.filter(item => item.amount > 0);
+
+    if (this.selectedItem !== undefined && !this.availableGems.some(item => item.item === this.selectedItem!.item))
+      this.selectedItem = undefined;
   }
 
   openConfirmationDialog() {

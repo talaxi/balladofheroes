@@ -493,7 +493,7 @@ export class BattleService {
           member.battleStats.currentHp = this.lookupService.getAdjustedMaxHp(member, true, false);
         });
         if (enemyOptions.length > 0) {
-          enemyOptions[0].enemyList.forEach(member => {            
+          enemyOptions[0].enemyList.forEach(member => {
             //this.globalService.calculateCharacterBattleStats(member, false);
             member.battleStats.currentHp = this.lookupService.getAdjustedMaxHp(member, false, false);
           });
@@ -1028,7 +1028,7 @@ export class BattleService {
     if (isPartyAttacking)
       this.altarService.incrementAltarCount(AltarConditionEnum.AutoAttackUse);
 
-    var damageMultiplier = this.getDamageMultiplier(character, target, additionalDamageMultiplier, true, elementalType, undefined, undefined, undefined, undefined, undefined, ally) * totalAutoAttackCount;
+    var damageMultiplier = this.getDamageMultiplier(isPartyAttacking, character, target, additionalDamageMultiplier, true, elementalType, undefined, undefined, undefined, undefined, undefined, ally) * totalAutoAttackCount;
 
     var allDamageDealt = this.dealDamage(isPartyAttacking, character, target, isCritical, autoAttackMultiplier, damageMultiplier, undefined, elementalType, fromSpecialDelivery ? GodEnum.Hermes : undefined, party);
     var damageDealt = allDamageDealt[0];
@@ -1268,6 +1268,7 @@ export class BattleService {
       if (target.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.PalmStrike)) {
         insightEffectiveness *= insight.secondaryEffectiveness;
       }
+      
       var adjustedHealingDone = character.battleStats.healingDone;
 
       var healingDoneModifier = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.HealingDoneUp);
@@ -1284,6 +1285,9 @@ export class BattleService {
         healAmount = (((insightEffectiveness / 2) * this.lookupService.getAdjustedAttack(character, undefined, true)) +
           ((insightEffectiveness / 2) * this.lookupService.getAdjustedResistance(character, true)))
           * (1 + adjustedHealingDone);
+
+        //console.log(((insightEffectiveness / 2) * this.lookupService.getAdjustedAttack(character, undefined, true)) + " + " +  ((insightEffectiveness / 2) * this.lookupService.getAdjustedResistance(character, true)) 
+        //+ " * " + (1 + adjustedHealingDone) + " = " + healAmount);
 
         if (character.overdriveInfo.isActive && character.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Preservation)
           healAmount *= 1.5;
@@ -1722,7 +1726,7 @@ export class BattleService {
     }
 
     if (abilityCopy.name === "Raise") {
-      if (this.battle.currentEnemies.enemyList.length === 1) {        
+      if (this.battle.currentEnemies.enemyList.length === 1) {
         var rng = this.utilityService.getRandomInteger(0, 2);
         if (rng === 0) {
           this.battle.currentEnemies.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ExplodingHusk));
@@ -2026,7 +2030,7 @@ export class BattleService {
           if (index === array.length - 1)
             isLastInList = true;
 
-          var damageMultiplier = this.getDamageMultiplier(user, potentialTarget, undefined, false, elementalType, abilityCopy.name, abilityCopy.isAoe, abilityCopy.userEffect.some(effect => effect.type === StatusEffectEnum.RepeatAbility) || abilityWillRepeat, isLastInList, abilityCopy, ally);
+          var damageMultiplier = this.getDamageMultiplier(isPartyUsing, user, potentialTarget, undefined, false, elementalType, abilityCopy.name, abilityCopy.isAoe, abilityCopy.userEffect.some(effect => effect.type === StatusEffectEnum.RepeatAbility) || abilityWillRepeat, isLastInList, abilityCopy, ally);
           damageMultiplier *= fatalAttractionModifier;
           damageMultiplier *= warAndLoveModifier;
           var isCritical = this.isDamageCritical(user, potentialTarget, abilityCopy, party.find(item => item.type !== user.type));
@@ -2078,7 +2082,7 @@ export class BattleService {
         });
       }
       else {
-        var damageMultiplier = this.getDamageMultiplier(user, target, undefined, false, elementalType, abilityCopy.name, abilityCopy.isAoe, abilityCopy.userEffect.some(effect => effect.type === StatusEffectEnum.RepeatAbility) || abilityWillRepeat, undefined, abilityCopy, ally);
+        var damageMultiplier = this.getDamageMultiplier(isPartyUsing, user, target, undefined, false, elementalType, abilityCopy.name, abilityCopy.isAoe, abilityCopy.userEffect.some(effect => effect.type === StatusEffectEnum.RepeatAbility) || abilityWillRepeat, undefined, abilityCopy, ally);
         damageMultiplier *= fatalAttractionModifier;
         damageMultiplier *= warAndLoveModifier;
         var isCritical = this.isDamageCritical(user, target, abilityCopy, party.find(item => item.type !== user.type));
@@ -2293,14 +2297,14 @@ export class BattleService {
 
         if (fortissimo !== undefined) {
           var fortissimoAbility = this.lookupService.characterHasAbility("Fortissimo", user);
-          party.forEach(member => {
+          party.filter(character => !character.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead)).forEach(member => {
             this.reduceCharacterCooldowns(member, 1 - (fortissimoAbility!.secondaryEffectiveness - 1), true);
           });
         }
 
         if (coda !== undefined) {
           var negativeStatusEffects: StatusEffect[] = [];
-          party.forEach(member => {
+          party.filter(character => !character.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead)).forEach(member => {
             member.battleInfo.statusEffects.filter(item => !item.isPositive).forEach(effect => {
               negativeStatusEffects.push(effect);
             });
@@ -3348,7 +3352,7 @@ export class BattleService {
   }
 
   handleTargetEffects(isPartyUsing: boolean, targetEffect: StatusEffect[], user: Character, target: Character, potentialTargets: Character[], party: Character[], damageDealt: number = 0, abilityTargetedAllies: boolean = false, originalAbility?: Ability) {
-    if (targetEffect.length > 0) {      
+    if (targetEffect.length > 0) {
       targetEffect.forEach(gainedStatusEffect => {
         var appliedStatusEffect = this.globalService.makeStatusEffectCopy(gainedStatusEffect);
 
@@ -3401,7 +3405,7 @@ export class BattleService {
           appliedStatusEffect.effectiveness = this.lookupService.getAdjustedResistance(user, true) * appliedStatusEffect.effectiveness;
         }
 
-        if (target !== undefined && appliedStatusEffect.dotType !== dotTypeEnum.None) {          
+        if (target !== undefined && appliedStatusEffect.dotType !== dotTypeEnum.None) {
           this.applyStatusEffect(appliedStatusEffect, target, potentialTargets, user, originalAbility);
         }
 
@@ -3420,7 +3424,7 @@ export class BattleService {
     //check all instant effects (maybe make its own function?)    
     var totalTrueDamageDealt = 0;
     var totalTrueDamageHitCount = 0;
-    
+
     if (target.battleInfo.statusEffects.some(item => item.isInstant)) {
       target.battleInfo.statusEffects.filter(item => item.isInstant).forEach(instantEffect => {
         if (instantEffect.type === StatusEffectEnum.RandomPrimaryStatDown) {
@@ -3575,7 +3579,7 @@ export class BattleService {
           }
         }
 
-        if (instantEffect.type === StatusEffectEnum.InstantTrueDamage) {          
+        if (instantEffect.type === StatusEffectEnum.InstantTrueDamage) {
           var resetTarget: Character | undefined = target;
           if (abilityTargetedAllies && !instantEffect.targetsAllies) {
             resetTarget = this.getTarget(user, potentialTargets, TargetEnum.Random);
@@ -3819,7 +3823,7 @@ export class BattleService {
 
             if (elementalType !== ElementalTypeEnum.None)
               elementalText = this.getElementalDamageText(elementalType);
-            var damageMultiplier = this.getDamageMultiplier(target, targetedEnemy, undefined, false, elementalType, undefined, undefined, undefined, undefined, undefined, ally);
+            var damageMultiplier = this.getDamageMultiplier(isPartyUsing, target, targetedEnemy, undefined, false, elementalType, undefined, undefined, undefined, undefined, undefined, ally);
             var isCritical = this.isDamageCritical(target, targetedEnemy);
 
             var allDamageDealt = this.dealDamage(!isPartyUsing, target, targetedEnemy, isCritical, abilityEffectiveness, damageMultiplier, abilityThatTriggeredCounter, elementalType, GodEnum.Nemesis, party);
@@ -4151,7 +4155,7 @@ export class BattleService {
     return 10 + ((linkInfo.linkChain + repeaterBonus) * this.utilityService.damageLinkBoost * (1 + linkEffectivenessBonus)) + (linkInfo.bonusChain);
   }
 
-  getDamageMultiplier(character: Character, target: Character, additionalDamageMultiplier?: number, isAutoAttack: boolean = false, elementalType: ElementalTypeEnum = ElementalTypeEnum.None, abilityName: string = "", isAoe: boolean = false, willAbilityRepeat: boolean = false, lastOfMultiTarget: boolean = true, ability?: Ability, ally?: Character) {
+  getDamageMultiplier(isPartyAttacking: boolean, character: Character, target: Character, additionalDamageMultiplier?: number, isAutoAttack: boolean = false, elementalType: ElementalTypeEnum = ElementalTypeEnum.None, abilityName: string = "", isAoe: boolean = false, willAbilityRepeat: boolean = false, lastOfMultiTarget: boolean = true, ability?: Ability, ally?: Character) {
     var overallDamageMultiplier = 1;
 
     if (additionalDamageMultiplier !== undefined)
@@ -4169,7 +4173,7 @@ export class BattleService {
     //console.log("ODM after random stuff: " + overallDamageMultiplier);
 
     var altarMultiplier = 1;
-    if (isAutoAttack) {
+    if (isAutoAttack && isPartyAttacking) {
       if (this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HermesAutoAttackUp) !== undefined) {
         var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HermesAutoAttackUp);
         altarMultiplier *= relevantAltarEffect!.effectiveness;
@@ -4183,12 +4187,12 @@ export class BattleService {
 
     var aoeIncrease = 1;
     if (isAoe) {
-      if (this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HadesAoeDamageUp) !== undefined) {
+      if (isPartyAttacking && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HadesAoeDamageUp) !== undefined) {
         var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HadesAoeDamageUp);
         altarMultiplier *= relevantAltarEffect!.effectiveness;
       }
 
-      if (this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HadesRareAoeDamageUp) !== undefined) {
+      if (isPartyAttacking && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HadesRareAoeDamageUp) !== undefined) {
         var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HadesRareAoeDamageUp);
         altarMultiplier *= relevantAltarEffect!.effectiveness;
       }
@@ -4209,44 +4213,46 @@ export class BattleService {
       }
     }
 
-    if (elementalType === ElementalTypeEnum.Holy && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AthenaRareHolyDamageIncrease) !== undefined) {
-      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AthenaRareHolyDamageIncrease);
-      altarMultiplier *= relevantAltarEffect!.effectiveness;
-    }
+    if (isPartyAttacking) {
+      if (elementalType === ElementalTypeEnum.Holy && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AthenaRareHolyDamageIncrease) !== undefined) {
+        var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AthenaRareHolyDamageIncrease);
+        altarMultiplier *= relevantAltarEffect!.effectiveness;
+      }
 
-    if (elementalType === ElementalTypeEnum.Lightning && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ZeusLightningDamageIncrease) !== undefined) {
-      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ZeusLightningDamageIncrease);
-      altarMultiplier *= relevantAltarEffect!.effectiveness;
-    }
+      if (elementalType === ElementalTypeEnum.Lightning && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ZeusLightningDamageIncrease) !== undefined) {
+        var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ZeusLightningDamageIncrease);
+        altarMultiplier *= relevantAltarEffect!.effectiveness;
+      }
 
-    if (elementalType === ElementalTypeEnum.Air && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HeraAirDamageIncrease) !== undefined) {
-      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HeraAirDamageIncrease);
-      altarMultiplier *= relevantAltarEffect!.effectiveness;
-    }
+      if (elementalType === ElementalTypeEnum.Air && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HeraAirDamageIncrease) !== undefined) {
+        var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HeraAirDamageIncrease);
+        altarMultiplier *= relevantAltarEffect!.effectiveness;
+      }
 
-    if (elementalType === ElementalTypeEnum.Lightning && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ZeusRareLightningDamageIncrease) !== undefined) {
-      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ZeusRareLightningDamageIncrease);
-      altarMultiplier *= relevantAltarEffect!.effectiveness;
-    }
+      if (elementalType === ElementalTypeEnum.Lightning && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ZeusRareLightningDamageIncrease) !== undefined) {
+        var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ZeusRareLightningDamageIncrease);
+        altarMultiplier *= relevantAltarEffect!.effectiveness;
+      }
 
-    if (elementalType === ElementalTypeEnum.Air && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HeraRareAirDamageIncrease) !== undefined) {
-      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HeraRareAirDamageIncrease);
-      altarMultiplier *= relevantAltarEffect!.effectiveness;
-    }
+      if (elementalType === ElementalTypeEnum.Air && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HeraRareAirDamageIncrease) !== undefined) {
+        var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HeraRareAirDamageIncrease);
+        altarMultiplier *= relevantAltarEffect!.effectiveness;
+      }
 
-    if (elementalType === ElementalTypeEnum.Water && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.PoseidonWaterDamageIncrease) !== undefined) {
-      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.PoseidonWaterDamageIncrease);
-      altarMultiplier *= relevantAltarEffect!.effectiveness;
-    }
+      if (elementalType === ElementalTypeEnum.Water && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.PoseidonWaterDamageIncrease) !== undefined) {
+        var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.PoseidonWaterDamageIncrease);
+        altarMultiplier *= relevantAltarEffect!.effectiveness;
+      }
 
-    if (elementalType === ElementalTypeEnum.Water && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.PoseidonRareWaterDamageIncrease) !== undefined) {
-      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.PoseidonRareWaterDamageIncrease);
-      altarMultiplier *= relevantAltarEffect!.effectiveness;
-    }
+      if (elementalType === ElementalTypeEnum.Water && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.PoseidonRareWaterDamageIncrease) !== undefined) {
+        var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.PoseidonRareWaterDamageIncrease);
+        altarMultiplier *= relevantAltarEffect!.effectiveness;
+      }
 
-    if (this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AphroditeRareDamageUp) !== undefined) {
-      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AphroditeRareDamageUp);
-      altarMultiplier *= relevantAltarEffect!.effectiveness;
+      if (this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AphroditeRareDamageUp) !== undefined) {
+        var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AphroditeRareDamageUp);
+        altarMultiplier *= relevantAltarEffect!.effectiveness;
+      }
     }
 
     //check for basic damage up/down buffs
@@ -4806,7 +4812,7 @@ export class BattleService {
     var adjustedAllyAttackModifier = 0; //used specifically for Kiss of Death
 
     if (ability !== undefined) {
-      if ((ability.name === "Kiss of Death" || ability.name === "Love to Death" || ability.name === "Begrudging Alliance"  || ability.name === "Heavy Waves") && partyMembers !== undefined) {
+      if ((ability.name === "Kiss of Death" || ability.name === "Love to Death" || ability.name === "Begrudging Alliance" || ability.name === "Heavy Waves") && partyMembers !== undefined) {
         var ally = partyMembers.find(item => item.type !== attacker.type || item.type === CharacterEnum.Enemy);
         if (ally !== undefined) {
           adjustedAllyAttack = ally.battleStats.attack;
@@ -5210,7 +5216,7 @@ export class BattleService {
         this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenDown, 15, .2, false, true), target, undefined, target);
       }
     }
-    
+
     var buzzingReminder = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.BuzzingReminder);
     if (buzzingReminder !== undefined) {
       buzzingReminder.count += totalDamageDealt;
@@ -6013,17 +6019,17 @@ export class BattleService {
           var potentialTargets = party.filter(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead));
 
           if (potentialTargets.length > 0 && vengeanceOfTheWoods.targetEffect.length > 0) {
-            potentialTargets.forEach(potentialTarget => {              
+            potentialTargets.forEach(potentialTarget => {
               var effectiveness = this.lookupService.getAdjustedMaxHp(potentialTarget, false) * vengeanceOfTheWoods!.targetEffect[0].effectiveness;
-              
-              var trueDamageDealt = this.dealTrueDamage(false, potentialTarget, effectiveness, character, undefined, true);
-              
-                var gameLogEntry = "<strong>" + potentialTarget.name + "</strong>" + " takes " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, Math.round(trueDamageDealt)) + " damage";                
-                  gameLogEntry += " from Vegeance of the Wood's effect.";
 
-                if (this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse")) {
-                  this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry, this.globalService.globalVar);
-                }                          
+              var trueDamageDealt = this.dealTrueDamage(false, potentialTarget, effectiveness, character, undefined, true);
+
+              var gameLogEntry = "<strong>" + potentialTarget.name + "</strong>" + " takes " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, Math.round(trueDamageDealt)) + " damage";
+              gameLogEntry += " from Vegeance of the Wood's effect.";
+
+              if (this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse")) {
+                this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry, this.globalService.globalVar);
+              }
             });
           }
         }
@@ -7625,7 +7631,7 @@ export class BattleService {
       if (removeInstantAutoAttack) {
         targetGainsEffects = targetGainsEffects.filter(item => item.type !== StatusEffectEnum.InstantAutoAttack);
       }
-      
+
       this.handleTargetEffects(true, targetGainsEffects, user, target, targets, party, damageDealt, originalTriggerTargetedAllies);
     }
   }

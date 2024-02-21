@@ -4804,6 +4804,33 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.StraitsOfMessinaIntoTheVortex) {
       subZoneEnums.push(SubZoneEnum.StraitsOfMessinaMawOfTheMonster);
     }
+    //TODO: eventually need to add in unavoidablepath
+    if (type === SubZoneEnum.ReturnToColchisPhasisBeach) {
+      subZoneEnums.push(SubZoneEnum.ReturnToColchisUnderTheStars);
+    }
+    if (type === SubZoneEnum.ReturnToColchisUnderTheStars) {
+      subZoneEnums.push(SubZoneEnum.ReturnToColchisParanoidMerchant);
+      subZoneEnums.push(SubZoneEnum.ReturnToColchisColchisOutskirts);
+    }
+    if (type === SubZoneEnum.ReturnToColchisColchisOutskirts) {
+      subZoneEnums.push(SubZoneEnum.ReturnToColchisColchisStreets);
+    }
+    if (type === SubZoneEnum.ReturnToColchisColchisStreets) {
+      subZoneEnums.push(SubZoneEnum.ReturnToColchisReturnToTheGrove);
+    }
+    if (type === SubZoneEnum.ReturnToColchisReturnToTheGrove) {
+      subZoneEnums.push(SubZoneEnum.EscapeFromColchisEscape1);
+    }
+    if (type === SubZoneEnum.EscapeFromColchisEscape1) {
+      subZoneEnums.push(SubZoneEnum.EscapeFromColchisEscape2);
+    }
+    if (type === SubZoneEnum.EscapeFromColchisEscape2) {
+      subZoneEnums.push(SubZoneEnum.EscapeFromColchisBattleAtSea);
+      subZoneEnums.push(SubZoneEnum.EscapeFromColchisInnerPath);
+    }
+    if (type === SubZoneEnum.EscapeFromColchisInnerPath) {
+      subZoneEnums.push(SubZoneEnum.EscapeFromColchisBackAgainstTheWall);
+    }
 
     return subZoneEnums;
   }
@@ -5200,7 +5227,7 @@ export class SubZoneGeneratorService {
     return returnSubzone;
   }
 
-  getAvailableOlympianRewardOptions(resources: ResourceValue[], isPatron: boolean = false, gods: God[]) {
+  getAvailableOlympianRewardOptions(resources: ResourceValue[], isPatron: boolean = false, gods: God[], trialStage: number) {
     var shopOptions: ShopItem[] = [];
 
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.Nemesis, SubZoneEnum.MountOlympusOlympus));
@@ -5209,9 +5236,11 @@ export class SubZoneGeneratorService {
     //shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DuoAbilityAccess, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.Ambrosia, SubZoneEnum.MountOlympusOlympus));
 
-    if (resources.some(item => item.item === ItemsEnum.BlazingSunPendant) && !resources.some(item => item.item === ItemsEnum.BlazingSunPendantUnique))
+    if ((resources.some(item => item.item === ItemsEnum.BlazingSunPendant) || trialStage > 20) && 
+    !resources.some(item => item.item === ItemsEnum.BlazingSunPendantUnique))
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BlazingSunPendantUnique, SubZoneEnum.MountOlympusOlympus, isPatron));
-    if (resources.some(item => item.item === ItemsEnum.DarkMoonPendant) && !resources.some(item => item.item === ItemsEnum.DarkMoonPendantUnique))
+    if ((resources.some(item => item.item === ItemsEnum.DarkMoonPendant) || trialStage > 10) &&
+     !resources.some(item => item.item === ItemsEnum.DarkMoonPendantUnique))
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DarkMoonPendantUnique, SubZoneEnum.MountOlympusOlympus, isPatron));
     if (resources.some(item => item.item === ItemsEnum.BlazingSunPendantUnique))
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BlazingSunPendantUniqueUpgrade, SubZoneEnum.MountOlympusOlympus, isPatron));
