@@ -192,6 +192,7 @@
 
   --resourceKeywordColor: #EAAD91;
   --insufficientResourcesKeywordColor: #7a818c;
+  --coinColor: #C0C0C0;
   --chthonicFavorColor: #ABB5DC;
   --chthonicPowerColor: #83C2A6;
   --ambrosiaColor: #e3df96;
@@ -533,6 +534,11 @@ h6 {
 .ambrosiaKeyword {
   font-weight: 550;
   color: var(--ambrosiaColor);
+}
+
+.coinKeyword {
+  font-weight: 550;
+  color: var(--coinColor);
 }
 
 .baseWeight {

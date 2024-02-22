@@ -140,7 +140,7 @@ export class FollowerOverviewViewComponent {
 
   getFollowerPurchasePrice() {
     var userResourceAmount = this.lookupService.getResourceAmount(ItemsEnum.Coin);
-    return "<span class='" + this.getItemKeywordClass(this.followerService.getPriceForNextFollower(), userResourceAmount) + "'>" + this.followerService.getPriceForNextFollower().toLocaleString() + " Coins <i>(" + userResourceAmount.toLocaleString() + " owned)</i></span>";
+    return "<span class='" + this.getItemKeywordClass(this.followerService.getPriceForNextFollower(), userResourceAmount) + "'>" + this.followerService.getPriceForNextFollower().toLocaleString() + " <span class='coinKeyword'>Coins</span> <i>(" + userResourceAmount.toLocaleString() + " owned)</i></span>";
   }
 
   getFollowerAchievementPrice() {

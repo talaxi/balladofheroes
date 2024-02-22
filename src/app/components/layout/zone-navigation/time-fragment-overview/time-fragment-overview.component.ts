@@ -97,7 +97,7 @@ export class TimeFragmentOverviewComponent {
     }
 
     if (coinsGained > 0)
-      rewards += "<span>" + this.utilityService.genericShortRound(coinsGained) + "</span> Coins" + (oneLine ? ", " : "<br/>");
+      rewards += "<span>" + this.utilityService.genericShortRound(coinsGained) + "</span> <span class='coinKeyword'>Coins</span>" + (oneLine ? ", " : "<br/>");
 
     if (oneLine && coinsGained === 0 && finalLootOptions.length === 0)
       rewards = rewards.substring(0, rewards.length - 2);

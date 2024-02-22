@@ -47,7 +47,7 @@
       <hr />
       <div *ngIf="itemToSellSelected" class="sellItem">
         <span>Selling {{sellAmount}}x <span [innerHtml]="getEquipmentNameFromEquipment(itemToSell)"></span> for
-          <strong>{{(itemToSellPrice * sellAmount) | number : '1.0-2'}}</strong> coins</span>
+          <strong>{{(itemToSellPrice * sellAmount) | number : '1.0-2'}}</strong> <span class='coinKeyword'> coins</span></span>
         <br />
         <br />
         <div class="flex">

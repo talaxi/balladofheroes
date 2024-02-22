@@ -334,6 +334,8 @@ export class ResourceViewComponent implements OnInit {
       return "chthonicPowerKeyword";
       if (resource.item === ItemsEnum.Ambrosia)
       return "ambrosiaKeyword";
+      if (resource.item === ItemsEnum.Coin)
+      return "coinKeyword";
 
     return "";
   }

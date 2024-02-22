@@ -339,7 +339,7 @@ export class JewelcraftingService {
       if (!this.doesUserHaveRecipe(ItemsEnum.RutilatedAquamarine)) {
         this.learnRecipe(ItemsEnum.RutilatedAquamarine);
         newRecipeLearned = true;
-        this.updateGameLogWithNewRecipe(ItemsEnum.FlawedAquamarine);
+        this.updateGameLogWithNewRecipe(ItemsEnum.RutilatedAquamarine);
       }
     }
     if (jewelcrafting.level >= 81) {
