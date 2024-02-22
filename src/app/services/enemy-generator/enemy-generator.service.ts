@@ -10685,6 +10685,13 @@ export class EnemyGeneratorService {
       enemy.loot.push(new LootItem(ItemsEnum.Nectar, ItemTypeEnum.Resource, 1, .075));
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DivineProtection, -1, .8, false, true, false));   
             
+      var stab = new Ability();
+      stab.name = "Defense is the Best Offense";
+      stab.isAvailable = true;
+      stab.dealsDirectDamage = false;
+      stab.cooldown = stab.currentCooldown = 100000;
+      enemy.abilityList.push(stab);
+
       var measuredOffensive = new Ability();
       measuredOffensive.name = "Measured Offensive";
       measuredOffensive.isAvailable = true;
@@ -10754,6 +10761,13 @@ export class EnemyGeneratorService {
       enemy.loot.push(new LootItem(ItemsEnum.Nectar, ItemTypeEnum.Resource, 1, .15));
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DivineProtection, -1, .6, false, true, false));          
             
+      var stab = new Ability();
+      stab.name = "Defense is the Best Offense";
+      stab.isAvailable = true;
+      stab.dealsDirectDamage = false;
+      stab.cooldown = stab.currentCooldown = 100000;
+      enemy.abilityList.push(stab);
+      
       var measuredOffensive = new Ability();
       measuredOffensive.name = "Measured Offensive";
       measuredOffensive.isAvailable = true;
@@ -11694,6 +11708,14 @@ export class EnemyGeneratorService {
       enemy.loot.push(new LootItem(ItemsEnum.RainbowScaledPlatingEpic, ItemTypeEnum.Equipment, 1, .1));  
       enemy.loot.push(new LootItem(ItemsEnum.Nectar, ItemTypeEnum.Resource, 1, .025));
             
+      //just for description purposes
+      var stab = new Ability();
+      stab.name = "Sharp Scales";
+      stab.isAvailable = true;
+      stab.dealsDirectDamage = false;
+      stab.cooldown = stab.currentCooldown = 100000;
+      enemy.abilityList.push(stab);
+
       var crash = new Ability();
       crash.name = "Crash";
       crash.isAvailable = true;
@@ -11757,7 +11779,15 @@ export class EnemyGeneratorService {
       enemy.loot.push(new LootItem(ItemsEnum.RainbowScaledPlatingSpecial, ItemTypeEnum.Equipment, 1, .1)); 
       enemy.loot.push(new LootItem(ItemsEnum.Nectar, ItemTypeEnum.Resource, 1, .075));
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DivineProtection, -1, .8, false, true, false));      
-            
+                  
+      //just for description purposes
+      var stab = new Ability();
+      stab.name = "Sharp Scales";
+      stab.isAvailable = true;
+      stab.dealsDirectDamage = false;
+      stab.cooldown = stab.currentCooldown = 100000;
+      enemy.abilityList.push(stab);
+
       var crash = new Ability();
       crash.name = "Crash";
       crash.isAvailable = true;
@@ -11831,6 +11861,14 @@ export class EnemyGeneratorService {
       enemy.loot.push(new LootItem(ItemsEnum.Nectar, ItemTypeEnum.Resource, 1, .15));  
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DivineProtection, -1, .6, false, true, false));             
             
+      //just for description purposes
+      var stab = new Ability();
+      stab.name = "Sharp Scales";
+      stab.isAvailable = true;
+      stab.dealsDirectDamage = false;
+      stab.cooldown = stab.currentCooldown = 100000;
+      enemy.abilityList.push(stab);
+
       var crash = new Ability();
       crash.name = "Crash";
       crash.isAvailable = true;
