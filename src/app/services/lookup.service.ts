@@ -296,23 +296,23 @@ export class LookupService {
 
     if (type === ItemsEnum.RutilatedRuby || type === ItemsEnum.RutilatedTopaz || type === ItemsEnum.RutilatedOpal || type === ItemsEnum.RutilatedAmethyst ||
       type === ItemsEnum.RutilatedEmerald || type === ItemsEnum.RutilatedAquamarine || type === ItemsEnum.PerfectRutilatedRuby || type === ItemsEnum.PerfectRutilatedTopaz || type === ItemsEnum.PerfectRutilatedOpal ||
-      type === ItemsEnum.PerfectRutilatedEmerald || type === ItemsEnum.PerfectRutilatedAquamarine)
+      type === ItemsEnum.PerfectRutilatedEmerald || type === ItemsEnum.PerfectRutilatedAquamarine || type === ItemsEnum.PerfectRutilatedAmethyst)
       return EquipmentQualityEnum.Epic;
 
     if (type === ItemsEnum.WeaponSlotAddition || type === ItemsEnum.RingSlotAddition || type === ItemsEnum.ShieldSlotAddition ||
       type === ItemsEnum.ArmorSlotAddition || type === ItemsEnum.NecklaceSlotAddition || type === ItemsEnum.BrilliantRuby || type === ItemsEnum.BrilliantTopaz || type === ItemsEnum.BrilliantOpal || type === ItemsEnum.BrilliantAmethyst ||
       type === ItemsEnum.BrilliantEmerald || type === ItemsEnum.BrilliantAquamarine || type === ItemsEnum.PerfectBrilliantRuby || type === ItemsEnum.PerfectBrilliantTopaz || type === ItemsEnum.PerfectBrilliantOpal ||
-      type === ItemsEnum.PerfectBrilliantEmerald || type === ItemsEnum.PerfectBrilliantAquamarine)
+      type === ItemsEnum.PerfectBrilliantEmerald || type === ItemsEnum.PerfectBrilliantAquamarine || type === ItemsEnum.PerfectBrilliantAmethyst)
       return EquipmentQualityEnum.Special;
 
     if (type === ItemsEnum.FlawlessRuby || type === ItemsEnum.FlawlessTopaz || type === ItemsEnum.FlawlessOpal || type === ItemsEnum.FlawlessAmethyst ||
       type === ItemsEnum.FlawlessEmerald || type === ItemsEnum.FlawlessAquamarine || type === ItemsEnum.PerfectFlawlessRuby || type === ItemsEnum.PerfectFlawlessTopaz || type === ItemsEnum.PerfectFlawlessOpal ||
-      type === ItemsEnum.PerfectFlawlessEmerald || type === ItemsEnum.PerfectFlawlessAquamarine)
+      type === ItemsEnum.PerfectFlawlessEmerald || type === ItemsEnum.PerfectFlawlessAquamarine || type === ItemsEnum.PerfectFlawlessAmethyst)
       return EquipmentQualityEnum.Unique;
 
     if (type === ItemsEnum.AdamantineRuby || type === ItemsEnum.AdamantineTopaz || type === ItemsEnum.AdamantineOpal || type === ItemsEnum.AdamantineAmethyst ||
       type === ItemsEnum.AdamantineEmerald || type === ItemsEnum.AdamantineAquamarine || type === ItemsEnum.PerfectAdamantineRuby || type === ItemsEnum.PerfectAdamantineTopaz || type === ItemsEnum.PerfectAdamantineOpal ||
-      type === ItemsEnum.PerfectAdamantineEmerald || type === ItemsEnum.PerfectAdamantineAquamarine || type === ItemsEnum.MajorWeaponSlotAddition || type === ItemsEnum.MajorRingSlotAddition || type === ItemsEnum.MajorShieldSlotAddition ||
+      type === ItemsEnum.PerfectAdamantineEmerald || type === ItemsEnum.PerfectAdamantineAquamarine || type === ItemsEnum.PerfectAdamantineAmethyst || type === ItemsEnum.MajorWeaponSlotAddition || type === ItemsEnum.MajorRingSlotAddition || type === ItemsEnum.MajorShieldSlotAddition ||
       type === ItemsEnum.MajorArmorSlotAddition || type === ItemsEnum.MajorNecklaceSlotAddition)
       return EquipmentQualityEnum.Extraordinary;
 
