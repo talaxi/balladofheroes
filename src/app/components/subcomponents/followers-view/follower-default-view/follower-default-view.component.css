@@ -15,6 +15,13 @@ table {
     text-align: center;
 }
 
+.fromMenu {
+    height: unset;
+    margin-top: -.4rem;
+    margin-left: -.4rem;
+    margin-right: -.4rem;
+}
+
 td {
     width: 33%;
     vertical-align: top;

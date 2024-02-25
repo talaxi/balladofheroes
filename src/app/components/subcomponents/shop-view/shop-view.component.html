@@ -24,7 +24,7 @@
     <app-notification-icon *ngIf="!hasOlympicFavorBeenOpened()" [isButton]="true"
       [notificationColor]="resetNotification"></app-notification-icon>
   </button>
-  <button *ngIf="option.type === shopTypeEnum.Story" class="buttonStyled shopButtonText" (click)="progressStory()">Speak
+  <button *ngIf="option.type === shopTypeEnum.Story" class="buttonStyled shopButtonText" (click)="progressStory(option.type)">Speak
     to Hades <app-notification-icon [isButton]="true"></app-notification-icon></button>
   <button *ngIf="option.type === shopTypeEnum.StoryScene24" class="buttonStyled shopButtonText"
     (click)="progressStory()">Speak

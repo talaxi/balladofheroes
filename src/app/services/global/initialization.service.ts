@@ -726,9 +726,9 @@ export class InitializationService {
     if (resource !== undefined)
       this.lookupService.gainResource(resource);
 
-      resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.StingrayTip, 1);
-      if (resource !== undefined)
-        this.lookupService.gainResource(resource);  
+    resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.StingrayTip, 1);
+    if (resource !== undefined)
+      this.lookupService.gainResource(resource);
 
     resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ScorpionStingerEpic, 1);
     if (resource !== undefined)
@@ -794,14 +794,14 @@ export class InitializationService {
     if (resource !== undefined)
       this.lookupService.gainResource(resource);
 
-      
+
     resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RainbowScaledPlatingSpecial, 1);
     if (resource !== undefined)
       this.lookupService.gainResource(resource);
-    
-      resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RainbowScaledPlatingEpic, 1);
-      if (resource !== undefined)
-        this.lookupService.gainResource(resource);
+
+    resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RainbowScaledPlatingEpic, 1);
+    if (resource !== undefined)
+      this.lookupService.gainResource(resource);
 
     resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.BatteringMaceUnique, 1);
     if (resource !== undefined)
@@ -827,9 +827,9 @@ export class InitializationService {
     if (resource !== undefined)
       this.lookupService.gainResource(resource);
 
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus, 3));    
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus, 3));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfDionysus, 4));
-    
+
     //this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfIngenuity, 3));
     //console.log(this.globalService.globalVar.achievements);
   }
@@ -914,6 +914,38 @@ export class InitializationService {
       this.globalService.globalVar.altars.largeAltarsUnlocked = true;
       this.globalService.globalVar.extraSpeedTimeRemaining = 8 * 60 * 60;
       this.globalService.globalVar.extraSpeedEnabled = true;
+
+      //Long Names
+      var longNamesLoadout = new Loadout();
+      longNamesLoadout.name = "Long Names";
+      longNamesLoadout.character1 = CharacterEnum.Archer;
+      longNamesLoadout.god1Character1 = GodEnum.Zeus;
+      longNamesLoadout.god2Character1 = GodEnum.Ares;
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.ZeussLightningBolts, 1));
+      longNamesLoadout.character1EquipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ZeussLightningBolts);
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.RainbowScaledPlatingUnique, 1));
+      longNamesLoadout.character1EquipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.RainbowScaledPlatingUnique);
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.ZeussShield, 1));
+      longNamesLoadout.character1EquipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ZeussShield);
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.BoundingBandUnique, 1));
+      longNamesLoadout.character1EquipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.BoundingBandUnique);
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.BlazingSunPendant, 1));
+      longNamesLoadout.character1EquipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.BlazingSunPendant);
+      longNamesLoadout.character2 = CharacterEnum.Priest;
+      longNamesLoadout.god1Character2 = GodEnum.Artemis;
+      longNamesLoadout.god2Character2 = GodEnum.Dionysus;
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.DionysussScepter, 1));
+      longNamesLoadout.character2EquipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.DionysussScepter);
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.DionysussArmor, 1));
+      longNamesLoadout.character2EquipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.DionysussArmor);
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.DionysussShield, 1));
+      longNamesLoadout.character2EquipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.DionysussShield);
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.DionysussRing, 1));
+      longNamesLoadout.character2EquipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.DionysussRing);
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.DionysussNecklace, 1));
+      longNamesLoadout.character2EquipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.DionysussNecklace);
+
+      this.globalService.globalVar.loadouts.push(longNamesLoadout);
 
       //Balanced
       var balancedLoadout = new Loadout();
@@ -1266,47 +1298,47 @@ export class InitializationService {
       if (resource !== undefined)
         this.lookupService.gainResource(resource);
 
-        resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectRutilatedOpal, 100);
+      resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectRutilatedOpal, 100);
       if (resource !== undefined)
         this.lookupService.gainResource(resource);
-        resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectRutilatedTopaz, 100);
+      resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectRutilatedTopaz, 100);
       if (resource !== undefined)
         this.lookupService.gainResource(resource);
-        resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectRutilatedRuby, 100);
+      resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectRutilatedRuby, 100);
       if (resource !== undefined)
         this.lookupService.gainResource(resource);
-        resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectRutilatedAquamarine, 100);
+      resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectRutilatedAquamarine, 100);
       if (resource !== undefined)
         this.lookupService.gainResource(resource);
-        resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectRutilatedEmerald, 100);
-      if (resource !== undefined)
-        this.lookupService.gainResource(resource);
-
-        resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectFlawlessOpal, 100);
+      resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectRutilatedEmerald, 100);
       if (resource !== undefined)
         this.lookupService.gainResource(resource);
 
-        
-        resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectAdamantineOpal, 100);
-      if (resource !== undefined)
-        this.lookupService.gainResource(resource);
-        resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectAdamantineTopaz, 100);
-      if (resource !== undefined)
-        this.lookupService.gainResource(resource);
-        resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectAdamantineRuby, 100);
-      if (resource !== undefined)
-        this.lookupService.gainResource(resource);
-        resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectAdamantineAquamarine, 100);
-      if (resource !== undefined)
-        this.lookupService.gainResource(resource);
-        resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectAdamantineEmerald, 100);
+      resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectFlawlessOpal, 100);
       if (resource !== undefined)
         this.lookupService.gainResource(resource);
 
-        this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.BoundingBandUnique));
+
+      resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectAdamantineOpal, 100);
+      if (resource !== undefined)
+        this.lookupService.gainResource(resource);
+      resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectAdamantineTopaz, 100);
+      if (resource !== undefined)
+        this.lookupService.gainResource(resource);
+      resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectAdamantineRuby, 100);
+      if (resource !== undefined)
+        this.lookupService.gainResource(resource);
+      resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectAdamantineAquamarine, 100);
+      if (resource !== undefined)
+        this.lookupService.gainResource(resource);
+      resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectAdamantineEmerald, 100);
+      if (resource !== undefined)
+        this.lookupService.gainResource(resource);
+
+      this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.BoundingBandUnique));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.ScorpionStingerUnique));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.BucklerOfPerfectHarmonyUnique));
-      this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.CarcanetOfTheCentaurUnique));      
+      this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.CarcanetOfTheCentaurUnique));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.ScathingBeautyUnique));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.RainbowScaledPlatingUnique));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.GlowingChokerUnique));
@@ -1314,7 +1346,7 @@ export class InitializationService {
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.EnergyShieldUnique));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.SturdyShellUnique));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.AstralRingUnique));
-      this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.GleamingLoopUnique));      
+      this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.GleamingLoopUnique));
 
       this.globalService.globalVar.activePartyMember1 = CharacterEnum.Adventurer;
       this.globalService.globalVar.characters.forEach(character => { character.isAvailable = true; character.unlockedOverdrives.push(OverdriveNameEnum.Reprisal); character.unlockedOverdrives.push(OverdriveNameEnum.Preservation); character.unlockedOverdrives.push(OverdriveNameEnum.Harmony); character.unlockedOverdrives.push(OverdriveNameEnum.Bullseye); });     //
@@ -1331,8 +1363,8 @@ export class InitializationService {
 
       var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
       if (character1 !== undefined) {
-        character1.assignedGod1 = GodEnum.Apollo;
-        character1.assignedGod2 = GodEnum.Hermes;
+        character1.assignedGod1 = GodEnum.Aphrodite;
+        character1.assignedGod2 = GodEnum.Dionysus;
         character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShadowSpear);
         character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShadowShield);
         character1.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShadowArmor);
@@ -1594,7 +1626,7 @@ export class InitializationService {
         for (var i = 0; i < characterLevel; i++) {
           this.globalService.levelUpPartyMember(character);
         }
- 
+
         //character.level = 1;
         character.exp = 0;
         //character.linkInfo.totalLinks = 0;
@@ -2074,7 +2106,7 @@ export class InitializationService {
 
     this.globalService.globalVar.ballads.push(labyrinthBallad);
   }
-  
+
   initializeBalladOfTheWitch() {
     var ballad = new Ballad(BalladEnum.Witch);
     ballad.displayOrder = 9;
@@ -2100,9 +2132,9 @@ export class InitializationService {
     zone2.subzones.push(new SubZone(SubZoneEnum.StraitsOfMessinaEdgeOfCharybdis));
     zone2.subzones.push(new SubZone(SubZoneEnum.StraitsOfMessinaCavernOpening));
     zone2.subzones.push(new SubZone(SubZoneEnum.StraitsOfMessinaDarkTunnel));
-    zone2.subzones.push(new SubZone(SubZoneEnum.StraitsOfMessinaUnavoidablePath));        
+    zone2.subzones.push(new SubZone(SubZoneEnum.StraitsOfMessinaUnavoidablePath));
     zone2.subzones.push(new SubZone(SubZoneEnum.StraitsOfMessinaIntoTheVortex));
-    zone2.subzones.push(new SubZone(SubZoneEnum.StraitsOfMessinaMawOfTheMonster));    
+    zone2.subzones.push(new SubZone(SubZoneEnum.StraitsOfMessinaMawOfTheMonster));
     zone2.notificationType = zone2.shouldShowSideQuestNotification();
     ballad.zones.push(zone2);
 
@@ -2131,7 +2163,7 @@ export class InitializationService {
     zone2.subzones.push(new SubZone(SubZoneEnum.EscapeFromColchisEscape2));
     zone2.subzones.push(new SubZone(SubZoneEnum.EscapeFromColchisInnerPath));
     zone2.subzones.push(new SubZone(SubZoneEnum.EscapeFromColchisBackAgainstTheWall));
-    zone2.subzones.push(new SubZone(SubZoneEnum.EscapeFromColchisBattleAtSea));        
+    zone2.subzones.push(new SubZone(SubZoneEnum.EscapeFromColchisBattleAtSea));
     zone2.notificationType = zone2.shouldShowSideQuestNotification();
     ballad.zones.push(zone2);
 

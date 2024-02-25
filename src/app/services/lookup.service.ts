@@ -4192,7 +4192,7 @@ export class LookupService {
       if (abilityName === "Warming Waters")
         abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack Water</strong> damage to all targets. Reduce all of your cooldowns by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong>. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
       if (abilityName === "Wild Party")
-        abilityDescription = "Give each party member a Barrier of <strong>" + this.utilityService.genericRound(relatedSecondaryUserGainStatusEffectEffectiveness * 100) + "% of Resistance</strong> HP. Increase ability cooldown speed by <strong>" + this.utilityService.genericRound(relatedSecondaryUserGainStatusEffectEffectivenessPercent) + "%</strong> for " + relatedSecondaryUserGainStatusEffectDuration + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Give each party member a Barrier of <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectiveness * 100) + "% of Resistance</strong> HP. Increase ability cooldown speed by <strong>" + this.utilityService.genericRound(relatedSecondaryUserGainStatusEffectEffectivenessPercent) + "%</strong> for " + relatedSecondaryUserGainStatusEffectDuration + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
 
       if (abilityName === "Thunderous Riposte")
         abilityDescription = "Apply Chains of Fate to all targets for " + relatedTargetGainStatusEffectDuration + " seconds. For " + relatedUserGainStatusEffectDuration + " seconds, your counter attacks have the Lightning element and deal an additional <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
@@ -8888,7 +8888,7 @@ export class LookupService {
       ability.heals = true;
       ability.isAoe = true;
       ability.targetsAllies = true;
-      ability.effectiveness = 1.5 + secondaryEffectivenessBonus;
+      ability.effectiveness = 1.5 + secondaryEffectivenessBonus * .2;
       ability.userEffect.push(this.globalService.createHealOverTimeEffect(20 + secondaryEffectivenessBonus, 5, 1.5 + secondaryEffectivenessBonus * .25, ability.name, undefined, true));
     }
 
@@ -9165,9 +9165,9 @@ export class LookupService {
       ability.heals = true;
       ability.isAoe = true;
       ability.targetsAllies = true;
-      ability.effectiveness = 1.5 + secondaryEffectivenessBonus * .5;
+      ability.effectiveness = 1.5 + secondaryEffectivenessBonus * .2;
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsUp, 25 + secondaryEffectivenessBonus * .5, 1.5 + secondaryEffectivenessBonus * .1, false, true, true));
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 1.5 + secondaryEffectivenessBonus * .5, true, true, true, ability.name.toString(), 1.5));
+      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 1.5 + secondaryEffectivenessBonus * .2, true, true, true, ability.name.toString(), 1.5));
     }
 
     if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Nemesis)) {
@@ -9369,7 +9369,7 @@ export class LookupService {
       ability.name = "Wild Party";
       ability.isAvailable = true;
       ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 1.5 + secondaryEffectivenessBonus * .5, true, true, true, ability.name.toString()));
+      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 1.5 + secondaryEffectivenessBonus * .2, true, true, true, ability.name.toString()));
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbilitySpeedUp, 25 + secondaryEffectivenessBonus * 2, 1.75, false, true, true));
     }
 
@@ -9410,6 +9410,7 @@ export class LookupService {
       ability.dealsDirectDamage = true;
       ability.effectiveness = 5 + primaryEffectivenessBonus * 1.5;
       ability.elementalType = ElementalTypeEnum.Lightning;
+      ability.isAoe = true;
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatDamageAfterDelay, 10, 1, false, true, false));
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Water));
     }

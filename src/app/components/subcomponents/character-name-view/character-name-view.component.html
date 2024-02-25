@@ -39,7 +39,7 @@
 
 <ng-template #xpPopover>
     <div>
-        Level {{character.level}}
+        Level {{character.level}} / {{character.maxLevel}}
         <br />
         <span *ngIf="!isCharacterAtMaxLevel()"><span [innerHTML]="getCharacterXp()"></span> / <span [innerHTML]="getCharacterXpToNextLevel()"></span> XP to Level
         {{character.level + 1}}

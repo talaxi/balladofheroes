@@ -152,15 +152,19 @@ export class LoadoutsViewComponent {
     var itemName = this.dictionaryService.getItemName(item.itemType);
     var qualityClass = this.lookupService.getEquipmentQualityClass(item.quality);
     var extraNameAddition = this.lookupService.getEquipmentExtraNameAddition(item.associatedResource);
+    var maxNameLength = 15;
+
+    if  (itemName.length > maxNameLength)
+      itemName = itemName.substring(0, maxNameLength) + "..";
 
     var fullName = itemName + extraNameAddition;
 
-    var smallTextClass = "";
+    var smallTextClass = " smallEquipmentText";
 
-    if (itemName.length >= 18)
-      smallTextClass = " verySmallEquipmentText";
-    else if (itemName.length >= 14)
-      smallTextClass = " smallEquipmentText";
+    //if (itemName.length >= 18)
+      //smallTextClass = " verySmallEquipmentText";
+    //else if (itemName.length >= 14)
+      //smallTextClass = " smallEquipmentText";
 
     itemText = "<strong class='" + qualityClass + smallTextClass + "'>" + fullName + "</strong>";
 

@@ -347,6 +347,9 @@
                         <div *ngIf="getPermanentAbilityUserEffectDurationIncrease(ability) !== 0"><span class="statLabel">Permanent Gained
                                 Effect Duration Increase: </span> <span class="statValue"
                                 [innerHtml]="getPermanentAbilityUserEffectDurationIncrease(ability)"></span> seconds</div>
+                                <div *ngIf="getPermanentAbilitySecondaryUserEffectDurationIncrease(ability) !== 0"><span class="statLabel">Permanent Gained
+                                    Secondary Effect Duration Increase: </span> <span class="statValue"
+                                    [innerHtml]="getPermanentAbilitySecondaryUserEffectDurationIncrease(ability)"></span> seconds</div>
                         <div
                             *ngIf="getAbilityUserEffectEffectivenessIncrease(ability) !== 0 && getAbilityUserEffectEffectivenessIncrease(ability) !== '0%'">
                             <span class="statLabel">Gained Effect Effectiveness Increase: </span> <span

@@ -42,6 +42,10 @@
         </div>
       </div>
     </div>
+    <hr class='transparentHr' *ngIf="followersAvailable" />
+    <div class="clickableText navItem" (click)="switchView(menuEnum.Followers)" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Followers }">
+      <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Followers }" (click)="switchView(menuEnum.Followers)">Followers</button>
+    </div>
     <hr class='transparentHr'/>
     <div class="clickableText navItem" (click)="switchView(menuEnum.Achievements)" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Achievements }">
       <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Achievements }" (click)="switchView(menuEnum.Achievements)">Achievements</button>

@@ -9,5 +9,6 @@ export enum MenuEnum {
   Achievements,
   Professions,
   Bestiary,
-  Support
+  Support,
+  Followers
 }

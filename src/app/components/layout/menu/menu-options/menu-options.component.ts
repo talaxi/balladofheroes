@@ -25,6 +25,7 @@ export class MenuOptionsComponent implements OnInit {
   public gods: God[];
   public professions: ProfessionEnum[] = [];
   public professionsAvailable: boolean = false;
+  public followersAvailable: boolean = false;
   @Input() isMobile = false;
 
   godsAvailable = false;
@@ -83,6 +84,7 @@ export class MenuOptionsComponent implements OnInit {
       return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > b.displayOrder ? 1 : 0;
     }).filter(item => item.isAvailable);
     this.godsAvailable = this.gods.length > 0;
+    this.followersAvailable = this.globalService.globalVar.followerData.availableFollowers > 0;
     this.getProfessions();
   }
 

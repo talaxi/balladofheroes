@@ -1,4 +1,4 @@
-<table>
+<table [ngClass]="{'fromMenu': fromMenu}">
     <tr>
         <td class="clickableText tabItem" [ngClass]="{'active': selectedTab === followerTabEnum.Overview }" (click)="changeView(followerTabEnum.Overview)">
             <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': selectedTab === followerTabEnum.Overview }">Overview</button>

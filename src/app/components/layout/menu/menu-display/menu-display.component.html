@@ -6,5 +6,6 @@
     <app-professions-view *ngIf="menuService.selectedMenuDisplay === menuEnum.Professions"></app-professions-view>
     <app-bestiary-view *ngIf="menuService.selectedMenuDisplay === menuEnum.Bestiary" [selectedBallad]="presetBallad" [selectedZone]="presetZone" [selectedSubzone]="presetSubzone"></app-bestiary-view>
     <app-settings-view [isMobile]="isMobile" *ngIf="menuService.selectedMenuDisplay === menuEnum.Settings"></app-settings-view>
-    <app-support-view *ngIf="menuService.selectedMenuDisplay === menuEnum.Support"></app-support-view>
+    <app-support-view *ngIf="menuService.selectedMenuDisplay === menuEnum.Support"></app-support-view>    
+    <app-follower-default-view *ngIf="menuService.selectedMenuDisplay === menuEnum.Followers" [fromMenu]="true"></app-follower-default-view>    
 </div>

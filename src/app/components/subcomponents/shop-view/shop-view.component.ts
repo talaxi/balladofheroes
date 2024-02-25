@@ -206,7 +206,11 @@ export class ShopViewComponent implements OnInit {
     return this.lookupService.getShopOptionText(type);
   }
 
-  progressStory() {
+  progressStory(type?: ShopTypeEnum) {
+    if (type !== undefined && type === ShopTypeEnum.Story && this.globalService.globalVar.currentStoryId < 9) {
+      this.globalService.globalVar.currentStoryId = 9;
+    }
+
     this.storyService.showStory = true;
     this.battleService.checkScene();
   }

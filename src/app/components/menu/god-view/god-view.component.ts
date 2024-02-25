@@ -1028,6 +1028,43 @@ export class GodViewComponent implements OnInit {
     }
   }
 
+  getPermanentAbilitySecondaryUserEffectDurationIncrease(ability: Ability) {
+    if (ability.requiredLevel === this.utilityService.duoAbilityLevel) {
+      var otherGod = this.getSecondaryDuoGod();
+      if (otherGod === undefined)
+        return 0;
+
+      var gods: GodEnum[] = [];
+      gods.push(this.god.type);
+      gods.push(otherGod.type)
+      var baseDuoAbility = this.lookupService.getDuoAbility(gods, true);
+      if (baseDuoAbility === undefined)
+        return 0;
+
+      var baseAbilityUserEffect = baseDuoAbility.userEffect[1];
+      var currentAbilityUserEffect = ability.userEffect[1];
+      if (baseAbilityUserEffect === undefined || currentAbilityUserEffect === undefined)
+        return 0;
+
+      return this.utilityService.genericRound((currentAbilityUserEffect.duration - baseAbilityUserEffect.duration));
+    }
+    else {
+      var baseGod = new God(this.god.type);
+      this.globalService.assignGodAbilityInfo(baseGod);
+      var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+      var permanentAbilityUpgradeAmount = 0;
+      var permanentAbilityUpgrade = this.god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
+      if (permanentAbilityUpgrade !== undefined && permanentAbilityUpgrade.userEffect !== undefined && permanentAbilityUpgrade.userEffect.length > 1)
+        permanentAbilityUpgradeAmount = permanentAbilityUpgrade.userEffect[1].duration;
+
+      if (baseAbility !== undefined && baseAbility.userEffect.length > 0)
+        return this.utilityService.roundTo(permanentAbilityUpgradeAmount, 2);
+
+      return 0;
+    }
+  }
+
   getPermanentAbilityTargetEffectEffectivenessIncrease(ability: Ability) {
     if (ability.requiredLevel === this.utilityService.duoAbilityLevel) {
       var otherGod = this.getSecondaryDuoGod();
