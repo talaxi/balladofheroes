@@ -597,5 +597,6 @@ export enum ItemsEnum {
   NecklaceOfStarryNights,
   AgonizingToxin,
   TokenOfFavor,
-  TokenOfSupport
+  TokenOfSupport,
+  MysteryStone
 } 

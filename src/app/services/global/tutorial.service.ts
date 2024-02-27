@@ -73,9 +73,9 @@ export class TutorialService {
     }
     else if (type === TutorialTypeEnum.Equipment) {
       if (this.deviceDetectorService.isMobile())
-        text = "You've acquired your first equipment item. Tap on <span class='smallCaps adventurerColor bold'>'Adventurer'</span> in the middle of the screen to quickly jump to the menu and view the character page. Use the <b>'Change'</b> button to update your equipment.";
+        text = "You've acquired your first equipment item. Equipment can be changed from the <b class='smallCaps linkForeground'>'menu'</b> located on the top left of your screen. For now, tap on <span class='smallCaps adventurerColor bold'>'Adventurer'</span> in the middle of the screen to quickly jump to the menu and view the Adventurer's character page. Use the <b>'Change'</b> button to update your equipment.";
       else
-        text = "You've acquired your first equipment item. Click on <span class='smallCaps adventurerColor bold'>'Adventurer'</span> on the top left of the screen to quickly jump to the menu and view the character page. Use the <b>'Change Equipment'</b> button to update your equipment.";
+        text = "You've acquired your first equipment item. Equipment can be changed from the <b class='smallCaps linkForeground'>'menu'</b> located on the top left of your screen. For now, click on <span class='smallCaps adventurerColor bold'>'Adventurer'</span> on the top left of the screen to quickly jump to the menu and view the character page. Use the <b>'Change Equipment'</b> button to update your equipment.";
     }
     else if (type === TutorialTypeEnum.Altars) {
       if (this.deviceDetectorService.isMobile())
@@ -84,7 +84,7 @@ export class TutorialService {
         text = "As you proceed on your journey, you will have access to different altars to honor the gods. Select the Altar on the right and pray to Athena to gain a party-wide buff and affinity EXP for Athena.";
     }
     else if (type === TutorialTypeEnum.Achievements) {
-      text = "You've gained a reward by completing an achievement. View all achievements and rewards in the menu under Achievements.";
+      text = "You've gained a reward by completing an achievement. View all achievements and rewards in the Menu under Achievements.";
     }
     else if (type === TutorialTypeEnum.QuickView) {
       if (this.deviceDetectorService.isMobile())
@@ -120,7 +120,7 @@ export class TutorialService {
       text = "You now gain Chthonic Favor in addition to gaining Chthonic Power when resetting your gods in the Underworld. Chthonic Favor directly multiplies the amount of Chthonic Power you gain.";
     }
     else if (type === TutorialTypeEnum.Overdrive) {
-      text = "You've obtained your first overdrive. A new bar is now under the unlocking character's health bar that shows their progress to using their overdrive. Attacking and being attacked by enemies increases your overdrive gauge, and once it reaches 100% you will enter a powerful state for a period of time. You can view the overdrive menu when looking at your characters in the menu.";
+      text = "You've obtained your first overdrive. A new bar is now under the unlocking character's health bar that shows their progress to using their overdrive. Attacking and being attacked by enemies increases your overdrive gauge, and once it reaches 100% you will enter a powerful state for a period of time. You can view the overdrive menu by selecting 'Change Overdrive' when looking at a class in the Menu.";
     }
     else if (type === TutorialTypeEnum.Link) {
       text = "You can now empower your abilities in the form of Links. When you manually select an ability, you will activate a Link and deal increased damage. As you level up, you will be able to link more abilities together and deal increasingly higher damage with them.";

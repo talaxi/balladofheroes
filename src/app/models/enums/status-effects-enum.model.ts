@@ -246,5 +246,6 @@ export enum StatusEffectEnum {
     VortexPull,
     Tentative,
     AgonizingToxin,
-    RandomPrimaryStatDownExcludeHpAvoidDuplicate
+    RandomPrimaryStatDownExcludeHpAvoidDuplicate,
+    Break
   }

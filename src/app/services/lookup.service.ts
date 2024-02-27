@@ -694,6 +694,8 @@ export class LookupService {
       name = this.getSlotItemDescription(type);
     }
 
+    else if (type === ItemsEnum.MysteryStone)
+      name = "+25 Jewelcrafting Max Level";
     else if (type === ItemsEnum.SparringMatch) {
       var xpAmount = 5000;
       name = "Instantly receive " + xpAmount.toLocaleString() + " Bonus XP<br/><br/><i>The cost for this increases by 10% after every purchase and is reduced by 10% every 15 minutes of real time</i>";
@@ -10984,7 +10986,7 @@ export class LookupService {
 
     var equipmentMaxHpGain = this.equipmentService.getTotalMaxHpGain(character.equipmentSet);
     if (equipmentMaxHpGain > 0)
-      breakdown += "Equipment: +" + equipmentMaxHpGain + "<br />";
+      breakdown += "Equipment: +" + this.utilityService.genericRound(equipmentMaxHpGain) + "<br />";
 
     var charmGain = this.charmService.getTotalMaxHpAdditionFromCharms(this.globalService.globalVar.resources);
     if (charmGain > 0) {
@@ -11052,7 +11054,7 @@ export class LookupService {
 
     var equipmentAttackGain = this.equipmentService.getTotalAttackGain(character.equipmentSet);
     if (equipmentAttackGain > 0)
-      breakdown += "Equipment: +" + equipmentAttackGain + "<br />";
+      breakdown += "Equipment: +" + this.utilityService.genericRound(equipmentAttackGain) + "<br />";
 
     var charmGain = this.charmService.getTotalAttackAdditionFromCharms(this.globalService.globalVar.resources);
     if (charmGain > 0) {
@@ -11120,7 +11122,7 @@ export class LookupService {
 
     var equipmentDefenseGain = this.equipmentService.getTotalDefenseGain(character.equipmentSet);
     if (equipmentDefenseGain > 0)
-      breakdown += "Equipment: +" + equipmentDefenseGain + "<br />";
+      breakdown += "Equipment: +" + this.utilityService.genericRound(equipmentDefenseGain) + "<br />";
 
     var charmGain = this.charmService.getTotalDefenseAdditionFromCharms(this.globalService.globalVar.resources);
     if (charmGain > 0) {
@@ -11187,7 +11189,7 @@ export class LookupService {
 
     var equipmentAgilityGain = this.equipmentService.getTotalAgilityGain(character.equipmentSet);
     if (equipmentAgilityGain > 0)
-      breakdown += "Equipment: +" + equipmentAgilityGain + "<br />";
+      breakdown += "Equipment: +" + this.utilityService.genericRound(equipmentAgilityGain) + "<br />";
 
 
     var charmGain = this.charmService.getTotalAgilityAdditionFromCharms(this.globalService.globalVar.resources);
@@ -11255,7 +11257,7 @@ export class LookupService {
 
     var equipmentLuckGain = this.equipmentService.getTotalLuckGain(character.equipmentSet);
     if (equipmentLuckGain > 0)
-      breakdown += "Equipment: +" + equipmentLuckGain + "<br />";
+      breakdown += "Equipment: +" + this.utilityService.genericRound(equipmentLuckGain) + "<br />";
 
 
     var charmGain = this.charmService.getTotalLuckAdditionFromCharms(this.globalService.globalVar.resources);
@@ -11323,7 +11325,7 @@ export class LookupService {
 
     var equipmentResistanceGain = this.equipmentService.getTotalResistanceGain(character.equipmentSet);
     if (equipmentResistanceGain > 0)
-      breakdown += "Equipment: +" + equipmentResistanceGain + "<br />";
+      breakdown += "Equipment: +" + this.utilityService.genericRound(equipmentResistanceGain) + "<br />";
 
 
     var charmGain = this.charmService.getTotalResistanceAdditionFromCharms(this.globalService.globalVar.resources);

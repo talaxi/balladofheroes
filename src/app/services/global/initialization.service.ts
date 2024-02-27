@@ -1298,6 +1298,9 @@ export class InitializationService {
       if (resource !== undefined)
         this.lookupService.gainResource(resource);
 
+      resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectRutilatedAmethyst, 100);
+      if (resource !== undefined)
+        this.lookupService.gainResource(resource);
       resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectRutilatedOpal, 100);
       if (resource !== undefined)
         this.lookupService.gainResource(resource);
@@ -1363,9 +1366,9 @@ export class InitializationService {
 
       var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
       if (character1 !== undefined) {
-        character1.assignedGod1 = GodEnum.Aphrodite;
+        character1.assignedGod1 = GodEnum.Apollo;
         character1.assignedGod2 = GodEnum.Dionysus;
-        character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShadowSpear);
+        character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.StingrayTip);
         character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShadowShield);
         character1.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShadowArmor);
         character1.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShadowRing);

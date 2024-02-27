@@ -77,7 +77,7 @@ export class ShoppingItemViewComponent implements OnInit {
       this.item.shopItem === ItemsEnum.ApollosSigil || this.item.shopItem === ItemsEnum.AressSigil || this.item.shopItem === ItemsEnum.HadessSigil ||
       this.item.shopItem === ItemsEnum.DionysussSigil || this.item.shopItem === ItemsEnum.NemesissSigil || this.item.shopItem === ItemsEnum.ZeussSigil ||
       this.item.shopItem === ItemsEnum.PoseidonsSigil || this.item.shopItem === ItemsEnum.AphroditesSigil || this.item.shopItem === ItemsEnum.HerasSigil ||
-      this.item.shopItem === ItemsEnum.CirceAlchemy)
+      this.item.shopItem === ItemsEnum.CirceAlchemy || this.item.shopItem === ItemsEnum.MysteryStone)
       cannotMultiply = true;
 
     return cannotMultiply;
@@ -139,6 +139,8 @@ export class ShoppingItemViewComponent implements OnInit {
     if (this.item.shopItem === ItemsEnum.AphroditesSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AphroditesSigil))
       outOfStock = true;
     if (this.item.shopItem === ItemsEnum.HerasSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HerasSigil))
+      outOfStock = true;
+      if (this.item.shopItem === ItemsEnum.MysteryStone && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.MysteryStone))
       outOfStock = true;
 
     return outOfStock;
@@ -263,6 +265,12 @@ export class ShoppingItemViewComponent implements OnInit {
 
             this.storyService.displayOptionalScene(OptionalSceneEnum.CirceAlchemy2);
             this.battleService.checkScene();
+          }
+        }
+        else if (resource.item === ItemsEnum.MysteryStone) {
+          var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
+          if (jewelcrafting !== undefined) {
+            jewelcrafting.maxLevel += 25;            
           }
         }
         else

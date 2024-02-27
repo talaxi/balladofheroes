@@ -291,6 +291,8 @@ export class DictionaryService {
       name = "Token of Favor";
       else if (type === ItemsEnum.TokenOfSupport)
       name = "Token of Support";
+      else if (type === ItemsEnum.MysteryStone)
+      name = "Mystery Stone";
     else if (type === ItemsEnum.AthenasCrest)
       name = "Athena's Crest";
     else if (type === ItemsEnum.ArtemissCrest)

@@ -827,7 +827,15 @@ export class ShopItemGeneratorService {
     }
     if (item === ItemsEnum.HerasSigil) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
-    }    
+    }        
+    if (item === ItemsEnum.MysteryStone) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.PerfectRutilatedAmethyst, 10));
+      purchasePrice.push(new ResourceValue(ItemsEnum.PerfectRutilatedAquamarine, 10));
+      purchasePrice.push(new ResourceValue(ItemsEnum.PerfectRutilatedEmerald, 10));
+      purchasePrice.push(new ResourceValue(ItemsEnum.PerfectRutilatedOpal, 10));            
+      purchasePrice.push(new ResourceValue(ItemsEnum.PerfectRutilatedRuby, 10));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.PerfectRutilatedTopaz, 10));
+    }
     if (item === ItemsEnum.RutileRubyFragment) {
       purchasePrice.push(new ResourceValue(ItemsEnum.RoughRubyFragment, 100));
     }

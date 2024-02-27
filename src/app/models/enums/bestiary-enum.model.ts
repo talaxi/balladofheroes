@@ -449,5 +449,6 @@ export enum BestiaryEnum {
   ErraticHusk,
   EnflamedHusk,
   GuardianOfTheGrove,
-  HulkingHusk
+  HulkingHusk,
+  BrokenHusk
 }

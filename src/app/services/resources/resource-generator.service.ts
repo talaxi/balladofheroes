@@ -1450,7 +1450,10 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.PerfectAdamantineAmethyst) {
       return new ResourceValue(ItemsEnum.PerfectAdamantineAmethyst, amount);
-    }    
+    }        
+    if (type === ItemsEnum.MysteryStone) {
+      return new ResourceValue(ItemsEnum.MysteryStone, amount);
+    }
 
     //other
     if (type === ItemsEnum.SparringMatch) {

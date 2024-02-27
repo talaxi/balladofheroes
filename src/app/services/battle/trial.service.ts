@@ -875,6 +875,16 @@ export class TrialService {
         this.globalService.gainResource(new ResourceValue(gainedItem, itemCount));
       }
     }
+    else if (stage === 5) {
+      var itemCount = 10;
+      var gainedItem = ItemsEnum.Ambrosia;
+      reward = new ResourceValue(gainedItem, itemCount);
+
+      if (includeGameLog) {
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + itemCount.toLocaleString() + " " + (itemCount === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalService.globalVar);
+        this.globalService.gainResource(new ResourceValue(gainedItem, itemCount));
+      }
+    }
     else if (stage % 5 === 0) {
       var itemCount = stage * 20;
       var gainedItem = ItemsEnum.Ambrosia;
@@ -885,8 +895,18 @@ export class TrialService {
         this.globalService.gainResource(new ResourceValue(gainedItem, itemCount));
       }
     }
+    else if (stage <= 5) {
+      var itemCount = 1;
+      var gainedItem = ItemsEnum.Ambrosia;
+      reward = new ResourceValue(gainedItem, itemCount);
+
+      if (includeGameLog) {
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + itemCount.toLocaleString() + " " + (itemCount === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalService.globalVar);
+        this.globalService.gainResource(new ResourceValue(gainedItem, itemCount));
+      }
+    }
     else {
-      var itemCount = stage * 5;
+      var itemCount = (stage - 5) * 5;
       var gainedItem = ItemsEnum.Ambrosia;
       reward = new ResourceValue(gainedItem, itemCount);
 

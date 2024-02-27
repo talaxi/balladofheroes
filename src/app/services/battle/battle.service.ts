@@ -588,6 +588,10 @@ export class BattleService {
       fastDebuffSpeedStatus = 1 / (1 - sturdyShell.count);
     }
 
+    if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Break)) {
+      //todo: check whole party, if they each have break with count greater than X then do effect
+    }
+
     character.battleInfo.statusEffects.forEach(effect => {
       var previousDuration = effect.duration;
 
@@ -2284,8 +2288,6 @@ export class BattleService {
 
         var flood = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Flood);
         if (flood !== undefined) {
-          //var floodDamage = this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, -1, flood.effectiveness * this.lookupService.getAdjustedAttack(user, undefined, true), true, false, true, "Flood", 0, false, ElementalTypeEnum.Water);
-          //equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, -1, .4, true, false, false, this.dictionaryService.getItemName(type).toString(), 0, false, ElementalTypeEnum.Holy));
           targets.forEach(newTarget => {
             var trueDamageDealt = this.dealTrueDamage(isPartyUsing, newTarget, flood!.effectiveness * this.lookupService.getAdjustedAttack(user, undefined, true), user, ElementalTypeEnum.Water, true);
             var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(newTarget.type) + "'>" + newTarget.name + "</strong>" + " takes " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, Math.round(trueDamageDealt)) + elementalText + " Water damage from Flood's effect.";
@@ -3353,10 +3355,17 @@ export class BattleService {
 
   handleTargetEffects(isPartyUsing: boolean, targetEffect: StatusEffect[], user: Character, target: Character, potentialTargets: Character[], party: Character[], damageDealt: number = 0, abilityTargetedAllies: boolean = false, originalAbility?: Ability) {
     if (targetEffect.length > 0) {
+      var resetTarget: Character | undefined = undefined;
+      var shouldResetTarget = false;
       targetEffect.forEach(gainedStatusEffect => {
         var appliedStatusEffect = this.globalService.makeStatusEffectCopy(gainedStatusEffect);
 
-        if (appliedStatusEffect.type === StatusEffectEnum.DamageOverTime) {
+        if (appliedStatusEffect.type === StatusEffectEnum.DamageOverTime) {          
+          if (abilityTargetedAllies && !gainedStatusEffect.targetsAllies) {            
+            shouldResetTarget = true;
+            resetTarget = this.getTarget(user, potentialTargets, TargetEnum.Random);
+          }
+
           if (appliedStatusEffect.dotType === dotTypeEnum.BasedOnAttack) {
 
             if (originalAbility !== undefined && originalAbility.name === "Rupture") {
@@ -3405,8 +3414,9 @@ export class BattleService {
           appliedStatusEffect.effectiveness = this.lookupService.getAdjustedResistance(user, true) * appliedStatusEffect.effectiveness;
         }
 
-        if (target !== undefined && appliedStatusEffect.dotType !== dotTypeEnum.None) {
-          this.applyStatusEffect(appliedStatusEffect, target, potentialTargets, user, originalAbility);
+        if (target !== undefined && appliedStatusEffect.dotType !== dotTypeEnum.None && (!shouldResetTarget ||
+          (shouldResetTarget && resetTarget !== undefined))) {
+          this.applyStatusEffect(appliedStatusEffect, resetTarget !== undefined ? resetTarget : target, potentialTargets, user, originalAbility);
         }
 
         var mark = user.abilityList.find(item => item.name === "Mark" && item.isAvailable);

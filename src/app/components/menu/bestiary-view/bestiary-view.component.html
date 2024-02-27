@@ -360,13 +360,13 @@
                                 [character]="getEnemyTrialBossWithScaledStats()"></app-enemy-description-view>
                         </ng-template>
                         <br />
-                        <span>Defeat Count: {{getTrialGodDefeatCount()}}</span>
+                        <span>Defeat Count: <span [innerHTML]="getTrialGodDefeatCount()"></span></span>
                         <br />
-                        <span>Highest XPS Achieved: {{getHighestXpsForTrialGod()}}</span>
+                        <span>Highest XPS Achieved: <span [innerHTML]="getHighestXpsForTrialGod()"></span></span>
                         <br />
-                        <span>Highest DPS Achieved: {{getHighestDpsForTrialGod()}}</span>
+                        <span>Highest DPS Achieved: <span [innerHTML]="getHighestDpsForTrialGod()"></span></span>
                         <br />
-                        <span>Highest Total God Levels On Defeat: {{getHighestGodLevelsForTrialGod()}}</span>
+                        <span>Highest Total God Levels On Defeat: <span [innerHTML]="getHighestGodLevelsForTrialGod()"></span></span>
                     </div>
                     <div *ngIf="selectedZodiac !== zodiacEnum.None">
                         <span class="textCentered bold s4Heading pageHeader" customToolTip
@@ -377,11 +377,11 @@
                                 [character]="getTrialOfTheStarsBestiary()"></app-enemy-description-view>
                         </ng-template>
                         <br />
-                        <span>Defeat Count: {{getTrialOfTheStarsDefeatCount()}}</span>
+                        <span>Defeat Count: <span [innerHTML]="getTrialOfTheStarsDefeatCount()"></span></span>
                         <br />
-                        <span>Highest XPS Achieved: {{getHighestXpsForTrialOfTheStars()}}</span>
+                        <span>Highest XPS Achieved: <span [innerHTML]="getHighestXpsForTrialOfTheStars()"></span></span>
                         <br />
-                        <span>Highest DPS Achieved: {{getHighestDpsForTrialOfTheStars()}}</span>
+                        <span>Highest DPS Achieved: <span [innerHTML]="getHighestDpsForTrialOfTheStars()"></span></span>
                     </div>
                 </div>
 
@@ -416,9 +416,9 @@
             <br />
             <span class="smallCaps bold">subzone</span>
             <br />
-            <span>Highest XPS Achieved: {{getHighestXps(selectedSubzone)}}</span>
+            <span>Highest XPS Achieved: <span [innerHTML]="getHighestXps(selectedSubzone)"></span></span>
             <br />
-            <span>Highest DPS Achieved: {{getHighestDps(selectedSubzone)}}</span>
+            <span>Highest DPS Achieved: <span [innerHTML]="getHighestDps(selectedSubzone)"></span></span>
             <br />
             <button class="buttonStyled" (click)="jumpToAchievements()">View Achievements</button>
             <br />
