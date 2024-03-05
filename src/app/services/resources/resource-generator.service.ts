@@ -871,6 +871,15 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.UnstableElement) {
       return new ResourceValue(ItemsEnum.UnstableElement, amount);
     }
+    if (type === ItemsEnum.ImmortalScales) {
+      return new ResourceValue(ItemsEnum.ImmortalScales, amount);
+    }
+    if (type === ItemsEnum.SpiderSilk) {
+      return new ResourceValue(ItemsEnum.SpiderSilk, amount);
+    }
+    if (type === ItemsEnum.SquidInk) {
+      return new ResourceValue(ItemsEnum.SquidInk, amount);
+    }
     if (type === ItemsEnum.Peony) {
       return new ResourceValue(ItemsEnum.Peony, amount);
     }
@@ -1059,6 +1068,21 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.NecklaceSlotAddition) {
       return new ResourceValue(ItemsEnum.NecklaceSlotAddition, amount);
+    }
+    if (type === ItemsEnum.MajorWeaponSlotAddition) {
+      return new ResourceValue(ItemsEnum.MajorWeaponSlotAddition, amount);
+    }
+    if (type === ItemsEnum.MajorArmorSlotAddition) {
+      return new ResourceValue(ItemsEnum.MajorArmorSlotAddition, amount);
+    }
+    if (type === ItemsEnum.MajorRingSlotAddition) {
+      return new ResourceValue(ItemsEnum.MajorRingSlotAddition, amount);
+    }
+    if (type === ItemsEnum.MajorShieldSlotAddition) {
+      return new ResourceValue(ItemsEnum.MajorShieldSlotAddition, amount);
+    }
+    if (type === ItemsEnum.MajorNecklaceSlotAddition) {
+      return new ResourceValue(ItemsEnum.MajorNecklaceSlotAddition, amount);
     }
     if (type === ItemsEnum.LamiaHeart) {
       return new ResourceValue(ItemsEnum.LamiaHeart, amount);

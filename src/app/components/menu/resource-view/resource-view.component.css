@@ -161,6 +161,10 @@
     .smallCharmsSection, .largeCharmsSection {
       width: 48%;
     }
+
+    .thirdSection {
+      width: 32.5%;
+    }
     
     .noLineHeight {
       line-height:0;

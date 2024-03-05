@@ -907,6 +907,16 @@ export class DictionaryService {
       name = "Shield Slot Addition";
     else if (type === ItemsEnum.NecklaceSlotAddition)
       name = "Necklace Slot Addition";
+      else if (type === ItemsEnum.MajorWeaponSlotAddition)
+        name = "Major Weapon Slot Addition";
+      else if (type === ItemsEnum.MajorRingSlotAddition)
+        name = "Major Ring Slot Addition";
+      else if (type === ItemsEnum.MajorArmorSlotAddition)
+        name = "Major Armor Slot Addition";
+      else if (type === ItemsEnum.MajorShieldSlotAddition)
+        name = "Major Shield Slot Addition";
+      else if (type === ItemsEnum.MajorNecklaceSlotAddition)
+        name = "Major Necklace Slot Addition";
     else if (type === ItemsEnum.RutilatedRuby)
       name = "Rutilated Ruby";
     else if (type === ItemsEnum.RutilatedAmethyst)
@@ -1013,6 +1023,12 @@ export class DictionaryService {
       name = "Unstable Element";
     else if (type === ItemsEnum.VialOfForeignWaters)
       name = "Vial Of Foreign Waters";
+      else if (type === ItemsEnum.SquidInk)
+      name = "Squid Ink";
+      else if (type === ItemsEnum.SpiderSilk)
+      name = "Spider Silk";
+      else if (type === ItemsEnum.ImmortalScales)
+      name = "Immortal Scales";
 
     //recipes
     else if (type === ItemsEnum.PoisonExtractPotionRecipe)
@@ -1181,7 +1197,19 @@ export class DictionaryService {
     else if (type === ItemsEnum.LargeBuccheroKantharos)
       name = "Large Bucchero Kantharos";
     else if (type === ItemsEnum.LargeCrackedKantharos)
-      name = "Large Cracked Kantharos";
+      name = "Large Cracked Kantharos";    
+      else if (type === ItemsEnum.PerfectOrnateKantharos)
+      name = "Giant Ornate Kantharos";
+    else if (type === ItemsEnum.PerfectGildedKantharos)
+      name = "Giant Gilded Kantharos";
+    else if (type === ItemsEnum.PerfectBlackKantharos)
+      name = "Giant Black Kantharos";
+    else if (type === ItemsEnum.PerfectSilverKantharos)
+      name = "Giant Silver Kantharos";
+    else if (type === ItemsEnum.PerfectBuccheroKantharos)
+      name = "Giant Bucchero Kantharos";
+    else if (type === ItemsEnum.PerfectCrackedKantharos)
+      name = "Giant Cracked Kantharos";
 
     //other
     else if (type === ItemsEnum.SparringMatch)

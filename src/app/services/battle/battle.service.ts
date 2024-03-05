@@ -589,7 +589,23 @@ export class BattleService {
     }
 
     if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Break)) {
-      //todo: check whole party, if they each have break with count greater than X then do effect
+      var breakConditionMet = true;
+      var breakConditionCount = 5;
+      var effectiveness = 500000;
+      party.forEach(partyMember => {
+        if (!partyMember.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Break) ||
+          partyMember.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Break)!.stackCount < breakConditionCount)
+          breakConditionMet = false;
+      });
+
+      if (breakConditionMet) {
+        party.forEach(partyMember => {
+          this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, -1, effectiveness, true, false, false), partyMember);
+          this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsExcludeHpDown, 15, .5, false, false, false), partyMember);
+          partyMember.battleInfo.statusEffects = partyMember.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Break);
+          this.handleTargetEffects(isPartyMember, [], partyMember, partyMember, targets, party, 0);
+        });
+      }
     }
 
     character.battleInfo.statusEffects.forEach(effect => {
@@ -1272,7 +1288,7 @@ export class BattleService {
       if (target.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.PalmStrike)) {
         insightEffectiveness *= insight.secondaryEffectiveness;
       }
-      
+
       var adjustedHealingDone = character.battleStats.healingDone;
 
       var healingDoneModifier = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.HealingDoneUp);
@@ -1729,6 +1745,26 @@ export class BattleService {
       abilityCopy.userEffect = abilityCopy.userEffect.filter(item => item.type !== StatusEffectEnum.InstantOstinato);
     }
 
+    if (abilityCopy.name === "Upstream") {
+      var current = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Current);
+      var currentCount = 0;
+      if (current !== undefined) {
+        currentCount = current.stackCount;
+      }
+
+
+      this.battle.currentEnemies.enemyList.filter(item => item.bestiaryType !== BestiaryEnum.Peneus && !item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead || effect.type === StatusEffectEnum.Stun)).forEach(enemy => {
+        var rush = this.lookupService.characterHasAbility("Rush", user);
+        if (rush !== undefined) {
+          this.useAbility(true, rush, user, targets, party, true, undefined, undefined, false);
+
+          for (var i = 0; i < currentCount; i++) {
+            this.useAbility(true, rush, user, targets, party, true, undefined, undefined, false);
+          }
+        }
+      });
+    }
+
     if (abilityCopy.name === "Raise") {
       if (this.battle.currentEnemies.enemyList.length === 1) {
         var rng = this.utilityService.getRandomInteger(0, 2);
@@ -2024,7 +2060,7 @@ export class BattleService {
       }
 
       var barrierPiercingModifier = 1;
-      if (abilityCopy.name === "Spike Shot") {
+      if (abilityCopy.name === "Spike Shot" || abilityCopy.name === "Jet Stream") {
         barrierPiercingModifier = 2;
       }
 
@@ -3360,8 +3396,8 @@ export class BattleService {
       targetEffect.forEach(gainedStatusEffect => {
         var appliedStatusEffect = this.globalService.makeStatusEffectCopy(gainedStatusEffect);
 
-        if (appliedStatusEffect.type === StatusEffectEnum.DamageOverTime) {          
-          if (abilityTargetedAllies && !gainedStatusEffect.targetsAllies) {            
+        if (appliedStatusEffect.type === StatusEffectEnum.DamageOverTime) {
+          if (abilityTargetedAllies && !gainedStatusEffect.targetsAllies) {
             shouldResetTarget = true;
             resetTarget = this.getTarget(user, potentialTargets, TargetEnum.Random);
           }

@@ -4206,6 +4206,9 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.TheLabyrinthLabyrinthCenter) {
       balladEnums.push(BalladEnum.Witch);
     }
+    if (type === SubZoneEnum.StraitsOfMessinaUnavoidablePath) {
+      balladEnums.push(BalladEnum.Eagle);
+    }
 
     return balladEnums;
   }
@@ -4282,6 +4285,12 @@ export class SubZoneGeneratorService {
     }
     if (type === SubZoneEnum.AiaiaFlowerGarden) {
       zoneEnums.push(ZoneEnum.StraitsOfMessina);
+    }
+    if (type === SubZoneEnum.StraitsOfMessinaUnavoidablePath) {
+      zoneEnums.push(ZoneEnum.ReturnToColchis);
+    }
+    if (type === SubZoneEnum.ReturnToColchisReturnToTheGrove) {
+      zoneEnums.push(ZoneEnum.EscapeFromColchis);
     }
 
     return zoneEnums;
@@ -4812,7 +4821,9 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.StraitsOfMessinaIntoTheVortex) {
       subZoneEnums.push(SubZoneEnum.StraitsOfMessinaMawOfTheMonster);
     }
-    //TODO: eventually need to add in unavoidablepath
+    if (type === SubZoneEnum.StraitsOfMessinaUnavoidablePath) {
+      subZoneEnums.push(SubZoneEnum.ReturnToColchisPhasisBeach);
+    }
     if (type === SubZoneEnum.ReturnToColchisPhasisBeach) {
       subZoneEnums.push(SubZoneEnum.ReturnToColchisUnderTheStars);
     }
@@ -5123,12 +5134,12 @@ export class SubZoneGeneratorService {
     }
 
     //requires X amount of each perfect rutile, +25 jewelcrafting lvl
-    /*availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.MysteryStone, SubZoneEnum.ReturnToColchisParanoidMerchant));
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.MysteryStone, SubZoneEnum.ReturnToColchisParanoidMerchant));
 
     if (subzoneType === SubZoneEnum.ReturnToColchisParanoidMerchant && !returnAllShopOptions) {
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
       return shopOptions;
-    }*/
+    }
 
     if (returnAllShopOptions) {      
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));

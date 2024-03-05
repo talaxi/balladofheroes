@@ -56,7 +56,7 @@ export class GlobalService {
     private deviceDetectorService: DeviceDetectorService, private zodiacService: ZodiacService) { }
 
   getCurrentVersion() {
-    return .82;
+    return .85;
   }
 
   initializeGlobalVariables() {
@@ -1078,7 +1078,7 @@ export class GlobalService {
       type === StatusEffectEnum.WarAndLove || type === StatusEffectEnum.AllPrimaryStatsDown || type === StatusEffectEnum.AllPrimaryStatsExcludeHpDown || type === StatusEffectEnum.FieryJudgment ||
       type === StatusEffectEnum.Protector || type === StatusEffectEnum.LovingEmbrace || type === StatusEffectEnum.DefensiveShapeshifting || type === StatusEffectEnum.DamageShield ||
       type === StatusEffectEnum.FriendlyCompetition || (type === StatusEffectEnum.Focus && originalCaster === newCaster) || type === StatusEffectEnum.BuzzingReminder
-      || type === StatusEffectEnum.VortexPull)
+      || type === StatusEffectEnum.VortexPull || type === StatusEffectEnum.Break)
       refreshes = true;
 
     return refreshes;

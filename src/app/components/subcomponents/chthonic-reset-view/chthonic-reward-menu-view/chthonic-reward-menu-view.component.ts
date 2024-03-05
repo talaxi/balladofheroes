@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
@@ -12,6 +13,7 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 export class ChthonicRewardMenuViewComponent implements OnInit {
 
   primaryStatBoost = .1;
+  tooltipDirection = DirectionEnum.Up;
 
   constructor(public lookupService: LookupService, private globalService: GlobalService, private utilityService: UtilityService) { }
 

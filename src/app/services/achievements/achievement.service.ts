@@ -86,7 +86,8 @@ export class AchievementService {
       subzoneType === SubZoneEnum.WarForTheMountainPalaces || subzoneType === SubZoneEnum.WarForTheMountainStables || subzoneType === SubZoneEnum.WarForTheMountainOpenCourtyard ||
       subzoneType === SubZoneEnum.WarForTheMountainThePeak || subzoneType === SubZoneEnum.BlackSeaWindyGale || subzoneType === SubZoneEnum.CreteWhirlpool ||
       subzoneType === SubZoneEnum.TheLabyrinthLabyrinthCenter || subzoneType === SubZoneEnum.AegeanSeaSympegadesOverlook || subzoneType === SubZoneEnum.ColchisReinforcementsFromAeetes ||
-      subzoneType === SubZoneEnum.AiaiaFlowerGarden || subzoneType === SubZoneEnum.StraitsOfMessinaUnavoidablePath || subzoneType === SubZoneEnum.StraitsOfMessinaMawOfTheMonster) {
+      subzoneType === SubZoneEnum.AiaiaFlowerGarden || subzoneType === SubZoneEnum.StraitsOfMessinaUnavoidablePath || subzoneType === SubZoneEnum.StraitsOfMessinaMawOfTheMonster ||
+      subzoneType === SubZoneEnum.ReturnToColchisReturnToTheGrove || subzoneType === SubZoneEnum.EscapeFromColchisBackAgainstTheWall || subzoneType === SubZoneEnum.EscapeFromColchisBattleAtSea) {
       newAchievements.push(thirtySecondClear);
     }
 
@@ -105,7 +106,8 @@ export class AchievementService {
       subzoneType === SubZoneEnum.WarForTheMountainPalaces || subzoneType === SubZoneEnum.WarForTheMountainStables || subzoneType === SubZoneEnum.WarForTheMountainOpenCourtyard ||
       subzoneType === SubZoneEnum.WarForTheMountainThePeak || subzoneType === SubZoneEnum.BlackSeaWindyGale || subzoneType === SubZoneEnum.CreteWhirlpool ||
       subzoneType === SubZoneEnum.TheLabyrinthLabyrinthCenter || subzoneType === SubZoneEnum.AegeanSeaSympegadesOverlook || subzoneType === SubZoneEnum.ColchisReinforcementsFromAeetes ||
-      subzoneType === SubZoneEnum.AiaiaFlowerGarden || subzoneType === SubZoneEnum.StraitsOfMessinaUnavoidablePath || subzoneType === SubZoneEnum.StraitsOfMessinaMawOfTheMonster)
+      subzoneType === SubZoneEnum.AiaiaFlowerGarden || subzoneType === SubZoneEnum.StraitsOfMessinaUnavoidablePath || subzoneType === SubZoneEnum.StraitsOfMessinaMawOfTheMonster ||
+      subzoneType === SubZoneEnum.ReturnToColchisReturnToTheGrove || subzoneType === SubZoneEnum.EscapeFromColchisBackAgainstTheWall || subzoneType === SubZoneEnum.EscapeFromColchisBattleAtSea)
       newAchievements.push(tenSecondClear);
 
     var completeClear = new Achievement(AchievementTypeEnum.Complete, subzoneType);
@@ -470,35 +472,58 @@ export class AchievementService {
 
       else if (subzoneType === SubZoneEnum.AiaiaUnknownWaters)
         rewards.push(new ResourceValue(ItemsEnum.RutileAquamarineFragment, 60));
-        else if (subzoneType === SubZoneEnum.AiaiaBreezyDays)
+      else if (subzoneType === SubZoneEnum.AiaiaBreezyDays)
         rewards.push(new ResourceValue(ItemsEnum.VialOfForeignWaters, 50));
-        else if (subzoneType === SubZoneEnum.AiaiaShoreline)
+      else if (subzoneType === SubZoneEnum.AiaiaShoreline)
         rewards.push(new ResourceValue(ItemsEnum.RutileOpalFragment, 60));
-        else if (subzoneType === SubZoneEnum.AiaiaForestPath)
+      else if (subzoneType === SubZoneEnum.AiaiaForestPath)
         rewards.push(new ResourceValue(ItemsEnum.Peony, 50));
-        else if (subzoneType === SubZoneEnum.AiaiaOpenClearing)
+      else if (subzoneType === SubZoneEnum.AiaiaOpenClearing)
         rewards.push(new ResourceValue(ItemsEnum.Mandrake, 50));
-        else if (subzoneType === SubZoneEnum.AiaiaThornyPath)
+      else if (subzoneType === SubZoneEnum.AiaiaThornyPath)
         rewards.push(new ResourceValue(ItemsEnum.RutileRubyFragment, 60));
-        else if (subzoneType === SubZoneEnum.AiaiaWildThicket)
+      else if (subzoneType === SubZoneEnum.AiaiaWildThicket)
         rewards.push(new ResourceValue(ItemsEnum.Peony, 50));
-        else if (subzoneType === SubZoneEnum.AiaiaFlowerGarden)
+      else if (subzoneType === SubZoneEnum.AiaiaFlowerGarden)
         rewards.push(new ResourceValue(ItemsEnum.ColossalRoot, 30));
 
-        else if (subzoneType === SubZoneEnum.StraitsOfMessinaIntoTheNarrowStraits)
+      else if (subzoneType === SubZoneEnum.StraitsOfMessinaIntoTheNarrowStraits)
         rewards.push(new ResourceValue(ItemsEnum.VialOfForeignWaters, 50));
-        else if (subzoneType === SubZoneEnum.StraitsOfMessinaEdgeOfCharybdis)
+      else if (subzoneType === SubZoneEnum.StraitsOfMessinaEdgeOfCharybdis)
         rewards.push(new ResourceValue(ItemsEnum.RutileEmeraldFragment, 50));
-        else if (subzoneType === SubZoneEnum.StraitsOfMessinaCavernOpening)
+      else if (subzoneType === SubZoneEnum.StraitsOfMessinaCavernOpening)
         rewards.push(new ResourceValue(ItemsEnum.RutileTopazFragment, 50));
-        else if (subzoneType === SubZoneEnum.StraitsOfMessinaDarkTunnel)
+      else if (subzoneType === SubZoneEnum.StraitsOfMessinaDarkTunnel)
         rewards.push(new ResourceValue(ItemsEnum.UnstableElement, 50));
-        else if (subzoneType === SubZoneEnum.StraitsOfMessinaUnavoidablePath)
+      else if (subzoneType === SubZoneEnum.StraitsOfMessinaUnavoidablePath)
         rewards.push(new ResourceValue(ItemsEnum.StingrayTip, 1));
-        else if (subzoneType === SubZoneEnum.StraitsOfMessinaIntoTheVortex)
+      else if (subzoneType === SubZoneEnum.StraitsOfMessinaIntoTheVortex)
         rewards.push(new ResourceValue(ItemsEnum.RutileAquamarineFragment, 50));
-        else if (subzoneType === SubZoneEnum.StraitsOfMessinaMawOfTheMonster)
+      else if (subzoneType === SubZoneEnum.StraitsOfMessinaMawOfTheMonster)
         rewards.push(new ResourceValue(ItemsEnum.RutileAmethystFragment, 50));
+
+      //TODO: figure this stuff out. maybe some crafter items and alchemy items
+      else if (subzoneType === SubZoneEnum.ReturnToColchisPhasisBeach)
+        rewards.push(new ResourceValue(ItemsEnum.SquidInk, 50));
+      else if (subzoneType === SubZoneEnum.ReturnToColchisUnderTheStars)
+        rewards.push(new ResourceValue(ItemsEnum.RutileAmethystFragment, 100));
+      else if (subzoneType === SubZoneEnum.ReturnToColchisColchisOutskirts)
+        rewards.push(new ResourceValue(ItemsEnum.RutileEmeraldFragment, 100));
+      else if (subzoneType === SubZoneEnum.ReturnToColchisColchisStreets)
+        rewards.push(new ResourceValue(ItemsEnum.MetalCore, 50)); 
+      else if (subzoneType === SubZoneEnum.ReturnToColchisReturnToTheGrove)
+        rewards.push(new ResourceValue(ItemsEnum.ImmortalScales, 50));
+
+      else if (subzoneType === SubZoneEnum.EscapeFromColchisEscape1)
+        rewards.push(new ResourceValue(ItemsEnum.RutileOpalFragment, 100));
+      else if (subzoneType === SubZoneEnum.EscapeFromColchisEscape2)
+        rewards.push(new ResourceValue(ItemsEnum.RutileTopazFragment, 100));
+      else if (subzoneType === SubZoneEnum.EscapeFromColchisInnerPath)
+        rewards.push(new ResourceValue(ItemsEnum.RutileAquamarineFragment, 100));
+      else if (subzoneType === SubZoneEnum.EscapeFromColchisBackAgainstTheWall)
+        rewards.push(new ResourceValue(ItemsEnum.MetalCore, 100));
+      else if (subzoneType === SubZoneEnum.EscapeFromColchisBattleAtSea)
+        rewards.push(new ResourceValue(ItemsEnum.RutileRubyFragment, 100));
     }
 
     if (achievementType === AchievementTypeEnum.ThousandVictories) {
@@ -527,6 +552,8 @@ export class AchievementService {
       var theLabyrinthBoonBonus = .04;
       var aiaiaBoonBonus = .04;
       var straitsOfMessinaBoonBonus = .04;
+      var returnToColchisBoonBonus = .04;
+      var escapeFromColchisBoonBonus = .05;
 
       if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Aigosthena))
         rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, aigosthenaBoonBonus));
@@ -574,13 +601,16 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, creteBoonBonus));
       else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Labyrinth))
         rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, theLabyrinthBoonBonus));
-        else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Aiaia))
+      else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Aiaia))
         rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, aiaiaBoonBonus));
-        else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.StraitsOfMessina))
+      else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.StraitsOfMessina))
         rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, straitsOfMessinaBoonBonus));
+      else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.ReturnToColchis))
+        rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, returnToColchisBoonBonus));
+      else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.EscapeFromColchis))
+        rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, escapeFromColchisBoonBonus));
     }
 
-    //need to figure out what you actually want
     if (achievementType === AchievementTypeEnum.TenThousandVictories) {
       if (subzoneType === SubZoneEnum.AigosthenaUpperCoast)
         rewards.push(new ResourceValue(ItemsEnum.SmallSilverKantharos, 1));
@@ -927,38 +957,60 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.LargeGildedKantharos, 1));
       else if (subzoneType === SubZoneEnum.TheLabyrinthSolidWall2)
         rewards.push(new ResourceValue(ItemsEnum.LargeCrackedKantharos, 1));
-        
+
       else if (subzoneType === SubZoneEnum.AiaiaUnknownWaters)
-      rewards.push(new ResourceValue(ItemsEnum.LargeGildedKantharos, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeGildedKantharos, 1));
       else if (subzoneType === SubZoneEnum.AiaiaBreezyDays)
-      rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfEarthProtection, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfEarthProtection, 1));
       else if (subzoneType === SubZoneEnum.AiaiaShoreline)
-      rewards.push(new ResourceValue(ItemsEnum.LargeSilverKantharos, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeSilverKantharos, 1));
       else if (subzoneType === SubZoneEnum.AiaiaForestPath)
-      rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHolyProtection, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHolyProtection, 1));
       else if (subzoneType === SubZoneEnum.AiaiaOpenClearing)
-      rewards.push(new ResourceValue(ItemsEnum.LargeBlackKantharos, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeBlackKantharos, 1));
       else if (subzoneType === SubZoneEnum.AiaiaThornyPath)
-      rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfAirDestruction, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfAirDestruction, 1));
       else if (subzoneType === SubZoneEnum.AiaiaWildThicket)
-      rewards.push(new ResourceValue(ItemsEnum.LargeCrackedKantharos, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeCrackedKantharos, 1));
       else if (subzoneType === SubZoneEnum.AiaiaFlowerGarden)
-      rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHaste, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHaste, 1));
 
       else if (subzoneType === SubZoneEnum.StraitsOfMessinaIntoTheNarrowStraits)
-      rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfAirProtection, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfAirProtection, 1));
       else if (subzoneType === SubZoneEnum.StraitsOfMessinaEdgeOfCharybdis)
-      rewards.push(new ResourceValue(ItemsEnum.LargeGildedKantharos, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeGildedKantharos, 1));
       else if (subzoneType === SubZoneEnum.StraitsOfMessinaCavernOpening)
-      rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHolyDestruction, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHolyDestruction, 1));
       else if (subzoneType === SubZoneEnum.StraitsOfMessinaDarkTunnel)
-      rewards.push(new ResourceValue(ItemsEnum.LargeOrnateKantharos, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeOrnateKantharos, 1));
       else if (subzoneType === SubZoneEnum.StraitsOfMessinaUnavoidablePath)
-      rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfDetermination, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfDetermination, 1));
       else if (subzoneType === SubZoneEnum.StraitsOfMessinaIntoTheVortex)
-      rewards.push(new ResourceValue(ItemsEnum.LargeBlackKantharos, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeBlackKantharos, 1));
       else if (subzoneType === SubZoneEnum.StraitsOfMessinaMawOfTheMonster)
-      rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterProtection, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterProtection, 1));
+
+      else if (subzoneType === SubZoneEnum.ReturnToColchisPhasisBeach)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, 1));
+      else if (subzoneType === SubZoneEnum.ReturnToColchisUnderTheStars)
+        rewards.push(new ResourceValue(ItemsEnum.LargeBuccheroKantharos, 1));
+      else if (subzoneType === SubZoneEnum.ReturnToColchisColchisOutskirts)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfLightningProtection, 1));
+      else if (subzoneType === SubZoneEnum.ReturnToColchisColchisStreets)
+        rewards.push(new ResourceValue(ItemsEnum.LargeBuccheroKantharos, 1));
+      else if (subzoneType === SubZoneEnum.ReturnToColchisReturnToTheGrove)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHaste, 1));
+
+      else if (subzoneType === SubZoneEnum.EscapeFromColchisEscape1)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfLightningDestruction, 1));
+      else if (subzoneType === SubZoneEnum.EscapeFromColchisEscape2)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfIngenuity, 1));
+      else if (subzoneType === SubZoneEnum.EscapeFromColchisInnerPath)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHolyProtection, 1));
+      else if (subzoneType === SubZoneEnum.EscapeFromColchisBackAgainstTheWall)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectOrnateKantharos, 1));
+      else if (subzoneType === SubZoneEnum.EscapeFromColchisBattleAtSea)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectCrackedKantharos, 1));
     }
 
     if (achievementType === AchievementTypeEnum.ThirtySecondClear) {
@@ -1024,12 +1076,17 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.LargeBlackKantharos, 1));
       if (subzoneType === SubZoneEnum.TheLabyrinthLabyrinthCenter)
         rewards.push(new ResourceValue(ItemsEnum.LargeSilverKantharos, 1));
-        
-        if (subzoneType === SubZoneEnum.AiaiaFlowerGarden)
+      if (subzoneType === SubZoneEnum.AiaiaFlowerGarden)
         rewards.push(new ResourceValue(ItemsEnum.LargeBlackKantharos, 1));
-        if (subzoneType === SubZoneEnum.StraitsOfMessinaUnavoidablePath)
+      if (subzoneType === SubZoneEnum.StraitsOfMessinaUnavoidablePath)
         rewards.push(new ResourceValue(ItemsEnum.LargeOrnateKantharos, 1));
-        if (subzoneType === SubZoneEnum.StraitsOfMessinaMawOfTheMonster)
+      if (subzoneType === SubZoneEnum.StraitsOfMessinaMawOfTheMonster)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterDestruction, 1));
+      if (subzoneType === SubZoneEnum.ReturnToColchisReturnToTheGrove)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfAirProtection, 1));
+      if (subzoneType === SubZoneEnum.EscapeFromColchisBackAgainstTheWall)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectSilverKantharos, 1));
+      if (subzoneType === SubZoneEnum.EscapeFromColchisBattleAtSea)
         rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterDestruction, 1));
     }
 
@@ -1098,13 +1155,18 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.LargeBuccheroKantharos, 1));
       if (subzoneType === SubZoneEnum.TheLabyrinthLabyrinthCenter)
         rewards.push(new ResourceValue(ItemsEnum.LargeSilverKantharos, 1));
-              
-        if (subzoneType === SubZoneEnum.AiaiaFlowerGarden)
+      if (subzoneType === SubZoneEnum.AiaiaFlowerGarden)
         rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterProtection, 1));
-        if (subzoneType === SubZoneEnum.StraitsOfMessinaUnavoidablePath)
+      if (subzoneType === SubZoneEnum.StraitsOfMessinaUnavoidablePath)
         rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfPreparation, 1));
-        if (subzoneType === SubZoneEnum.StraitsOfMessinaMawOfTheMonster)
+      if (subzoneType === SubZoneEnum.StraitsOfMessinaMawOfTheMonster)
         rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfVulnerability, 1));
+      if (subzoneType === SubZoneEnum.ReturnToColchisReturnToTheGrove)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectBuccheroKantharos, 1));
+      if (subzoneType === SubZoneEnum.EscapeFromColchisBackAgainstTheWall)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectGildedKantharos, 1));
+      if (subzoneType === SubZoneEnum.EscapeFromColchisBattleAtSea)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectBlackKantharos, 1));
     }
 
     if (achievementType === AchievementTypeEnum.Complete) {

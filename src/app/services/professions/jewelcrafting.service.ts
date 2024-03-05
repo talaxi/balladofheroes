@@ -62,6 +62,12 @@ export class JewelcraftingService {
       duration = 5 * 60;
     if (action === ProfessionActionsEnum.SpecialCoolingMetal)
       duration = 2.5 * 60;
+      if (action === ProfessionActionsEnum.SpecialHeatingMetal)
+        duration = 7.5 * 60;
+      if (action === ProfessionActionsEnum.SpecialShapingMetal)
+        duration = 7.5 * 60;
+      if (action === ProfessionActionsEnum.SpecialCoolingMetal)
+        duration = 5 * 60;
 
     return duration;
   }
@@ -362,8 +368,7 @@ export class JewelcraftingService {
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.RutilatedTopaz);
       }
-    }
-    
+    }    
     if (jewelcrafting.level >= 90) {
       if (!this.doesUserHaveRecipe(ItemsEnum.ShieldSlotAddition)) {
         this.learnRecipe(ItemsEnum.ShieldSlotAddition);
@@ -390,6 +395,63 @@ export class JewelcraftingService {
         this.learnRecipe(ItemsEnum.WeaponSlotAddition);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.WeaponSlotAddition);
+      }
+    }
+    
+    if (jewelcrafting.level >= 101) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.BrilliantRuby)) {
+        this.learnRecipe(ItemsEnum.BrilliantRuby);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.BrilliantRuby);
+      }
+    }
+    if (jewelcrafting.level >= 103) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.BrilliantAquamarine)) {
+        this.learnRecipe(ItemsEnum.BrilliantAquamarine);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.BrilliantAquamarine);
+      }
+    }
+    if (jewelcrafting.level >= 104) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.MajorNecklaceSlotAddition)) {
+        this.learnRecipe(ItemsEnum.MajorNecklaceSlotAddition);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.MajorNecklaceSlotAddition);
+      }
+    }
+    if (jewelcrafting.level >= 108) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.BrilliantOpal)) {
+        this.learnRecipe(ItemsEnum.BrilliantOpal);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.BrilliantOpal);
+      }
+    }
+    if (jewelcrafting.level >= 110) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.BrilliantTopaz)) {
+        this.learnRecipe(ItemsEnum.BrilliantTopaz);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.BrilliantTopaz);
+      }
+    }
+    if (jewelcrafting.level >= 115) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.BrilliantAmethyst)) {
+        this.learnRecipe(ItemsEnum.BrilliantAmethyst);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.BrilliantAmethyst);
+      }
+    }
+    if (jewelcrafting.level >= 120) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.BrilliantEmerald)) {
+        this.learnRecipe(ItemsEnum.BrilliantEmerald);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.BrilliantEmerald);
+      }
+    }
+    if (jewelcrafting.level >= 125) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.MajorRingSlotAddition)) {
+        this.learnRecipe(ItemsEnum.MajorRingSlotAddition);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.MajorRingSlotAddition);
       }
     }
 
@@ -425,6 +487,10 @@ export class JewelcraftingService {
       upgrades = jewelcrafting.upgrades.find(item => item.quality === EquipmentQualityEnum.Epic);
       qualityName = "Epic";
     }
+    else if (jewelcrafting.level <= 125) {
+      upgrades = jewelcrafting.upgrades.find(item => item.quality === EquipmentQualityEnum.Special);
+      qualityName = "Special";
+    }
 
     if (upgrades === undefined)
       return;
@@ -435,7 +501,7 @@ export class JewelcraftingService {
       upgrades.chanceForUpgrade += additionalChanceToUpgrade;
 
       if (this.globalService.globalVar.gameLogSettings.get("jewelcraftingLevelUp")) {
-        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceToUpgrade * 100) + "%</strong> chance to to gain an upgraded gem when making " + (qualityName === "Uncommon" || qualityName === "Extraordinary" ? "an" : "a") + " " + qualityName + " quality Jewelcrafting recipe.";
+        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceToUpgrade * 100) + "%</strong> chance to to gain an upgraded gem when making " + (qualityName === "Uncommon" || qualityName === "Epic" || qualityName === "Extraordinary" ? "an" : "a") + " " + qualityName + " quality Jewelcrafting recipe.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry, this.globalService.globalVar);
       }
     }
@@ -446,7 +512,7 @@ export class JewelcraftingService {
       upgrades.durationReduction += additionalDurationReduction;
 
       if (this.globalService.globalVar.gameLogSettings.get("jewelcraftingLevelUp")) {
-        var gameLogEntry = "The time it takes to create " + (qualityName === "Uncommon" || qualityName === "Extraordinary" ? "an" : "a") + " " + qualityName + " quality Jewelcrafting Recipe is reduced by <strong>" + (additionalDurationReduction * 100) + "%</strong>.";
+        var gameLogEntry = "The time it takes to create " + (qualityName === "Uncommon" || qualityName === "Epic" || qualityName === "Extraordinary" ? "an" : "a") + " " + qualityName + " quality Jewelcrafting Recipe is reduced by <strong>" + (additionalDurationReduction * 100) + "%</strong>.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry, this.globalService.globalVar);
       }
     }
@@ -457,7 +523,7 @@ export class JewelcraftingService {
       upgrades.chanceToRetainMaterials += additionalChanceToRetainMaterials;
 
       if (this.globalService.globalVar.gameLogSettings.get("jewelcraftingLevelUp")) {
-        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceToRetainMaterials * 100) + "%</strong> chance to retain your ingredients when making " + (qualityName === "Uncommon" || qualityName === "Extraordinary" ? "an" : "a") + " " + qualityName + " quality Jewelcrafting recipe.";
+        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceToRetainMaterials * 100) + "%</strong> chance to retain your ingredients when making " + (qualityName === "Uncommon" || qualityName === "Epic" || qualityName === "Extraordinary" ? "an" : "a") + " " + qualityName + " quality Jewelcrafting recipe.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry, this.globalService.globalVar);
       }
     }
@@ -466,7 +532,7 @@ export class JewelcraftingService {
       upgrades.chanceToHalfDuration += additionalChanceToHalfDuration;
 
       if (this.globalService.globalVar.gameLogSettings.get("jewelcraftingLevelUp")) {
-        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceToHalfDuration * 100) + "%</strong> chance to reduce crafting time by half when making " + (qualityName === "Uncommon" || qualityName === "Extraordinary" ? "an" : "a") + " " + qualityName + " quality Jewelcrafting recipe.";
+        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceToHalfDuration * 100) + "%</strong> chance to reduce crafting time by half when making " + (qualityName === "Uncommon" || qualityName === "Epic" || qualityName === "Extraordinary" ? "an" : "a") + " " + qualityName + " quality Jewelcrafting recipe.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry, this.globalService.globalVar);
       }
     }
@@ -1029,6 +1095,143 @@ export class JewelcraftingService {
       recipe.displayOrder = 17;
 
       recipe.expGain = 40;
+    }    
+    if (item === ItemsEnum.BrilliantRuby) {
+      recipe.quality = EquipmentQualityEnum.Special;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.RutilatedRuby, 3));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 2500));
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.RareCombiningGems);
+      recipe.steps.push(ProfessionActionsEnum.Polish);
+      recipe.displayOrder = 6;
+
+      recipe.expGain = 60;
+    }
+    if (item === ItemsEnum.BrilliantTopaz) {
+      recipe.quality = EquipmentQualityEnum.Special;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.RutilatedTopaz, 3));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 2500));
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.RareCombiningGems);
+      recipe.steps.push(ProfessionActionsEnum.Polish);
+      recipe.displayOrder = 9;
+
+      recipe.expGain = 60;
+    }
+    if (item === ItemsEnum.BrilliantOpal) {
+      recipe.quality = EquipmentQualityEnum.Special;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.RutilatedOpal, 3));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 2500));
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.RareCombiningGems);
+      recipe.steps.push(ProfessionActionsEnum.Polish);
+      recipe.displayOrder = 8;
+
+      recipe.expGain = 60;
+    }
+    if (item === ItemsEnum.BrilliantEmerald) {
+      recipe.quality = EquipmentQualityEnum.Special;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.RutilatedEmerald, 3));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 2500));
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.RareCombiningGems);
+      recipe.steps.push(ProfessionActionsEnum.Polish);
+      recipe.displayOrder = 11;
+
+      recipe.expGain = 60;
+    }
+    if (item === ItemsEnum.BrilliantAquamarine) {
+      recipe.quality = EquipmentQualityEnum.Special;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.RutilatedAquamarine, 3));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 2500));
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.RareCombiningGems);
+      recipe.steps.push(ProfessionActionsEnum.Polish);
+      recipe.displayOrder = 7;
+
+      recipe.expGain = 60;
+    }
+    if (item === ItemsEnum.BrilliantAmethyst) {
+      recipe.quality = EquipmentQualityEnum.Special;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.RutilatedAmethyst, 3));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 2500));
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.RareCombiningGems);
+      recipe.steps.push(ProfessionActionsEnum.Polish);
+      recipe.displayOrder = 10;
+
+      recipe.expGain = 60;
+    }
+    if (item === ItemsEnum.MajorRingSlotAddition) {
+      recipe.quality = EquipmentQualityEnum.Extraordinary;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.MetalNuggets, 25));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 5000));
+
+      recipe.numberOfSteps = 3;
+      recipe.steps.push(ProfessionActionsEnum.ExtraordinaryHeatingMetal);
+      recipe.steps.push(ProfessionActionsEnum.ExtraordinaryShapingMetal);
+      recipe.steps.push(ProfessionActionsEnum.ExtraordinaryCoolingMetal);
+      recipe.displayOrder = 1;
+
+      recipe.expGain = 50;
+    }        
+    if (item === ItemsEnum.MajorNecklaceSlotAddition) {
+      recipe.quality = EquipmentQualityEnum.Extraordinary;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.MetalCore, 25));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 10000));
+
+      recipe.numberOfSteps = 3;
+      recipe.steps.push(ProfessionActionsEnum.ExtraordinaryHeatingMetal);
+      recipe.steps.push(ProfessionActionsEnum.ExtraordinaryShapingMetal);
+      recipe.steps.push(ProfessionActionsEnum.ExtraordinaryCoolingMetal);
+      recipe.displayOrder = 4;
+
+      recipe.expGain = 50;
+    }
+    if (item === ItemsEnum.MajorWeaponSlotAddition) {
+      recipe.quality = EquipmentQualityEnum.Extraordinary;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.MetalCore, 25));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 10000));
+
+      recipe.numberOfSteps = 3;
+      recipe.steps.push(ProfessionActionsEnum.ExtraordinaryHeatingMetal);
+      recipe.steps.push(ProfessionActionsEnum.ExtraordinaryShapingMetal);
+      recipe.steps.push(ProfessionActionsEnum.ExtraordinaryCoolingMetal);
+      recipe.displayOrder = 3;
+
+      recipe.expGain = 50;
+    }
+    if (item === ItemsEnum.MajorArmorSlotAddition) {
+      recipe.quality = EquipmentQualityEnum.Extraordinary;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.MetalCore, 25));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 10000));
+
+      recipe.numberOfSteps = 3;
+      recipe.steps.push(ProfessionActionsEnum.ExtraordinaryHeatingMetal);
+      recipe.steps.push(ProfessionActionsEnum.ExtraordinaryShapingMetal);
+      recipe.steps.push(ProfessionActionsEnum.ExtraordinaryCoolingMetal);
+      recipe.displayOrder = 2;
+
+      recipe.expGain = 50;
+    }
+    if (item === ItemsEnum.MajorShieldSlotAddition) {
+      recipe.quality = EquipmentQualityEnum.Extraordinary;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.MetalCore, 25));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 10000));
+
+      recipe.numberOfSteps = 3;
+      recipe.steps.push(ProfessionActionsEnum.ExtraordinaryHeatingMetal);
+      recipe.steps.push(ProfessionActionsEnum.ExtraordinaryShapingMetal);
+      recipe.steps.push(ProfessionActionsEnum.ExtraordinaryCoolingMetal);
+      recipe.displayOrder = 5;
+
+      recipe.expGain = 50;
     }
 
     return recipe;
@@ -1143,6 +1346,63 @@ export class JewelcraftingService {
     }
     if (item === ItemsEnum.RutilatedAquamarine) {
       upgradedItem = ItemsEnum.PerfectRutilatedAquamarine;
+    }
+    
+    if (item === ItemsEnum.BrilliantRuby) {
+      upgradedItem = ItemsEnum.PerfectBrilliantRuby;
+    }
+    if (item === ItemsEnum.BrilliantEmerald) {
+      upgradedItem = ItemsEnum.PerfectBrilliantEmerald;
+    }
+    if (item === ItemsEnum.BrilliantAmethyst) {
+      upgradedItem = ItemsEnum.PerfectBrilliantAmethyst;
+    }
+    if (item === ItemsEnum.BrilliantTopaz) {
+      upgradedItem = ItemsEnum.PerfectBrilliantTopaz;
+    }
+    if (item === ItemsEnum.BrilliantOpal) {
+      upgradedItem = ItemsEnum.PerfectBrilliantOpal;
+    }
+    if (item === ItemsEnum.BrilliantAquamarine) {
+      upgradedItem = ItemsEnum.PerfectBrilliantAquamarine;
+    }
+    
+    if (item === ItemsEnum.FlawlessRuby) {
+      upgradedItem = ItemsEnum.PerfectFlawlessRuby;
+    }
+    if (item === ItemsEnum.FlawlessEmerald) {
+      upgradedItem = ItemsEnum.PerfectFlawlessEmerald;
+    }
+    if (item === ItemsEnum.FlawlessAmethyst) {
+      upgradedItem = ItemsEnum.PerfectFlawlessAmethyst;
+    }
+    if (item === ItemsEnum.FlawlessTopaz) {
+      upgradedItem = ItemsEnum.PerfectFlawlessTopaz;
+    }
+    if (item === ItemsEnum.FlawlessOpal) {
+      upgradedItem = ItemsEnum.PerfectFlawlessOpal;
+    }
+    if (item === ItemsEnum.FlawlessAquamarine) {
+      upgradedItem = ItemsEnum.PerfectFlawlessAquamarine;
+    }
+    
+    if (item === ItemsEnum.AdamantineRuby) {
+      upgradedItem = ItemsEnum.PerfectAdamantineRuby;
+    }
+    if (item === ItemsEnum.AdamantineEmerald) {
+      upgradedItem = ItemsEnum.PerfectAdamantineEmerald;
+    }
+    if (item === ItemsEnum.AdamantineAmethyst) {
+      upgradedItem = ItemsEnum.PerfectAdamantineAmethyst;
+    }
+    if (item === ItemsEnum.AdamantineTopaz) {
+      upgradedItem = ItemsEnum.PerfectAdamantineTopaz;
+    }
+    if (item === ItemsEnum.AdamantineOpal) {
+      upgradedItem = ItemsEnum.PerfectAdamantineOpal;
+    }
+    if (item === ItemsEnum.AdamantineAquamarine) {
+      upgradedItem = ItemsEnum.PerfectAdamantineAquamarine;
     }
 
     return upgradedItem;

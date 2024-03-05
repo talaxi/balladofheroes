@@ -53,7 +53,7 @@
             <span [innerHtml]="getTournamentDescription()"></span>
             <hr />
             <div *ngIf="!isSelectedTournamentWeeklyMelee() && !isSelectedTournamentFriendlyCompetition()">
-                <span><strong>DPS Required To Complete:</strong> {{getRequiredDpsForSelectedTournament()}}</span>
+                <span><strong>DPS Required To Complete: </strong> <span [innerHtml]="getRequiredDpsForSelectedTournament()"></span></span>
                 <hr />
                 <div>
                     <div [ngClass]="{'rewardAlreadyObtained': firstTimeRewardAlreadyObtained()}">

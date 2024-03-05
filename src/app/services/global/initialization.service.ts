@@ -220,7 +220,7 @@ export class InitializationService {
     this.initializeBalladOfOlympus();
     this.initializeBalladOfTheLabyrinth();
     this.initializeBalladOfTheWitch();
-    //this.initializeBalladOfTheEagle(); //TODO: gotta turn this back off
+    this.initializeBalladOfTheEagle(); //TODO: gotta turn this back off
   }
 
   initializeSettings() {
@@ -467,6 +467,23 @@ export class InitializationService {
   }
 
   devMode() {
+    //cover coliseum gains
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfIngenuity, 1));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, 1));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, 1));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfWaterProtection, 1));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfEarthDestruction, 1));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeBuccheroKantharos, 1));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeGildedKantharos, 1));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCrackedKantharos, 1));
+    
+    /*this.lookupService.gainResource(new ResourceValue(ItemsEnum.PerfectCrackedKantharos, 1));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.PerfectGildedKantharos, 1));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.PerfectBuccheroKantharos, 1));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.PerfectBlackKantharos, 1));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.PerfectOrnateKantharos, 1));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.PerfectSilverKantharos, 1));*/
+
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.Coin, 3000000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.ChthonicPower, 30000000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.BronzeHammer, 1));

@@ -557,12 +557,12 @@ export class ColiseumService {
           continue;
         }
       }
-      else if (round === 15) {
+      else if (round <= 15) {
         if (this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Boar && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Argo) {
           continue;
         }
       }
-      else if (round === 20) {
+      else if (round <= 20) {
         if (this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Argo && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Labors) {
           continue;
         }

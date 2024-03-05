@@ -138,6 +138,18 @@ export class StoryService {
       this.showStory = true;
     else if (this.globalService.globalVar.currentStoryId === 51 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.StraitsOfMessinaUnavoidablePath))
       this.showStory = true;
+      else if (this.globalService.globalVar.currentStoryId === 52 && this.balladService.getActiveSubZone().type === SubZoneEnum.ReturnToColchisPhasisBeach)
+      this.showStory = true;
+      else if (this.globalService.globalVar.currentStoryId === 53 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.ReturnToColchisUnderTheStars))
+      this.showStory = true;
+      else if (this.globalService.globalVar.currentStoryId === 54 && this.balladService.getActiveSubZone().type === SubZoneEnum.ReturnToColchisReturnToTheGrove)
+      this.showStory = true;
+      else if (this.globalService.globalVar.currentStoryId === 55 && this.balladService.getActiveSubZone().type === SubZoneEnum.EscapeFromColchisEscape2)
+      this.showStory = true;
+      else if (this.globalService.globalVar.currentStoryId === 56 && this.balladService.getActiveSubZone().type === SubZoneEnum.EscapeFromColchisBattleAtSea)
+      this.showStory = true;
+      else if (this.globalService.globalVar.currentStoryId === 57 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.EscapeFromColchisBattleAtSea))
+      this.showStory = true;
 
     if (this.showStory)
       this.lookupService.addStoryToLog(this.globalService.globalVar.currentStoryId, this.balladService.getActiveSubZone().type);

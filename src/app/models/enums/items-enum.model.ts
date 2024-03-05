@@ -598,5 +598,21 @@ export enum ItemsEnum {
   AgonizingToxin,
   TokenOfFavor,
   TokenOfSupport,
-  MysteryStone
+  MysteryStone,
+  PerfectOrnateKantharos,
+  PerfectSilverKantharos,
+  PerfectBuccheroKantharos,
+  PerfectGildedKantharos,
+  PerfectCrackedKantharos,
+  PerfectBlackKantharos,
+  MetalCore,
+  TempestToxin,
+  MetalElixir,
+  BurstingPotion,
+  ElixirOfPower,
+  Transmutation,
+  InkPoultice,
+  SquidInk,
+  SpiderSilk,
+  ImmortalScales
 } 

@@ -212,11 +212,11 @@ export class LookupService {
       name = "Combining stone pieces";
     if (action === ProfessionActionsEnum.Polish)
       name = "Polishing stone";
-    if (action === ProfessionActionsEnum.HeatingMetal || action === ProfessionActionsEnum.SpecialHeatingMetal)
+    if (action === ProfessionActionsEnum.HeatingMetal || action === ProfessionActionsEnum.SpecialHeatingMetal || action === ProfessionActionsEnum.ExtraordinaryHeatingMetal)
       name = "Heating metal to expand"
-    if (action === ProfessionActionsEnum.ShapingMetal || action === ProfessionActionsEnum.SpecialShapingMetal)
+    if (action === ProfessionActionsEnum.ShapingMetal || action === ProfessionActionsEnum.SpecialShapingMetal || action === ProfessionActionsEnum.ExtraordinaryShapingMetal)
       name = "Shaping metal"
-    if (action === ProfessionActionsEnum.CoolingMetal || action === ProfessionActionsEnum.SpecialCoolingMetal)
+    if (action === ProfessionActionsEnum.CoolingMetal || action === ProfessionActionsEnum.SpecialCoolingMetal|| action === ProfessionActionsEnum.ExtraordinaryCoolingMetal)
       name = "Cooling metal for use"
 
     return name;
@@ -259,7 +259,10 @@ export class LookupService {
       type === ItemsEnum.LargeOrnateKantharos || type === ItemsEnum.LargeCrackedKantharos ||
       type === ItemsEnum.LargeBuccheroKantharos || type === ItemsEnum.LargeBlackKantharos ||
       type === ItemsEnum.LargeCharmOfHera || type === ItemsEnum.SmallCharmOfHera ||
-      type === ItemsEnum.LargeCharmOfAphrodite || type === ItemsEnum.SmallCharmOfAphrodite)
+      type === ItemsEnum.LargeCharmOfAphrodite || type === ItemsEnum.SmallCharmOfAphrodite||
+      type === ItemsEnum.PerfectSilverKantharos || type === ItemsEnum.PerfectGildedKantharos ||
+      type === ItemsEnum.PerfectOrnateKantharos || type === ItemsEnum.PerfectCrackedKantharos ||
+      type === ItemsEnum.PerfectBuccheroKantharos || type === ItemsEnum.PerfectBlackKantharos)
       isACharm = true;
 
     return isACharm;
@@ -368,7 +371,7 @@ export class LookupService {
       type === ItemsEnum.EssenceOfEarth || type === ItemsEnum.MetalNuggets || type === ItemsEnum.Mandrake || type === ItemsEnum.UnstableElement ||
       type === ItemsEnum.RutileRubyFragment || type === ItemsEnum.RutileEmeraldFragment || type === ItemsEnum.RutileTopazFragment ||
       type === ItemsEnum.RutileOpalFragment || type === ItemsEnum.RutileAmethystFragment || type === ItemsEnum.RutileAquamarineFragment ||
-      type === ItemsEnum.VialOfForeignWaters) {
+      type === ItemsEnum.VialOfForeignWaters || type === ItemsEnum.SquidInk || type === ItemsEnum.SpiderSilk || type === ItemsEnum.ImmortalScales) {
       return ItemTypeEnum.CraftingMaterial;
     }
 
@@ -974,6 +977,19 @@ export class LookupService {
     if (type === ItemsEnum.LargeBlackKantharos)
       description = "Increase parties' Attack by <span class='charmDescriptor'>" + (this.charmService.getLargeBlackKantharosValue()) + "</span>.";
 
+      if (type === ItemsEnum.PerfectOrnateKantharos)
+      description = "Increase parties' Luck by <span class='charmDescriptor'>" + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false,(this.charmService.getPerfectOrnateKantharosValue())) + "</span>.";
+    if (type === ItemsEnum.PerfectSilverKantharos)
+      description = "Increase parties' Resistance by <span class='charmDescriptor'>" + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false,(this.charmService.getPerfectSilverKantharosValue())) + "</span>.";
+    if (type === ItemsEnum.PerfectBuccheroKantharos)
+      description = "Increase parties' Agility by <span class='charmDescriptor'>" + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false,(this.charmService.getPerfectBuccheroKantharosValue())) + "</span>.";
+    if (type === ItemsEnum.PerfectGildedKantharos)
+      description = "Increase parties' Defense by <span class='charmDescriptor'>" + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false,(this.charmService.getPerfectGildedKantharosValue())) + "</span>.";
+    if (type === ItemsEnum.PerfectCrackedKantharos)
+      description = "Increase parties' Max HP by <span class='charmDescriptor'>" + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false,(this.charmService.getPerfectCrackedKantharosValue())) + "</span>.";
+    if (type === ItemsEnum.PerfectBlackKantharos)
+      description = "Increase parties' Attack by <span class='charmDescriptor'>" + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false,(this.charmService.getPerfectBlackKantharosValue())) + "</span>.";
+
     return description;
   }
 
@@ -1035,6 +1051,17 @@ export class LookupService {
       description = "Add a slot to a Shield, up to 5 slots total. " + slotStarDisclaimer;
     if (item === ItemsEnum.NecklaceSlotAddition)
       description = "Add a slot to a Necklace, up to 5 slots total. " + slotStarDisclaimer;
+
+      if (item === ItemsEnum.MajorWeaponSlotAddition)
+      description = "Add a slot to a Weapon, up to 7 slots total. " + slotStarDisclaimer;
+    if (item === ItemsEnum.MajorRingSlotAddition)
+      description = "Add a slot to a Ring, up to 7 slots total. " + slotStarDisclaimer;
+    if (item === ItemsEnum.MajorArmorSlotAddition)
+      description = "Add a slot to an Armor, up to 7 slots total. " + slotStarDisclaimer;
+    if (item === ItemsEnum.MajorShieldSlotAddition)
+      description = "Add a slot to a Shield, up to 7 slots total. " + slotStarDisclaimer;
+    if (item === ItemsEnum.MajorNecklaceSlotAddition)
+      description = "Add a slot to a Necklace, up to 7 slots total. " + slotStarDisclaimer;
 
 
     return description;
@@ -6635,6 +6662,8 @@ export class LookupService {
       description = "If your next ability deals Water damage, immediately reduce its cooldown by " + this.utilityService.genericRound((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.Current)
       description = "Increase number of Wild Rush attacks by " + statusEffect.stackCount + ".";
+      if (statusEffect.type === StatusEffectEnum.Break)
+      description = "When both party members reach a stack count of 5, take " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, 100000) + " True Damage and reduce stats excluding HP by 50% for 15 seconds. Current stack count: " + statusEffect.stackCount + "";
     if (statusEffect.type === StatusEffectEnum.Enfire)
       description = "All auto attacks and non-elemental abilities have the Fire element.";
     if (statusEffect.type === StatusEffectEnum.Enholy)
@@ -12836,7 +12865,9 @@ export class LookupService {
     if (item === ItemsEnum.MinorWeaponSlotAddition || item === ItemsEnum.MinorRingSlotAddition || item === ItemsEnum.MinorArmorSlotAddition ||
       item === ItemsEnum.MinorNecklaceSlotAddition || item === ItemsEnum.MinorShieldSlotAddition || item === ItemsEnum.WeaponSlotAddition ||
       item === ItemsEnum.RingSlotAddition || item === ItemsEnum.ArmorSlotAddition ||
-      item === ItemsEnum.NecklaceSlotAddition || item === ItemsEnum.ShieldSlotAddition)
+      item === ItemsEnum.NecklaceSlotAddition || item === ItemsEnum.ShieldSlotAddition || item === ItemsEnum.MajorWeaponSlotAddition ||
+      item === ItemsEnum.MajorRingSlotAddition || item === ItemsEnum.MajorArmorSlotAddition ||
+      item === ItemsEnum.MajorNecklaceSlotAddition || item === ItemsEnum.MajorShieldSlotAddition)
       isAddingASlot = true;
 
     return isAddingASlot;
