@@ -62,11 +62,11 @@ export class JewelcraftingService {
       duration = 5 * 60;
     if (action === ProfessionActionsEnum.SpecialCoolingMetal)
       duration = 2.5 * 60;
-      if (action === ProfessionActionsEnum.SpecialHeatingMetal)
+      if (action === ProfessionActionsEnum.ExtraordinaryHeatingMetal)
         duration = 7.5 * 60;
-      if (action === ProfessionActionsEnum.SpecialShapingMetal)
+      if (action === ProfessionActionsEnum.ExtraordinaryShapingMetal)
         duration = 7.5 * 60;
-      if (action === ProfessionActionsEnum.SpecialCoolingMetal)
+      if (action === ProfessionActionsEnum.ExtraordinaryCoolingMetal)
         duration = 5 * 60;
 
     return duration;
@@ -1170,7 +1170,7 @@ export class JewelcraftingService {
     }
     if (item === ItemsEnum.MajorRingSlotAddition) {
       recipe.quality = EquipmentQualityEnum.Extraordinary;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.MetalNuggets, 25));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.MetalCore, 25));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 5000));
 
       recipe.numberOfSteps = 3;
@@ -1179,7 +1179,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.ExtraordinaryCoolingMetal);
       recipe.displayOrder = 1;
 
-      recipe.expGain = 50;
+      recipe.expGain = 100;
     }        
     if (item === ItemsEnum.MajorNecklaceSlotAddition) {
       recipe.quality = EquipmentQualityEnum.Extraordinary;
@@ -1192,7 +1192,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.ExtraordinaryCoolingMetal);
       recipe.displayOrder = 4;
 
-      recipe.expGain = 50;
+      recipe.expGain = 100;
     }
     if (item === ItemsEnum.MajorWeaponSlotAddition) {
       recipe.quality = EquipmentQualityEnum.Extraordinary;
@@ -1205,7 +1205,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.ExtraordinaryCoolingMetal);
       recipe.displayOrder = 3;
 
-      recipe.expGain = 50;
+      recipe.expGain = 100;
     }
     if (item === ItemsEnum.MajorArmorSlotAddition) {
       recipe.quality = EquipmentQualityEnum.Extraordinary;
@@ -1218,7 +1218,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.ExtraordinaryCoolingMetal);
       recipe.displayOrder = 2;
 
-      recipe.expGain = 50;
+      recipe.expGain = 100;
     }
     if (item === ItemsEnum.MajorShieldSlotAddition) {
       recipe.quality = EquipmentQualityEnum.Extraordinary;
@@ -1231,7 +1231,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.ExtraordinaryCoolingMetal);
       recipe.displayOrder = 5;
 
-      recipe.expGain = 50;
+      recipe.expGain = 100;
     }
 
     return recipe;

@@ -1403,7 +1403,7 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.PendantOfPower);
       }
 
-      var chthonicResetCount = 5;
+      var chthonicResetCount = 1;
       var godLevel = 500;
 
       for (var j = 0; j < chthonicResetCount; j++) {
@@ -1418,9 +1418,9 @@ export class InitializationService {
         this.globalService.assignGodAbilityInfo(athena!);
 
         if (j < chthonicResetCount - 1)
-          godLevel = 1200;
+          godLevel = 4200;
         else
-          godLevel = 1650;
+          godLevel = 4050;
 
         for (var i = 0; i < godLevel; i++) {
           this.globalService.levelUpGod(athena!);

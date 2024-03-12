@@ -89,6 +89,8 @@ export class UtilityService {
   public characterPermanentPassiveObtainCap = 25;
   public characterPermanentStatObtainCap = 25;
 
+  public maxTrialOfResolveStage = 50;
+  
   public damageLinkBoost = 10;
   public nonDamageLinkBoost = 15;
   public linkCooldown = 15;

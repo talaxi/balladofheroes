@@ -202,7 +202,7 @@ export class TrialsViewComponent {
   }
 
   isTrialAvailable() {
-    if (this.globalService.globalVar.sidequestData.trialStage > 40)
+    if (this.globalService.globalVar.sidequestData.trialStage > this.utilityService.maxTrialOfResolveStage)
       return false;
 
     return true;
@@ -218,7 +218,7 @@ export class TrialsViewComponent {
 
   getTrialNameColor(type: TrialEnum) {
     if (type === TrialEnum.TrialOfResolve) {
-      if (this.globalService.globalVar.sidequestData.trialStage > 40) {
+      if (this.globalService.globalVar.sidequestData.trialStage > this.utilityService.maxTrialOfResolveStage) {
         if (this.selectedTrial !== undefined && this.selectedTrial.type === type)
           return { 'activeBackground clearedSubzoneColor': true };
         else

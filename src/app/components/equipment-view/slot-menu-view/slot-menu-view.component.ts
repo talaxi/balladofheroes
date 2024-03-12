@@ -242,7 +242,9 @@ export class SlotMenuViewComponent {
 
   slotsAvailable() {
     if (this.lookupService.isItemAddingASlot(this.selectedItem === undefined ? ItemsEnum.None : this.selectedItem.item))
+    {      
       return (this.lookupService.getMaxSlotsPerItem(this.resource) - this.lookupService.getTotalNumberOfSlots(this.resource)) > 0;
+    }
     else
       return this.lookupService.getNumberOfOpenSlots(this.resource);
   }

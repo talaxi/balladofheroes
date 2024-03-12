@@ -665,11 +665,11 @@ export class BalladService {
     if (type === SubZoneEnum.AegeanSeaIslandOfImbros)
       name = "Island of Imbros";
     if (type === SubZoneEnum.AegeanSeaHellespointPassage1)
-      name = "Hellespoint Passage 1";
+      name = "Hellespont Passage 1";
     if (type === SubZoneEnum.AegeanSeaPropontis)
       name = "Propontis";
     if (type === SubZoneEnum.AegeanSeaHellespointPassage2)
-      name = "Hellespoint Passage 2";
+      name = "Hellespont Passage 2";
     if (type === SubZoneEnum.AegeanSeaCoastalThrace)
       name = "Coastal Thrace";
     if (type === SubZoneEnum.AegeanSeaSalmydessus)

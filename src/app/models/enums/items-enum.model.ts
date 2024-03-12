@@ -614,5 +614,7 @@ export enum ItemsEnum {
   InkPoultice,
   SquidInk,
   SpiderSilk,
-  ImmortalScales
+  ImmortalScales,
+  DarkShield,
+  SwordOfOlympus
 } 

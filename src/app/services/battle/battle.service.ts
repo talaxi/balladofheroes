@@ -86,7 +86,7 @@ export class BattleService {
     if (this.currentSubzoneType !== undefined && this.currentSubzoneType !== subZone.type) {
       var party = this.globalService.getActivePartyCharacters(true);
       party.forEach(member => {
-        this.checkForEquipmentEffect(EffectTriggerEnum.WhenEnteringBattle, member, undefined, party, []);
+        this.checkForEquipmentEffect(EffectTriggerEnum.WhenEnteringBattle, member, undefined, party, []);        
         this.handleUserEffects(true, [], member, party, [], 0);
       });
       this.checkForOptionalScene();
@@ -373,6 +373,11 @@ export class BattleService {
       !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.CharybdisJewelcrafting)) {
       this.storyService.displayOptionalScene(OptionalSceneEnum.CharybdisJewelcrafting);
     }
+
+    if (this.lookupService.getSubZoneCompletionByType(SubZoneEnum.EscapeFromColchisBackAgainstTheWall) &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.BrokenHuskJewelcrafting)) {
+      this.storyService.displayOptionalScene(OptionalSceneEnum.BrokenHuskJewelcrafting);
+    }
   }
 
   checkScene() {
@@ -591,7 +596,7 @@ export class BattleService {
     if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Break)) {
       var breakConditionMet = true;
       var breakConditionCount = 5;
-      var effectiveness = 500000;
+      var effectiveness = 300000;
       party.forEach(partyMember => {
         if (!partyMember.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Break) ||
           partyMember.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Break)!.stackCount < breakConditionCount)
@@ -1202,8 +1207,10 @@ export class BattleService {
       }
     }
 
-    this.handleUserEffects(isPartyAttacking, [], character, party, targets, damageDealt);
-    this.handleTargetEffects(isPartyAttacking, targetEffects, character, target, targets, party, damageDealt);
+    if (!fromSpecialDelivery) {      
+      this.handleUserEffects(isPartyAttacking, [], character, party, targets, damageDealt);
+      this.handleTargetEffects(isPartyAttacking, targetEffects, character, target, targets, party, damageDealt);
+    }
 
     var invulnerability = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Invulnerable);
     if (invulnerability === undefined) {
@@ -1751,15 +1758,15 @@ export class BattleService {
       if (current !== undefined) {
         currentCount = current.stackCount;
       }
-
-
+      
       this.battle.currentEnemies.enemyList.filter(item => item.bestiaryType !== BestiaryEnum.Peneus && !item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead || effect.type === StatusEffectEnum.Stun)).forEach(enemy => {
-        var rush = this.lookupService.characterHasAbility("Rush", user);
-        if (rush !== undefined) {
-          this.useAbility(true, rush, user, targets, party, true, undefined, undefined, false);
+        var rush = this.lookupService.characterHasAbility("Rush", enemy);
+        
+        if (rush !== undefined) {          
+          this.useAbility(true, rush, enemy, targets, party, true, undefined, undefined, false);
 
           for (var i = 0; i < currentCount; i++) {
-            this.useAbility(true, rush, user, targets, party, true, undefined, undefined, false);
+            this.useAbility(true, rush, enemy, targets, party, true, undefined, undefined, false);
           }
         }
       });
@@ -1801,7 +1808,7 @@ export class BattleService {
       this.handleExtraPoseidonFunctionality(user, abilityCopy);
     }
 
-    if (abilityCopy.name === "Colossal Focus") {
+    if (abilityCopy.name === "Colossal Focus" || abilityCopy.name === "Burning Focus") {
       if (targets.some(item => item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Focus))) {
         var otherTarget = targets.find(item => !item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Focus));
         if (otherTarget !== undefined)
@@ -2813,7 +2820,7 @@ export class BattleService {
         }
       }
     }
-
+    
     this.handleUserEffects(isPartyUsing, userEffects, user, party, potentialTargets, damageDealt, abilityCopy, healedAmount, isGodAbility);
     this.handleTargetEffects(isPartyUsing, targetEffects, user, target, potentialTargets, party, damageDealt, abilityCopy.targetsAllies, abilityCopy);
 
@@ -3041,7 +3048,7 @@ export class BattleService {
     }
 
     party.forEach(member => {
-      if (member.battleInfo.statusEffects.some(item => item.isInstant)) {
+      if (member.battleInfo.statusEffects.some(item => item.isInstant)) {        
         member.battleInfo.statusEffects.filter(item => item.isInstant).forEach(instantEffect => {
           if (instantEffect.type === StatusEffectEnum.RandomPrimaryStatDown) {
             var statusEffect = this.globalService.createStatusEffect(this.getRandomPrimaryStatDownStatusEffect(), instantEffect.duration, instantEffect.effectiveness, false, false, instantEffect.isAoe, undefined, undefined, instantEffect.effectStacks);
@@ -3221,7 +3228,7 @@ export class BattleService {
             var fromSpecialDelivery = false;
             if (originalAbility !== undefined && originalAbility.name === "Special Delivery")
               fromSpecialDelivery = true;
-
+            
             this.handleAutoAttack(isPartyUsing, member, targets, party, instantEffect.effectiveness, false, fromSpecialDelivery); //prevent it from infinite looping itself
           }
 
@@ -3381,7 +3388,7 @@ export class BattleService {
               this.gameLogService.updateGameLog(GameLogEntryEnum.UseAbility, gameLogEntry, this.globalService.globalVar);
             }
           }
-        });
+        });        
       }
 
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => !item.isInstant);
@@ -5448,7 +5455,7 @@ export class BattleService {
       }
     }
 
-    if (target.name === "The Colchian Dragon" && (target.battleStats.currentHp / this.lookupService.getAdjustedMaxHp(target, false, false)) < .2) {
+    if ((target.name === "The Colchian Dragon" || target.name === "Guardian of the Grove") && (target.battleStats.currentHp / this.lookupService.getAdjustedMaxHp(target, false, false)) < .2) {
       var immortality = this.lookupService.characterHasAbility("Immortality", target);
       if (immortality !== undefined && target.battleInfo.immortalityCount === 0) {
         target.battleInfo.immortalityCount = 1;
@@ -7645,7 +7652,7 @@ export class BattleService {
         userGainsEffects = userGainsEffects.filter(item => item.type !== StatusEffectEnum.InstantAutoAttack);
       }
 
-      //console.log("Effect  " + userGainsEffects[0].type);
+      //console.log("Effect  " + userGainsEffects[0].type);      
       this.handleUserEffects(true, userGainsEffects, user, party, targets, damageDealt, undefined, healingDone);
     }
 

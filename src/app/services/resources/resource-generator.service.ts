@@ -483,6 +483,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.StingrayTip) {
       return new ResourceValue(ItemsEnum.StingrayTip, amount);
     }
+    if (type === ItemsEnum.DarkShield) {
+      return new ResourceValue(ItemsEnum.DarkShield, amount);
+    }
     if (type === ItemsEnum.ScorpionStingerEpic) {
       return new ResourceValue(ItemsEnum.ScorpionStingerEpic, amount);
     }
@@ -870,6 +873,9 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.UnstableElement) {
       return new ResourceValue(ItemsEnum.UnstableElement, amount);
+    }
+    if (type === ItemsEnum.MetalCore) {
+      return new ResourceValue(ItemsEnum.MetalCore, amount);
     }
     if (type === ItemsEnum.ImmortalScales) {
       return new ResourceValue(ItemsEnum.ImmortalScales, amount);

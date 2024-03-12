@@ -1,12 +1,12 @@
 <div class="dps" class="s4Heading textCentered pageHeader dpsChecks">
     <span class='smallText partyDps' customToolTip [contentTemplate]="outgoingDpsTemplate">
-        Party DPS: {{getPartyDps()}}
+        Party DPS: <span [innerHTML]="getPartyDps()"></span>
     </span>
     <span class='smallText enemyDps' customToolTip [contentTemplate]="incomingDpsTemplate">
-        Incoming DPS: {{getEnemyDps()}}
+        Incoming DPS: <span [innerHTML]="getEnemyDps()"></span>
     </span>
     <span class='smallText xps' customToolTip [contentTemplate]="xpsTemplate">
-        XPS: {{getXps()}}
+        XPS: <span [innerHTML]="getXps()"></span>
     </span>
 </div>
 

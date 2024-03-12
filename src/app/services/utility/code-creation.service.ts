@@ -31,7 +31,8 @@ export class CodeCreationService {
     this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ShieldSlotAddition, 5));       
     this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.WeaponSlotAddition, 5));       
     this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RingSlotAddition, 5));       
-    this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ArmorSlotAddition, 5));       
+    this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ArmorSlotAddition, 5));    
+    this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MetalCore, 100));       
   }
 
   createCode() {

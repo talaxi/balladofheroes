@@ -410,7 +410,7 @@ export class AltarService {
     }
     if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.ArtemisCriticalDamageUp) {
       altarEffect.duration = altarEffect.totalDuration = 30;
-      altarEffect.effectiveness = 1.05;
+      altarEffect.effectiveness = 1.03;
       altarEffect.stacks = false;
     }
     if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.ArtemisDefenseDebuff) {
@@ -483,7 +483,7 @@ export class AltarService {
     }
     if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.ArtemisRareCriticalDamageUp) {
       altarEffect.duration = altarEffect.totalDuration = 60;
-      altarEffect.effectiveness = 1.1;
+      altarEffect.effectiveness = 1.075;
       altarEffect.stacks = false;
     }
     if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.HermesRareAutoAttackUp) {

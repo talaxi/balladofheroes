@@ -140,15 +140,13 @@ export class StoryService {
       this.showStory = true;
       else if (this.globalService.globalVar.currentStoryId === 52 && this.balladService.getActiveSubZone().type === SubZoneEnum.ReturnToColchisPhasisBeach)
       this.showStory = true;
-      else if (this.globalService.globalVar.currentStoryId === 53 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.ReturnToColchisUnderTheStars))
+      else if (this.globalService.globalVar.currentStoryId === 53 && this.balladService.getActiveSubZone().type === SubZoneEnum.ReturnToColchisReturnToTheGrove)
       this.showStory = true;
-      else if (this.globalService.globalVar.currentStoryId === 54 && this.balladService.getActiveSubZone().type === SubZoneEnum.ReturnToColchisReturnToTheGrove)
+      else if (this.globalService.globalVar.currentStoryId === 54 && this.balladService.getActiveSubZone().type === SubZoneEnum.EscapeFromColchisEscape2)
       this.showStory = true;
-      else if (this.globalService.globalVar.currentStoryId === 55 && this.balladService.getActiveSubZone().type === SubZoneEnum.EscapeFromColchisEscape2)
+      else if (this.globalService.globalVar.currentStoryId === 55 && this.balladService.getActiveSubZone().type === SubZoneEnum.EscapeFromColchisBattleAtSea)
       this.showStory = true;
-      else if (this.globalService.globalVar.currentStoryId === 56 && this.balladService.getActiveSubZone().type === SubZoneEnum.EscapeFromColchisBattleAtSea)
-      this.showStory = true;
-      else if (this.globalService.globalVar.currentStoryId === 57 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.EscapeFromColchisBattleAtSea))
+      else if (this.globalService.globalVar.currentStoryId === 56 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.EscapeFromColchisBattleAtSea))
       this.showStory = true;
 
     if (this.showStory)
@@ -727,6 +725,48 @@ export class StoryService {
       "<div class='sceneDiv'>You take the herbs and give thanks.</div>" + 
       "<div>" + this.commonCharacterText("“He is more powerful than even I realize. Good luck. You will need it.”") + "</div>";
     }
+    else if (storyId === 52) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>Your journey from Aiaia to Colchis spans weeks. Aiaia is hidden away on the far west beyond even Greece. Colchis was the opposite, sitting on the eastern edge of the Black Sea. Fortunately, the chilly weather of early Spring had passed, making the water travels more enjoyable.</div>" +
+        "<div>You pass by the mainland a little over halfway through your travels, and as soon pass Greece, Aeetes's meddling is immediately evident. Small, coastal towns are sparsely populated. The closer you were, the more frequently you encountered those mindless husks from before.</div>";
+      else if (pageCount === 2)
+        sceneText = "<div class='sceneDiv'>Under the cover of night, you bring your vessel into the Colchis beach far away from the docks. Like Jason before you, you cover your boat in reeds hoping to avoid detection. Fortunately, you see no signs of the mindless corpses this far out.</div>" + 
+        "<div>Zosime takes point as you work your way into the capital. Her hunting skills are just as useful in evading detection, and you try to follow her every step.</div>";     
+    }
+    else if (storyId === 53) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>As you press forward, you begin to notice the husks guarding Colchis. Mindless sentinels standing motionless, scattered throughout the town.</div>" +
+        "<div>Despite your best efforts, conflict is unavoidable. Under the moonlight, you slowly make your way to your destination as carefully and quietly as possible.</div>";
+      else if (pageCount === 2)
+        sceneText = "<div class='sceneDiv'>With the Grove of Ares in sight, you quicken your pace. Surprisingly, there are no guards here.</div>" +
+        "<div>You make your way to the golden fleece. Aeetes's prized possession. You move to grab it but hear a hiss in the darkness. Instinctively, you dodge out of the way right as a gargantuan snake dives at you. Aeetes's guardian, the immortal Colchian Dragon. It would seem Aeetes does leave a guard here -- his greatest.</div>";      
+    }
+    else if (storyId === 54) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>With the golden fleece in hand, you race back to your boat. Thankfully, your hiding spot remained hidden. With haste, you move your boat back in the water.</div>" +
+        "<div class='sceneDiv'>" + this.thalesText("“You think he'll follow?”") + "</div>" + 
+        "<div >" + this.zosimeText("“He'll follow.”") + "</div>";      
+    }    
+    else if (storyId === 55) {      
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>The sun begins to rise only a few hours after your escape. As the visibility improves, you see a dot on the horizon. Zosime was right -- Aeetes was on the hunt.</div>" +
+        "<div>You are in the middle of the Black Sea. You look around you and see no land masses. Your boat begins to slow. You wait.</div>";        
+      else if (pageCount === 2)
+        sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“You two.”") + "</div>" +
+        "<div class='sceneDiv'>Aeetes's much larger vessel caught up to your ship and his crew had boarded. The King of Colchis looked irate.</div>" + 
+        "<div>" + this.commonCharacterText("“The Golden Fleece is <i><b>MINE</b></i>. I should have killed you the first time we met. Let me correct my mistake.”") + "</div>";        
+    }
+    else if (storyId === 56) {      
+      if (pageCount === 1)
+      sceneText = "<div class='sceneDiv'>After a fierce battle, you finally bring Aeetes to his knees. You quickly ingest the Moly given to you by Circe before striking the final blow. For several tense seconds, you wait.</div>" +
+      "<div class='sceneDiv'>The Eagle King does not return. The magic reanimating the corpses falters, as the bodies fall to the ground. The spirits of the dead finally find their way to the underworld. </div>" + 
+      "<div>You can’t help but let out a cheer.</div>";        
+    else if (pageCount === 2)
+      sceneText = "<div class='sceneDiv'>Your crew spends the next few weeks returning back to the island of Aiaia. You and Zosime discussed what your next steps should be, and giving the Golden Fleece to Aeetes next of kin seemed like the right thing to do.</div>" +
+      "<div class='sceneDiv'>Circe was conflicted when you told her the news, but kind. She knew that Aeetes overreached and that one day his arrogance would lead to his demise.</div>" + 
+      "<div class='sceneDiv'>The Witch accepted the Golden Fleece, another trinket reminding her of past lives. In return, she provides you with more of the magical root Moly.</div>" +
+      "<div>You finally had the answer to your problem. It was time to take back the mountain.</div>";        
+    }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
     sceneText = sceneText.replaceAll("Zosime", "<span class='archerColor storyCharacterName'>Zosime</span>");
@@ -929,6 +969,21 @@ export class StoryService {
     }
     if (this.globalService.globalVar.currentStoryId === 51) {
       this.pageCount = 3;
+    }
+    if (this.globalService.globalVar.currentStoryId === 52) {
+      this.pageCount = 2;
+    }
+    if (this.globalService.globalVar.currentStoryId === 53) {
+      this.pageCount = 2;
+    }
+    if (this.globalService.globalVar.currentStoryId === 54) {
+      this.pageCount = 1;
+    }
+    if (this.globalService.globalVar.currentStoryId === 55) {
+      this.pageCount = 2;
+    }
+    if (this.globalService.globalVar.currentStoryId === 56) {
+      this.pageCount = 2;
     }
 
     this.sceneText = this.getStoryText(this.globalService.globalVar.currentStoryId, this.currentPage);
@@ -1251,6 +1306,11 @@ export class StoryService {
         sceneText = "<div class='sceneDiv'>The waves begin to calm as the great monster falls. For the first time, the mighty whirlpool stills. Near the center, you spy fragments of the sea monster's spikes. You retrieve them and immediately feel their great power.</div>" +
           "<br/><br/><br/><div class='s4Heading bold textCentered sidequestText'>Jewelcrafting Max Level Increase!</div>";
     }
+    if (scene === OptionalSceneEnum.BrokenHuskJewelcrafting) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>Upon defeat, the husks leave behind an intricate chunk of metal. You retrieve it and instantly have ideas for new jewels to create.</div>" +
+          "<br/><br/><br/><div class='s4Heading bold textCentered sidequestText'>Jewelcrafting Max Level Increase!</div>";
+    }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
     sceneText = sceneText.replaceAll("Zosime", "<span class='archerColor storyCharacterName'>Zosime</span>");
@@ -1339,6 +1399,9 @@ export class StoryService {
       this.pageCount = 1;
     }
     if (this.showOptionalStory === OptionalSceneEnum.CharybdisJewelcrafting) {
+      this.pageCount = 1;
+    }
+    if (this.showOptionalStory === OptionalSceneEnum.BrokenHuskJewelcrafting) {
       this.pageCount = 1;
     }
     if (this.showOptionalStory === OptionalSceneEnum.CirceAlchemy) {
@@ -1446,6 +1509,15 @@ export class StoryService {
         var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
         if (alchemy !== undefined) {
           this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, "Your max Alchemy level has increased by <strong>25</strong> to a total of <strong>" + alchemy.maxLevel + "</strong>.", this.globalService.globalVar);
+        }
+      }
+      if (this.showOptionalStory === OptionalSceneEnum.BrokenHuskJewelcrafting) {
+        var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
+        if (jewelcrafting !== undefined) {
+          jewelcrafting.maxLevel += 25;
+
+          var gameLogEntry = "Working with the intricate piece of metal has given you inspiration. Your Jewelcrafting max level increases by <strong>25</strong> to a total of <strong>" + jewelcrafting.maxLevel + "</strong>.";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry, this.globalService.globalVar);
         }
       }
 

@@ -253,6 +253,8 @@ export class DictionaryService {
       name = "Raging Bull";
       else if (type === ItemsEnum.StingrayTip)
       name = "Stingray Tip";
+    else if (type === ItemsEnum.DarkShield)
+      name = "Dark Shield";
     else if (type === ItemsEnum.ScorpionStingerEpic)
       name = "Scorpion Stinger";
     else if (type === ItemsEnum.ScorpionStingerSpecial)
@@ -1029,6 +1031,8 @@ export class DictionaryService {
       name = "Spider Silk";
       else if (type === ItemsEnum.ImmortalScales)
       name = "Immortal Scales";
+      else if (type === ItemsEnum.MetalCore)
+      name = "Metal Core";
 
     //recipes
     else if (type === ItemsEnum.PoisonExtractPotionRecipe)
@@ -1356,7 +1360,7 @@ export class DictionaryService {
   getTrialInfoFromType(type: TrialEnum) {
     var trial = new Trial();
     trial.type = type;
-    if (trial.type === TrialEnum.TrialOfTheStarsVeryHard)
+    if (trial.type === TrialEnum.TrialOfTheStarsVeryHard || trial.type === TrialEnum.TrialOfResolve)
       trial.timerLength = 600;
     else
       trial.timerLength = 300;
