@@ -10,6 +10,8 @@ import { UtilityService } from '../utility/utility.service';
 import { GameLogService } from './game-log.service';
 import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
 import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
+import { LogViewEnum } from 'src/app/models/enums/log-view-enum.model';
+import { TutorialTypeEnum } from 'src/app/models/enums/tutorial-type-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { Enemy } from 'src/app/models/character/enemy.model';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
@@ -21,18 +23,21 @@ import { ZodiacService } from '../global/zodiac.service';
 import { ZodiacEnum } from 'src/app/models/enums/zodiac-enum.model';
 import { TrialDefeatCount } from 'src/app/models/battle/trial-defeat-count.model';
 import { DpsCalculatorService } from './dps-calculator.service';
+import { TutorialService } from 'src/app/services/global/tutorial.service';
+import { BalladService } from 'src/app/services/ballad/ballad.service';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { Uniques } from 'src/app/models/resources/uniques.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root' 
 })
 export class TrialService {
 
   constructor(private enemyGeneratorService: EnemyGeneratorService, private globalService: GlobalService, private utilityService: UtilityService,
     private lookupService: LookupService, private gameLogService: GameLogService, private dictionaryService: DictionaryService,
     private altarService: AltarService, private zodiacService: ZodiacService, private dpsCalculatorService: DpsCalculatorService,
-    private achievementService: AchievementService) { }
+    private achievementService: AchievementService, private balladService: BalladService, private tutorialService: TutorialService) { }
 
   generateBattleOptions(trial: Trial) {
     var battleOptions: EnemyTeam[] = [];
@@ -310,11 +315,11 @@ export class TrialService {
     if (stage === 41) {
       enemyTeam.isBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Achelous));
-    }    
+    }
     if (stage === 42) {
       enemyTeam.isBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Nilus));
-    }    
+    }
     if (stage === 43) {
       enemyTeam.isBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Alpheous));
@@ -326,85 +331,85 @@ export class TrialService {
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Peneus));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.RiverFish));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.RiverFish));
-    }   
+    }
     if (stage === 45) {
       enemyTeam.isDoubleBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineBoar));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineBoar));
-    }   
+    }
     if (stage === 46) {
       enemyTeam.isDoubleBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.OrangeFloatingFlame));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.OrangeFloatingFlame));
-    }   
+    }
     if (stage === 47) {
       enemyTeam.isDoubleBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.PurpleFloatingFlame));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.PurpleFloatingFlame));
-    }   
+    }
     if (stage === 48) {
       enemyTeam.isDoubleBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WhiteFloatingFlame));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WhiteFloatingFlame));
-    }   
+    }
     if (stage === 49) {
       enemyTeam.isDoubleBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.CrimsonFloatingFlame));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.CrimsonFloatingFlame));
-    }  
+    }
     if (stage === 50) {
       enemyTeam.isBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineVulture));
-    }  
+    }
     //todo: bring back on next version
     /*if (stage === 51) {
       enemyTeam.isDoubleBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Sphinx));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Sphinx));
     } */
-    if (stage === 52) {      
+    if (stage === 52) {
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Griffin));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Griffin));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Griffin));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Griffin));
-    }  
-    if (stage === 53) {      
+    }
+    if (stage === 53) {
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Manticore));
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Manticore));      
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Manticore));
-    }   
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Manticore));
+    }
     if (stage === 54) {
       enemyTeam.isBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Pegasus));
-    }  
-    if (stage === 55) {      
+    }
+    if (stage === 55) {
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineCicada));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineCicada));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineCicada));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineCicada));
-    }  
-    if (stage === 56) {      
+    }
+    if (stage === 56) {
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HolyDisciple));
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HolyDisciple));      
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HolyDisciple));
-    }  
-    if (stage === 57) {      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HolyDisciple));
+    }
+    if (stage === 57) {
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ProtectedWarrior));
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ProtectedWarrior));            
-    }  
-    if (stage === 58) {      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ProtectedWarrior));
+    }
+    if (stage === 58) {
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.RadiantSoldier));
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.RadiantSoldier));            
-    }  
-    if (stage === 59) {      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.RadiantSoldier));
+    }
+    if (stage === 59) {
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WarfareScholar));
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.MilitantAcolyte));      
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.MilitantAcolyte));
-    }  
-    if (stage === 60) {      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.MilitantAcolyte));
+    }
+    if (stage === 60) {
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineCrane));
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineCrane));            
-    }  
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineCrane));
+    }
 
     return enemyTeam;
   }
@@ -931,9 +936,9 @@ export class TrialService {
       if (this.globalService.globalVar.isSubscriber) {
         itemCount = stage * 20;
         gainedItem = ItemsEnum.Ambrosia;
-      }      
+      }
 
-      reward = new ResourceValue(gainedItem, itemCount);      
+      reward = new ResourceValue(gainedItem, itemCount);
 
       if (includeGameLog) {
         this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + itemCount.toLocaleString() + " " + (itemCount === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalService.globalVar);
@@ -943,11 +948,11 @@ export class TrialService {
     else if (stage === 20) {
       var itemCount = 1;
       var gainedItem = ItemsEnum.BlazingSunPendant;
-      
+
       if (this.globalService.globalVar.isSubscriber) {
         itemCount = stage * 20;
         gainedItem = ItemsEnum.Ambrosia;
-      }      
+      }
 
       reward = new ResourceValue(gainedItem, itemCount);
 
@@ -980,6 +985,25 @@ export class TrialService {
 
       if (includeGameLog) {
         this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + itemCount.toLocaleString() + " " + (itemCount === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalService.globalVar);
+        this.globalService.gainResource(new ResourceValue(gainedItem, itemCount));
+      }
+    }
+    if (stage === 50) {
+      var itemCount = 1;
+      var gainedItem = ItemsEnum.SwordOfOlympus;
+
+      reward = new ResourceValue(gainedItem, itemCount);
+
+      if (includeGameLog) {
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + itemCount.toLocaleString() + " " + (itemCount === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalService.globalVar);
+
+        this.globalService.globalVar.uniques.push(new Uniques(gainedItem));
+
+        if (!this.globalService.globalVar.logData.some(item => item.type === LogViewEnum.Tutorials && item.relevantEnumValue === TutorialTypeEnum.Uniques)) {
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Uniques, undefined, undefined, true, this.balladService.getActiveSubZone()?.type), this.globalService.globalVar);
+          this.globalService.handleTutorialModal();
+        }
+
         this.globalService.gainResource(new ResourceValue(gainedItem, itemCount));
       }
     }

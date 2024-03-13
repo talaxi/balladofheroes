@@ -287,6 +287,8 @@ export class DictionaryService {
       name = "Dark Moon Pendant Unique XP";
     else if (type === ItemsEnum.BlazingSunPendantUniqueUpgrade)
       name = "Blazing Sun Pendant Unique XP";
+    else if (type === ItemsEnum.SwordOfOlympusUpgrade)
+      name = "Sword of Olympus Unique XP";
     else if (type === ItemsEnum.TimeFragment)
       name = "Time Fragment";
       else if (type === ItemsEnum.TokenOfFavor)
@@ -391,6 +393,8 @@ export class DictionaryService {
       name = "Astral Ring";
     else if (type === ItemsEnum.AstralRingUnique)
       name = "Astral Ring";
+      else if (type === ItemsEnum.SwordOfOlympus)
+      name = "Sword of Olympus";
 
     //shields
     else if (type === ItemsEnum.IronShield)

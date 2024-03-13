@@ -616,5 +616,6 @@ export enum ItemsEnum {
   SpiderSilk,
   ImmortalScales,
   DarkShield,
-  SwordOfOlympus
+  SwordOfOlympus,
+  SwordOfOlympusUpgrade
 } 

@@ -737,7 +737,7 @@ export class LookupService {
       name = "Each Time Fragment allows you to automatically run any completed subzone or certain battles in the background. You will gain their rewards, including Coins and XP, at a reduced rate. Open the Time Fragment overview option in the Quick View section for more information.";
     else if (type === ItemsEnum.OlympicCommendation)
       name = "Increase unequipped god XP gain by 5%. Current total is " + (this.globalService.getInactiveGodXpRate() * 100) + "%. Can only obtain 5 Olympic Commendations.";
-    else if (type === ItemsEnum.BlazingSunPendantUniqueUpgrade || type === ItemsEnum.DarkMoonPendantUniqueUpgrade)
+    else if (type === ItemsEnum.BlazingSunPendantUniqueUpgrade || type === ItemsEnum.DarkMoonPendantUniqueUpgrade || type === ItemsEnum.SwordOfOlympusUpgrade)
       name = "+10 Unique XP";
     //else if (type === ItemsEnum.DuoAbilityAccess)
     //name = "Gain access to Duo abilities. When both equipped gods have an affinity level of 20 or greater, you can cast their unique Duo ability. <br/><i>This will eventually be accessible through a sidequest but for now can be purchased freely</i>";
@@ -2302,25 +2302,33 @@ export class LookupService {
       equipmentPiece.equipmentEffects.push(equipmentEffect);
       equipmentPiece.slotCount = 5;
     }
-    if (type === ItemsEnum.SwordOfOlympus) {
+    if (type === ItemsEnum.SwordOfOlympus) {      
       var effectivenessIncrease = 0;
-      var thresholdReduction = 0;
+      var count = 10;
       if (unique !== undefined) {
-        effectivenessIncrease = .004 * unique.getMinorEffectLevel();
-        thresholdReduction = unique.getMajorEffectLevel() * .03;
+        effectivenessIncrease = .05 * unique.getMinorEffectLevel();
+        count = 11 - unique.getMajorEffectLevel();
       }
 
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Unique, WeaponTypeEnum.Sword);
-      equipmentPiece.stats = new CharacterStats(0, 6750, 0, 0, 2250, 0);
-      equipmentPiece.stats.abilityCooldownReduction = .05;
+      equipmentPiece.stats = new CharacterStats(0, 4500, 0, 0, 4500, 0);
+      equipmentPiece.stats.elementIncrease.earth = .1;
+      equipmentPiece.stats.elementIncrease.air = .1;
+      equipmentPiece.stats.elementIncrease.water = .1;
+      equipmentPiece.stats.elementIncrease.holy = .1;
+      equipmentPiece.stats.elementIncrease.lightning = .1;
+      equipmentPiece.stats.elementIncrease.fire = .1;
       equipmentPiece.stats.armorPenetration = .1;
       equipmentPiece.stats.criticalMultiplier = .15;
       var equipmentEffect = new UsableItemEffect();
-      equipmentEffect.trigger = EffectTriggerEnum.TargetAboveHpPercentAbility;
-      equipmentEffect.maxThreshold = .8 - thresholdReduction;
-      equipmentEffect.targetEffect.push(this.globalService.createDamageOverTimeEffect(12, 4, .1 + effectivenessIncrease, "Battering Mace", dotTypeEnum.BasedOnDamage));
-      equipmentPiece.equipmentEffects.push(equipmentEffect);
-      equipmentPiece.slotCount = 5;
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.SwordOfOlympus, -1, effectivenessIncrease, false, true, false, type.toString(), undefined, undefined, undefined, undefined, undefined, undefined, count));
+      equipmentEffect.userEffect[0].resolution = EffectResolutionEnum.AlwaysActiveEquipment;
+      equipmentEffect.userEffect[0].count = equipmentEffect.userEffect[0].maxCount;
+      equipmentPiece.equipmentEffects.push(equipmentEffect);      
+      equipmentPiece.slotCount = 3;
+
+      console.log(".05 + " + effectivenessIncrease + " = " + equipmentEffect.userEffect[0].effectiveness);
     }
 
     //shields
@@ -6579,7 +6587,10 @@ export class LookupService {
       description = "You are in " + form + " form." + formBonus + " Increase your Air Damage Dealt by " + this.utilityService.genericRound((statusEffect.effectiveness - 1) * 100) + "%.";
     }
     if (statusEffect.type === StatusEffectEnum.BucklerOfPerfectHarmonyAttack || statusEffect.type === StatusEffectEnum.BucklerOfPerfectHarmonyAttackUnique) {
-      description = "After being attacked " + statusEffect.count + " more times, deal damage to all enemies.";
+      description = "After being attacked " + statusEffect.count + " more time" + (statusEffect.count === 1 ? "" : "s") + ", deal damage to all enemies.";
+    }
+    if (statusEffect.type === StatusEffectEnum.SwordOfOlympus) {
+      description = "After dealing " + statusEffect.count + " more critical hit" + (statusEffect.count === 1 ? "" : "s") + ", deal damage to all enemies.";
     }
 
     if (statusEffect.type === StatusEffectEnum.LinkBoost)
@@ -8650,12 +8661,18 @@ export class LookupService {
 
           if (effect.type === StatusEffectEnum.BucklerOfPerfectHarmonyAttack || effect.type === StatusEffectEnum.BucklerOfPerfectHarmonyAttackUnique) {
             if (equipment.itemType === ItemsEnum.BucklerOfPerfectHarmonyEpic || equipment.itemType === ItemsEnum.BucklerOfPerfectHarmonySpecial)
-              equipmentEffects += "Every 10 times you are attacked, deal <strong>" + this.utilityService.genericRound(effect.effectiveness * 100) + "% of Defense</strong> damage to all targets.<br/>";
+              equipmentEffects += "Every 10 times you are attacked, deal <strong>" + this.utilityService.genericRound(effect.effectiveness * 100) + "% of Defense</strong> True Damage to all targets.<br/>";
             else {
               var unique = this.globalService.globalVar.uniques.find(item => item.type === equipment.itemType);
               if (unique !== undefined)
-                equipmentEffects += "Every <strong>" + (11 - unique.getMajorEffectLevel()).toString() + (11 - unique.getMajorEffectLevel() > 1 ? " times " : " time ") + "</strong> you are attacked, deal <strong>" + this.utilityService.genericRound((effect.effectiveness + (unique.getMinorEffectLevel() / 20)) * 100) + "% of Defense</strong> damage to all targets.<br/>";
+                equipmentEffects += "Every <strong>" + (11 - unique.getMajorEffectLevel()).toString() + (11 - unique.getMajorEffectLevel() > 1 ? " times " : " time ") + "</strong> you are attacked, deal <strong>" + this.utilityService.genericRound((effect.effectiveness + (unique.getMinorEffectLevel() / 20)) * 100) + "% of Defense</strong> True Damage to all targets.<br/>";
             }
+          }
+
+          if (effect.type === StatusEffectEnum.SwordOfOlympus) {            
+              var unique = this.globalService.globalVar.uniques.find(item => item.type === equipment.itemType);
+              if (unique !== undefined)
+                equipmentEffects += "Every <strong>" + (11 - unique.getMajorEffectLevel()).toString() + (11 - unique.getMajorEffectLevel() > 1 ? " times " : " time ") + "</strong> you deal critical damage, deal <strong>" + this.utilityService.genericRound((effect.effectiveness) * 100) + "% of Attack</strong> True Damage to all targets.<br/>";            
           }
 
           if (effect.type === StatusEffectEnum.BoundingBand)

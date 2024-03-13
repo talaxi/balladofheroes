@@ -265,6 +265,9 @@ export class TrialsViewComponent {
     if (this.globalService.globalVar.sidequestData.trialStage === 30) {
       return "<span class='bold smallCaps aphroditeColor'>Aphrodite</span>";
     }
+    if (this.globalService.globalVar.sidequestData.trialStage === 50) {
+      return "<span class='bold smallCaps uniqueEquipment'>Sword of Olympus</span>";
+    }
     else if (reward === undefined)
       return "";
     else

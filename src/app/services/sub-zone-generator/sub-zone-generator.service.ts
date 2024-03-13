@@ -5268,6 +5268,8 @@ export class SubZoneGeneratorService {
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BlazingSunPendantUniqueUpgrade, SubZoneEnum.MountOlympusOlympus, isPatron));
     if (resources.some(item => item.item === ItemsEnum.DarkMoonPendantUnique))
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DarkMoonPendantUniqueUpgrade, SubZoneEnum.MountOlympusOlympus, isPatron));
+      if (resources.some(item => item.item === ItemsEnum.SwordOfOlympus))
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.SwordOfOlympusUpgrade, SubZoneEnum.MountOlympusOlympus, isPatron));
 
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.TokenOfSupport, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.TokenOfFavor, SubZoneEnum.MountOlympusOlympus));

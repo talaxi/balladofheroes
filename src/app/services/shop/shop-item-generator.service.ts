@@ -660,6 +660,12 @@ export class ShopItemGeneratorService {
       else
         purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 2));
     }
+    if (item === ItemsEnum.SwordOfOlympusUpgrade) {
+      if (isPatron)
+        purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 1));
+      else
+        purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 2));
+    }
     if (item === ItemsEnum.Ambrosia) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Nectar, 10));
     }    

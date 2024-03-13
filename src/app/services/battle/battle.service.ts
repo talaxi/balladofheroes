@@ -1055,7 +1055,7 @@ export class BattleService {
 
     var damageMultiplier = this.getDamageMultiplier(isPartyAttacking, character, target, additionalDamageMultiplier, true, elementalType, undefined, undefined, undefined, undefined, undefined, ally) * totalAutoAttackCount;
 
-    var allDamageDealt = this.dealDamage(isPartyAttacking, character, target, isCritical, autoAttackMultiplier, damageMultiplier, undefined, elementalType, fromSpecialDelivery ? GodEnum.Hermes : undefined, party);
+    var allDamageDealt = this.dealDamage(isPartyAttacking, character, target, isCritical, autoAttackMultiplier, damageMultiplier, undefined, elementalType, fromSpecialDelivery ? GodEnum.Hermes : undefined, party, targets);
     var damageDealt = allDamageDealt[0];
 
     var additionalDamageTargets = "";
@@ -2108,7 +2108,7 @@ export class BattleService {
           if (damageIsBlocked)
             damageMultiplier = 0;
 
-          var allDamageDealt = this.dealDamage(isPartyUsing, user, potentialTarget, isCritical, abilityEffectiveness, damageMultiplier, abilityCopy, elementalType, godType, party);
+          var allDamageDealt = this.dealDamage(isPartyUsing, user, potentialTarget, isCritical, abilityEffectiveness, damageMultiplier, abilityCopy, elementalType, godType, party, targets);
           damageDealt = allDamageDealt[0];
 
           if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) ||
@@ -2152,7 +2152,7 @@ export class BattleService {
         if (damageIsBlocked)
           damageMultiplier = 0;
 
-        var allDamageDealt = this.dealDamage(isPartyUsing, user, target, isCritical, abilityEffectiveness, damageMultiplier, abilityCopy, elementalType, godType, party);
+        var allDamageDealt = this.dealDamage(isPartyUsing, user, target, isCritical, abilityEffectiveness, damageMultiplier, abilityCopy, elementalType, godType, party, targets);
         damageDealt = allDamageDealt[0];
 
         var additionalDamageTargets = "";
@@ -3879,7 +3879,7 @@ export class BattleService {
             var damageMultiplier = this.getDamageMultiplier(isPartyUsing, target, targetedEnemy, undefined, false, elementalType, undefined, undefined, undefined, undefined, undefined, ally);
             var isCritical = this.isDamageCritical(target, targetedEnemy);
 
-            var allDamageDealt = this.dealDamage(!isPartyUsing, target, targetedEnemy, isCritical, abilityEffectiveness, damageMultiplier, abilityThatTriggeredCounter, elementalType, GodEnum.Nemesis, party);
+            var allDamageDealt = this.dealDamage(!isPartyUsing, target, targetedEnemy, isCritical, abilityEffectiveness, damageMultiplier, abilityThatTriggeredCounter, elementalType, GodEnum.Nemesis, party, potentialTargets);
             counterDamageDealt = allDamageDealt[0];
 
             var additionalDamageTargets = "";
@@ -4848,7 +4848,7 @@ export class BattleService {
     }
   }
 
-  dealDamage(isPartyAttacking: boolean, attacker: Character, target: Character, isCritical: boolean, abilityDamageMultiplier?: number, damageMultiplier?: number, ability?: Ability, elementalType?: ElementalTypeEnum, godType?: GodEnum, partyMembers?: Character[]): [number, number, number] {
+  dealDamage(isPartyAttacking: boolean, attacker: Character, target: Character, isCritical: boolean, abilityDamageMultiplier?: number, damageMultiplier?: number, ability?: Ability, elementalType?: ElementalTypeEnum, godType?: GodEnum, partyMembers?: Character[], targets?: Character[]): [number, number, number] {
     //damage formula, check for shields, check for ko
     if (abilityDamageMultiplier === undefined)
       abilityDamageMultiplier = 1;
@@ -5090,6 +5090,27 @@ export class BattleService {
         }
 
         BucklerOfPerfectHarmony.count = BucklerOfPerfectHarmony.maxCount;
+      }
+    }
+
+    var swordOfOlympus = attacker.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.SwordOfOlympus);
+    if (swordOfOlympus !== undefined) {
+      swordOfOlympus.count -= 1;
+      if (swordOfOlympus.count <= 0 && targets !== undefined) {
+        var uniqueEffect = this.globalService.globalVar.uniques.find(item => item.type === ItemsEnum.SwordOfOlympus);
+
+        if (uniqueEffect !== undefined) {
+          targets.forEach(member => {            
+            var damage = this.dealTrueDamage(true, member, this.lookupService.getAdjustedAttack(attacker, undefined, true) * (swordOfOlympus!.effectiveness), undefined, undefined, true);
+
+            if (this.globalService.globalVar.gameLogSettings.get("partyEquipmentEffect")) {
+              var gameLogEntry = "<strong>" + member.name + "</strong>" + " takes " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, damage) + " damage from <strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong>'s Sword of Olympus effect.";
+              this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry, this.globalService.globalVar);
+            }
+          });
+        }
+
+        swordOfOlympus.count = swordOfOlympus.maxCount;
       }
     }
 

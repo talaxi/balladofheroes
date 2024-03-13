@@ -534,6 +534,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.DarkMoonPendantUniqueUpgrade) {
       return new ResourceValue(ItemsEnum.DarkMoonPendantUniqueUpgrade, amount);
     }
+    if (type === ItemsEnum.SwordOfOlympusUpgrade) {
+      return new ResourceValue(ItemsEnum.SwordOfOlympusUpgrade, amount);
+    }
     if (type === ItemsEnum.TimeFragment) {
       return new ResourceValue(ItemsEnum.TimeFragment, amount);
     }
@@ -680,6 +683,9 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.AstralRingUnique) {
       return new ResourceValue(ItemsEnum.AstralRingUnique, amount);
+    }
+    if (type === ItemsEnum.SwordOfOlympus) {
+      return new ResourceValue(ItemsEnum.SwordOfOlympus, amount);
     }
 
     //equippables
