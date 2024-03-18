@@ -651,9 +651,9 @@ export class LookupService {
     else if (type === ItemsEnum.MagicRevivify)
       name = "Give a KO'd party member 30% of their Max HP.";
     else if (type === ItemsEnum.TokenOfSupport)
-      name = "Activate one random Small Altar boon effect from every available god. Target a party member to use. " + effect.cooldown + " second cooldown.";
+      name = "Activate one random Small Altar boon effect from every available god. Target a party member to use. <i>Item is consumed after using.</i> " + effect.cooldown + " second cooldown.";
     else if (type === ItemsEnum.TokenOfFavor)
-      name = "Activate one random Large Altar boon effect from every available god. Target a party member to use. " + effect.cooldown + " second cooldown.";
+      name = "Activate one random Large Altar boon effect from every available god. Target a party member to use. <i>Item is consumed after using.</i>" + effect.cooldown + " second cooldown.";
     //resources    
     else if (this.getItemTypeFromItemEnum(type) === ItemTypeEnum.Resource || this.getItemTypeFromItemEnum(type) === ItemTypeEnum.CraftingMaterial)
       name = this.getResourceDescription(type, excludeResourceLocationDescription);
@@ -737,7 +737,7 @@ export class LookupService {
       name = "Each Time Fragment allows you to automatically run any completed subzone or certain battles in the background. You will gain their rewards, including Coins and XP, at a reduced rate. Open the Time Fragment overview option in the Quick View section for more information.";
     else if (type === ItemsEnum.OlympicCommendation)
       name = "Increase unequipped god XP gain by 5%. Current total is " + (this.globalService.getInactiveGodXpRate() * 100) + "%. Can only obtain 5 Olympic Commendations.";
-    else if (type === ItemsEnum.BlazingSunPendantUniqueUpgrade || type === ItemsEnum.DarkMoonPendantUniqueUpgrade || type === ItemsEnum.SwordOfOlympusUpgrade)
+    else if (type === ItemsEnum.BlazingSunPendantUniqueUpgrade || type === ItemsEnum.DarkMoonPendantUniqueUpgrade || type === ItemsEnum.SwordOfOlympusUpgrade || type === ItemsEnum.ArmorOfOlympusUpgrade)
       name = "+10 Unique XP";
     //else if (type === ItemsEnum.DuoAbilityAccess)
     //name = "Gain access to Duo abilities. When both equipped gods have an affinity level of 20 or greater, you can cast their unique Duo ability. <br/><i>This will eventually be accessible through a sidequest but for now can be purchased freely</i>";
@@ -2327,8 +2327,32 @@ export class LookupService {
       equipmentEffect.userEffect[0].count = equipmentEffect.userEffect[0].maxCount;
       equipmentPiece.equipmentEffects.push(equipmentEffect);      
       equipmentPiece.slotCount = 3;
+    }
+    if (type === ItemsEnum.ArmorOfOlympus) {      
+      var effectivenessIncrease = 0;
+      var count = .1;
+      if (unique !== undefined) {
+        effectivenessIncrease = .025 * unique.getMinorEffectLevel();
+        count = .1 * unique.getMajorEffectLevel();
+      }
 
-      console.log(".05 + " + effectivenessIncrease + " = " + equipmentEffect.userEffect[0].effectiveness);
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Unique);
+      equipmentPiece.stats = new CharacterStats(0, 0, 3000, 3000, 0, 3000);
+      equipmentPiece.stats.elementIncrease.earth = .1;
+      equipmentPiece.stats.elementIncrease.air = .1;
+      equipmentPiece.stats.elementIncrease.water = .1;
+      equipmentPiece.stats.elementIncrease.holy = .1;
+      equipmentPiece.stats.elementIncrease.lightning = .1;
+      equipmentPiece.stats.elementIncrease.fire = .1;
+      equipmentPiece.stats.armorPenetration = .1;
+      equipmentPiece.stats.criticalMultiplier = .15;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ArmorOfOlympus, -1, effectivenessIncrease, false, true, false, type.toString(), count));
+      equipmentEffect.userEffect[0].resolution = EffectResolutionEnum.AlwaysActiveEquipment;
+      equipmentEffect.userEffect[0].count = equipmentEffect.userEffect[0].maxCount;
+      equipmentPiece.equipmentEffects.push(equipmentEffect);      
+      equipmentPiece.slotCount = 3;
     }
 
     //shields
@@ -2552,6 +2576,15 @@ export class LookupService {
       equipmentPiece.stats.armorPenetration = .075;
       equipmentPiece.slotCount = 2;
       equipmentPiece.set = EquipmentSetEnum.Shadow;
+    }
+    if (type === ItemsEnum.ImmortalScaleTarge) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(5000, 0, 1500, 0, 0, 0);
+      equipmentPiece.stats.hpRegen += 1000;
+      equipmentPiece.stats.buffDuration = .1;
+      equipmentPiece.stats.abilityCooldownReduction = .05;
+      equipmentPiece.stats.autoAttackCooldownReduction = .075;
+      equipmentPiece.slotCount = 3;      
     }
     if (type === ItemsEnum.DarkShield) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Special);
@@ -3432,6 +3465,15 @@ export class LookupService {
       equipmentEffect.targetEffect[0].dotType = dotTypeEnum.BasedOnAttack;
       equipmentPiece.equipmentEffects.push(equipmentEffect);
       equipmentPiece.set = EquipmentSetEnum.Shadow;
+    }
+    if (type === ItemsEnum.BlackInkRing) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(0, 1500, 0, 1000, 0, 0);
+      equipmentPiece.stats.debuffDuration += .1;
+      equipmentPiece.stats.armorPenetration += .075;
+      equipmentPiece.stats.elementResistance.water += .1;
+      equipmentPiece.stats.elementIncrease.water += .1;      
+      equipmentPiece.slotCount = 3;
     }
 
     if (unique !== undefined && equipmentPiece !== undefined && equipmentPiece.quality === EquipmentQualityEnum.Unique) {
@@ -5149,7 +5191,7 @@ export class LookupService {
       abilityDescription = "Heal self for <strong>" + (effectivenessPercent) + "% of Resistance</strong> HP and clear all debuffs from the user. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Strangle") {
-      abilityDescription = "Indefinitely stun a target and apply a damage over time effect that deals <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "% of Attack</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds. This can be removed by dealing " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, relatedUserGainStatusEffectMaxCount) + " damage to the user. " + cooldown + " second cooldown.";
+      abilityDescription = "Indefinitely stun a target and apply a damage over time effect that deals <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "% of Attack</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds. This can be removed by dealing " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, relatedUserGainStatusEffectMaxCount) + " direct damage to the user. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Siren Song") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets and apply a Stun for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
@@ -6215,6 +6257,9 @@ export class LookupService {
     if (ability.name === "Ink") {
       abilityDescription = "Apply a damage over time effect that deals <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "% of Attack Water</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds and apply a <strong>" + (Math.round((relatedTargetGainStatusEffectEffectiveness) * 100)) + "%</strong> Blind for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
+    if (ability.name === "Camouflage") {
+      abilityDescription = "Heal self for <strong>" + (effectivenessPercent) + "% of Resistance</strong> HP and clear all debuffs from the user. " + cooldown + " second cooldown.";
+    }
 
     return abilityDescription;
   }
@@ -6590,7 +6635,11 @@ export class LookupService {
       description = "After being attacked " + statusEffect.count + " more time" + (statusEffect.count === 1 ? "" : "s") + ", deal damage to all enemies.";
     }
     if (statusEffect.type === StatusEffectEnum.SwordOfOlympus) {
-      description = "After dealing " + statusEffect.count + " more critical hit" + (statusEffect.count === 1 ? "" : "s") + ", deal damage to all enemies.";
+      description = "After dealing " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, statusEffect.count) + " more critical hit" + (statusEffect.count === 1 ? "" : "s") + ", deal damage to all enemies.";
+    }
+    
+    if (statusEffect.type === StatusEffectEnum.ArmorOfOlympus) {
+      description = "Stored damage: " + statusEffect.count + ". Deal damage to all enemies after critically striking.";
     }
 
     if (statusEffect.type === StatusEffectEnum.LinkBoost)
@@ -6859,7 +6908,7 @@ export class LookupService {
     if (statusEffect.type === StatusEffectEnum.Immobilize)
       description = "Auto attack and ability cooldowns are not charging until immobilize is cancelled by enemy.";
     if (statusEffect.type === StatusEffectEnum.CastingImmobilize)
-      description = "Immobilizing target until " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, statusEffect.maxCount) + " damage is dealt. Damage remaining: " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, statusEffect.maxCount - statusEffect.count);
+      description = "Immobilizing target until " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, statusEffect.maxCount) + " direct damage is dealt. Damage remaining: " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, statusEffect.maxCount - statusEffect.count);
     if (statusEffect.type === StatusEffectEnum.HighTide)
       description = "Gain an extra attack for March of the Crabs unless " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, statusEffect.maxCount) + " damage is taken. Damage remaining: " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, statusEffect.maxCount - statusEffect.count);
     if (statusEffect.type === StatusEffectEnum.Cancer)
@@ -8674,6 +8723,12 @@ export class LookupService {
               if (unique !== undefined)
                 equipmentEffects += "Every <strong>" + (11 - unique.getMajorEffectLevel()).toString() + (11 - unique.getMajorEffectLevel() > 1 ? " times " : " time ") + "</strong> you deal critical damage, deal <strong>" + this.utilityService.genericRound((effect.effectiveness) * 100) + "% of Attack</strong> True Damage to all targets.<br/>";            
           }
+          
+          if (effect.type === StatusEffectEnum.ArmorOfOlympus) {            
+            var unique = this.globalService.globalVar.uniques.find(item => item.type === equipment.itemType);
+            if (unique !== undefined)
+              equipmentEffects += "When you take damage, store <strong>" + (unique.getMajorEffectLevel() * 10) + "%</strong> of the damage taken. When you deal critical damage, deal <strong>" + this.utilityService.genericRound((effect.effectiveness) * 100) + "%</strong> of stored damage to all targets and reset stored damage back to 0.<br/>";            
+        }
 
           if (effect.type === StatusEffectEnum.BoundingBand)
             equipmentEffects += "Increase Auto Attack damage and reduce Auto Attack cooldown by " + Math.round((effect.effectiveness - 1) * 100) + "%.<br/>";

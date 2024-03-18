@@ -1139,6 +1139,7 @@ export class AlchemyService {
       recipe.quality = EquipmentQualityEnum.Unique;
       //TODO: something else
       recipe.ingredients.push(new ResourceValue(ItemsEnum.ImmortalScales, 3));
+      //recipe.ingredients.push(new ResourceValue(ItemsEnum.EssenceOfTime, 1)); //something that comes from the last ballad
       recipe.ingredients.push(new ResourceValue(ItemsEnum.MetalCore, 5));      
 
       recipe.numberOfSteps = 1;
@@ -1146,6 +1147,9 @@ export class AlchemyService {
 
       recipe.expGain = 100;
     }
+
+    if (this.globalService.globalVar.isSubscriber)
+      recipe.expGain *= 2;
 
     return recipe;
   }

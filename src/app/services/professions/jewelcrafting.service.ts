@@ -1234,6 +1234,9 @@ export class JewelcraftingService {
       recipe.expGain = 100;
     }
 
+    if (this.globalService.globalVar.isSubscriber)
+      recipe.expGain *= 2;
+
     return recipe;
   }
 

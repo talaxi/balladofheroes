@@ -1495,6 +1495,118 @@ export class GlobalService {
       if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Coda))
         character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Coda);
     }
+
+    if (!((character.assignedGod1 === GodEnum.Athena || character.assignedGod1 === GodEnum.Nemesis) && (character.assignedGod2 === GodEnum.Athena || character.assignedGod2 === GodEnum.Nemesis))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DivineRetribution);
+    }
+    
+    if (!((character.assignedGod1 === GodEnum.Athena || character.assignedGod1 === GodEnum.Poseidon) && (character.assignedGod2 === GodEnum.Athena || character.assignedGod2 === GodEnum.Poseidon))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.ReduceNextAbilityCooldown);
+    }
+
+    if (!((character.assignedGod1 === GodEnum.Athena || character.assignedGod1 === GodEnum.Aphrodite) && (character.assignedGod2 === GodEnum.Athena || character.assignedGod2 === GodEnum.Aphrodite))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.BlindedByLove);
+    }
+    
+    if (!((character.assignedGod1 === GodEnum.Hermes || character.assignedGod1 === GodEnum.Apollo) && (character.assignedGod2 === GodEnum.Hermes || character.assignedGod2 === GodEnum.Apollo))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.CleansingShots);
+    }
+    
+    if (!((character.assignedGod1 === GodEnum.Hermes || character.assignedGod1 === GodEnum.Ares) && (character.assignedGod2 === GodEnum.Hermes || character.assignedGod2 === GodEnum.Ares))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.BleedingAttacks);
+    }
+
+    if (!((character.assignedGod1 === GodEnum.Hermes || character.assignedGod1 === GodEnum.Dionysus) && (character.assignedGod2 === GodEnum.Hermes || character.assignedGod2 === GodEnum.Dionysus))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.BleedingAttacks);
+    }
+    
+    if (!((character.assignedGod1 === GodEnum.Hermes || character.assignedGod1 === GodEnum.Zeus) && (character.assignedGod2 === GodEnum.Hermes || character.assignedGod2 === GodEnum.Zeus))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.LightningAttacks);
+    }
+    
+    if (!((character.assignedGod1 === GodEnum.Hermes || character.assignedGod1 === GodEnum.Poseidon) && (character.assignedGod2 === GodEnum.Hermes || character.assignedGod2 === GodEnum.Poseidon))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.PureSpeed);
+    }
+    
+    if (!((character.assignedGod1 === GodEnum.Hermes || character.assignedGod1 === GodEnum.Aphrodite) && (character.assignedGod2 === GodEnum.Hermes || character.assignedGod2 === GodEnum.Aphrodite))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.BetterTogether);
+    }
+    
+    if (!((character.assignedGod1 === GodEnum.Hermes || character.assignedGod1 === GodEnum.Hera) && (character.assignedGod2 === GodEnum.Hermes || character.assignedGod2 === GodEnum.Hera))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.WindAttacks);
+    }
+    
+    if (!((character.assignedGod1 === GodEnum.Apollo || character.assignedGod1 === GodEnum.Hades) && (character.assignedGod2 === GodEnum.Apollo || character.assignedGod2 === GodEnum.Hades))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DiscordantMelody);
+    }
+    
+    if (!((character.assignedGod1 === GodEnum.Apollo || character.assignedGod1 === GodEnum.Nemesis) && (character.assignedGod2 === GodEnum.Apollo || character.assignedGod2 === GodEnum.Nemesis))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.PassingJudgment);
+    }
+    
+    if (!((character.assignedGod1 === GodEnum.Apollo || character.assignedGod1 === GodEnum.Zeus) && (character.assignedGod2 === GodEnum.Apollo || character.assignedGod2 === GodEnum.Zeus))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.ThunderousMelody);
+    }
+    
+    if (!((character.assignedGod1 === GodEnum.Apollo || character.assignedGod1 === GodEnum.Poseidon) && (character.assignedGod2 === GodEnum.Apollo || character.assignedGod2 === GodEnum.Poseidon))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Flood);
+    }
+    
+    if (!((character.assignedGod1 === GodEnum.Apollo || character.assignedGod1 === GodEnum.Aphrodite) && (character.assignedGod2 === GodEnum.Apollo || character.assignedGod2 === GodEnum.Aphrodite))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.CaringGaze);
+    }
+    
+    if (!((character.assignedGod1 === GodEnum.Apollo || character.assignedGod1 === GodEnum.Hera) && (character.assignedGod2 === GodEnum.Apollo || character.assignedGod2 === GodEnum.Hera))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.MelodicMoves);
+    }
+    
+    if (!((character.assignedGod1 === GodEnum.Ares || character.assignedGod1 === GodEnum.Nemesis) && (character.assignedGod2 === GodEnum.Ares || character.assignedGod2 === GodEnum.Nemesis))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.BlisteringRiposte);
+    }
+    
+    if (!((character.assignedGod1 === GodEnum.Ares || character.assignedGod1 === GodEnum.Poseidon) && (character.assignedGod2 === GodEnum.Ares || character.assignedGod2 === GodEnum.Poseidon))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RecedingTide);
+    }
+    
+    if (!((character.assignedGod1 === GodEnum.Ares || character.assignedGod1 === GodEnum.Aphrodite) && (character.assignedGod2 === GodEnum.Ares || character.assignedGod2 === GodEnum.Aphrodite))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.WarAndLove);
+    }    
+    
+    if (!((character.assignedGod1 === GodEnum.Dionysus || character.assignedGod1 === GodEnum.Artemis) && (character.assignedGod2 === GodEnum.Dionysus || character.assignedGod2 === GodEnum.Artemis))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.AllPrimaryStatsDown);
+    }
+
+    if (!((character.assignedGod1 === GodEnum.Hades || character.assignedGod1 === GodEnum.Nemesis) && (character.assignedGod2 === GodEnum.Hades || character.assignedGod2 === GodEnum.Nemesis))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.FieryJudgment);
+    }
+    
+    if (!((character.assignedGod1 === GodEnum.Dionysus || character.assignedGod1 === GodEnum.Nemesis) && (character.assignedGod2 === GodEnum.Dionysus || character.assignedGod2 === GodEnum.Nemesis))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.WildJudgment);
+    }
+    
+    if (!((character.assignedGod1 === GodEnum.Dionysus || character.assignedGod1 === GodEnum.Aphrodite) && (character.assignedGod2 === GodEnum.Dionysus || character.assignedGod2 === GodEnum.Aphrodite))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.WildParty);
+    }
+    
+    if (!((character.assignedGod1 === GodEnum.Nemesis || character.assignedGod1 === GodEnum.Zeus) && (character.assignedGod2 === GodEnum.Nemesis || character.assignedGod2 === GodEnum.Zeus))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.ThunderousRiposte);
+    }
+    
+    if (!((character.assignedGod1 === GodEnum.Nemesis || character.assignedGod1 === GodEnum.Poseidon) && (character.assignedGod2 === GodEnum.Nemesis || character.assignedGod2 === GodEnum.Poseidon))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.StaggeringRiposte);
+    }
+    
+    if (!((character.assignedGod1 === GodEnum.Nemesis || character.assignedGod1 === GodEnum.Aphrodite) && (character.assignedGod2 === GodEnum.Nemesis || character.assignedGod2 === GodEnum.Aphrodite))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Protector);
+    }
+    
+    if (!((character.assignedGod1 === GodEnum.Nemesis || character.assignedGod1 === GodEnum.Hera) && (character.assignedGod2 === GodEnum.Nemesis || character.assignedGod2 === GodEnum.Hera))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DefensiveShapeshifting);
+    }
+    
+    if (!((character.assignedGod1 === GodEnum.Aphrodite || character.assignedGod1 === GodEnum.Hera) && (character.assignedGod2 === GodEnum.Aphrodite || character.assignedGod2 === GodEnum.Hera))) {      
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.LovingEmbrace);
+    }    
   }
 
   giveCharactersBonusExp(bonusXp: number) {
@@ -3869,11 +3981,11 @@ export class GlobalService {
     return undefined;
   }
 
-  resetCooldowns() {    
+  resetCooldowns() {
     var party = this.globalVar.characters.filter(item => item.isAvailable);
-    
+
     party.forEach(member => {
-      this.calculateCharacterBattleStats(member);      
+      this.calculateCharacterBattleStats(member);
       member.battleInfo.autoAttackTimer = 0;
       member.battleInfo.barrierValue = 0;
       member.battleInfo.duoAbilityUsed = false;
@@ -3901,6 +4013,40 @@ export class GlobalService {
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Break);
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Flow);
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.InstantHealAfterAutoAttack);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.AutoAttackDealsElementalDamage);
+
+      //I don't think this is actually needed
+      /*member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DivineRetribution);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.ReduceNextAbilityCooldown);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.BlindedByLove);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.InstantOstinato);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.CleansingShots);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.BleedingAttacks);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.ShieldingAttacks);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.LightningAttacks);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.PureSpeed);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.BetterTogether);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.WindAttacks);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DiscordantMelody);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.PassingJudgment);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.ThunderousMelody);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Flood);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.CaringGaze);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.MelodicMoves);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.BlisteringRiposte);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RecedingTide);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.WarAndLove);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.AllPrimaryStatsDown);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.AllPrimaryStatsExcludeHpDown);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.FieryJudgment);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.WildJudgment);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.WildParty);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.ThunderousRiposte);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.StaggeringRiposte);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Protector);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DefensiveShapeshifting);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.LovingEmbrace);*/
+
 
       var shapeshift = member.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Shapeshift);
       if (shapeshift !== undefined) {
@@ -3919,7 +4065,7 @@ export class GlobalService {
         dispenserOfDues.effectiveness = 0;
     });
 
-    this.globalVar.characters.forEach(character => {      
+    this.globalVar.characters.forEach(character => {
       if (character.abilityList !== undefined && character.abilityList.length > 0)
         character.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
           ability.currentCooldown = this.getAbilityCooldown(ability, character, true);
@@ -3943,7 +4089,7 @@ export class GlobalService {
       var equippedCharacter = this.globalVar.characters.find(item => item.type === equippedCharacterEnum);
 
       if (god.abilityList !== undefined && god.abilityList.length > 0)
-        god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {          
+        god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
           ability.currentCooldown = this.getAbilityCooldown(ability, equippedCharacter !== undefined ? equippedCharacter : new Character(), true);
         });
     });
@@ -4534,8 +4680,8 @@ export class GlobalService {
       this.checkForFirstTimeEternalMeleeRewards(previousWeeklyMeleeRoundMax, this.globalVar.sidequestData.highestWeeklyMeleeRound);
 
       var bonusXpBase = 3250;
-      var growthFactor = 1.205;
-      var additive = Math.floor(losingRound / 5) * 500000;
+      var growthFactor = 1.2125;
+      var additive = Math.floor((losingRound - 1) / 5) * 480000;
 
       var bonusXp = Math.round((bonusXpBase * (growthFactor ** (losingRound - 1))) + (((losingRound - 1) * 5) * bonusXpBase) + additive);
 
@@ -4717,7 +4863,8 @@ export class GlobalService {
     }
     else if (this.globalVar.activeBattle.activeTrial.type === TrialEnum.TrialOfTheStarsNormal ||
       this.globalVar.activeBattle.activeTrial.type === TrialEnum.TrialOfTheStarsHard ||
-      this.globalVar.activeBattle.activeTrial.type === TrialEnum.TrialOfTheStarsVeryHard) {
+      this.globalVar.activeBattle.activeTrial.type === TrialEnum.TrialOfTheStarsVeryHard ||
+      this.globalVar.activeBattle.activeTrial.type === TrialEnum.TrialOfTheStarsUltimate) {
       repeatTrialFight = this.globalVar.settings.get("repeatStarTrialFight") ?? false;
     }
 

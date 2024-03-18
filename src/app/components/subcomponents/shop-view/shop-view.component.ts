@@ -114,6 +114,9 @@ export class ShopViewComponent implements OnInit {
         this.utilityService.altPressed = false;
       }
     }
+
+    if (this.utilityService.shopBuyMultiplier < 1)
+      this.utilityService.shopBuyMultiplier = 1;
   }
 
   constructor(private subzoneGeneratorService: SubZoneGeneratorService, private balladService: BalladService, public dialog: MatDialog,

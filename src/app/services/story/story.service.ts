@@ -142,7 +142,7 @@ export class StoryService {
       this.showStory = true;
       else if (this.globalService.globalVar.currentStoryId === 53 && this.balladService.getActiveSubZone().type === SubZoneEnum.ReturnToColchisReturnToTheGrove)
       this.showStory = true;
-      else if (this.globalService.globalVar.currentStoryId === 54 && this.balladService.getActiveSubZone().type === SubZoneEnum.EscapeFromColchisEscape2)
+      else if (this.globalService.globalVar.currentStoryId === 54 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.EscapeFromColchisEscape2))
       this.showStory = true;
       else if (this.globalService.globalVar.currentStoryId === 55 && this.balladService.getActiveSubZone().type === SubZoneEnum.EscapeFromColchisBattleAtSea)
       this.showStory = true;
@@ -727,8 +727,8 @@ export class StoryService {
     }
     else if (storyId === 52) {
       if (pageCount === 1)
-        sceneText = "<div class='sceneDiv'>Your journey from Aiaia to Colchis spans weeks. Aiaia is hidden away on the far west beyond even Greece. Colchis was the opposite, sitting on the eastern edge of the Black Sea. Fortunately, the chilly weather of early Spring had passed, making the water travels more enjoyable.</div>" +
-        "<div>You pass by the mainland a little over halfway through your travels, and as soon pass Greece, Aeetes's meddling is immediately evident. Small, coastal towns are sparsely populated. The closer you were, the more frequently you encountered those mindless husks from before.</div>";
+        sceneText = "<div class='sceneDiv'>Your journey from Aiaia to Colchis spans weeks. Aiaia is hidden away on the far west beyond Greece. Colchis was the opposite, sitting on the eastern edge of the Black Sea. Fortunately, the chilly weather of early Spring had passed, making the water travels more enjoyable.</div>" +
+        "<div>You pass by the mainland a little over halfway through your travels, and as soon as you pass Greece, Aeetes's meddling is immediately evident. Small, coastal towns are sparsely populated. The closer you are to your destination, the more frequently you encountered those husks from before.</div>";
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>Under the cover of night, you bring your vessel into the Colchis beach far away from the docks. Like Jason before you, you cover your boat in reeds hoping to avoid detection. Fortunately, you see no signs of the mindless corpses this far out.</div>" + 
         "<div>Zosime takes point as you work your way into the capital. Her hunting skills are just as useful in evading detection, and you try to follow her every step.</div>";     
@@ -753,14 +753,14 @@ export class StoryService {
         "<div>You are in the middle of the Black Sea. You look around you and see no land masses. Your boat begins to slow. You wait.</div>";        
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“You two.”") + "</div>" +
-        "<div class='sceneDiv'>Aeetes's much larger vessel caught up to your ship and his crew had boarded. The King of Colchis looked irate.</div>" + 
+        "<div class='sceneDiv'>Aeetes's much larger vessel caught up to your ship and his crew had boarded. The King of Colchis looks irate.</div>" + 
         "<div>" + this.commonCharacterText("“The Golden Fleece is <i><b>MINE</b></i>. I should have killed you the first time we met. Let me correct my mistake.”") + "</div>";        
     }
     else if (storyId === 56) {      
       if (pageCount === 1)
       sceneText = "<div class='sceneDiv'>After a fierce battle, you finally bring Aeetes to his knees. You quickly ingest the Moly given to you by Circe before striking the final blow. For several tense seconds, you wait.</div>" +
       "<div class='sceneDiv'>The Eagle King does not return. The magic reanimating the corpses falters, as the bodies fall to the ground. The spirits of the dead finally find their way to the underworld. </div>" + 
-      "<div>You can’t help but let out a cheer.</div>";        
+      "<div>You can't help but let out a cheer.</div>";        
     else if (pageCount === 2)
       sceneText = "<div class='sceneDiv'>Your crew spends the next few weeks returning back to the island of Aiaia. You and Zosime discussed what your next steps should be, and giving the Golden Fleece to Aeetes next of kin seemed like the right thing to do.</div>" +
       "<div class='sceneDiv'>Circe was conflicted when you told her the news, but kind. She knew that Aeetes overreached and that one day his arrogance would lead to his demise.</div>" + 

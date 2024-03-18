@@ -494,7 +494,7 @@ export class FollowersService {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SpiderSilk, 3));
       }
       if (rewardLevel >= 4) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ImmortalScales, 2));        
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ImmortalScales, 3));        
       }
     }
     

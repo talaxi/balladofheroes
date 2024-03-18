@@ -118,6 +118,8 @@ export class ShoppingItemViewComponent implements OnInit {
       outOfStock = true;
     if (this.item.shopItem === ItemsEnum.SwordOfOlympusUpgrade && this.globalService.globalVar.uniques.some(item => item.type === ItemsEnum.SwordOfOlympus && item.level >= 1000))
       outOfStock = true;
+      if (this.item.shopItem === ItemsEnum.ArmorOfOlympusUpgrade && this.globalService.globalVar.uniques.some(item => item.type === ItemsEnum.ArmorOfOlympus && item.level >= 1000))
+      outOfStock = true;
     if (this.item.shopItem === ItemsEnum.AthenasSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AthenasSigil))
       outOfStock = true;
     if (this.item.shopItem === ItemsEnum.ArtemissSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ArtemissSigil))
@@ -206,6 +208,7 @@ export class ShoppingItemViewComponent implements OnInit {
             this.globalService.giveCharactersBonusExp(5000);
             this.globalService.globalVar.sidequestData.sparringMatchMultiplier *= 1.1;
           }
+          //TODO: remove this
           this.globalService.globalVar.uniques.forEach(item => {
             item.level += 99;
             this.lookupService.levelUpUnique(item);
@@ -228,6 +231,13 @@ export class ShoppingItemViewComponent implements OnInit {
         else if (resource.item === ItemsEnum.SwordOfOlympusUpgrade) {
           for (var i = 0; i < this.buyMultiplier; i++) {
             var unique = this.globalService.globalVar.uniques.find(item => item.type === ItemsEnum.SwordOfOlympus);
+            if (unique !== undefined)
+              this.lookupService.giveUniqueXp(unique, 10);
+          }
+        }
+        else if (resource.item === ItemsEnum.ArmorOfOlympusUpgrade) {
+          for (var i = 0; i < this.buyMultiplier; i++) {
+            var unique = this.globalService.globalVar.uniques.find(item => item.type === ItemsEnum.ArmorOfOlympus);
             if (unique !== undefined)
               this.lookupService.giveUniqueXp(unique, 10);
           }

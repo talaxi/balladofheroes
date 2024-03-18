@@ -10,6 +10,7 @@ import { UtilityService } from '../utility/utility.service';
 import { GameLogService } from './game-log.service';
 import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
 import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
+import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { LogViewEnum } from 'src/app/models/enums/log-view-enum.model';
 import { TutorialTypeEnum } from 'src/app/models/enums/tutorial-type-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
@@ -30,7 +31,7 @@ import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { Uniques } from 'src/app/models/resources/uniques.model';
 
 @Injectable({
-  providedIn: 'root' 
+  providedIn: 'root'
 })
 export class TrialService {
 
@@ -53,6 +54,9 @@ export class TrialService {
     }
     if (trial.type === TrialEnum.TrialOfTheStarsVeryHard) {
       battleOptions.push(this.getTrialOfTheStarsBattle(3));
+    }
+    if (trial.type === TrialEnum.TrialOfTheStarsUltimate) {
+      battleOptions.push(this.getTrialOfTheStarsBattle(4));
     }
     if (trial.type === TrialEnum.TrialOfSkill) {
       var trialOfSkillBattle = this.enemyGeneratorService.generateEnemy(this.getTrialOfSkillBattle());
@@ -414,7 +418,7 @@ export class TrialService {
     return enemyTeam;
   }
 
-  //1 = normal, 2 = hard, 3 = very hard
+  //1 = normal, 2 = hard, 3 = very hard, 4 = ultimate
   getTrialOfTheStarsBattle(level: number) {
     var enemyTeam: EnemyTeam = new EnemyTeam();
     var zodiac = this.zodiacService.getCurrentZodiac();
@@ -427,6 +431,8 @@ export class TrialService {
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ThemisHard));
       if (level === 3)
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ThemisVeryHard));
+      if (level === 4)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ThemisUltimate));
     }
     if (zodiac === ZodiacEnum.Scorpio) {
       enemyTeam.isBossFight = true;
@@ -436,6 +442,8 @@ export class TrialService {
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HardenedScorpionHard));
       if (level === 3)
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HardenedScorpionVeryHard));
+      if (level === 4)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HardenedScorpionUltimate));
     }
     if (zodiac === ZodiacEnum.Sagittarius) {
       enemyTeam.isBossFight = true;
@@ -445,6 +453,8 @@ export class TrialService {
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ChironHard));
       if (level === 3)
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ChironVeryHard));
+      if (level === 4)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ChironUltimate));
     }
     if (zodiac === ZodiacEnum.Capricorn) {
       enemyTeam.isBossFight = true;
@@ -454,6 +464,8 @@ export class TrialService {
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SeaGoatHard));
       if (level === 3)
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SeaGoatVeryHard));
+      if (level === 4)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SeaGoatUltimate));
     }
     if (zodiac === ZodiacEnum.Aquarius) {
       enemyTeam.isBossFight = true;
@@ -463,6 +475,8 @@ export class TrialService {
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GanymedeHard));
       if (level === 3)
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GanymedeVeryHard));
+      if (level === 4)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GanymedeUltimate));
     }
     if (zodiac === ZodiacEnum.Pisces) {
       enemyTeam.isBossFight = true;
@@ -472,6 +486,8 @@ export class TrialService {
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.RainbowScaledFishHard));
       if (level === 3)
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.RainbowScaledFishVeryHard));
+      if (level === 4)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.RainbowScaledFishUltimate));
     }
     if (zodiac === ZodiacEnum.Aries) {
       enemyTeam.isBossFight = true;
@@ -481,6 +497,8 @@ export class TrialService {
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SoaringRamHard));
       if (level === 3)
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SoaringRamVeryHard));
+      if (level === 4)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SoaringRamUltimate));
     }
     if (zodiac === ZodiacEnum.Taurus) {
       enemyTeam.isBossFight = true;
@@ -490,6 +508,8 @@ export class TrialService {
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GreatBullHard));
       if (level === 3)
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GreatBullVeryHard));
+      if (level === 4)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GreatBullUltimate));
     }
     if (zodiac === ZodiacEnum.Gemini) {
       enemyTeam.isDoubleBossFight = true;
@@ -505,6 +525,10 @@ export class TrialService {
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.CastorVeryHard));
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.PolluxVeryHard));
       }
+      if (level === 4) {
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.CastorUltimate));
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.PolluxUltimate));
+      }
     }
     if (zodiac === ZodiacEnum.Cancer) {
       enemyTeam.isBossFight = true;
@@ -514,6 +538,8 @@ export class TrialService {
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GargantuanCrabHard));
       if (level === 3)
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GargantuanCrabVeryHard));
+      if (level === 4)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GargantuanCrabUltimate));
     }
     if (zodiac === ZodiacEnum.Leo) {
       enemyTeam.isBossFight = true;
@@ -523,6 +549,8 @@ export class TrialService {
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.MajesticLionHard));
       if (level === 3)
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.MajesticLionVeryHard));
+      if (level === 4)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.MajesticLionUltimate));
     }
     if (zodiac === ZodiacEnum.Virgo) {
       enemyTeam.isBossFight = true;
@@ -532,6 +560,8 @@ export class TrialService {
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AstraeaHard));
       if (level === 3)
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AstraeaVeryHard));
+      if (level === 4)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AstraeaUltimate));
     }
 
     return enemyTeam;
@@ -1005,6 +1035,41 @@ export class TrialService {
         }
 
         this.globalService.gainResource(new ResourceValue(gainedItem, itemCount));
+      }
+    }
+    if (stage === 60) {
+      var itemCount = 1;
+      var gainedItem = ItemsEnum.ArmorOfOlympus;
+
+      reward = new ResourceValue(gainedItem, itemCount);
+
+      if (includeGameLog) {
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + itemCount.toLocaleString() + " " + (itemCount === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalService.globalVar);
+
+        this.globalService.globalVar.uniques.push(new Uniques(gainedItem));
+        this.globalService.gainResource(new ResourceValue(gainedItem, itemCount));
+      }
+    }
+    if (stage === 70) {
+      if (includeGameLog) {
+        var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+        if (alchemy !== undefined) {
+          alchemy.maxLevel += 25;
+
+          var gameLogEntry = "Your Alchemy max level increases by <strong>25</strong> to a total of <strong>" + alchemy.maxLevel + "</strong>.";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry, this.globalService.globalVar);
+        }
+      }
+    }
+    if (stage === 80) {
+      if (includeGameLog) {
+        var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
+        if (jewelcrafting !== undefined) {
+          jewelcrafting.maxLevel += 25;
+
+          var gameLogEntry = "Your Jewelcrafting max level increases by <strong>25</strong> to a total of <strong>" + jewelcrafting.maxLevel + "</strong>.";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry, this.globalService.globalVar);
+        }
       }
     }
     else if (stage % 5 === 0) {

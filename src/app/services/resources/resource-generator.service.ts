@@ -178,6 +178,12 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.NecklaceOfStarryNights) {
       return new ResourceValue(ItemsEnum.NecklaceOfStarryNights, amount);
     }
+    if (type === ItemsEnum.ImmortalScaleTarge) {
+      return new ResourceValue(ItemsEnum.ImmortalScaleTarge, amount);
+    }    
+    if (type === ItemsEnum.BlackInkRing) {
+      return new ResourceValue(ItemsEnum.BlackInkRing, amount);
+    }
 
     //rings
     if (type === ItemsEnum.MoltenRing) {
@@ -537,6 +543,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.SwordOfOlympusUpgrade) {
       return new ResourceValue(ItemsEnum.SwordOfOlympusUpgrade, amount);
     }
+    if (type === ItemsEnum.ArmorOfOlympusUpgrade) {
+      return new ResourceValue(ItemsEnum.ArmorOfOlympusUpgrade, amount);
+    }
     if (type === ItemsEnum.TimeFragment) {
       return new ResourceValue(ItemsEnum.TimeFragment, amount);
     }
@@ -686,6 +695,9 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.SwordOfOlympus) {
       return new ResourceValue(ItemsEnum.SwordOfOlympus, amount);
+    }
+    if (type === ItemsEnum.ArmorOfOlympus) {
+      return new ResourceValue(ItemsEnum.ArmorOfOlympus, amount);
     }
 
     //equippables

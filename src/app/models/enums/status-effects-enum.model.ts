@@ -248,5 +248,6 @@ export enum StatusEffectEnum {
     AgonizingToxin,
     RandomPrimaryStatDownExcludeHpAvoidDuplicate,
     Break,
-    SwordOfOlympus
+    SwordOfOlympus,
+    ArmorOfOlympus
   }

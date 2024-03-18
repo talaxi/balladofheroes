@@ -65,6 +65,15 @@
                         <span *ngIf="isMobile">Stars (Very Hard)</span>
                     </button>
                 </div>
+                <div *ngIf="isTrialAvailable(trialEnum.TrialOfTheStarsUltimate)">
+                    <span class="zoneSpacer">&#8618;</span><button
+                        class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading defaultBallad"
+                        [ngClass]="getTrialClass(trialEnum.TrialOfTheStarsUltimate)"
+                        (click)="selectTrial(trialEnum.TrialOfTheStarsUltimate)">
+                        <span *ngIf="!isMobile">Trial of the Stars (Ultimate)</span>
+                        <span *ngIf="isMobile">Stars (Ultimate)</span>
+                    </button>
+                </div>
             </div>
         </div>
         <div class="balladList">

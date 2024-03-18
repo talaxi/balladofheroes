@@ -473,5 +473,18 @@ export enum BestiaryEnum {
   DivineCicada,
   DivineCrane,
   RiverCrocodile,
-  RiverFish
+  RiverFish,
+  ThemisUltimate,
+  HardenedScorpionUltimate,
+  ChironUltimate,
+  SeaGoatUltimate,
+  GanymedeUltimate,
+  RainbowScaledFishUltimate,
+  SoaringRamUltimate,
+  GreatBullUltimate,
+  CastorUltimate,
+  PolluxUltimate,
+  GargantuanCrabUltimate,
+  MajesticLionUltimate,
+  AstraeaUltimate
 }

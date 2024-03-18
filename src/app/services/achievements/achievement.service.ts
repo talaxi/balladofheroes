@@ -501,8 +501,7 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.RutileAquamarineFragment, 50));
       else if (subzoneType === SubZoneEnum.StraitsOfMessinaMawOfTheMonster)
         rewards.push(new ResourceValue(ItemsEnum.RutileAmethystFragment, 50));
-
-      //TODO: figure this stuff out. maybe some crafter items and alchemy items
+      
       else if (subzoneType === SubZoneEnum.ReturnToColchisPhasisBeach)
         rewards.push(new ResourceValue(ItemsEnum.SquidInk, 50));
       else if (subzoneType === SubZoneEnum.ReturnToColchisUnderTheStars)

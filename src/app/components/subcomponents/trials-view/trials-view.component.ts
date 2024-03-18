@@ -75,7 +75,7 @@ export class TrialsViewComponent {
       }
 
       var enumValue = propertyValue as TrialEnum;
-      if (enumValue !== TrialEnum.None) { 
+      if (enumValue !== TrialEnum.None) { //TODO:  && enumValue !== TrialEnum.TrialOfTheStarsUltimate 
         Trials.push(enumValue);
       }
     }
@@ -96,7 +96,7 @@ export class TrialsViewComponent {
   }
   isTrialOfTheStars() {
     return this.selectedTrial.type === TrialEnum.TrialOfTheStarsNormal || this.selectedTrial.type === TrialEnum.TrialOfTheStarsHard ||
-      this.selectedTrial.type === TrialEnum.TrialOfTheStarsVeryHard;
+      this.selectedTrial.type === TrialEnum.TrialOfTheStarsVeryHard || this.selectedTrial.type === TrialEnum.TrialOfTheStarsUltimate;
   }
   isTrialOfSkill() {
     return this.selectedTrial.type === TrialEnum.TrialOfSkill;
@@ -104,7 +104,7 @@ export class TrialsViewComponent {
 
   chooseTrial(trial: TrialEnum) {
     this.selectedTrial = this.dictionaryService.getTrialInfoFromType(trial);
-    if (trial === TrialEnum.TrialOfTheStarsNormal || trial === TrialEnum.TrialOfTheStarsHard || trial === TrialEnum.TrialOfTheStarsVeryHard)
+    if (trial === TrialEnum.TrialOfTheStarsNormal || trial === TrialEnum.TrialOfTheStarsHard || trial === TrialEnum.TrialOfTheStarsVeryHard  || trial === TrialEnum.TrialOfTheStarsUltimate)
       this.starsEnemies = this.getTrialOfTheStarsEnemies();
   }
 
@@ -226,12 +226,15 @@ export class TrialsViewComponent {
       }
     }
     else if (type === TrialEnum.TrialOfTheStarsNormal) {
-
+      //todo?
     }
     else if (type === TrialEnum.TrialOfTheStarsHard) {
 
     }
     else if (type === TrialEnum.TrialOfTheStarsVeryHard) {
+
+    }
+    else if (type === TrialEnum.TrialOfTheStarsUltimate) {
 
     }
 
@@ -262,11 +265,21 @@ export class TrialsViewComponent {
 
   getTrialOfResolveReward() {
     var reward = this.trialService.handleTrialOfResolveReward(false);
+
     if (this.globalService.globalVar.sidequestData.trialStage === 30) {
       return "<span class='bold smallCaps aphroditeColor'>Aphrodite</span>";
     }
-    if (this.globalService.globalVar.sidequestData.trialStage === 50) {
+    else if (this.globalService.globalVar.sidequestData.trialStage === 50) {
       return "<span class='bold smallCaps uniqueEquipment'>Sword of Olympus</span>";
+    }
+    else if (this.globalService.globalVar.sidequestData.trialStage === 60) {
+      return "<span class='bold smallCaps uniqueEquipment'>Armor of Olympus</span>";
+    }
+    else if (this.globalService.globalVar.sidequestData.trialStage === 70) {
+      return "<span class='bold smallCaps alchemyText'>+25 Alchemy Max Level</span>";
+    }
+    else if (this.globalService.globalVar.sidequestData.trialStage === 80) {
+      return "<span class='bold smallCaps jewelcraftingText'>+25 Jewelcrafting Level</span>";
     }
     else if (reward === undefined)
       return "";
