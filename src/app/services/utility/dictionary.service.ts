@@ -1045,6 +1045,8 @@ export class DictionaryService {
       name = "Mandrake";
     else if (type === ItemsEnum.ColossalRoot)
       name = "Colossal Root";
+      else if (type === ItemsEnum.MisshapenMetalPiece)
+      name = "Misshapen Metal Piece";
     else if (type === ItemsEnum.UnstableElement)
       name = "Unstable Element";
     else if (type === ItemsEnum.VialOfForeignWaters)

@@ -844,6 +844,7 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
     }        
     if (item === ItemsEnum.MysteryStone) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.MisshapenMetalPiece, 10));
       purchasePrice.push(new ResourceValue(ItemsEnum.PerfectRutilatedAmethyst, 10));
       purchasePrice.push(new ResourceValue(ItemsEnum.PerfectRutilatedAquamarine, 10));
       purchasePrice.push(new ResourceValue(ItemsEnum.PerfectRutilatedEmerald, 10));

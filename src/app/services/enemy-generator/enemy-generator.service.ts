@@ -16845,7 +16845,8 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 8;
       enemy.xpGainFromDefeat = 8300;    
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));            
+      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));    
+      enemy.loot.push(new LootItem(ItemsEnum.MisshapenMetalPiece, ItemTypeEnum.CraftingMaterial, 1, .0125));            
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenDown, -1, .75, false, true, false));
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageOverTimeTakenDown, -1, .75, false, true, false));      
       

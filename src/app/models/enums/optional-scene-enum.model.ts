@@ -22,6 +22,5 @@ export enum OptionalSceneEnum {
   TimeFragmentInTheSwamp,
   CirceAlchemy,
   CirceAlchemy2,
-  CharybdisJewelcrafting,
-  BrokenHuskJewelcrafting
+  CharybdisJewelcrafting
 }

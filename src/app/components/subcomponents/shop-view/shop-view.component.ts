@@ -159,8 +159,7 @@ export class ShopViewComponent implements OnInit {
   circeAlchemyAvailable() {
     var straitsOfMessinaZone = this.balladService.findZone(ZoneEnum.StraitsOfMessina);
     
-    if (straitsOfMessinaZone === undefined || straitsOfMessinaZone.isAvailable === undefined) {
-      console.log("Returning false");
+    if (straitsOfMessinaZone === undefined || straitsOfMessinaZone.isAvailable === undefined) {      
       return false;
     }
 

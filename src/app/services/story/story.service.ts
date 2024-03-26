@@ -1308,11 +1308,11 @@ export class StoryService {
         sceneText = "<div class='sceneDiv'>The waves begin to calm as the great monster falls. For the first time, the mighty whirlpool stills. Near the center, you spy fragments of the sea monster's spikes. You retrieve them and immediately feel their great power.</div>" +
           "<br/><br/><br/><div class='s4Heading bold textCentered sidequestText'>Jewelcrafting Max Level Increase!</div>";
     }
-    if (scene === OptionalSceneEnum.BrokenHuskJewelcrafting) {
+    /*if (scene === OptionalSceneEnum.BrokenHuskJewelcrafting) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>Upon defeat, the husks leave behind an intricate chunk of metal. You retrieve it and instantly have ideas for new jewels to create.</div>" +
           "<br/><br/><br/><div class='s4Heading bold textCentered sidequestText'>Jewelcrafting Max Level Increase!</div>";
-    }
+    }*/
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
     sceneText = sceneText.replaceAll("Zosime", "<span class='archerColor storyCharacterName'>Zosime</span>");
@@ -1403,9 +1403,9 @@ export class StoryService {
     if (this.showOptionalStory === OptionalSceneEnum.CharybdisJewelcrafting) {
       this.pageCount = 1;
     }
-    if (this.showOptionalStory === OptionalSceneEnum.BrokenHuskJewelcrafting) {
+    /*if (this.showOptionalStory === OptionalSceneEnum.BrokenHuskJewelcrafting) {
       this.pageCount = 1;
-    }
+    }*/
     if (this.showOptionalStory === OptionalSceneEnum.CirceAlchemy) {
       this.pageCount = 2;
     }
@@ -1513,7 +1513,7 @@ export class StoryService {
           this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, "Your max Alchemy level has increased by <strong>25</strong> to a total of <strong>" + alchemy.maxLevel + "</strong>.", this.globalService.globalVar);
         }
       }
-      if (this.showOptionalStory === OptionalSceneEnum.BrokenHuskJewelcrafting) {
+      /*if (this.showOptionalStory === OptionalSceneEnum.BrokenHuskJewelcrafting) {
         var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
         if (jewelcrafting !== undefined) {
           jewelcrafting.maxLevel += 25;
@@ -1521,7 +1521,7 @@ export class StoryService {
           var gameLogEntry = "Working with the intricate piece of metal has given you inspiration. Your Jewelcrafting max level increases by <strong>25</strong> to a total of <strong>" + jewelcrafting.maxLevel + "</strong>.";
           this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry, this.globalService.globalVar);
         }
-      }
+      }*/
 
       this.currentPage = 1;
       this.globalService.globalVar.optionalScenesViewed.push(this.showOptionalStory);

@@ -373,7 +373,8 @@ export class LookupService {
       type === ItemsEnum.RutileOpalFragment || type === ItemsEnum.RutileAmethystFragment || type === ItemsEnum.RutileAquamarineFragment ||
       type === ItemsEnum.PerfectRubyFragment || type === ItemsEnum.PerfectEmeraldFragment || type === ItemsEnum.PerfectTopazFragment ||
       type === ItemsEnum.PerfectOpalFragment || type === ItemsEnum.PerfectAmethystFragment || type === ItemsEnum.PerfectAquamarineFragment ||
-      type === ItemsEnum.VialOfForeignWaters || type === ItemsEnum.SquidInk || type === ItemsEnum.SpiderSilk || type === ItemsEnum.ImmortalScales || type === ItemsEnum.MetalCore) {
+      type === ItemsEnum.VialOfForeignWaters || type === ItemsEnum.SquidInk || type === ItemsEnum.SpiderSilk || type === ItemsEnum.ImmortalScales || type === ItemsEnum.MetalCore || 
+      type === ItemsEnum.MisshapenMetalPiece) {
       return ItemTypeEnum.CraftingMaterial;
     }
 
@@ -9163,8 +9164,6 @@ export class LookupService {
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.EarthDamageUp, 16, 1.5 + secondaryEffectivenessBonus * .1, false, true));
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Fire));
       ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Earth));
-
-      console.log(ability);
     }
 
     if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Nemesis)) {
@@ -9224,8 +9223,7 @@ export class LookupService {
       ability.isAoe = false;
       ability.effectiveness = 10 + primaryEffectivenessBonus * 3;
       ability.secondaryEffectiveness = 5 + secondaryEffectivenessBonus * .5;
-      ability.elementalType = ElementalTypeEnum.Air;
-      console.log(ability);
+      ability.elementalType = ElementalTypeEnum.Air;      
     }
 
     if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Hermes)) {

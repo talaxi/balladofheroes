@@ -1155,6 +1155,9 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.Tusk) {
       return new ResourceValue(ItemsEnum.Tusk, amount);
+    }    
+    if (type === ItemsEnum.MisshapenMetalPiece) {
+      return new ResourceValue(ItemsEnum.MisshapenMetalPiece, amount);
     }
     if (type === ItemsEnum.SharpFeather) {
       return new ResourceValue(ItemsEnum.SharpFeather, amount);

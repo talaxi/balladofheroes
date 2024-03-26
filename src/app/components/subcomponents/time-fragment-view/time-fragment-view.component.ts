@@ -90,7 +90,7 @@ export class TimeFragmentViewComponent {
     var starsVeryHard = this.isTrialAvailable(TrialEnum.TrialOfTheStarsVeryHard);
     var starsUltimate = this.isTrialAvailable(TrialEnum.TrialOfTheStarsUltimate);
 
-    return skill || starsNormal || starsHard || starsUltimate;
+    return skill || starsNormal || starsHard || starsVeryHard || starsUltimate;
   }
 
   isTrialAvailable(trial: TrialEnum) {

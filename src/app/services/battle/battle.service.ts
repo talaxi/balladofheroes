@@ -374,10 +374,10 @@ export class BattleService {
       this.storyService.displayOptionalScene(OptionalSceneEnum.CharybdisJewelcrafting);
     }
 
-    if (this.lookupService.getSubZoneCompletionByType(SubZoneEnum.EscapeFromColchisBackAgainstTheWall) &&
+    /*if (this.lookupService.getSubZoneCompletionByType(SubZoneEnum.EscapeFromColchisBackAgainstTheWall) &&
       !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.BrokenHuskJewelcrafting)) {
       this.storyService.displayOptionalScene(OptionalSceneEnum.BrokenHuskJewelcrafting);
-    }
+    }*/
   }
 
   checkScene() {
@@ -4077,7 +4077,6 @@ export class BattleService {
     if (ability.name === "Wild Assault" && target !== undefined && !fromRepeat) {
       var debuffCount = this.getUniqueDebuffsOnCharacter(target);
 
-      console.log("Debuff count: " + debuffCount);
       for (var i = 0; i < debuffCount; i++) {
         ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, undefined, undefined, undefined, undefined, ElementalTypeEnum.Air));
       }
@@ -4477,8 +4476,7 @@ export class BattleService {
     if (insight !== undefined && ability !== undefined) {
       overallDamageMultiplier *= insight.effectiveness;
     }
-
-    console.log("DMG Multi: " + overallDamageMultiplier + " * " + thousandCutsDamageIncrease + " * " + markDamageIncrease + " * " + thyrsusDamageIncrease + " * " + enemySpecificAbilityIncrease + " * " + altarMultiplier + " * " + aoeIncrease + " * " + allyDamageBonus + " = " + (overallDamageMultiplier * thousandCutsDamageIncrease * markDamageIncrease * thyrsusDamageIncrease * enemySpecificAbilityIncrease * altarMultiplier * aoeIncrease + allyDamageBonus));
+    
     return overallDamageMultiplier * thousandCutsDamageIncrease * markDamageIncrease * thyrsusDamageIncrease * enemySpecificAbilityIncrease * altarMultiplier * aoeIncrease * allyDamageBonus;
   }
 
@@ -4951,12 +4949,12 @@ export class BattleService {
       * elementIncrease * elementalDamageDecrease
       * Math.ceil(((adjustedAttackModifier * Math.pow(adjustedAttack, 2)) + (adjustedAllyAttackModifier * Math.pow(adjustedAllyAttack, 2))) / ((adjustedAttackModifier * adjustedAttack) + (adjustedAllyAttackModifier * adjustedAllyAttack) + adjustedDefense)));
 
-    if (ability !== undefined)
+    /*if (ability !== undefined)
       console.log("Ability name: " + ability.name);
     else
       console.log("Auto Attack");
     console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementIncrease
-      + " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttackModifier + " * " + adjustedAttack + " ^2) / (" + adjustedAttackModifier + " * " + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
+      + " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttackModifier + " * " + adjustedAttack + " ^2) / (" + adjustedAttackModifier + " * " + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);*/
     var dispenserOfDuesEffect = attacker.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DispenserOfDues);
     if (dispenserOfDuesEffect !== undefined && ability !== undefined) {
       damage += dispenserOfDuesEffect.effectiveness;
@@ -5673,7 +5671,7 @@ export class BattleService {
     }
 
     //console.log("Pre multi dmg for: " + damage);
-    console.log(damage + " * " + elementIncrease + " * " + elementalDamageDecrease + " * " + bloodlustDamageBonus + " * " + altarIncrease + " * " + statusEffectDamageBonus + " * " + statusEffectDamageReduction);
+    //console.log(damage + " * " + elementIncrease + " * " + elementalDamageDecrease + " * " + bloodlustDamageBonus + " * " + altarIncrease + " * " + statusEffectDamageBonus + " * " + statusEffectDamageReduction);
     var totalDamageDealt = damage * allyDamageBonus * elementIncrease * elementalDamageDecrease * bloodlustDamageBonus * altarIncrease * statusEffectDamageBonus * statusEffectDamageReduction;
 
     //console.log("TDD: " + totalDamageDealt);
