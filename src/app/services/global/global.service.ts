@@ -4014,6 +4014,7 @@ export class GlobalService {
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Flow);
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.InstantHealAfterAutoAttack);
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.AutoAttackDealsElementalDamage);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.MaxHpDown);
 
       var relevantAltarEffect = this.getAltarEffectWithEffect(AltarEffectsEnum.AresMaxHpUp);
       if (relevantAltarEffect !== undefined)

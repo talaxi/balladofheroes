@@ -5801,11 +5801,17 @@ export class LookupService {
     if (ability.name === "Charge") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + ((1 - damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
     }
+    if (ability.name === "Decapacitate") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + ((1 - damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
+    }
     if (ability.name === "Vigilance") {
       abilityDescription = "Increase the user's Luck and Resistance by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Immortality") {
       abilityDescription = "When the user drops below 20% of their Max HP for the first time, they instantly heal back to full, remove all debuffs, and increase all Primary Stats except for max HP by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for the rest of the battle.";
+    }   
+    if (ability.name === "Immortality"  && (character.bestiaryType === BestiaryEnum.GuardianOfTheGrove)) {
+      abilityDescription = "When the user drops below 20% of their Max HP for the first time, they instantly heal back to full and remove all debuffs.";
     }
     if (ability.name === "Claw Strike") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and reduce their Agility by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
