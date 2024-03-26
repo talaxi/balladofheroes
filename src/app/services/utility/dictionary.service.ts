@@ -680,7 +680,19 @@ export class DictionaryService {
     else if (type === ItemsEnum.RutileTopazFragment)
       name = "Rutile Topaz Fragment";
     else if (type === ItemsEnum.RutileRubyFragment)
-      name = "Rutile Ruby Fragment";
+      name = "Rutile Ruby Fragment";    
+      else if (type === ItemsEnum.PerfectAmethystFragment)
+      name = "Perfect Amethyst Fragment";
+    else if (type === ItemsEnum.PerfectOpalFragment)
+      name = "Perfect Opal Fragment";
+    else if (type === ItemsEnum.PerfectAquamarineFragment)
+      name = "Perfect Aquamarine Fragment";
+    else if (type === ItemsEnum.PerfectEmeraldFragment)
+      name = "Perfect Emerald Fragment";
+    else if (type === ItemsEnum.PerfectTopazFragment)
+      name = "Perfect Topaz Fragment";
+    else if (type === ItemsEnum.PerfectRubyFragment)
+      name = "Perfect Ruby Fragment";
     else if (type === ItemsEnum.Narcissus)
       name = "Narcissus";
     else if (type === ItemsEnum.ThickLeather)

@@ -994,6 +994,24 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.RutileAmethystFragment) {
       return new ResourceValue(ItemsEnum.RutileAmethystFragment, amount);
     }
+    if (type === ItemsEnum.PerfectEmeraldFragment) {
+      return new ResourceValue(ItemsEnum.PerfectEmeraldFragment, amount);
+    }
+    if (type === ItemsEnum.PerfectRubyFragment) {
+      return new ResourceValue(ItemsEnum.PerfectRubyFragment, amount);
+    }
+    if (type === ItemsEnum.PerfectOpalFragment) {
+      return new ResourceValue(ItemsEnum.PerfectOpalFragment, amount);
+    }
+    if (type === ItemsEnum.PerfectAquamarineFragment) {
+      return new ResourceValue(ItemsEnum.PerfectAquamarineFragment, amount);
+    }
+    if (type === ItemsEnum.PerfectTopazFragment) {
+      return new ResourceValue(ItemsEnum.PerfectTopazFragment, amount);
+    }
+    if (type === ItemsEnum.PerfectAmethystFragment) {
+      return new ResourceValue(ItemsEnum.PerfectAmethystFragment, amount);
+    }
     if (type === ItemsEnum.PetrifiedBark) {
       return new ResourceValue(ItemsEnum.PetrifiedBark, amount);
     }

@@ -460,6 +460,10 @@ export class AlchemyService {
       upgrades = alchemy.upgrades.find(item => item.quality === EquipmentQualityEnum.Unique);
       qualityName = "Unique";
     }
+    else if (alchemy.level <= 175) {
+      upgrades = alchemy.upgrades.find(item => item.quality === EquipmentQualityEnum.Extraordinary);
+      qualityName = "Extraordinary";
+    }
 
     if (upgrades === undefined)
       return;
@@ -1135,7 +1139,7 @@ export class AlchemyService {
       recipe.expGain = 100;
     }
     
-    if (item === ItemsEnum.Transmutation) {
+    /*if (item === ItemsEnum.Transmutation) {
       recipe.quality = EquipmentQualityEnum.Unique;
       //TODO: something else
       recipe.ingredients.push(new ResourceValue(ItemsEnum.ImmortalScales, 3));
@@ -1146,7 +1150,7 @@ export class AlchemyService {
       recipe.steps.push(ProfessionActionsEnum.RareCrushIngredients);
 
       recipe.expGain = 100;
-    }
+    }*/
 
     if (this.globalService.globalVar.isSubscriber)
       recipe.expGain *= 2;

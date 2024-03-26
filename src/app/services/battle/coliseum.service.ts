@@ -522,7 +522,7 @@ export class ColiseumService {
     }
     else if (round > 10) {
       //enemy.battleStats = new CharacterStats(37630, 530, 1670, 500, 750, 1350);
-      var expectedCharacterStats = new PrimaryStats(2965, 285, 365, 530, 500, 750);
+      var expectedCharacterStats = new PrimaryStats(2965, 285, 365, 530, 500, 500);
 
       var offsetRound = round - 9;
       defensiveGrowthFactor = 1.29;

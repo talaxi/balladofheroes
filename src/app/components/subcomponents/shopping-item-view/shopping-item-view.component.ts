@@ -208,11 +208,11 @@ export class ShoppingItemViewComponent implements OnInit {
             this.globalService.giveCharactersBonusExp(5000);
             this.globalService.globalVar.sidequestData.sparringMatchMultiplier *= 1.1;
           }
-          //TODO: remove this
+          /*
           this.globalService.globalVar.uniques.forEach(item => {
             item.level += 99;
             this.lookupService.levelUpUnique(item);
-          });
+          });*/
         }
         else if (resource.item === ItemsEnum.DarkMoonPendantUniqueUpgrade) {
           for (var i = 0; i < this.buyMultiplier; i++) {

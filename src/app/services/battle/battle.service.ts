@@ -1741,7 +1741,7 @@ export class BattleService {
     var wasDamageCritical: boolean = false;
 
     var keepFlow = false;
-    this.handleConditionalAbilityChanges(abilityCopy, user, party, fromRepeat);
+    this.handleConditionalAbilityChanges(abilityCopy, user, party, fromRepeat, target);
     var ally = party.find(item => item.type !== user.type);
 
     if (abilityCopy.name === "Mark Target" && abilityCopy.userEffect.length > 0 && target !== undefined) {
@@ -2749,6 +2749,27 @@ export class BattleService {
         var dispenserOfDuesEffect = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DispenserOfDues);
         if (dispenserOfDuesEffect !== undefined) {
           dispenserOfDuesEffect.effectiveness += abilityCopy.effectiveness;
+        }
+      }
+    }
+
+    if (abilityCopy.name === "Animal Instincts") {
+      var shapeshift = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Shapeshift);
+      if (shapeshift !== undefined) {
+        if (shapeshift.count === 1) {
+          var strut = this.lookupService.characterHasAbility("Strut", user);
+          if (strut !== undefined)
+            this.useAbility(true, strut, user, targets, party, true, undefined, undefined, false);
+        }
+        if (shapeshift.count === 2) {
+          var espionage = this.lookupService.characterHasAbility("Espionage", user);
+          if (espionage !== undefined)
+            this.useAbility(true, espionage, user, targets, party, true, undefined, undefined, false);
+        }
+        if (shapeshift.count === 3) {
+          var puncture = this.lookupService.characterHasAbility("Puncture", user);
+          if (puncture !== undefined)
+            this.useAbility(true, puncture, user, targets, party, true, undefined, undefined, false);
         }
       }
     }
@@ -4028,7 +4049,7 @@ export class BattleService {
     return options[rng];
   }
 
-  handleConditionalAbilityChanges(ability: Ability, user: Character, party: Character[], fromRepeat: boolean) {
+  handleConditionalAbilityChanges(ability: Ability, user: Character, party: Character[], fromRepeat: boolean, target?: Character) {
     if (ability.name === "Loyal Arbiter" && ability.targetEffect.length > 0) {
       var effectiveness = .55;
       var remainingParty = party.filter(member => !member.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead)).length;
@@ -4051,6 +4072,15 @@ export class BattleService {
 
     if (ability.name === "First Blood" && !this.battle.firstAbilityUsed && ability.targetEffect.length > 0) {
       ability.targetEffect[0].effectiveness *= ability.secondaryEffectiveness;
+    }
+
+    if (ability.name === "Wild Assault" && target !== undefined && !fromRepeat) {
+      var debuffCount = this.getUniqueDebuffsOnCharacter(target);
+
+      console.log("Debuff count: " + debuffCount);
+      for (var i = 0; i < debuffCount; i++) {
+        ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, undefined, undefined, undefined, undefined, ElementalTypeEnum.Air));
+      }
     }
 
     if (ability.name === "Outburst" && (user.type === CharacterEnum.Thaumaturge)) {
@@ -4448,7 +4478,7 @@ export class BattleService {
       overallDamageMultiplier *= insight.effectiveness;
     }
 
-    //console.log("DMG Multi: " + overallDamageMultiplier + " * " + thousandCutsDamageIncrease + " * " + markDamageIncrease + " * " + thyrsusDamageIncrease + " * " + enemySpecificAbilityIncrease + " * " + altarMultiplier + " * " + aoeIncrease + " * " + allyDamageBonus + " = " + (overallDamageMultiplier * thousandCutsDamageIncrease * markDamageIncrease * thyrsusDamageIncrease * enemySpecificAbilityIncrease * altarMultiplier * aoeIncrease + allyDamageBonus));
+    console.log("DMG Multi: " + overallDamageMultiplier + " * " + thousandCutsDamageIncrease + " * " + markDamageIncrease + " * " + thyrsusDamageIncrease + " * " + enemySpecificAbilityIncrease + " * " + altarMultiplier + " * " + aoeIncrease + " * " + allyDamageBonus + " = " + (overallDamageMultiplier * thousandCutsDamageIncrease * markDamageIncrease * thyrsusDamageIncrease * enemySpecificAbilityIncrease * altarMultiplier * aoeIncrease + allyDamageBonus));
     return overallDamageMultiplier * thousandCutsDamageIncrease * markDamageIncrease * thyrsusDamageIncrease * enemySpecificAbilityIncrease * altarMultiplier * aoeIncrease * allyDamageBonus;
   }
 
@@ -4921,12 +4951,12 @@ export class BattleService {
       * elementIncrease * elementalDamageDecrease
       * Math.ceil(((adjustedAttackModifier * Math.pow(adjustedAttack, 2)) + (adjustedAllyAttackModifier * Math.pow(adjustedAllyAttack, 2))) / ((adjustedAttackModifier * adjustedAttack) + (adjustedAllyAttackModifier * adjustedAllyAttack) + adjustedDefense)));
 
-    //if (ability !== undefined)
-    //console.log("Ability name: " + ability.name);
-    //else
-    //console.log("Auto Attack");
-    //console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementIncrease
-    //      + " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttackModifier + " * " + adjustedAttack + " ^2) / (" + adjustedAttackModifier + " * " + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
+    if (ability !== undefined)
+      console.log("Ability name: " + ability.name);
+    else
+      console.log("Auto Attack");
+    console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementIncrease
+      + " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttackModifier + " * " + adjustedAttack + " ^2) / (" + adjustedAttackModifier + " * " + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
     var dispenserOfDuesEffect = attacker.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DispenserOfDues);
     if (dispenserOfDuesEffect !== undefined && ability !== undefined) {
       damage += dispenserOfDuesEffect.effectiveness;
@@ -5115,7 +5145,7 @@ export class BattleService {
     }
 
     var armorOfOlympus = attacker.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ArmorOfOlympus);
-    if (armorOfOlympus !== undefined && isCritical) {      
+    if (armorOfOlympus !== undefined && isCritical) {
       if (armorOfOlympus.count > 0 && targets !== undefined) {
         var uniqueEffect = this.globalService.globalVar.uniques.find(item => item.type === ItemsEnum.ArmorOfOlympus);
 
@@ -5643,7 +5673,7 @@ export class BattleService {
     }
 
     //console.log("Pre multi dmg for: " + damage);
-    //console.log(damage + " * " + elementIncrease + " * " + elementalDamageDecrease + " * " + bloodlustDamageBonus + " * " + altarIncrease + " * " + statusEffectDamageBonus + " * " + statusEffectDamageReduction);
+    console.log(damage + " * " + elementIncrease + " * " + elementalDamageDecrease + " * " + bloodlustDamageBonus + " * " + altarIncrease + " * " + statusEffectDamageBonus + " * " + statusEffectDamageReduction);
     var totalDamageDealt = damage * allyDamageBonus * elementIncrease * elementalDamageDecrease * bloodlustDamageBonus * altarIncrease * statusEffectDamageBonus * statusEffectDamageReduction;
 
     //console.log("TDD: " + totalDamageDealt);
@@ -6709,7 +6739,7 @@ export class BattleService {
             this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.QuickView, undefined, undefined, true, subZone), this.globalService.globalVar);
             this.globalService.handleTutorialModal();
           }
-          if (unlockedSubZone.type === SubZoneEnum.PeloposNisosArcadianRoads) {
+          if (unlockedSubZone.type === SubZoneEnum.PeloposNisosArcadianRoads && !this.globalService.globalVar.isSubscriber) {
             this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.GameReview, undefined, undefined, true, subZone), this.globalService.globalVar);
             this.globalService.handleTutorialModal();
           }

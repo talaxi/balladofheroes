@@ -700,27 +700,27 @@ export class CharmService {
   }
 
   getLargeOrnateKantharosValue() {
-    return 100;
+    return 200;
   }
 
   getLargeSilverKantharosValue() {
-    return 100;
+    return 200;
   }
 
   getLargeBuccheroKantharosValue() {
-    return 100;
+    return 200;
   }
 
   getLargeGildedKantharosValue() {
-    return 100;
+    return 200;
   }
 
   getLargeCrackedKantharosValue() {
-    return 500;
+    return 1000;
   }
 
   getLargeBlackKantharosValue() {
-    return 100;
+    return 200;
   }
 
   getPerfectOrnateKantharosValue() {

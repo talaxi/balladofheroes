@@ -612,7 +612,7 @@ export class StoryService {
           "<div class='sceneDiv'>" + this.athenaText("“Leave. As far away from here as you can. I will find you.”") + " She says to you. </div>" +
           "<div>At Athena's command, you race from Mount Olympus as quickly as possible.</div>";
       else if (pageCount === 8)
-        sceneText = "<div><i class='s4Heading'>End of Chapter 1</i></div>"
+        sceneText = "<div><i class='s4Heading'>End of Chapter 1</i></div>";
     }
     else if (storyId === 43) {
       if (pageCount === 1)
@@ -766,6 +766,8 @@ export class StoryService {
       "<div class='sceneDiv'>Circe was conflicted when you told her the news, but kind. She knew that Aeetes overreached and that one day his arrogance would lead to his demise.</div>" + 
       "<div class='sceneDiv'>The Witch accepted the Golden Fleece, another trinket reminding her of past lives. In return, she provides you with more of the magical root Moly.</div>" +
       "<div>You finally had the answer to your problem. It was time to take back the mountain.</div>";        
+      else if (pageCount === 3)
+        sceneText = "<div><i class='s4Heading'>This is the end of current main story content. Check back again in May for more!</i></div>";
     }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
@@ -983,7 +985,7 @@ export class StoryService {
       this.pageCount = 2;
     }
     if (this.globalService.globalVar.currentStoryId === 56) {
-      this.pageCount = 2;
+      this.pageCount = 3; //TODO: after next ballad, set this to 2
     }
 
     this.sceneText = this.getStoryText(this.globalService.globalVar.currentStoryId, this.currentPage);

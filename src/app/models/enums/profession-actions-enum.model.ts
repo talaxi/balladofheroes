@@ -30,4 +30,6 @@ export enum ProfessionActionsEnum {
   ExtraordinaryHeatingMetal,
   ExtraordinaryShapingMetal,
   ExtraordinaryCoolingMetal,
+  UniqueCombiningGems,
+  UniqueCombiningStones,  
 }
