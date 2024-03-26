@@ -14,6 +14,7 @@ export class SubscriberService {
     "100,000 Coins<br/>" + 
     "Two Time Fragments<br/>" + 
     "The necklaces <strong class='specialEquipment'>Dark Moon Pendant</strong> and <strong class='specialEquipment'>Blazing Sun Pendant</strong><br/><br/>" + 
-    "You will automatically gain any future additions to the subscriber benefits.";
+    "You will automatically gain any future additions to the subscriber benefits. <br/><br/>" +
+    "<b><i>It is highly recommend to export a save file from the Settings menu now that you have subscribed. If you ever want to start the game over in the future, selecting 'Reset Game' from the Settings page will let you restart with your Subscriber benefits still active.</i></b>";
   }
 }

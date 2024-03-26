@@ -114,6 +114,9 @@ export class ShopViewComponent implements OnInit {
         this.utilityService.altPressed = false;
       }
     }
+
+    if (this.utilityService.shopBuyMultiplier < 1)
+      this.utilityService.shopBuyMultiplier = 1;
   }
 
   constructor(private subzoneGeneratorService: SubZoneGeneratorService, private balladService: BalladService, public dialog: MatDialog,
@@ -156,8 +159,7 @@ export class ShopViewComponent implements OnInit {
   circeAlchemyAvailable() {
     var straitsOfMessinaZone = this.balladService.findZone(ZoneEnum.StraitsOfMessina);
     
-    if (straitsOfMessinaZone === undefined || straitsOfMessinaZone.isAvailable === undefined) {
-      console.log("Returning false");
+    if (straitsOfMessinaZone === undefined || straitsOfMessinaZone.isAvailable === undefined) {      
       return false;
     }
 

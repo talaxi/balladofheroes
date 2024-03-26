@@ -849,7 +849,7 @@ export class BackgroundService {
         run.clearTime = this.getTimeFragmentClearRate(run);
       }
 
-      if (run.selectedTrial === TrialEnum.TrialOfTheStarsNormal || run.selectedTrial === TrialEnum.TrialOfTheStarsHard || run.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard) {        
+      if (run.selectedTrial === TrialEnum.TrialOfTheStarsNormal || run.selectedTrial === TrialEnum.TrialOfTheStarsHard || run.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard  || run.selectedTrial === TrialEnum.TrialOfTheStarsUltimate) {        
         var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
           item.zodiacType === this.zodiacService.getCurrentZodiac());
 
@@ -941,7 +941,7 @@ export class BackgroundService {
         trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
           item.godType === this.trialService.getGodEnumFromTrialOfSkillBattle());
       }
-      else if (run.selectedTrial === TrialEnum.TrialOfTheStarsNormal || run.selectedTrial === TrialEnum.TrialOfTheStarsHard || run.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard) {
+      else if (run.selectedTrial === TrialEnum.TrialOfTheStarsNormal || run.selectedTrial === TrialEnum.TrialOfTheStarsHard || run.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard || run.selectedTrial === TrialEnum.TrialOfTheStarsUltimate) {
         trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
           item.zodiacType === this.zodiacService.getCurrentZodiac());
       }

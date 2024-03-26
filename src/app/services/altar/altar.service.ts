@@ -410,7 +410,7 @@ export class AltarService {
     }
     if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.ArtemisCriticalDamageUp) {
       altarEffect.duration = altarEffect.totalDuration = 30;
-      altarEffect.effectiveness = 1.05;
+      altarEffect.effectiveness = 1.025;
       altarEffect.stacks = false;
     }
     if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.ArtemisDefenseDebuff) {
@@ -426,7 +426,7 @@ export class AltarService {
     }
     if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.HermesAutoAttackUp) {
       altarEffect.duration = altarEffect.totalDuration = 30;
-      altarEffect.effectiveness = 1.05;
+      altarEffect.effectiveness = 1.04;
       altarEffect.stacks = false;
     }
     if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.HermesAbilityCooldown) {
@@ -483,12 +483,12 @@ export class AltarService {
     }
     if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.ArtemisRareCriticalDamageUp) {
       altarEffect.duration = altarEffect.totalDuration = 60;
-      altarEffect.effectiveness = 1.1;
+      altarEffect.effectiveness = 1.05;
       altarEffect.stacks = false;
     }
     if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.HermesRareAutoAttackUp) {
       altarEffect.duration = altarEffect.totalDuration = 60;
-      altarEffect.effectiveness = 1.1;
+      altarEffect.effectiveness = 1.08;
       altarEffect.stacks = false;
     }
     if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.HermesRareReduceAbilityCooldownOverTime) {
@@ -505,7 +505,7 @@ export class AltarService {
     }
     if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.ApolloRareHpRegenIncrease) {
       altarEffect.duration = altarEffect.totalDuration = 60;
-      altarEffect.effectiveness = 1.1;
+      altarEffect.effectiveness = 1.2;
       altarEffect.stacks = false;
     }
     if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.ApolloRareOstinato) {
@@ -517,7 +517,7 @@ export class AltarService {
     }
     if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.ApolloRareBuffDurationUp) {
       altarEffect.duration = altarEffect.totalDuration = 60;
-      altarEffect.effectiveness = 1.05;
+      altarEffect.effectiveness = 1.04;
       altarEffect.stacks = false;
     }
     if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.AresMaxHpUp) {
@@ -648,7 +648,7 @@ export class AltarService {
     }
     if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.NemesisRareArmorPenetrationUp) {
       altarEffect.duration = altarEffect.totalDuration = 60;
-      altarEffect.effectiveness = 1.02;
+      altarEffect.effectiveness = 1.01;
       altarEffect.stacks = false;
     }
     if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.NemesisRareDuesUp) {
@@ -680,7 +680,7 @@ export class AltarService {
     }
     if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.ZeusRareSurge) {
       altarEffect.duration = altarEffect.totalDuration = 60;
-      altarEffect.effectiveness = 1.05;
+      altarEffect.effectiveness = 1.04;
       altarEffect.tickFrequency = (60 / 4);
       altarEffect.stacks = false;
     }
@@ -717,7 +717,7 @@ export class AltarService {
     }
     if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.PoseidonRareReduceAbilityCooldownAfter) {
       altarEffect.duration = altarEffect.totalDuration = 60;
-      altarEffect.effectiveness = 1.1;
+      altarEffect.effectiveness = 1.08;
       altarEffect.stacks = false;
       altarEffect.effectOnExpiration = true;
     }
@@ -779,13 +779,13 @@ export class AltarService {
     }
     if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.AphroditeRareHealPartyOverTime) {
       altarEffect.duration = altarEffect.totalDuration = 60;
-      altarEffect.effectiveness = 1.025;
+      altarEffect.effectiveness = 1.02;
       altarEffect.tickFrequency = (30 / 4);
       altarEffect.stacks = false;
     }
     if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.AphroditeRareDamageUp) {
       altarEffect.duration = altarEffect.totalDuration = 60;
-      altarEffect.effectiveness = 1.015;
+      altarEffect.effectiveness = 1.01;
       altarEffect.stacks = false;
     }
     if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.AphroditeRarePassionateRhythmOverTime) {

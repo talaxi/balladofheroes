@@ -26,5 +26,10 @@ export enum ProfessionActionsEnum {
   SpecialHeatingMetal,
   SpecialShapingMetal,
   SpecialCoolingMetal,
-  Transmutate
+  Transmutate,
+  ExtraordinaryHeatingMetal,
+  ExtraordinaryShapingMetal,
+  ExtraordinaryCoolingMetal,
+  UniqueCombiningGems,
+  UniqueCombiningStones,  
 }

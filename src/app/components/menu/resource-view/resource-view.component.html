@@ -141,7 +141,7 @@
   </div>
 
   <div *ngIf="resourceTabActive === resourceViewEnum.Progression" class="progression">
-    <div class="smallCharmsSection oneColumn">
+    <div class="oneColumn" [ngClass]="{'thirdSection': perfectCharmResources.length > 0, 'smallCharmsSection': perfectCharmResources.length === 0}">
       <div class="s4Heading centered">
         <span class="sectionHeaderText sectionHeading">Small Charms</span>
       </div>
@@ -159,7 +159,7 @@
         </ng-template>
       </div>
     </div>
-    <div class="largeCharmsSection oneColumn">
+    <div class="oneColumn" [ngClass]="{'thirdSection': perfectCharmResources.length > 0, 'largeCharmsSection': perfectCharmResources.length === 0}">
       <div class="s4Heading centered">
         <span class="sectionHeaderText sectionHeading">Large Charms</span>
       </div>
@@ -168,6 +168,24 @@
         <span customToolTip [contentTemplate]="charmContent" [tooltipDirection]="tooltipDirection"
         [ngClass]="{'webMarginLeft': !isMobile }">
           <strong [ngClass]="lookupService.getEquipmentQualityClass(quality.Rare)">{{dictionaryService.getItemName(charm.item)}}:</strong> {{charm.amount}}
+          <hr />
+        </span>
+        <ng-template #charmContent>
+          <div class="popoverClass">
+            <span [innerHTML]="this.getCharmDescription(charm)"></span>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+    <div class="thirdSection oneColumn" *ngIf="perfectCharmResources.length > 0">
+      <div class="s4Heading centered">
+        <span class="sectionHeaderText sectionHeading">Giant Charms</span>
+      </div>
+      <br />
+      <div *ngFor="let charm of perfectCharmResources; let i = index">
+        <span customToolTip [contentTemplate]="charmContent" [tooltipDirection]="tooltipDirection"
+        [ngClass]="{'webMarginLeft': !isMobile }">
+          <strong [ngClass]="lookupService.getEquipmentQualityClass(quality.Epic)">{{dictionaryService.getItemName(charm.item)}}:</strong> {{charm.amount}}
           <hr />
         </span>
         <ng-template #charmContent>

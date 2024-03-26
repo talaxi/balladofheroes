@@ -178,6 +178,12 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.NecklaceOfStarryNights) {
       return new ResourceValue(ItemsEnum.NecklaceOfStarryNights, amount);
     }
+    if (type === ItemsEnum.ImmortalScaleTarge) {
+      return new ResourceValue(ItemsEnum.ImmortalScaleTarge, amount);
+    }    
+    if (type === ItemsEnum.BlackInkRing) {
+      return new ResourceValue(ItemsEnum.BlackInkRing, amount);
+    }
 
     //rings
     if (type === ItemsEnum.MoltenRing) {
@@ -483,6 +489,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.StingrayTip) {
       return new ResourceValue(ItemsEnum.StingrayTip, amount);
     }
+    if (type === ItemsEnum.DarkShield) {
+      return new ResourceValue(ItemsEnum.DarkShield, amount);
+    }
     if (type === ItemsEnum.ScorpionStingerEpic) {
       return new ResourceValue(ItemsEnum.ScorpionStingerEpic, amount);
     }
@@ -530,6 +539,12 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.DarkMoonPendantUniqueUpgrade) {
       return new ResourceValue(ItemsEnum.DarkMoonPendantUniqueUpgrade, amount);
+    }
+    if (type === ItemsEnum.SwordOfOlympusUpgrade) {
+      return new ResourceValue(ItemsEnum.SwordOfOlympusUpgrade, amount);
+    }
+    if (type === ItemsEnum.ArmorOfOlympusUpgrade) {
+      return new ResourceValue(ItemsEnum.ArmorOfOlympusUpgrade, amount);
     }
     if (type === ItemsEnum.TimeFragment) {
       return new ResourceValue(ItemsEnum.TimeFragment, amount);
@@ -677,6 +692,12 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.AstralRingUnique) {
       return new ResourceValue(ItemsEnum.AstralRingUnique, amount);
+    }
+    if (type === ItemsEnum.SwordOfOlympus) {
+      return new ResourceValue(ItemsEnum.SwordOfOlympus, amount);
+    }
+    if (type === ItemsEnum.ArmorOfOlympus) {
+      return new ResourceValue(ItemsEnum.ArmorOfOlympus, amount);
     }
 
     //equippables
@@ -871,6 +892,18 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.UnstableElement) {
       return new ResourceValue(ItemsEnum.UnstableElement, amount);
     }
+    if (type === ItemsEnum.MetalCore) {
+      return new ResourceValue(ItemsEnum.MetalCore, amount);
+    }
+    if (type === ItemsEnum.ImmortalScales) {
+      return new ResourceValue(ItemsEnum.ImmortalScales, amount);
+    }
+    if (type === ItemsEnum.SpiderSilk) {
+      return new ResourceValue(ItemsEnum.SpiderSilk, amount);
+    }
+    if (type === ItemsEnum.SquidInk) {
+      return new ResourceValue(ItemsEnum.SquidInk, amount);
+    }
     if (type === ItemsEnum.Peony) {
       return new ResourceValue(ItemsEnum.Peony, amount);
     }
@@ -960,6 +993,24 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.RutileAmethystFragment) {
       return new ResourceValue(ItemsEnum.RutileAmethystFragment, amount);
+    }
+    if (type === ItemsEnum.PerfectEmeraldFragment) {
+      return new ResourceValue(ItemsEnum.PerfectEmeraldFragment, amount);
+    }
+    if (type === ItemsEnum.PerfectRubyFragment) {
+      return new ResourceValue(ItemsEnum.PerfectRubyFragment, amount);
+    }
+    if (type === ItemsEnum.PerfectOpalFragment) {
+      return new ResourceValue(ItemsEnum.PerfectOpalFragment, amount);
+    }
+    if (type === ItemsEnum.PerfectAquamarineFragment) {
+      return new ResourceValue(ItemsEnum.PerfectAquamarineFragment, amount);
+    }
+    if (type === ItemsEnum.PerfectTopazFragment) {
+      return new ResourceValue(ItemsEnum.PerfectTopazFragment, amount);
+    }
+    if (type === ItemsEnum.PerfectAmethystFragment) {
+      return new ResourceValue(ItemsEnum.PerfectAmethystFragment, amount);
     }
     if (type === ItemsEnum.PetrifiedBark) {
       return new ResourceValue(ItemsEnum.PetrifiedBark, amount);
@@ -1060,6 +1111,21 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.NecklaceSlotAddition) {
       return new ResourceValue(ItemsEnum.NecklaceSlotAddition, amount);
     }
+    if (type === ItemsEnum.MajorWeaponSlotAddition) {
+      return new ResourceValue(ItemsEnum.MajorWeaponSlotAddition, amount);
+    }
+    if (type === ItemsEnum.MajorArmorSlotAddition) {
+      return new ResourceValue(ItemsEnum.MajorArmorSlotAddition, amount);
+    }
+    if (type === ItemsEnum.MajorRingSlotAddition) {
+      return new ResourceValue(ItemsEnum.MajorRingSlotAddition, amount);
+    }
+    if (type === ItemsEnum.MajorShieldSlotAddition) {
+      return new ResourceValue(ItemsEnum.MajorShieldSlotAddition, amount);
+    }
+    if (type === ItemsEnum.MajorNecklaceSlotAddition) {
+      return new ResourceValue(ItemsEnum.MajorNecklaceSlotAddition, amount);
+    }
     if (type === ItemsEnum.LamiaHeart) {
       return new ResourceValue(ItemsEnum.LamiaHeart, amount);
     }
@@ -1089,6 +1155,9 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.Tusk) {
       return new ResourceValue(ItemsEnum.Tusk, amount);
+    }    
+    if (type === ItemsEnum.MisshapenMetalPiece) {
+      return new ResourceValue(ItemsEnum.MisshapenMetalPiece, amount);
     }
     if (type === ItemsEnum.SharpFeather) {
       return new ResourceValue(ItemsEnum.SharpFeather, amount);

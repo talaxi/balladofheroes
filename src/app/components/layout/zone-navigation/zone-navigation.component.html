@@ -196,19 +196,19 @@
                                 number}}</span></span>
                         <br *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicPower) > 0" />
                         <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicPower) > 0"
-                            class="resource chthonicPowerKeyword" customToolTip
+                            class="resource chthonicPowerKeyword" customToolTip [tooltipDirection]="tooltipDirectionDown"
                             [contentTemplate]="chthonicPowerPopover">Chthonic Power:
                             <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.ChthonicPower) | number
                                 : '1.0-2'}}</span></span>
                         <br *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicFavor) > 0" />
                         <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicFavor) > 0"
-                            class="resource chthonicFavorKeyword" customToolTip
+                            class="resource chthonicFavorKeyword" customToolTip [tooltipDirection]="tooltipDirectionDown"
                             [contentTemplate]="chthonicFavorPopover">Chthonic Favor:
                             <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.ChthonicFavor) | number
                                 : '1.0-2'}}</span></span>
                                 <br *ngIf="lookupService.getResourceAmount(itemsEnum.Ambrosia) > 0" />
                         <span *ngIf="lookupService.getResourceAmount(itemsEnum.Ambrosia) > 0"
-                            class="resource ambrosiaKeyword" customToolTip
+                            class="resource ambrosiaKeyword" customToolTip [tooltipDirection]="tooltipDirectionDown"
                             [contentTemplate]="ambrosiaPopover">Ambrosia:
                             <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.Ambrosia) | number
                                 : '1.0-2'}}</span></span>

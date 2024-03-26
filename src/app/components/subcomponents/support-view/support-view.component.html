@@ -1,7 +1,7 @@
 <div>
     <span class="sectionHeaderText sectionHeading centeredSpan">Supporter</span>
     <br />
-    <div>Thank you for considering supporting Ballad of Heroes!</div>
+    <div>Thank you for considering supporting Ballad of Heroes! As a solo developer, your support means everything to me and helps me to continue making games for you to enjoy.</div>
     <br />
     <div>
         <span *ngIf="isKongregate">
@@ -19,7 +19,7 @@
                 you to counter attack after an enemy attacks, force an
                 enemy to target you, and attack enemies multiple times.</span>
         </div>
-        •Two <span class="bold specialEquipment">Special</span> quality necklaces,
+        •Two <span class="bold specialEquipment smallCaps">Special</span> quality necklaces,
         one focused on offense and the other on
         defense.<br />
         <span><i>*These gods and necklaces are eventually obtainable with in game resources and if you have already
@@ -30,9 +30,13 @@
         <br />
         •Increased buff duration when defeating gods in Trials.
         <br />
-        •Two <b class="smallCaps">Time Fragments</b> that allow you to automate XP/Item gain. Also gain increased rewards from <b class="smallCaps">Time Fragments</b>.
+        •Two <b class="smallCaps">Time Fragments</b> that allow you to automate XP/Item gain. Also increase <b class="smallCaps">Time Fragment</b> efficiency by 10%.
         <br />
-        •<b class="smallCaps">100,000 <span class='coinKeyword'>Coins</span></b>
+        •Double Alchemy/Jewelcrafting exp gain from crafting.
+        <br />
+        •Reduced <span class='bold ambrosiaKeyword smallCaps'>ambrosia</span> cost for <span class=' smallCaps bold uniqueEquipment'>unique</span> item upgrades.
+        <br />    
+        •<b class="smallCaps">100,000 <span class='coinKeyword smallCaps'>coins</span></b>
     </div>
     <br />
     <div *ngIf="!isKongregate">
@@ -41,7 +45,6 @@
             <button class="buttonStyled transactionButton largeButtons"
                 onclick="location.href='https://square.link/u/d09fIrid';">Purchase Supporter Benefits</button>
         </div>
-        <br />
         <br />
         <div>
             You can also support the development of this game monthly through Patreon. I will post about my
@@ -70,7 +73,7 @@
         </div>
     </div>
     <div class="smallcaps bold s4Heading accentColor" *ngIf="isKongregate">
-        <i>Currently, this version of the game is not set up to handle Payment or Kreds through Kongregate. To access these benefits, please search for the patreon for Ballad of Heroes to obtain a redemption code. You may also visit the original site (https://talaxi.github.io/balladofheroes/) for a more seamless experience. </i>
+        <i>Currently, this version of the game is not set up to handle Payment or Kreds through Kongregate. To access these benefits, please search for the patreon for Ballad of Heroes to obtain a redemption code. You may also visit the original site (https://talaxi.github.io/balladofheroes/) for a more seamless experience, simply export your data in the Settings tab and import it there. </i>
     </div>
     <hr *ngIf="isMobile" />
     <div class="flex" *ngIf="isMobile">

@@ -522,7 +522,7 @@ export class ColiseumService {
     }
     else if (round > 10) {
       //enemy.battleStats = new CharacterStats(37630, 530, 1670, 500, 750, 1350);
-      var expectedCharacterStats = new PrimaryStats(2965, 285, 365, 530, 500, 750);
+      var expectedCharacterStats = new PrimaryStats(2965, 285, 365, 530, 500, 500);
 
       var offsetRound = round - 9;
       defensiveGrowthFactor = 1.29;
@@ -557,12 +557,12 @@ export class ColiseumService {
           continue;
         }
       }
-      else if (round === 15) {
+      else if (round <= 15) {
         if (this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Boar && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Argo) {
           continue;
         }
       }
-      else if (round === 20) {
+      else if (round <= 20) {
         if (this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Argo && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Labors) {
           continue;
         }

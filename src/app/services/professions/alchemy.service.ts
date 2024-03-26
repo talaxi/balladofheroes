@@ -368,18 +368,54 @@ export class AlchemyService {
         this.updateGameLogWithNewRecipe(ItemsEnum.ElixirOfWill);
       }
     }
-    /*if (alchemy.level >= 125) {
-      if (!this.doesUserHaveRecipe(ItemsEnum.RareToEpicTransmutation)) {
-        this.learnRecipe(ItemsEnum.RareToEpicTransmutation);
-        newRecipeLearned = true;
-        this.updateGameLogWithNewRecipe(ItemsEnum.RareToEpicTransmutation);
-      }
-    }*/
     if (alchemy.level >= 125) {
       if (!this.doesUserHaveRecipe(ItemsEnum.AgonizingToxin)) {
         this.learnRecipe(ItemsEnum.AgonizingToxin);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.AgonizingToxin);
+      }
+    }
+    
+    if (alchemy.level >= 126) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.TempestToxin)) {
+        this.learnRecipe(ItemsEnum.TempestToxin);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.TempestToxin);
+      }
+    }
+    if (alchemy.level >= 130) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.InkPoultice)) {
+        this.learnRecipe(ItemsEnum.InkPoultice);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.InkPoultice);
+      }
+    }
+    if (alchemy.level >= 132) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.BurstingPotion)) {
+        this.learnRecipe(ItemsEnum.BurstingPotion);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.BurstingPotion);
+      }
+    }    
+    if (alchemy.level >= 135) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.MetalElixir)) {
+        this.learnRecipe(ItemsEnum.MetalElixir);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.MetalElixir);
+      }
+    }
+    if (alchemy.level >= 143) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.ElixirOfPower)) {
+        this.learnRecipe(ItemsEnum.ElixirOfPower);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.ElixirOfPower);
+      }
+    }
+    if (alchemy.level >= 150) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.Transmutation)) {
+        this.learnRecipe(ItemsEnum.Transmutation);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.Transmutation);
       }
     }
 
@@ -420,6 +456,14 @@ export class AlchemyService {
       upgrades = alchemy.upgrades.find(item => item.quality === EquipmentQualityEnum.Special);
       qualityName = "Special";
     }
+    else if (alchemy.level <= 150) {
+      upgrades = alchemy.upgrades.find(item => item.quality === EquipmentQualityEnum.Unique);
+      qualityName = "Unique";
+    }
+    else if (alchemy.level <= 175) {
+      upgrades = alchemy.upgrades.find(item => item.quality === EquipmentQualityEnum.Extraordinary);
+      qualityName = "Extraordinary";
+    }
 
     if (upgrades === undefined)
       return;
@@ -430,7 +474,7 @@ export class AlchemyService {
       upgrades.chanceTo2xItem += additionalChanceTo2x;
 
       if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
-        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceTo2x * 100) + "%</strong> chance to make 2x as many items when making " + (qualityName === "Uncommon" || qualityName === "Extraordinary" ? "an" : "a" ) + " " + qualityName + " quality Alchemy recipe.";
+        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceTo2x * 100) + "%</strong> chance to make 2x as many items when making " + (qualityName === "Uncommon" || qualityName === "Epic" || qualityName === "Extraordinary" ? "an" : "a" ) + " " + qualityName + " quality Alchemy recipe.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry, this.globalService.globalVar);
       }
     }
@@ -441,7 +485,7 @@ export class AlchemyService {
       upgrades.durationReduction += additionalDurationReduction;
 
       if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
-        var gameLogEntry = "The time it takes to create " + (qualityName === "Uncommon" || qualityName === "Extraordinary" ? "an" : "a" ) + " " + qualityName + " quality Alchemy Recipe is reduced by <strong>" + (additionalDurationReduction * 100) + "%</strong>.";
+        var gameLogEntry = "The time it takes to create " + (qualityName === "Uncommon" || qualityName === "Epic" || qualityName === "Extraordinary" ? "an" : "a" ) + " " + qualityName + " quality Alchemy Recipe is reduced by <strong>" + (additionalDurationReduction * 100) + "%</strong>.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry, this.globalService.globalVar);
       }
     }
@@ -452,7 +496,7 @@ export class AlchemyService {
       upgrades.chanceToRetainMaterials += additionalChanceToRetainMaterials;
 
       if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
-        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceToRetainMaterials * 100) + "%</strong> chance to retain your ingredients when making " + (qualityName === "Uncommon" || qualityName === "Extraordinary" ? "an" : "a" ) + " " + qualityName + " quality Alchemy recipe.";
+        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceToRetainMaterials * 100) + "%</strong> chance to retain your ingredients when making " + (qualityName === "Uncommon" || qualityName === "Epic" || qualityName === "Extraordinary" ? "an" : "a" ) + " " + qualityName + " quality Alchemy recipe.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry, this.globalService.globalVar);
       }
     }
@@ -461,7 +505,7 @@ export class AlchemyService {
       upgrades.chanceTo5xItem += additionalChanceTo5x;
 
       if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
-        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceTo5x * 100) + "%</strong> chance to make 5x as many items when making " + (qualityName === "Uncommon" || qualityName === "Extraordinary" ? "an" : "a" ) + " " + qualityName + " quality Alchemy recipe.";
+        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceTo5x * 100) + "%</strong> chance to make 5x as many items when making " + (qualityName === "Uncommon" || qualityName === "Epic" || qualityName === "Extraordinary" ? "an" : "a" ) + " " + qualityName + " quality Alchemy recipe.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry, this.globalService.globalVar);
       }
     }
@@ -1094,6 +1138,22 @@ export class AlchemyService {
 
       recipe.expGain = 100;
     }
+    
+    /*if (item === ItemsEnum.Transmutation) {
+      recipe.quality = EquipmentQualityEnum.Unique;
+      //TODO: something else
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.ImmortalScales, 3));
+      //recipe.ingredients.push(new ResourceValue(ItemsEnum.EssenceOfTime, 1)); //something that comes from the last ballad
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.MetalCore, 5));      
+
+      recipe.numberOfSteps = 1;
+      recipe.steps.push(ProfessionActionsEnum.RareCrushIngredients);
+
+      recipe.expGain = 100;
+    }*/
+
+    if (this.globalService.globalVar.isSubscriber)
+      recipe.expGain *= 2;
 
     return recipe;
   }

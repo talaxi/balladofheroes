@@ -41,7 +41,7 @@
             <mat-checkbox class="bold uniqueEquipment" [(ngModel)]="filterUnique" (input)="filterUniqueToggle()">Unique
             </mat-checkbox>
             <br />
-            <mat-checkbox class="bold extraordinaryEquipment" [(ngModel)]="filterExtraordinary"
+            <mat-checkbox class="bold extraordinaryEquipment" [(ngModel)]="filterExtraordinary" *ngIf="prefix !== 'equipment'"
                 (input)="filterExtraordinaryToggle()">Extraordinary
             </mat-checkbox>            
         </div>

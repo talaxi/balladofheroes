@@ -335,6 +335,9 @@ export class BestiaryViewComponent {
     }
     if (this.selectedZodiacDifficulty === "Very Hard") {
       trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfTheStarsVeryHard && item.zodiacType === this.selectedZodiac);
+    }    
+    if (this.selectedZodiacDifficulty === "Ultimate") {
+      trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfTheStarsUltimate && item.zodiacType === this.selectedZodiac);
     }
 
     if (trialType === undefined)
@@ -353,6 +356,9 @@ export class BestiaryViewComponent {
     }
     if (this.selectedZodiacDifficulty === "Very Hard") {
       trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfTheStarsVeryHard && item.zodiacType === this.selectedZodiac);
+    }
+    if (this.selectedZodiacDifficulty === "Ultimate") {
+      trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfTheStarsUltimate && item.zodiacType === this.selectedZodiac);
     }
 
     if (trialType === undefined)
@@ -373,6 +379,9 @@ export class BestiaryViewComponent {
     }
     if (this.selectedZodiacDifficulty === "Very Hard") {
       trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfTheStarsVeryHard && item.zodiacType === this.selectedZodiac);
+    }
+    if (this.selectedZodiacDifficulty === "Ultimate") {
+      trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfTheStarsUltimate && item.zodiacType === this.selectedZodiac);
     }
 
     if (trialType === undefined)
@@ -836,8 +845,7 @@ export class BestiaryViewComponent {
   }
 
   jumpToAchievements() {
-    this.menuService.selectedMenuDisplay = MenuEnum.Achievements;
-    console.log("Selected ballad: " + this.selectedBallad?.type);
+    this.menuService.selectedMenuDisplay = MenuEnum.Achievements;    
     this.menuService.setAchievementPresets(this.selectedBallad, this.selectedZone, this.selectedSubzone);
   }
 

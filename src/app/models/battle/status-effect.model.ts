@@ -54,7 +54,6 @@ export class StatusEffect {
         this.target = TargetEnum.None;
     }
 
-    //todo: terrible idea to maintain this in two places
     makeCopy() {
         var copy = new StatusEffect(this.type);
 

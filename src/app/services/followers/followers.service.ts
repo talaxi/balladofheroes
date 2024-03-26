@@ -483,6 +483,34 @@ export class FollowersService {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RutileRubyFragment, 3));
       }
     }
+    
+    if (type === ZoneEnum.ReturnToColchis) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SquidInk, 3));
+
+      if (rewardLevel >= 2) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RutileAmethystFragment, 4));
+      }
+      if (rewardLevel >= 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SpiderSilk, 3));
+      }
+      if (rewardLevel >= 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ImmortalScales, 3));        
+      }
+    }
+    
+    if (type === ZoneEnum.EscapeFromColchis) {
+      if (rewardLevel === 1)
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MetalCore, 2));
+      else if (rewardLevel === 2) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MetalCore, 4));
+      }
+      else if (rewardLevel === 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MetalCore, 6));
+      }
+      else if (rewardLevel === 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MetalCore, 8));
+      }
+    }
 
     return rewards;
   }

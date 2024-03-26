@@ -4206,6 +4206,9 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.TheLabyrinthLabyrinthCenter) {
       balladEnums.push(BalladEnum.Witch);
     }
+    if (type === SubZoneEnum.StraitsOfMessinaUnavoidablePath) {
+      balladEnums.push(BalladEnum.Eagle);
+    }
 
     return balladEnums;
   }
@@ -4282,6 +4285,12 @@ export class SubZoneGeneratorService {
     }
     if (type === SubZoneEnum.AiaiaFlowerGarden) {
       zoneEnums.push(ZoneEnum.StraitsOfMessina);
+    }
+    if (type === SubZoneEnum.StraitsOfMessinaUnavoidablePath) {
+      zoneEnums.push(ZoneEnum.ReturnToColchis);
+    }
+    if (type === SubZoneEnum.ReturnToColchisReturnToTheGrove) {
+      zoneEnums.push(ZoneEnum.EscapeFromColchis);
     }
 
     return zoneEnums;
@@ -4812,7 +4821,9 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.StraitsOfMessinaIntoTheVortex) {
       subZoneEnums.push(SubZoneEnum.StraitsOfMessinaMawOfTheMonster);
     }
-    //TODO: eventually need to add in unavoidablepath
+    if (type === SubZoneEnum.StraitsOfMessinaUnavoidablePath) {
+      subZoneEnums.push(SubZoneEnum.ReturnToColchisPhasisBeach);
+    }
     if (type === SubZoneEnum.ReturnToColchisPhasisBeach) {
       subZoneEnums.push(SubZoneEnum.ReturnToColchisUnderTheStars);
     }
@@ -4843,7 +4854,7 @@ export class SubZoneGeneratorService {
     return subZoneEnums;
   }
 
-  getShopOptions(subzoneType: SubZoneEnum, sidequestData: SidequestData, returnAllShopOptions: boolean = false, balladList?: Ballad[], optionalScenesViewed?: OptionalSceneEnum[], cloakedStrangerFound: boolean = false, gods?: God[]) {    
+  getShopOptions(subzoneType: SubZoneEnum, sidequestData: SidequestData, returnAllShopOptions: boolean = false, balladList?: Ballad[], optionalScenesViewed?: OptionalSceneEnum[], cloakedStrangerFound: boolean = false, gods?: God[]) {
     var shopOptions: ShopOption[] = [];
     var availableOptionsGeneral: ShopItem[] = [];
     var availableOptionsCrafter: ShopItem[] = [];
@@ -5114,7 +5125,7 @@ export class SubZoneGeneratorService {
     if (sidequestData.circeAlchemyLevel === 0)
       availableOptionsCirceAlchemy.push(this.shopItemGenerator.generateShopItem(ItemsEnum.CirceAlchemy, SubZoneEnum.AiaiaCircesHome));
 
-    if (subzoneType === SubZoneEnum.AiaiaCircesHome  && !returnAllShopOptions) {
+    if (subzoneType === SubZoneEnum.AiaiaCircesHome && !returnAllShopOptions) {
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
       if (availableOptionsCirceAlchemy.length > 0)
         shopOptions.push(new ShopOption(ShopTypeEnum.CirceAlchemy, availableOptionsCirceAlchemy));
@@ -5123,14 +5134,16 @@ export class SubZoneGeneratorService {
     }
 
     //requires X amount of each perfect rutile, +25 jewelcrafting lvl
-    /*availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.MysteryStone, SubZoneEnum.ReturnToColchisParanoidMerchant));
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BlackInkRing, SubZoneEnum.ReturnToColchisParanoidMerchant));
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ImmortalScaleTarge, SubZoneEnum.ReturnToColchisParanoidMerchant));
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.MysteryStone, SubZoneEnum.ReturnToColchisParanoidMerchant));
 
     if (subzoneType === SubZoneEnum.ReturnToColchisParanoidMerchant && !returnAllShopOptions) {
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
       return shopOptions;
-    }*/
+    }
 
-    if (returnAllShopOptions) {      
+    if (returnAllShopOptions) {
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
       if (sidequestData.traderHuntLevel !== undefined && this.findSubzone(SubZoneEnum.NemeaCleonea, balladList)?.isAvailable)
@@ -5257,6 +5270,10 @@ export class SubZoneGeneratorService {
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BlazingSunPendantUniqueUpgrade, SubZoneEnum.MountOlympusOlympus, isPatron));
     if (resources.some(item => item.item === ItemsEnum.DarkMoonPendantUnique))
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DarkMoonPendantUniqueUpgrade, SubZoneEnum.MountOlympusOlympus, isPatron));
+    if (resources.some(item => item.item === ItemsEnum.SwordOfOlympus))
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.SwordOfOlympusUpgrade, SubZoneEnum.MountOlympusOlympus, isPatron));
+    if (resources.some(item => item.item === ItemsEnum.ArmorOfOlympus))
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ArmorOfOlympusUpgrade, SubZoneEnum.MountOlympusOlympus, isPatron));
 
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.TokenOfSupport, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.TokenOfFavor, SubZoneEnum.MountOlympusOlympus));

@@ -660,6 +660,18 @@ export class ShopItemGeneratorService {
       else
         purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 2));
     }
+    if (item === ItemsEnum.SwordOfOlympusUpgrade) {
+      if (isPatron)
+        purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 1));
+      else
+        purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 2));
+    }
+    if (item === ItemsEnum.ArmorOfOlympusUpgrade) {
+      if (isPatron)
+        purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 1));
+      else
+        purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 2));
+    }
     if (item === ItemsEnum.Ambrosia) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Nectar, 10));
     }    
@@ -736,6 +748,9 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
     }
     if (item === ItemsEnum.StingrayTip) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }
+    if (item === ItemsEnum.DarkShield) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
     }
     if (item === ItemsEnum.EssenceOfEarth) {
@@ -829,6 +844,7 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
     }        
     if (item === ItemsEnum.MysteryStone) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.MisshapenMetalPiece, 10));
       purchasePrice.push(new ResourceValue(ItemsEnum.PerfectRutilatedAmethyst, 10));
       purchasePrice.push(new ResourceValue(ItemsEnum.PerfectRutilatedAquamarine, 10));
       purchasePrice.push(new ResourceValue(ItemsEnum.PerfectRutilatedEmerald, 10));
@@ -916,6 +932,16 @@ export class ShopItemGeneratorService {
     }
     if (item === ItemsEnum.NecklaceOfEndlessWaves) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 55000));
+    }
+    if (item === ItemsEnum.ImmortalScaleTarge) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.ImmortalScales, 8));
+      purchasePrice.push(new ResourceValue(ItemsEnum.ThickLeather, 4));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    }
+    if (item === ItemsEnum.BlackInkRing) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.SquidInk, 6));
+      purchasePrice.push(new ResourceValue(ItemsEnum.MetalCore, 8));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
     }
 
     return new ShopItem(item, purchasePrice, originalStore);

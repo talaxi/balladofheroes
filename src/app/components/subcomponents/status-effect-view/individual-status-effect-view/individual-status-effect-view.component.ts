@@ -310,6 +310,12 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.HeroicElixir) {
       src += "heroicElixir.svg";
     }
+    if (effect.type === StatusEffectEnum.Break) {
+      src += "break.svg";
+    }
+    if (effect.type === StatusEffectEnum.SwordOfOlympus) {
+      src += "omega.svg";
+    }
     if (effect.type === StatusEffectEnum.RejuvenatingElixir) {
       src += "rejuvenatingElixir.svg";
     }
@@ -423,6 +429,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     }
     if (effect.type === StatusEffectEnum.ChainsOfFate) {
       src += "chainsOfFate.svg";
+    }
+    if (effect.type === StatusEffectEnum.ArmorOfOlympus) {
+      src += "alpha.svg";
     }
     if (effect.type === StatusEffectEnum.Retribution || effect.type === StatusEffectEnum.DivineRetribution) {
       src += "retribution.svg";
