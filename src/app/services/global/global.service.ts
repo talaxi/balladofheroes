@@ -4651,9 +4651,9 @@ export class GlobalService {
 
       this.checkForFirstTimeEternalMeleeRewards(previousWeeklyMeleeRoundMax, this.globalVar.sidequestData.highestWeeklyMeleeRound);
 
-      var bonusXpBase = 375;
-      var growthFactor = 1.375;
-      var additive = Math.floor((losingRound - 1) / 5) * 450000;
+      var bonusXpBase = 166;
+      var growthFactor = 1.3875;
+      var additive = Math.floor((losingRound - 1) / 5) * 475000;
 
       var bonusXp = Math.round((bonusXpBase * (growthFactor ** (losingRound - 1))) + (((losingRound - 1) * 5) * bonusXpBase) + additive);
 

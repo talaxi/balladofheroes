@@ -7013,7 +7013,7 @@ export class EnemyGeneratorService {
       enemy.name = "Zeus";
       enemy.battleStats = new CharacterStats(.975, 1.1, 1.175, 1.05, 1.05, .7);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
-      enemy.coinGainFromDefeat = 20;
+      enemy.coinGainFromDefeat = 500;
       enemy.xpGainFromDefeat = 50000;                
       enemy.loot.push(new LootItem(ItemsEnum.ZeussRing, ItemTypeEnum.Equipment, 1, .05));
       enemy.loot.push(new LootItem(ItemsEnum.ZeussArmor, ItemTypeEnum.Equipment, 1, .05));
