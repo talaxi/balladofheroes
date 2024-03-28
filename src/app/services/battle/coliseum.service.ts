@@ -481,7 +481,7 @@ export class ColiseumService {
     return battleOptions;
   }
 
-  generateWeeklyMeleeOptions(round: number) {
+  generateWeeklyMeleeOptions(round: number) {    
     var enemyCount = 3;
     if (round % 5 === 4)
       enemyCount = 4;
@@ -520,8 +520,7 @@ export class ColiseumService {
       expectedCharacterStats.agility *= offensiveGrowthFactor ** (((round - 1) % 5));
       expectedCharacterStats.luck *= offensiveGrowthFactor ** (((round - 1) % 5));
     }
-    else if (round > 10) {
-      //enemy.battleStats = new CharacterStats(37630, 530, 1670, 500, 750, 1350);
+    else if (round > 10 && round <= 30) {      
       var expectedCharacterStats = new PrimaryStats(2965, 285, 365, 530, 500, 500);
 
       var offsetRound = round - 9;
@@ -534,11 +533,24 @@ export class ColiseumService {
       expectedCharacterStats.agility *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 3.5);
       expectedCharacterStats.luck *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 3);
     }
+    else if (round > 30) {            
+      var expectedCharacterStats = new PrimaryStats(3350, 315, 405, 680, 600, 600);
+
+      var offsetRound = round - 9;
+      defensiveGrowthFactor = 1.325;
+      offensiveGrowthFactor = 1.175;
+      expectedCharacterStats.maxHp *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 14);
+      expectedCharacterStats.defense *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 5);
+      expectedCharacterStats.resistance *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 4.5);
+      expectedCharacterStats.attack *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 2.1);
+      expectedCharacterStats.agility *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 5);
+      expectedCharacterStats.luck *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 3);
+    }
 
     //console.log("Searching for: ");
     //console.log("Is Boss: " + isBoss);
     //console.log("Enemy Count: " + enemyCount);
-
+    
     var allRelevantEnemyParties: EnemyTeam[] = [];
     for (const [propertyKey, propertyValue] of Object.entries(SubZoneEnum)) {
       if (!Number.isNaN(Number(propertyKey))) {
