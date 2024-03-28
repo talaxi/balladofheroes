@@ -5839,6 +5839,9 @@ export class BattleService {
     var elementalReduction = 0;
     var elementalIncrease = 0;
 
+    if (target === undefined)
+      return 1;
+    
     var resistanceDown = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.AllElementalResistanceDown)
     if (resistanceDown !== undefined) {
       elementalReduction += resistanceDown.effectiveness;

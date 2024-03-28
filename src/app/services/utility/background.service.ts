@@ -279,7 +279,8 @@ export class BackgroundService {
       if (effect.type === AltarEffectsEnum.HadesRareDealElementalDamage) {
         if (enemies !== undefined) {
           enemies.forEach(member => {
-            this.battleService.dealTrueDamage(true, member, effect.effectiveness, undefined, effect.element);
+            if (member !== undefined)
+              this.battleService.dealTrueDamage(true, member, effect.effectiveness, undefined, effect.element);
           });
         }
       }
@@ -287,7 +288,8 @@ export class BackgroundService {
       if (effect.type === AltarEffectsEnum.NemesisDealDamage) {
         if (enemies !== undefined) {
           var target = this.lookupService.getRandomPartyMember(enemies);
-          this.battleService.dealTrueDamage(true, target, effect.effectiveness);
+          if (target !== undefined)
+            this.battleService.dealTrueDamage(true, target, effect.effectiveness);
         }
       }
 
@@ -453,7 +455,8 @@ export class BackgroundService {
 
       if (enemies !== undefined) {
         enemies.forEach(member => {
-          this.battleService.dealTrueDamage(true, member, totalHp);
+          if (member !== undefined)
+            this.battleService.dealTrueDamage(true, member, totalHp);
         });
       }
     }
@@ -549,7 +552,8 @@ export class BackgroundService {
         var damage = totalAttack * effect.effectiveness;
 
         var target = this.lookupService.getRandomPartyMember(enemies);
-        this.battleService.dealTrueDamage(true, target, damage, undefined, ElementalTypeEnum.Water);
+        if (target !== undefined)
+          this.battleService.dealTrueDamage(true, target, damage, undefined, ElementalTypeEnum.Water);
       }
     }
 
@@ -591,7 +595,8 @@ export class BackgroundService {
         var damage = totalAttack * effect.effectiveness;
 
         enemies.forEach(enemy => {
-          this.battleService.dealTrueDamage(true, enemy, damage);
+          if (enemy !== undefined)
+            this.battleService.dealTrueDamage(true, enemy, damage);
         });
       }
     }
@@ -845,11 +850,11 @@ export class BackgroundService {
 
         if (trialType === undefined || trialType.count === 0)
           return;
-        
+
         run.clearTime = this.getTimeFragmentClearRate(run);
       }
 
-      if (run.selectedTrial === TrialEnum.TrialOfTheStarsNormal || run.selectedTrial === TrialEnum.TrialOfTheStarsHard || run.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard  || run.selectedTrial === TrialEnum.TrialOfTheStarsUltimate) {        
+      if (run.selectedTrial === TrialEnum.TrialOfTheStarsNormal || run.selectedTrial === TrialEnum.TrialOfTheStarsHard || run.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard || run.selectedTrial === TrialEnum.TrialOfTheStarsUltimate) {
         var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
           item.zodiacType === this.zodiacService.getCurrentZodiac());
 
@@ -999,8 +1004,8 @@ export class BackgroundService {
     var xpList: number[] = [];
     var coinList: number[] = [];
     var xpGained = 0;
-    var coinsGained = 0;    
-    var fragmentEfficiency =  this.globalService.globalVar.isSubscriber ? this.utilityService.supporterTimeFragmentEfficiency : this.utilityService.timeFragmentEfficiency;
+    var coinsGained = 0;
+    var fragmentEfficiency = this.globalService.globalVar.isSubscriber ? this.utilityService.supporterTimeFragmentEfficiency : this.utilityService.timeFragmentEfficiency;
 
     if (run.selectedTrial !== undefined) {
       /*var trialType: TrialDefeatCount | undefined;

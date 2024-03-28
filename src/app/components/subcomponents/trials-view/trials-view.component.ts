@@ -75,7 +75,7 @@ export class TrialsViewComponent {
       }
 
       var enumValue = propertyValue as TrialEnum;
-      if (enumValue !== TrialEnum.None && enumValue !== TrialEnum.TrialOfTheStarsUltimate) {
+      if (enumValue !== TrialEnum.None) {
         Trials.push(enumValue);
       }
     }
