@@ -1139,18 +1139,18 @@ export class AlchemyService {
       recipe.expGain = 100;
     }
     
-    /*if (item === ItemsEnum.Transmutation) {
+    if (item === ItemsEnum.Transmutation) {
       recipe.quality = EquipmentQualityEnum.Unique;
-      //TODO: something else
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.ImmortalScales, 3));
-      //recipe.ingredients.push(new ResourceValue(ItemsEnum.EssenceOfTime, 1)); //something that comes from the last ballad
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 3000));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.ImmortalScales, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.InfiniteEssence, 1)); 
       recipe.ingredients.push(new ResourceValue(ItemsEnum.MetalCore, 5));      
 
       recipe.numberOfSteps = 1;
       recipe.steps.push(ProfessionActionsEnum.RareCrushIngredients);
 
       recipe.expGain = 100;
-    }*/
+    }
 
     if (this.globalService.globalVar.isSubscriber)
       recipe.expGain *= 2;

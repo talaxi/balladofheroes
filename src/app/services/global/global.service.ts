@@ -56,7 +56,7 @@ export class GlobalService {
     private deviceDetectorService: DeviceDetectorService, private zodiacService: ZodiacService) { }
 
   getCurrentVersion() {
-    return .85;
+    return 1;
   }
 
   initializeGlobalVariables() {
@@ -4651,9 +4651,9 @@ export class GlobalService {
 
       this.checkForFirstTimeEternalMeleeRewards(previousWeeklyMeleeRoundMax, this.globalVar.sidequestData.highestWeeklyMeleeRound);
 
-      var bonusXpBase = 166;
-      var growthFactor = 1.3875;
-      var additive = Math.floor((losingRound - 1) / 5) * 475000;
+      var bonusXpBase = 50;
+      var growthFactor = 1.375;
+      var additive = Math.floor((losingRound - 1) / 5) * (450000 * (Math.ceil((losingRound - 1) / 20)));
 
       var bonusXp = Math.round((bonusXpBase * (growthFactor ** (losingRound - 1))) + (((losingRound - 1) * 5) * bonusXpBase) + additive);
 
@@ -4709,7 +4709,7 @@ export class GlobalService {
 
   handleEternalMeleeBossRewards(round: number) {
     if (round > 5) {
-      var rng = this.utilityService.getRandomInteger(10, 50);
+      var rng = this.utilityService.getRandomInteger(75, 150);
       var gainedItem = this.getRandomBasicMaterial();
 
       this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalVar);
@@ -4717,7 +4717,7 @@ export class GlobalService {
     }
 
     if (round > 10) {
-      var rng = this.utilityService.getRandomInteger(30, 70);
+      var rng = this.utilityService.getRandomInteger(150, 250);
       var gainedItem = this.getRandomGem();
 
       this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalVar);
@@ -4725,7 +4725,7 @@ export class GlobalService {
     }
 
     if (round > 15) {
-      var rng = this.utilityService.getRandomInteger(25, 100);
+      var rng = this.utilityService.getRandomInteger(25, 200);
       var gainedItem = ItemsEnum.MetalScraps;
       this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalVar);
       this.gainResource(new ResourceValue(gainedItem, rng));
@@ -4740,7 +4740,7 @@ export class GlobalService {
     }
 
     if (round > 25) {
-      var rng = this.utilityService.getRandomInteger(30, 70);
+      var rng = this.utilityService.getRandomInteger(75, 150);
       var gainedItem = this.getRandomUncommonMaterial();
 
       this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalVar);
@@ -4748,24 +4748,23 @@ export class GlobalService {
     }
 
     if (round > 30) {
-      var rng = 200;
-      var gainedItem = this.getRandomGem();
-
+      var rng = this.utilityService.getRandomInteger(25, 200);
+      var gainedItem = ItemsEnum.MetalNuggets;
       this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalVar);
       this.gainResource(new ResourceValue(gainedItem, rng));
     }
 
     if (round > 35) {
-      var rng = 100000;
-      var gainedItem = ItemsEnum.Coin;
+      var rng = this.utilityService.getRandomInteger(75, 150);
+      var gainedItem = this.getRandomRareMaterial();
 
       this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalVar);
       this.gainResource(new ResourceValue(gainedItem, rng));
     }
 
     if (round > 40) {
-      var rng = this.utilityService.getRandomInteger(60, 130);
-      var gainedItem = this.getRandomRareMaterial();
+      var rng = this.utilityService.getRandomInteger(150, 250);
+      var gainedItem = this.getRandomRutileFragment();
 
       this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalVar);
       this.gainResource(new ResourceValue(gainedItem, rng));
@@ -4773,21 +4772,47 @@ export class GlobalService {
 
     if (round > 45) {
       var rng = this.utilityService.getRandomInteger(50, 200);
-      var gainedItem = ItemsEnum.MetalNuggets;
+      var gainedItem = ItemsEnum.MetalCore;
+
+      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalVar);
+      this.gainResource(new ResourceValue(gainedItem, rng));
+    }
+
+    if (round > 50) {
+      var rng = this.utilityService.getRandomInteger(75, 150);
+      var gainedItem = this.getRandomEpicMaterial();
+
+      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalVar);
+      this.gainResource(new ResourceValue(gainedItem, rng));
+    }
+
+    if (round > 55) {
+      var rng = this.utilityService.getRandomInteger(150, 250);
+      var gainedItem = this.getRandomPerfectFragment();
 
       this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalVar);
       this.gainResource(new ResourceValue(gainedItem, rng));
     }
 
     //the subtracted number should be the last number
-    var remainingRounds = round - 45;
+    var remainingRounds = round - 55;
 
     while (remainingRounds > 5) {
-      var rng = 250;
-      var gainedItem = this.getRandomRutileFragment();
+      var rng = 500;
+      var gainedItem = this.getRandomPerfectFragment();
 
       this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalVar);
       this.gainResource(new ResourceValue(gainedItem, rng));
+      
+      var gainedItem2 = ItemsEnum.MetalCore;
+
+      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem2) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem2))) + "</strong>.", this.globalVar);
+      this.gainResource(new ResourceValue(gainedItem2, rng));
+
+      var gainedItem3 = ItemsEnum.InfiniteEssence;
+
+      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem3) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem3))) + "</strong>.", this.globalVar);
+      this.gainResource(new ResourceValue(gainedItem3, rng));
 
       remainingRounds -= 5;
     }
@@ -4916,6 +4941,20 @@ export class GlobalService {
     return items[rng];
   }
 
+  getRandomPerfectFragment() {
+    var items: ItemsEnum[] = [];
+    items.push(ItemsEnum.PerfectTopazFragment);
+    items.push(ItemsEnum.PerfectRubyFragment);
+    items.push(ItemsEnum.PerfectOpalFragment);
+    items.push(ItemsEnum.PerfectAmethystFragment);
+    items.push(ItemsEnum.PerfectEmeraldFragment);
+    items.push(ItemsEnum.PerfectAquamarineFragment);
+
+    var rng = this.utilityService.getRandomInteger(0, items.length - 1);
+
+    return items[rng];
+  }
+
   getRandomUncommonMaterial() {
     var items: ItemsEnum[] = [];
     items.push(ItemsEnum.EssenceOfWater);
@@ -4942,6 +4981,18 @@ export class GlobalService {
 
     return items[rng];
   }
+  
+  getRandomEpicMaterial() {
+    var items: ItemsEnum[] = [];   
+    items.push(ItemsEnum.ImmortalScales); 
+    items.push(ItemsEnum.SquidInk);
+    items.push(ItemsEnum.Peony);
+    items.push(ItemsEnum.Mandrake);
+
+    var rng = this.utilityService.getRandomInteger(0, items.length - 1);
+
+    return items[rng];
+  }    
 
   getAbilityCooldown(ability: Ability, character: Character, starting: boolean = false) {
     if (ability.name === "Shapeshift")

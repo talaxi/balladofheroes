@@ -622,5 +622,6 @@ export enum ItemsEnum {
   BlackInkRing,
   ArmorOfOlympus,
   ArmorOfOlympusUpgrade,
-  MisshapenMetalPiece
+  MisshapenMetalPiece,
+  InfiniteEssence
 } 

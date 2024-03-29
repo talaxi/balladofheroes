@@ -221,8 +221,8 @@ export class InitializationService {
     this.initializeBalladOfTheLabyrinth();
     this.initializeBalladOfTheWitch();
     this.initializeBalladOfTheEagle();
-    //this.initializeBalladOfRedemption(); //TODO
-    //this.initializeBalladOfTime(); //TODO
+    this.initializeBalladOfRedemption();
+    this.initializeBalladOfTime(); 
   }
 
   initializeSettings() {
@@ -1425,7 +1425,7 @@ export class InitializationService {
         this.globalService.assignGodAbilityInfo(athena!);
 
         if (j < chthonicResetCount - 1)
-          godLevel = 4000;
+          godLevel = 7500;
         else
           godLevel = 10000;
 
@@ -2200,28 +2200,35 @@ export class InitializationService {
   initializeBalladOfRedemption() {
     var ballad = new Ballad(BalladEnum.Redemption);
     ballad.displayOrder = 11;
-    /*var zone1 = new Zone();
-    zone1.type = ZoneEnum.ReturnToColchis;
-    zone1.zoneName = "Return to Colchis";
-    zone1.subzones.push(new SubZone(SubZoneEnum.ReturnToColchisPhasisBeach));
-    zone1.subzones.push(new SubZone(SubZoneEnum.ReturnToColchisUnderTheStars));
-    zone1.subzones.push(new SubZone(SubZoneEnum.ReturnToColchisParanoidMerchant));
-    zone1.subzones.push(new SubZone(SubZoneEnum.ReturnToColchisColchisOutskirts));
-    zone1.subzones.push(new SubZone(SubZoneEnum.ReturnToColchisColchisStreets));
-    zone1.subzones.push(new SubZone(SubZoneEnum.ReturnToColchisReturnToTheGrove));
+    var zone1 = new Zone();
+    zone1.type = ZoneEnum.OlympusMassif;
+    zone1.zoneName = "Olympus Massif";
+    zone1.subzones.push(new SubZone(SubZoneEnum.OlympusMassifThessalyGrasslands));
+    zone1.subzones.push(new SubZone(SubZoneEnum.OlympusMassifInnerThessalyPathways));
+    zone1.subzones.push(new SubZone(SubZoneEnum.OlympusMassifRoamingThePath));
+    zone1.subzones.push(new SubZone(SubZoneEnum.OlympusMassifLargeOutcroppings));
+    zone1.subzones.push(new SubZone(SubZoneEnum.OlympusMassifMountainBase));    
     zone1.notificationType = zone1.shouldShowSideQuestNotification();
     ballad.zones.push(zone1);
 
     var zone2 = new Zone();
-    zone2.type = ZoneEnum.EscapeFromColchis;
-    zone2.zoneName = "Escape from Colchis";
-    zone2.subzones.push(new SubZone(SubZoneEnum.EscapeFromColchisEscape1));
-    zone2.subzones.push(new SubZone(SubZoneEnum.EscapeFromColchisEscape2));
-    zone2.subzones.push(new SubZone(SubZoneEnum.EscapeFromColchisInnerPath));
-    zone2.subzones.push(new SubZone(SubZoneEnum.EscapeFromColchisBackAgainstTheWall));
-    zone2.subzones.push(new SubZone(SubZoneEnum.EscapeFromColchisBattleAtSea));
+    zone2.type = ZoneEnum.TheAscent;
+    zone2.zoneName = "The Ascent";
+    zone2.subzones.push(new SubZone(SubZoneEnum.TheAscentHarshRise));
+    zone2.subzones.push(new SubZone(SubZoneEnum.TheAscentAbundantGreenery));
+    zone2.subzones.push(new SubZone(SubZoneEnum.TheAscentHigherElevation));
+    zone2.subzones.push(new SubZone(SubZoneEnum.TheAscentFinalAscent));
     zone2.notificationType = zone2.shouldShowSideQuestNotification();
-    ballad.zones.push(zone2);*/
+    ballad.zones.push(zone2);
+    
+    var zone3 = new Zone();
+    zone3.type = ZoneEnum.WarForTheMountainTwo;
+    zone3.zoneName = "War for the Mountain 2";
+    zone3.subzones.push(new SubZone(SubZoneEnum.WarForTheMountainTwoSpoiledCourtyard));
+    zone3.subzones.push(new SubZone(SubZoneEnum.WarForTheMountainTwoGardens));
+    zone3.subzones.push(new SubZone(SubZoneEnum.WarForTheMountainTwoForOlympus));    
+    zone3.notificationType = zone2.shouldShowSideQuestNotification();
+    ballad.zones.push(zone3);
 
     this.globalService.globalVar.ballads.push(ballad);
   }
@@ -2229,28 +2236,29 @@ export class InitializationService {
   initializeBalladOfTime() {
     var ballad = new Ballad(BalladEnum.Time);
     ballad.displayOrder = 12;
-    /*var zone1 = new Zone();
-    zone1.type = ZoneEnum.ReturnToColchis;
-    zone1.zoneName = "Return to Colchis";
-    zone1.subzones.push(new SubZone(SubZoneEnum.ReturnToColchisPhasisBeach));
-    zone1.subzones.push(new SubZone(SubZoneEnum.ReturnToColchisUnderTheStars));
-    zone1.subzones.push(new SubZone(SubZoneEnum.ReturnToColchisParanoidMerchant));
-    zone1.subzones.push(new SubZone(SubZoneEnum.ReturnToColchisColchisOutskirts));
-    zone1.subzones.push(new SubZone(SubZoneEnum.ReturnToColchisColchisStreets));
-    zone1.subzones.push(new SubZone(SubZoneEnum.ReturnToColchisReturnToTheGrove));
+    var zone1 = new Zone();
+    zone1.type = ZoneEnum.Tartarus;
+    zone1.zoneName = "Tartarus";
+    zone1.subzones.push(new SubZone(SubZoneEnum.TartarusWesternPath));
+    zone1.subzones.push(new SubZone(SubZoneEnum.TartarusDesolateFields));
+    zone1.subzones.push(new SubZone(SubZoneEnum.TartarusPlainsOfJudgment));
+    zone1.subzones.push(new SubZone(SubZoneEnum.TartarusWallsOfFire));
+    zone1.subzones.push(new SubZone(SubZoneEnum.TartarusPhlegethonRiver));
+    zone1.subzones.push(new SubZone(SubZoneEnum.TartarusScorchedMeadow));
+    zone1.subzones.push(new SubZone(SubZoneEnum.TartarusUnholyHalls));
+    zone1.subzones.push(new SubZone(SubZoneEnum.TartarusTitanHoldingGrounds));
     zone1.notificationType = zone1.shouldShowSideQuestNotification();
     ballad.zones.push(zone1);
 
     var zone2 = new Zone();
-    zone2.type = ZoneEnum.EscapeFromColchis;
-    zone2.zoneName = "Escape from Colchis";
-    zone2.subzones.push(new SubZone(SubZoneEnum.EscapeFromColchisEscape1));
-    zone2.subzones.push(new SubZone(SubZoneEnum.EscapeFromColchisEscape2));
-    zone2.subzones.push(new SubZone(SubZoneEnum.EscapeFromColchisInnerPath));
-    zone2.subzones.push(new SubZone(SubZoneEnum.EscapeFromColchisBackAgainstTheWall));
-    zone2.subzones.push(new SubZone(SubZoneEnum.EscapeFromColchisBattleAtSea));
+    zone2.type = ZoneEnum.MountOthrys;
+    zone2.zoneName = "Mount Othrys";
+    zone2.subzones.push(new SubZone(SubZoneEnum.MountOthrysCaveOpening));
+    zone2.subzones.push(new SubZone(SubZoneEnum.MountOthrysTightPassage));
+    zone2.subzones.push(new SubZone(SubZoneEnum.MountOthrysFracturedWall));
+    zone2.subzones.push(new SubZone(SubZoneEnum.MountOthrysCavernOfTime));
     zone2.notificationType = zone2.shouldShowSideQuestNotification();
-    ballad.zones.push(zone2);*/
+    ballad.zones.push(zone2);
 
     this.globalService.globalVar.ballads.push(ballad);
   }

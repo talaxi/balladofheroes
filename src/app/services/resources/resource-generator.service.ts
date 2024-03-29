@@ -898,6 +898,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.ImmortalScales) {
       return new ResourceValue(ItemsEnum.ImmortalScales, amount);
     }
+    if (type === ItemsEnum.InfiniteEssence) {
+      return new ResourceValue(ItemsEnum.InfiniteEssence, amount);
+    }
     if (type === ItemsEnum.SpiderSilk) {
       return new ResourceValue(ItemsEnum.SpiderSilk, amount);
     }

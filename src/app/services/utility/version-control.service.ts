@@ -47,7 +47,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.85,0.82, 0.81, 0.8, 0.76, 0.75, 0.71, 0.7, 0.65, 0.64, 0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [1, 0.85, 0.82, 0.81, 0.8, 0.76, 0.75, 0.71, 0.7, 0.65, 0.64, 0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -1941,6 +1941,33 @@ export class VersionControlService {
               phasisBeach.notify = true;
 
               this.achievementService.createDefaultAchievementsForSubzone(phasisBeach.type).forEach(achievement => {
+                this.globalService.globalVar.achievements.push(achievement);
+              });
+            }
+          }
+        }
+        if (version === 1) {          
+          this.initializationService.initializeBalladOfRedemption();
+          this.initializationService.initializeBalladOfTime();
+          var battleAtSeaSubZone = this.balladService.findSubzone(SubZoneEnum.EscapeFromColchisBattleAtSea);
+          if (battleAtSeaSubZone !== undefined && battleAtSeaSubZone.isAvailable && battleAtSeaSubZone.victoryCount > 0) {
+            var redemption = this.balladService.findBallad(BalladEnum.Redemption);
+            var olympusMassif = this.balladService.findZone(ZoneEnum.OlympusMassif);
+            var thessalyGrasslands = this.balladService.findSubzone(SubZoneEnum.OlympusMassifThessalyGrasslands);
+
+            if (redemption !== undefined) {
+              redemption.isAvailable = true;
+              redemption.notify = true;
+            }
+            if (olympusMassif !== undefined) {
+              olympusMassif.isAvailable = true;
+              olympusMassif.notify = true;
+            }
+            if (thessalyGrasslands !== undefined) {
+              thessalyGrasslands.isAvailable = true;
+              thessalyGrasslands.notify = true;
+
+              this.achievementService.createDefaultAchievementsForSubzone(thessalyGrasslands.type).forEach(achievement => {
                 this.globalService.globalVar.achievements.push(achievement);
               });
             }

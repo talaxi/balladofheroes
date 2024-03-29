@@ -332,16 +332,18 @@ export class ColiseumViewComponent implements OnInit {
     var rewardsText = "";
 
     rewardsText = "Enemies will not give XP, Coins, or Items like normal. Instead, you will gain XP and Coins based on how many rounds you complete. The further you progress, the more you will gain. In addition, you will gain an item reward after each boss fight. <br/><br/>" +
-      "Completing Round 5: +10-50 Basic Crafting Materials<br/>" +
-      "Completing Round 10: +30-70 Rough Gem Fragments<br/>" +
-      "Completing Round 15: +25-100 Metal Scraps<br/>" +
+      "Completing Round 5: +75-150 Basic Crafting Materials<br/>" +
+      "Completing Round 10: +150-250 Rough Gem Fragments<br/>" +
+      "Completing Round 15: +25-200 Metal Scraps<br/>" +
       "Completing Round 20: +25-150 Chthonic Favor<br/>" +
-      "Completing Round 25: +30-70 Uncommon Crafting Materials<br/>" +
-      "Completing Round 30: +200 Rough Gem Fragments<br/>" +
-      "Completing Round 35: +100K Coins<br/>" +
-      "Completing Round 40: +30-70 Rare Crafting Materials<br/>" +
-      "Completing Round 45: +25-100 Metal Nuggets<br/>" +
-      "Every successive boss fight: +100 Rutile Gem Fragments<br/><br/>" +
+      "Completing Round 25: +75-150 Uncommon Crafting Materials<br/>" +
+      "Completing Round 30: +50-200 Metal Nuggets<br/>" +
+      "Completing Round 35: +75-150 Rare Crafting Materials<br/>" +
+      "Completing Round 40: +150-250 Rutile Gem Fragments<br/>" +
+      "Completing Round 45: +50-200 Metal Cores<br/>" +
+      "Completing Round 50: +75-150 Epic Crafting Materials<br/>" +
+      "Completing Round 55: +150-250 Perfect Gem Fragments<br/>" +
+      "Every successive boss fight: +500 Perfect Gem Fragments, 500 Metal Cores, and 500 Infinite Dust<br/><br/>" +
       "<b><i>Rewards will continue to be adjusted as future content is added to the game</i></b>"
 
     return rewardsText;

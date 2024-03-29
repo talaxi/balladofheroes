@@ -374,7 +374,7 @@ export class LookupService {
       type === ItemsEnum.PerfectRubyFragment || type === ItemsEnum.PerfectEmeraldFragment || type === ItemsEnum.PerfectTopazFragment ||
       type === ItemsEnum.PerfectOpalFragment || type === ItemsEnum.PerfectAmethystFragment || type === ItemsEnum.PerfectAquamarineFragment ||
       type === ItemsEnum.VialOfForeignWaters || type === ItemsEnum.SquidInk || type === ItemsEnum.SpiderSilk || type === ItemsEnum.ImmortalScales || type === ItemsEnum.MetalCore || 
-      type === ItemsEnum.MisshapenMetalPiece) {
+      type === ItemsEnum.MisshapenMetalPiece || type === ItemsEnum.InfiniteEssence) {
       return ItemTypeEnum.CraftingMaterial;
     }
 

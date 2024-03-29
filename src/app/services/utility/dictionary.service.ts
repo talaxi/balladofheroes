@@ -1057,6 +1057,8 @@ export class DictionaryService {
       name = "Spider Silk";
     else if (type === ItemsEnum.ImmortalScales)
       name = "Immortal Scales";
+      else if (type === ItemsEnum.InfiniteEssence)
+      name = "Infinite Essence";
     else if (type === ItemsEnum.MetalCore)
       name = "Metal Core";
 

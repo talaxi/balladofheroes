@@ -26,5 +26,10 @@ export enum ZoneEnum {
   Aiaia,
   StraitsOfMessina,
   ReturnToColchis,
-  EscapeFromColchis
+  EscapeFromColchis,
+  OlympusMassif,
+  TheAscent,
+  WarForTheMountainTwo,
+  Tartarus,
+  MountOthrys
 }

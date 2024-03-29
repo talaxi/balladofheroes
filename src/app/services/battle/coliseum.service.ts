@@ -520,8 +520,7 @@ export class ColiseumService {
       expectedCharacterStats.agility *= offensiveGrowthFactor ** (((round - 1) % 5));
       expectedCharacterStats.luck *= offensiveGrowthFactor ** (((round - 1) % 5));
     }
-    else if (round > 10) {
-      //enemy.battleStats = new CharacterStats(37630, 530, 1670, 500, 750, 1350);
+    else if (round > 10 && round <= 30) {      
       var expectedCharacterStats = new PrimaryStats(2965, 285, 365, 530, 500, 500);
 
       var offsetRound = round - 9;
@@ -532,6 +531,19 @@ export class ColiseumService {
       expectedCharacterStats.resistance *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 4.5);
       expectedCharacterStats.attack *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 1.8);
       expectedCharacterStats.agility *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 3.5);
+      expectedCharacterStats.luck *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 3);
+    }
+    else if (round > 30) {            
+      var expectedCharacterStats = new PrimaryStats(3350, 315, 405, 680, 600, 600);
+
+      var offsetRound = round - 9;
+      defensiveGrowthFactor = 1.325;
+      offensiveGrowthFactor = 1.175;
+      expectedCharacterStats.maxHp *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 14);
+      expectedCharacterStats.defense *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 5);
+      expectedCharacterStats.resistance *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 4.5);
+      expectedCharacterStats.attack *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 2.1);
+      expectedCharacterStats.agility *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 5);
       expectedCharacterStats.luck *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 3);
     }
 
@@ -588,7 +600,8 @@ export class ColiseumService {
       var battleOptions = this.subZoneGeneratorService.generateBattleOptions(enumValue);
       battleOptions.filter(option => (!isBoss && option.enemyList.length === enemyCount && !option.isBossFight && !option.isDoubleBossFight) ||
         (isBoss && (option.isBossFight || option.isDoubleBossFight))).forEach(option => {
-          allRelevantEnemyParties.push(option);
+          if (!option.enemyList.some(item => item.bestiaryType === BestiaryEnum.Gration || item.bestiaryType === BestiaryEnum.Aristaeus))
+            allRelevantEnemyParties.push(option);
         });
     }
 

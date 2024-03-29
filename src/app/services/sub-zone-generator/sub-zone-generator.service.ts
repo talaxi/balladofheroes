@@ -4850,6 +4850,75 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.EscapeFromColchisInnerPath) {
       subZoneEnums.push(SubZoneEnum.EscapeFromColchisBackAgainstTheWall);
     }
+    if (type === SubZoneEnum.EscapeFromColchisBattleAtSea) {
+      subZoneEnums.push(SubZoneEnum.OlympusMassifThessalyGrasslands);
+    }
+    if (type === SubZoneEnum.OlympusMassifThessalyGrasslands) {
+      subZoneEnums.push(SubZoneEnum.OlympusMassifInnerThessalyPathways);
+    }
+    if (type === SubZoneEnum.OlympusMassifInnerThessalyPathways) {
+      subZoneEnums.push(SubZoneEnum.OlympusMassifRoamingThePath);
+    }
+    if (type === SubZoneEnum.OlympusMassifRoamingThePath) {
+      subZoneEnums.push(SubZoneEnum.OlympusMassifLargeOutcroppings);
+    }
+    if (type === SubZoneEnum.OlympusMassifLargeOutcroppings) {
+      subZoneEnums.push(SubZoneEnum.OlympusMassifMountainBase);
+    }
+    if (type === SubZoneEnum.OlympusMassifMountainBase) {
+      subZoneEnums.push(SubZoneEnum.TheAscentHarshRise);
+    }
+    if (type === SubZoneEnum.TheAscentHarshRise) {
+      subZoneEnums.push(SubZoneEnum.TheAscentAbundantGreenery);
+    }
+    if (type === SubZoneEnum.TheAscentAbundantGreenery) {
+      subZoneEnums.push(SubZoneEnum.TheAscentHigherElevation);
+    }
+    if (type === SubZoneEnum.TheAscentHigherElevation) {
+      subZoneEnums.push(SubZoneEnum.TheAscentFinalAscent);
+    }
+    if (type === SubZoneEnum.TheAscentFinalAscent) {
+      subZoneEnums.push(SubZoneEnum.WarForTheMountainTwoSpoiledCourtyard);
+    }
+    if (type === SubZoneEnum.WarForTheMountainTwoSpoiledCourtyard) {
+      subZoneEnums.push(SubZoneEnum.WarForTheMountainTwoGardens);
+    }
+    if (type === SubZoneEnum.WarForTheMountainTwoGardens) {
+      subZoneEnums.push(SubZoneEnum.WarForTheMountainTwoForOlympus);
+    }
+    if (type === SubZoneEnum.WarForTheMountainTwoForOlympus) {
+      subZoneEnums.push(SubZoneEnum.TartarusWesternPath);
+    }
+    if (type === SubZoneEnum.TartarusWesternPath) {
+      subZoneEnums.push(SubZoneEnum.TartarusPlainsOfJudgment);
+    }
+    if (type === SubZoneEnum.TartarusPlainsOfJudgment) {
+      subZoneEnums.push(SubZoneEnum.TartarusWallsOfFire);
+    }
+    if (type === SubZoneEnum.TartarusWallsOfFire) {
+      subZoneEnums.push(SubZoneEnum.TartarusPhlegethonRiver);
+    }
+    if (type === SubZoneEnum.TartarusPhlegethonRiver) {
+      subZoneEnums.push(SubZoneEnum.TartarusScorchedMeadow);
+    }
+    if (type === SubZoneEnum.TartarusScorchedMeadow) {
+      subZoneEnums.push(SubZoneEnum.TartarusUnholyHalls);
+    }
+    if (type === SubZoneEnum.TartarusUnholyHalls) {
+      subZoneEnums.push(SubZoneEnum.TartarusTitanHoldingGrounds);
+    }
+    if (type === SubZoneEnum.TartarusTitanHoldingGrounds) {
+      subZoneEnums.push(SubZoneEnum.MountOthrysCaveOpening);
+    }
+    if (type === SubZoneEnum.MountOthrysCaveOpening) {
+      subZoneEnums.push(SubZoneEnum.MountOthrysTightPassage);
+    }
+    if (type === SubZoneEnum.MountOthrysTightPassage) {
+      subZoneEnums.push(SubZoneEnum.MountOthrysFracturedWall);
+    }
+    if (type === SubZoneEnum.MountOthrysFracturedWall) {
+      subZoneEnums.push(SubZoneEnum.MountOthrysCavernOfTime);
+    }
 
     return subZoneEnums;
   }
