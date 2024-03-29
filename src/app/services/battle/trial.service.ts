@@ -1018,7 +1018,7 @@ export class TrialService {
         this.globalService.gainResource(new ResourceValue(gainedItem, itemCount));
       }
     }
-    if (stage === 50) {
+    else if (stage === 50) {
       var itemCount = 1;
       var gainedItem = ItemsEnum.SwordOfOlympus;
 
@@ -1037,7 +1037,7 @@ export class TrialService {
         this.globalService.gainResource(new ResourceValue(gainedItem, itemCount));
       }
     }
-    if (stage === 60) {
+    else if (stage === 60) {
       var itemCount = 1;
       var gainedItem = ItemsEnum.ArmorOfOlympus;
 
@@ -1050,7 +1050,7 @@ export class TrialService {
         this.globalService.gainResource(new ResourceValue(gainedItem, itemCount));
       }
     }
-    if (stage === 70) {
+    else if (stage === 70) {
       if (includeGameLog) {
         var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
         if (alchemy !== undefined) {
@@ -1061,7 +1061,7 @@ export class TrialService {
         }
       }
     }
-    if (stage === 80) {
+    else if (stage === 80) {
       if (includeGameLog) {
         var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
         if (jewelcrafting !== undefined) {
