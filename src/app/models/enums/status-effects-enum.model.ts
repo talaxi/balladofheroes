@@ -249,5 +249,11 @@ export enum StatusEffectEnum {
     RandomPrimaryStatDownExcludeHpAvoidDuplicate,
     Break,
     SwordOfOlympus,
-    ArmorOfOlympus
+    ArmorOfOlympus,
+    LightToxin,
+    TempestToxin,
+    MetalElixir,
+    ElixirOfPower,
+    RestorativeElixir,
+    CorrosiveToxin
   }

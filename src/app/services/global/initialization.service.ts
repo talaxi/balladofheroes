@@ -682,7 +682,7 @@ export class InitializationService {
     }
 
     this.globalService.globalVar.ballads.forEach(ballad => {
-      //if (ballad.type === BalladEnum.Gorgon || ballad.type === BalladEnum.Champion || ballad.type === BalladEnum.Underworld) {
+      //if (ballad.type !== BalladEnum.Redemption && ballad.type !== BalladEnum.Time) {
       ballad.isAvailable = true;
       ballad.notify = true;
       ballad.zones.forEach(zone => {
@@ -1410,8 +1410,8 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.PendantOfPower);
       }
 
-      var chthonicResetCount = 10;
-      var godLevel = 500;
+      var chthonicResetCount = 1;
+      var godLevel = 2500;
 
       for (var j = 0; j < chthonicResetCount; j++) {
         var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
@@ -1425,9 +1425,9 @@ export class InitializationService {
         this.globalService.assignGodAbilityInfo(athena!);
 
         if (j < chthonicResetCount - 1)
-          godLevel = 7500;
+          godLevel = 2500;
         else
-          godLevel = 10000;
+          godLevel = 2500;
 
         for (var i = 0; i < godLevel; i++) {
           this.globalService.levelUpGod(athena!);
@@ -2204,8 +2204,7 @@ export class InitializationService {
     zone1.type = ZoneEnum.OlympusMassif;
     zone1.zoneName = "Olympus Massif";
     zone1.subzones.push(new SubZone(SubZoneEnum.OlympusMassifThessalyGrasslands));
-    zone1.subzones.push(new SubZone(SubZoneEnum.OlympusMassifInnerThessalyPathways));
-    zone1.subzones.push(new SubZone(SubZoneEnum.OlympusMassifRoamingThePath));
+    zone1.subzones.push(new SubZone(SubZoneEnum.OlympusMassifInnerThessalyPathways));    
     zone1.subzones.push(new SubZone(SubZoneEnum.OlympusMassifLargeOutcroppings));
     zone1.subzones.push(new SubZone(SubZoneEnum.OlympusMassifMountainBase));    
     zone1.notificationType = zone1.shouldShowSideQuestNotification();

@@ -1,7 +1,7 @@
 <div class='container'>
-<div class="gameName" customToolTip [contentTemplate]="versionPopover" [tooltipDirection]="tooltipDirection">
+<div class="gameName">
     <span class="pageHeader gameTitle">Ballad of Heroes</span>
-    <span class="subheader">v{{getVersion()}} beta</span>
+    <span class="subheader">v{{getVersion()}}</span>
 </div>
 <div class="links">
     <div class="rightAlign">            
@@ -17,12 +17,6 @@
                 v{{ this.version }}
             </span>
 -->
-
-<ng-template #versionPopover>
-    <div>
-        This game is still in beta. There may be bugs and everything is subject to change.
-    </div>
-</ng-template>
 
 <ng-template #supporter>
     <app-support-view></app-support-view>

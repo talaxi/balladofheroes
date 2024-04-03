@@ -1011,23 +1011,6 @@ export class BattleService {
       elementalType = this.checkUserForEnElement(character);
     }
 
-    var flamingToxin = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.FlamingToxin);
-    if (flamingToxin !== undefined) {
-      elementalType = ElementalTypeEnum.Fire;
-    }
-    var sandToxin = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.SandToxin);
-    if (sandToxin !== undefined) {
-      elementalType = ElementalTypeEnum.Earth;
-    }
-    var electrifiedToxin = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ElectrifiedToxin);
-    if (electrifiedToxin !== undefined) {
-      elementalType = ElementalTypeEnum.Lightning;
-    }
-    var tidalToxin = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.TidalToxin);
-    if (tidalToxin !== undefined) {
-      elementalType = ElementalTypeEnum.Water;
-    }
-
     var elementalText = "";
     if (elementalType !== ElementalTypeEnum.None) {
       elementalText = this.getElementalDamageText(elementalType);
@@ -1802,6 +1785,31 @@ export class BattleService {
 
     if (elementalType === ElementalTypeEnum.Random) {
       elementalType = this.lookupService.getRandomElement();
+    }
+    
+    var flamingToxin = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.FlamingToxin);
+    if (flamingToxin !== undefined) {
+      elementalType = ElementalTypeEnum.Fire;
+    }
+    var sandToxin = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.SandToxin);
+    if (sandToxin !== undefined) {
+      elementalType = ElementalTypeEnum.Earth;
+    }
+    var electrifiedToxin = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ElectrifiedToxin);
+    if (electrifiedToxin !== undefined) {
+      elementalType = ElementalTypeEnum.Lightning;
+    }
+    var tidalToxin = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.TidalToxin);
+    if (tidalToxin !== undefined) {
+      elementalType = ElementalTypeEnum.Water;
+    }
+    var lightToxin = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.LightToxin);
+    if (lightToxin !== undefined) {
+      elementalType = ElementalTypeEnum.Holy;
+    }
+    var tempestToxin = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.TempestToxin);
+    if (tempestToxin !== undefined) {
+      elementalType = ElementalTypeEnum.Air;
     }
 
     if (user.battleInfo.lastUsedPoseidonAbility && !fromRepeat && (abilityCopy.name === "Crashing Waves" || abilityCopy.name === "Whirlpool" || abilityCopy.name === "Tsunami")) {
@@ -7131,7 +7139,9 @@ export class BattleService {
       this.battleItemInUse === ItemsEnum.FlamingToxin || this.battleItemInUse === ItemsEnum.ParalyzingToxin ||
       this.battleItemInUse === ItemsEnum.SandToxin || this.battleItemInUse === ItemsEnum.ElectrifiedToxin ||
       this.battleItemInUse === ItemsEnum.MagicToxin || this.battleItemInUse === ItemsEnum.TidalToxin ||
-      this.battleItemInUse === ItemsEnum.UnsteadyingToxin || this.battleItemInUse === ItemsEnum.AgonizingToxin) {
+      this.battleItemInUse === ItemsEnum.UnsteadyingToxin || this.battleItemInUse === ItemsEnum.AgonizingToxin ||
+      this.battleItemInUse === ItemsEnum.CorrosiveToxin || this.battleItemInUse === ItemsEnum.TempestToxin ||
+      this.battleItemInUse === ItemsEnum.LightToxin) {
       if (character.battleStats.currentHp <= 0)
         return;
 
@@ -7151,7 +7161,9 @@ export class BattleService {
 
     if (this.battleItemInUse === ItemsEnum.HeroicElixir || this.battleItemInUse === ItemsEnum.RejuvenatingElixir ||
       this.battleItemInUse === ItemsEnum.ElixirOfFortitude || this.battleItemInUse === ItemsEnum.ElixirOfSpeed ||
-      this.battleItemInUse === ItemsEnum.ElixirOfFortune || this.battleItemInUse === ItemsEnum.ElixirOfWill) {
+      this.battleItemInUse === ItemsEnum.ElixirOfFortune || this.battleItemInUse === ItemsEnum.ElixirOfWill || 
+      this.battleItemInUse === ItemsEnum.MetalElixir || this.battleItemInUse === ItemsEnum.RestorativeElixir ||
+      this.battleItemInUse === ItemsEnum.ElixirOfPower) {
       if (character.battleStats.currentHp <= 0)
         return;
 
@@ -7205,6 +7217,15 @@ export class BattleService {
     if (type === ItemsEnum.FlamingToxin) {
       return StatusEffectEnum.FlamingToxin;
     }
+    if (type === ItemsEnum.CorrosiveToxin) {
+      return StatusEffectEnum.CorrosiveToxin;
+    }
+    if (type === ItemsEnum.LightToxin) {
+      return StatusEffectEnum.LightToxin;
+    }
+    if (type === ItemsEnum.TempestToxin) {
+      return StatusEffectEnum.TempestToxin;
+    }
     if (type === ItemsEnum.ParalyzingToxin) {
       return StatusEffectEnum.ParalyzingToxin;
     }
@@ -7222,6 +7243,15 @@ export class BattleService {
     }
     if (type === ItemsEnum.ElixirOfFortune) {
       return StatusEffectEnum.ElixirOfFortune;
+    }
+    if (type === ItemsEnum.ElixirOfPower) {
+      return StatusEffectEnum.ElixirOfPower;
+    }
+    if (type === ItemsEnum.MetalElixir) {
+      return StatusEffectEnum.MetalElixir;
+    }
+    if (type === ItemsEnum.RestorativeElixir) {
+      return StatusEffectEnum.RestorativeElixir;
     }
     if (type === ItemsEnum.MagicToxin) {
       return StatusEffectEnum.MagicToxin;
@@ -7805,6 +7835,16 @@ export class BattleService {
       }
     }
 
+    var corrosiveToxin = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.CorrosiveToxin);
+    if (corrosiveToxin !== undefined) {
+      for (var i = 0; i < totalAttempts; i++) {
+        var rng = this.utilityService.getRandomNumber(0, 1);
+        if (rng <= corrosiveToxin.effectiveness) {
+          this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 16, .8, false, false), target, undefined, user);
+        }
+      }
+    }
+
     var paralyzingToxin = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ParalyzingToxin);
     if (paralyzingToxin !== undefined) {
       for (var i = 0; i < totalAttempts; i++) {
@@ -7910,6 +7950,32 @@ export class BattleService {
       elementalType = ElementalTypeEnum.Air;
     }
 
+    
+    var flamingToxin = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.FlamingToxin);
+    if (flamingToxin !== undefined) {
+      elementalType = ElementalTypeEnum.Fire;
+    }
+    var sandToxin = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.SandToxin);
+    if (sandToxin !== undefined) {
+      elementalType = ElementalTypeEnum.Earth;
+    }
+    var electrifiedToxin = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ElectrifiedToxin);
+    if (electrifiedToxin !== undefined) {
+      elementalType = ElementalTypeEnum.Lightning;
+    }
+    var tidalToxin = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.TidalToxin);
+    if (tidalToxin !== undefined) {
+      elementalType = ElementalTypeEnum.Water;
+    }
+    var tempestToxin = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.TempestToxin);
+    if (tempestToxin !== undefined) {
+      elementalType = ElementalTypeEnum.Air;
+    }
+    var lightToxin = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.LightToxin);
+    if (lightToxin !== undefined) {
+      elementalType = ElementalTypeEnum.Holy;
+    }
+
     if (elementalType === ElementalTypeEnum.None && character.overdriveInfo.isActive && character.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Nature) {
       elementalType = character.overdriveInfo.lastUsedElement;
     }
@@ -7967,7 +8033,8 @@ export class BattleService {
     if (effect === StatusEffectEnum.WitheringToxin || effect === StatusEffectEnum.VenomousToxin || effect === StatusEffectEnum.DebilitatingToxin ||
       effect === StatusEffectEnum.PoisonousToxin || effect === StatusEffectEnum.FlamingToxin || effect === StatusEffectEnum.ParalyzingToxin ||
       effect === StatusEffectEnum.SandToxin || effect === StatusEffectEnum.ElectrifiedToxin || effect === StatusEffectEnum.MagicToxin ||
-      effect === StatusEffectEnum.TidalToxin || effect === StatusEffectEnum.UnsteadyingToxin || effect === StatusEffectEnum.AgonizingToxin)
+      effect === StatusEffectEnum.TidalToxin || effect === StatusEffectEnum.UnsteadyingToxin || effect === StatusEffectEnum.AgonizingToxin ||
+      effect === StatusEffectEnum.CorrosiveToxin || effect === StatusEffectEnum.LightToxin || effect === StatusEffectEnum.TempestToxin)
       return true;
 
     return false;
@@ -7975,7 +8042,8 @@ export class BattleService {
 
   isStatusEffectAnElixir(effect: StatusEffectEnum) {
     if (effect === StatusEffectEnum.ElixirOfFortitude || effect === StatusEffectEnum.HeroicElixir || effect === StatusEffectEnum.RejuvenatingElixir ||
-      effect === StatusEffectEnum.ElixirOfSpeed || effect === StatusEffectEnum.ElixirOfFortune || effect === StatusEffectEnum.ElixirOfWill)
+      effect === StatusEffectEnum.ElixirOfSpeed || effect === StatusEffectEnum.ElixirOfFortune || effect === StatusEffectEnum.ElixirOfWill ||
+      effect === StatusEffectEnum.ElixirOfPower || effect === StatusEffectEnum.MetalElixir || effect === StatusEffectEnum.RestorativeElixir)
       return true;
 
     return false;

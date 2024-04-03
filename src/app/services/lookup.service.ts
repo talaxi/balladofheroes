@@ -344,12 +344,14 @@ export class LookupService {
     if (type === ItemsEnum.PoisonousToxin || type === ItemsEnum.DebilitatingToxin || type === ItemsEnum.WitheringToxin ||
       type === ItemsEnum.VenomousToxin || type === ItemsEnum.ParalyzingToxin || type === ItemsEnum.FlamingToxin ||
       type === ItemsEnum.SandToxin || type === ItemsEnum.ElectrifiedToxin || type === ItemsEnum.MagicToxin ||
-      type === ItemsEnum.TidalToxin || type === ItemsEnum.UnsteadyingToxin || type === ItemsEnum.AgonizingToxin) {
+      type === ItemsEnum.TidalToxin || type === ItemsEnum.UnsteadyingToxin || type === ItemsEnum.AgonizingToxin || 
+      type === ItemsEnum.TempestToxin ||  type === ItemsEnum.LightToxin ||  type === ItemsEnum.CorrosiveToxin) {
       return ItemTypeEnum.Toxin;
     }
 
     if (type === ItemsEnum.HeroicElixir || type === ItemsEnum.RejuvenatingElixir || type === ItemsEnum.ElixirOfFortitude ||
-      type === ItemsEnum.ElixirOfSpeed || type === ItemsEnum.ElixirOfFortune || type === ItemsEnum.ElixirOfWill) {
+      type === ItemsEnum.ElixirOfSpeed || type === ItemsEnum.ElixirOfFortune || type === ItemsEnum.ElixirOfWill || 
+      type === ItemsEnum.MetalElixir || type === ItemsEnum.ElixirOfPower || type === ItemsEnum.RestorativeElixir) {
       return ItemTypeEnum.Elixir;
     }
 
@@ -374,7 +376,7 @@ export class LookupService {
       type === ItemsEnum.PerfectRubyFragment || type === ItemsEnum.PerfectEmeraldFragment || type === ItemsEnum.PerfectTopazFragment ||
       type === ItemsEnum.PerfectOpalFragment || type === ItemsEnum.PerfectAmethystFragment || type === ItemsEnum.PerfectAquamarineFragment ||
       type === ItemsEnum.VialOfForeignWaters || type === ItemsEnum.SquidInk || type === ItemsEnum.SpiderSilk || type === ItemsEnum.ImmortalScales || type === ItemsEnum.MetalCore || 
-      type === ItemsEnum.MisshapenMetalPiece || type === ItemsEnum.InfiniteEssence) {
+      type === ItemsEnum.MisshapenMetalPiece || type === ItemsEnum.InfiniteEssence || type === ItemsEnum.ChimeraFur || type === ItemsEnum.Passionflower || type === ItemsEnum.VialOfTartaranFlames) {
       return ItemTypeEnum.CraftingMaterial;
     }
 
@@ -621,20 +623,26 @@ export class LookupService {
       name = "Apply a toxin to a party member's weapon, giving their auto attacks a 10% chance to deal an additional 265 damage. Lasts for 30 minutes. Only one toxin can be applied per party member at a time. This effect persists on death.";
     else if (type === ItemsEnum.WitheringToxin)
       name = "Apply a toxin to a party member's weapon, giving their auto attacks a 10% chance to reduce a target's Attack by 20% for 16 seconds. Lasts for 30 minutes. Only one toxin can be applied per party member at a time. This effect persists on death.";
+      else if (type === ItemsEnum.CorrosiveToxin)
+      name = "Apply a toxin to a party member's weapon, giving their auto attacks a 10% chance to reduce a target's Defense by 20% for 20 seconds. Lasts for 30 minutes. Only one toxin can be applied per party member at a time. This effect persists on death.";
     else if (type === ItemsEnum.VenomousToxin)
       name = "Apply a toxin to a party member's weapon, giving their auto attacks a 10% chance to deal an additional 982 damage. Lasts for 30 minutes. Only one toxin can be applied per party member at a time. This effect persists on death.";
     else if (type === ItemsEnum.AgonizingToxin)
       name = "Apply a toxin to a party member's weapon, giving their auto attacks a 10% chance to deal an additional " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, 185000) + " damage. Lasts for 30 minutes. Only one toxin can be applied per party member at a time. This effect persists on death.";
     else if (type === ItemsEnum.FlamingToxin)
-      name = "Apply a toxin to a party member's weapon, causing all auto attacks to take on the Fire element. Lasts for 30 minutes. Only one toxin can be applied per party member at a time. This effect persists on death.";
+      name = "Apply a toxin to a party member's weapon, causing all auto attacks and non-elemental abilities to take on the Fire element. Lasts for 30 minutes. Only one toxin can be applied per party member at a time. This effect persists on death.";
+      else if (type === ItemsEnum.TempestToxin)
+      name = "Apply a toxin to a party member's weapon, causing all auto attacks and non-elemental abilities to take on the Air element. Lasts for 30 minutes. Only one toxin can be applied per party member at a time. This effect persists on death.";
+      else if (type === ItemsEnum.LightToxin)
+      name = "Apply a toxin to a party member's weapon, causing all auto attacks and non-elemental abilities to take on the Holy element. Lasts for 30 minutes. Only one toxin can be applied per party member at a time. This effect persists on death.";
     else if (type === ItemsEnum.ParalyzingToxin)
       name = "Apply a toxin to a party member's weapon, giving their auto attacks a 10% chance to Paralyze a target for 20 seconds. Lasts for 30 minutes. Only one toxin can be applied per party member at a time. This effect persists on death.";
     else if (type === ItemsEnum.SandToxin)
-      name = "Apply a toxin to a party member's weapon, causing all auto attacks to take on the Earth element. Lasts for 30 minutes. Only one toxin can be applied per party member at a time. This effect persists on death.";
+      name = "Apply a toxin to a party member's weapon, causing all auto attacks and non-elemental abilities to take on the Earth element. Lasts for 30 minutes. Only one toxin can be applied per party member at a time. This effect persists on death.";
     else if (type === ItemsEnum.ElectrifiedToxin)
-      name = "Apply a toxin to a party member's weapon, causing all auto attacks to take on the Lightning element. Lasts for 30 minutes. Only one toxin can be applied per party member at a time. This effect persists on death.";
+      name = "Apply a toxin to a party member's weapon, causing all auto attacks and non-elemental abilities to take on the Lightning element. Lasts for 30 minutes. Only one toxin can be applied per party member at a time. This effect persists on death.";
     else if (type === ItemsEnum.TidalToxin)
-      name = "Apply a toxin to a party member's weapon, causing all auto attacks to take on the Water element. Lasts for 30 minutes. Only one toxin can be applied per party member at a time. This effect persists on death.";
+      name = "Apply a toxin to a party member's weapon, causing all auto attacks and non-elemental abilities to take on the Water element. Lasts for 30 minutes. Only one toxin can be applied per party member at a time. This effect persists on death.";
     else if (type === ItemsEnum.MagicToxin)
       name = "Apply a toxin to a party member's weapon, giving their auto attacks a 10% chance to instantly gain 20% of the target's XP value. Lasts for 30 minutes. Only one toxin can be applied per party member at a time. This effect persists on death.";
     else if (type === ItemsEnum.UnsteadyingToxin)
@@ -651,6 +659,12 @@ export class LookupService {
       name = "Increase user's Luck by " + relatedUserGainStatusEffectEffectivenessPercent + "% for " + durationInMinutes + " minutes. Only one elixir can be active per party member at a time. This effect persists on death.";
     else if (type === ItemsEnum.ElixirOfWill)
       name = "Increase user's Resistance by " + relatedUserGainStatusEffectEffectivenessPercent + "% for " + durationInMinutes + " minutes. Only one elixir can be active per party member at a time. This effect persists on death.";
+      else if (type === ItemsEnum.ElixirOfPower)
+      name = "Increase user's Attack by " + relatedUserGainStatusEffectEffectivenessPercent + "% for " + durationInMinutes + " minutes. Only one elixir can be active per party member at a time. This effect persists on death.";
+      else if (type === ItemsEnum.MetalElixir)
+      name = "Increase user's Thorns by " + relatedUserGainStatusEffectEffectivenessPercent + "% for " + durationInMinutes + " minutes. Only one elixir can be active per party member at a time. This effect persists on death.";
+      else if (type === ItemsEnum.RestorativeElixir)
+      name = "Increase regen " + relatedUserGainStatusEffectEffectivenessPercent + "% of user's Max HP per 5 seconds for " + durationInMinutes + " minutes. Only one elixir can be active per party member at a time. This effect persists on death.";
     else if (type === ItemsEnum.MagicRevivify)
       name = "Give a KO'd party member 30% of their Max HP.";
     else if (type === ItemsEnum.TokenOfSupport)
@@ -6525,6 +6539,12 @@ export class LookupService {
       description = "Tidal Toxin";
     if (type === StatusEffectEnum.UnsteadyingToxin)
       description = "Unsteadying Toxin";
+      if (type === StatusEffectEnum.TempestToxin)
+      description = "Tempest Toxin";
+      if (type === StatusEffectEnum.LightToxin)
+      description = "Light Toxin";
+      if (type === StatusEffectEnum.CorrosiveToxin)
+      description = "Corrosive Toxin";
 
     if (type === StatusEffectEnum.HeroicElixir)
       description = "Heroic Elixir";
@@ -6538,6 +6558,12 @@ export class LookupService {
       description = "Elixir of Fortune";
     if (type === StatusEffectEnum.ElixirOfWill)
       description = "Elixir of Will";
+      if (type === StatusEffectEnum.ElixirOfPower)
+      description = "Elixir of Power";
+      if (type === StatusEffectEnum.MetalElixir)
+      description = "Metal Elixir";
+      if (type === StatusEffectEnum.RestorativeElixir)
+      description = "Restorative Elixir";
 
     if (type === StatusEffectEnum.LordOfTheUnderworld)
       description = "Lord of the Underworld";
@@ -7022,19 +7048,25 @@ export class LookupService {
     if (statusEffect.type === StatusEffectEnum.AgonizingToxin)
       description = "10% chance on auto attack to deal " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, 185000) + " additional damage.";
     if (statusEffect.type === StatusEffectEnum.FlamingToxin)
-      description = "Auto Attacks have the Fire element.";
+      description = "Auto Attacks and non-elemental Abilities have the Fire element.";
     if (statusEffect.type === StatusEffectEnum.ParalyzingToxin)
       description = "10% chance on auto attack to paralyze target for 20 seconds.";
     if (statusEffect.type === StatusEffectEnum.SandToxin)
-      description = "Auto Attacks have the Earth element.";
+      description = "Auto Attacks and non-elemental Abilities have the Earth element.";
     if (statusEffect.type === StatusEffectEnum.ElectrifiedToxin)
-      description = "Auto Attacks have the Lightning element.";
+      description = "Auto Attacks and non-elemental Abilities have the Lightning element.";
     if (statusEffect.type === StatusEffectEnum.TidalToxin)
-      description = "Auto Attacks have the Water element.";
+      description = "Auto Attacks and non-elemental Abilities have the Water element.";
     if (statusEffect.type === StatusEffectEnum.UnsteadyingToxin)
       description = "Auto Attacks have a 10% chance to Unsteady the enemy by 20% for 15 seconds.";
     if (statusEffect.type === StatusEffectEnum.MagicToxin)
       description = "Auto Attacks have a 10% chance to immediately grant you 20% of the enemy's XP.";
+      if (statusEffect.type === StatusEffectEnum.TempestToxin)
+      description = "Auto Attacks and non-elemental Abilities have the Air element.";
+      if (statusEffect.type === StatusEffectEnum.LightToxin)
+      description = "Auto Attacks and non-elemental Abilities have the Holy element.";
+      if (statusEffect.type === StatusEffectEnum.CorrosiveToxin)
+      description = "10% chance on auto attack to reduce target's Defense by 20% for 16 seconds.";
 
     if (statusEffect.type === StatusEffectEnum.HeroicElixir)
       description = "Increase Max HP by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
@@ -7048,6 +7080,12 @@ export class LookupService {
       description = "Increase Luck by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.ElixirOfWill)
       description = "Increase Resistance by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
+      if (statusEffect.type === StatusEffectEnum.ElixirOfPower)
+      description = "Increase Attack by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
+      if (statusEffect.type === StatusEffectEnum.MetalElixir)
+      description = "Increase Thorns by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
+      if (statusEffect.type === StatusEffectEnum.RestorativeElixir)
+      description = "Increase HP by " + Math.round((statusEffect.effectiveness - 1) * 100) + "% of Max HP every 5 seconds.";
 
     if (statusEffect.type === StatusEffectEnum.LordOfTheUnderworld)
       description = "Increasing Luck and Attack by <strong>" + this.utilityService.roundTo((statusEffect.effectiveness - 1) * 100, 2) + "%</strong>. " + statusEffect.stackCount + " total " + (statusEffect.stackCount === 1 ? "stack" : "stacks") + " worth " + this.utilityService.roundTo(((statusEffect.effectiveness - 1) / statusEffect.stackCount) * 100, 2) + "% each.";
@@ -7858,6 +7896,18 @@ export class LookupService {
     if (item === ItemsEnum.UnsteadyingToxin) {
       itemEffect.dealsDamage = false;
       itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.UnsteadyingToxin, 30 * 60, .1, false, true, undefined, "Unsteadying Toxin"));
+    }    
+    if (item === ItemsEnum.LightToxin) {
+      itemEffect.dealsDamage = false;
+      itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LightToxin, 30 * 60, .1, false, true, undefined, "Light Toxin"));
+    }
+    if (item === ItemsEnum.TempestToxin) {
+      itemEffect.dealsDamage = false;
+      itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.TempestToxin, 30 * 60, .1, false, true, undefined, "Tempest Toxin"));
+    }
+    if (item === ItemsEnum.CorrosiveToxin) {
+      itemEffect.dealsDamage = false;
+      itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.CorrosiveToxin, 30 * 60, .1, false, true, undefined, "Corrosive Toxin"));
     }
     if (item === ItemsEnum.PoisonExtractPotion) {
       itemEffect.dealsDamage = true;
@@ -7887,6 +7937,18 @@ export class LookupService {
     if (item === ItemsEnum.ElixirOfWill) {
       itemEffect.dealsDamage = false;
       itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ElixirOfWill, 30 * 60, 1.1, false, true));
+    }
+    if (item === ItemsEnum.ElixirOfPower) {
+      itemEffect.dealsDamage = false;
+      itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ElixirOfPower, 30 * 60, 1.1, false, true));
+    }
+    if (item === ItemsEnum.MetalElixir) {
+      itemEffect.dealsDamage = false;
+      itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.MetalElixir, 30 * 60, 1.1, false, true));
+    }
+    if (item === ItemsEnum.RestorativeElixir) {
+      itemEffect.dealsDamage = false;
+      itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RestorativeElixir, 30 * 60, 1.1, false, true));
     }
 
     return itemEffect;
@@ -9930,6 +9992,24 @@ export class LookupService {
     }
     if (type === ItemsEnum.WildPotion) {
       src += "wildPotion.svg";
+    }
+    if (type === ItemsEnum.LightToxin) {
+      src += "lightToxin.svg";
+    }
+    if (type === ItemsEnum.TempestToxin) {
+      src += "tempestToxin.svg";
+    }
+    if (type === ItemsEnum.CorrosiveToxin) {
+      src += "corrosiveToxin.svg";
+    }
+    if (type === ItemsEnum.MetalElixir) {
+      src += "metalElixir.svg";
+    }
+    if (type === ItemsEnum.RestorativeElixir) {
+      src += "restorativeElixir.svg";
+    }
+    if (type === ItemsEnum.ElixirOfPower) {
+      src += "elixirOfPower.svg";
     }
 
     return src;

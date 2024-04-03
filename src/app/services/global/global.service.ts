@@ -34,6 +34,7 @@ import { AchievementTypeEnum } from 'src/app/models/enums/achievement-type-enum.
 import { Equipment } from 'src/app/models/resources/equipment.model';
 import { Trial } from 'src/app/models/battle/trial.model';
 import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
+import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { EquipmentSetEnum } from 'src/app/models/enums/equipment-set-enum.model';
 import { EquipmentSet } from 'src/app/models/resources/equipment-set.model';
 import { EffectResolutionEnum } from 'src/app/models/enums/effect-resolution-enum.model';
@@ -1093,7 +1094,9 @@ export class GlobalService {
       type === StatusEffectEnum.ParalyzingToxin || type === StatusEffectEnum.KingOfTheSea || type === StatusEffectEnum.ElixirOfFortune ||
       type === StatusEffectEnum.SandToxin || type === StatusEffectEnum.ElectrifiedToxin || type === StatusEffectEnum.MagicToxin ||
       type === StatusEffectEnum.TidalToxin || type === StatusEffectEnum.UnsteadyingToxin || type === StatusEffectEnum.ElixirOfWill ||
-      type === StatusEffectEnum.AgonizingToxin)
+      type === StatusEffectEnum.AgonizingToxin || type === StatusEffectEnum.CorrosiveToxin || type === StatusEffectEnum.LightToxin ||
+      type === StatusEffectEnum.TempestToxin || type === StatusEffectEnum.ElixirOfPower || type === StatusEffectEnum.MetalElixir ||
+      type === StatusEffectEnum.RestorativeElixir)
       refreshes = true;
 
     return refreshes;
@@ -1108,7 +1111,9 @@ export class GlobalService {
       type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.RejuvenatingElixir || type === StatusEffectEnum.ElixirOfFortune ||
       type === StatusEffectEnum.SandToxin || type === StatusEffectEnum.ElectrifiedToxin || type === StatusEffectEnum.MagicToxin ||
       type === StatusEffectEnum.TidalToxin || type === StatusEffectEnum.UnsteadyingToxin || type === StatusEffectEnum.ElixirOfWill ||
-      type === StatusEffectEnum.AgonizingToxin)
+      type === StatusEffectEnum.AgonizingToxin || type === StatusEffectEnum.CorrosiveToxin || type === StatusEffectEnum.LightToxin ||
+      type === StatusEffectEnum.TempestToxin || type === StatusEffectEnum.ElixirOfPower || type === StatusEffectEnum.MetalElixir ||
+      type === StatusEffectEnum.RestorativeElixir)
       persistsDeath = true;
 
     return persistsDeath;
@@ -1496,117 +1501,117 @@ export class GlobalService {
         character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Coda);
     }
 
-    if (!((character.assignedGod1 === GodEnum.Athena || character.assignedGod1 === GodEnum.Nemesis) && (character.assignedGod2 === GodEnum.Athena || character.assignedGod2 === GodEnum.Nemesis))) {      
+    if (!((character.assignedGod1 === GodEnum.Athena || character.assignedGod1 === GodEnum.Nemesis) && (character.assignedGod2 === GodEnum.Athena || character.assignedGod2 === GodEnum.Nemesis))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DivineRetribution);
     }
-    
-    if (!((character.assignedGod1 === GodEnum.Athena || character.assignedGod1 === GodEnum.Poseidon) && (character.assignedGod2 === GodEnum.Athena || character.assignedGod2 === GodEnum.Poseidon))) {      
+
+    if (!((character.assignedGod1 === GodEnum.Athena || character.assignedGod1 === GodEnum.Poseidon) && (character.assignedGod2 === GodEnum.Athena || character.assignedGod2 === GodEnum.Poseidon))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.ReduceNextAbilityCooldown);
     }
 
-    if (!((character.assignedGod1 === GodEnum.Athena || character.assignedGod1 === GodEnum.Aphrodite) && (character.assignedGod2 === GodEnum.Athena || character.assignedGod2 === GodEnum.Aphrodite))) {      
+    if (!((character.assignedGod1 === GodEnum.Athena || character.assignedGod1 === GodEnum.Aphrodite) && (character.assignedGod2 === GodEnum.Athena || character.assignedGod2 === GodEnum.Aphrodite))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.BlindedByLove);
     }
-    
-    if (!((character.assignedGod1 === GodEnum.Hermes || character.assignedGod1 === GodEnum.Apollo) && (character.assignedGod2 === GodEnum.Hermes || character.assignedGod2 === GodEnum.Apollo))) {      
+
+    if (!((character.assignedGod1 === GodEnum.Hermes || character.assignedGod1 === GodEnum.Apollo) && (character.assignedGod2 === GodEnum.Hermes || character.assignedGod2 === GodEnum.Apollo))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.CleansingShots);
     }
-    
-    if (!((character.assignedGod1 === GodEnum.Hermes || character.assignedGod1 === GodEnum.Ares) && (character.assignedGod2 === GodEnum.Hermes || character.assignedGod2 === GodEnum.Ares))) {      
+
+    if (!((character.assignedGod1 === GodEnum.Hermes || character.assignedGod1 === GodEnum.Ares) && (character.assignedGod2 === GodEnum.Hermes || character.assignedGod2 === GodEnum.Ares))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.BleedingAttacks);
     }
 
-    if (!((character.assignedGod1 === GodEnum.Hermes || character.assignedGod1 === GodEnum.Dionysus) && (character.assignedGod2 === GodEnum.Hermes || character.assignedGod2 === GodEnum.Dionysus))) {      
+    if (!((character.assignedGod1 === GodEnum.Hermes || character.assignedGod1 === GodEnum.Dionysus) && (character.assignedGod2 === GodEnum.Hermes || character.assignedGod2 === GodEnum.Dionysus))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.BleedingAttacks);
     }
-    
-    if (!((character.assignedGod1 === GodEnum.Hermes || character.assignedGod1 === GodEnum.Zeus) && (character.assignedGod2 === GodEnum.Hermes || character.assignedGod2 === GodEnum.Zeus))) {      
+
+    if (!((character.assignedGod1 === GodEnum.Hermes || character.assignedGod1 === GodEnum.Zeus) && (character.assignedGod2 === GodEnum.Hermes || character.assignedGod2 === GodEnum.Zeus))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.LightningAttacks);
     }
-    
-    if (!((character.assignedGod1 === GodEnum.Hermes || character.assignedGod1 === GodEnum.Poseidon) && (character.assignedGod2 === GodEnum.Hermes || character.assignedGod2 === GodEnum.Poseidon))) {      
+
+    if (!((character.assignedGod1 === GodEnum.Hermes || character.assignedGod1 === GodEnum.Poseidon) && (character.assignedGod2 === GodEnum.Hermes || character.assignedGod2 === GodEnum.Poseidon))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.PureSpeed);
     }
-    
-    if (!((character.assignedGod1 === GodEnum.Hermes || character.assignedGod1 === GodEnum.Aphrodite) && (character.assignedGod2 === GodEnum.Hermes || character.assignedGod2 === GodEnum.Aphrodite))) {      
+
+    if (!((character.assignedGod1 === GodEnum.Hermes || character.assignedGod1 === GodEnum.Aphrodite) && (character.assignedGod2 === GodEnum.Hermes || character.assignedGod2 === GodEnum.Aphrodite))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.BetterTogether);
     }
-    
-    if (!((character.assignedGod1 === GodEnum.Hermes || character.assignedGod1 === GodEnum.Hera) && (character.assignedGod2 === GodEnum.Hermes || character.assignedGod2 === GodEnum.Hera))) {      
+
+    if (!((character.assignedGod1 === GodEnum.Hermes || character.assignedGod1 === GodEnum.Hera) && (character.assignedGod2 === GodEnum.Hermes || character.assignedGod2 === GodEnum.Hera))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.WindAttacks);
     }
-    
-    if (!((character.assignedGod1 === GodEnum.Apollo || character.assignedGod1 === GodEnum.Hades) && (character.assignedGod2 === GodEnum.Apollo || character.assignedGod2 === GodEnum.Hades))) {      
+
+    if (!((character.assignedGod1 === GodEnum.Apollo || character.assignedGod1 === GodEnum.Hades) && (character.assignedGod2 === GodEnum.Apollo || character.assignedGod2 === GodEnum.Hades))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DiscordantMelody);
     }
-    
-    if (!((character.assignedGod1 === GodEnum.Apollo || character.assignedGod1 === GodEnum.Nemesis) && (character.assignedGod2 === GodEnum.Apollo || character.assignedGod2 === GodEnum.Nemesis))) {      
+
+    if (!((character.assignedGod1 === GodEnum.Apollo || character.assignedGod1 === GodEnum.Nemesis) && (character.assignedGod2 === GodEnum.Apollo || character.assignedGod2 === GodEnum.Nemesis))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.PassingJudgment);
     }
-    
-    if (!((character.assignedGod1 === GodEnum.Apollo || character.assignedGod1 === GodEnum.Zeus) && (character.assignedGod2 === GodEnum.Apollo || character.assignedGod2 === GodEnum.Zeus))) {      
+
+    if (!((character.assignedGod1 === GodEnum.Apollo || character.assignedGod1 === GodEnum.Zeus) && (character.assignedGod2 === GodEnum.Apollo || character.assignedGod2 === GodEnum.Zeus))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.ThunderousMelody);
     }
-    
-    if (!((character.assignedGod1 === GodEnum.Apollo || character.assignedGod1 === GodEnum.Poseidon) && (character.assignedGod2 === GodEnum.Apollo || character.assignedGod2 === GodEnum.Poseidon))) {      
+
+    if (!((character.assignedGod1 === GodEnum.Apollo || character.assignedGod1 === GodEnum.Poseidon) && (character.assignedGod2 === GodEnum.Apollo || character.assignedGod2 === GodEnum.Poseidon))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Flood);
     }
-    
-    if (!((character.assignedGod1 === GodEnum.Apollo || character.assignedGod1 === GodEnum.Aphrodite) && (character.assignedGod2 === GodEnum.Apollo || character.assignedGod2 === GodEnum.Aphrodite))) {      
+
+    if (!((character.assignedGod1 === GodEnum.Apollo || character.assignedGod1 === GodEnum.Aphrodite) && (character.assignedGod2 === GodEnum.Apollo || character.assignedGod2 === GodEnum.Aphrodite))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.CaringGaze);
     }
-    
-    if (!((character.assignedGod1 === GodEnum.Apollo || character.assignedGod1 === GodEnum.Hera) && (character.assignedGod2 === GodEnum.Apollo || character.assignedGod2 === GodEnum.Hera))) {      
+
+    if (!((character.assignedGod1 === GodEnum.Apollo || character.assignedGod1 === GodEnum.Hera) && (character.assignedGod2 === GodEnum.Apollo || character.assignedGod2 === GodEnum.Hera))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.MelodicMoves);
     }
-    
-    if (!((character.assignedGod1 === GodEnum.Ares || character.assignedGod1 === GodEnum.Nemesis) && (character.assignedGod2 === GodEnum.Ares || character.assignedGod2 === GodEnum.Nemesis))) {      
+
+    if (!((character.assignedGod1 === GodEnum.Ares || character.assignedGod1 === GodEnum.Nemesis) && (character.assignedGod2 === GodEnum.Ares || character.assignedGod2 === GodEnum.Nemesis))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.BlisteringRiposte);
     }
-    
-    if (!((character.assignedGod1 === GodEnum.Ares || character.assignedGod1 === GodEnum.Poseidon) && (character.assignedGod2 === GodEnum.Ares || character.assignedGod2 === GodEnum.Poseidon))) {      
+
+    if (!((character.assignedGod1 === GodEnum.Ares || character.assignedGod1 === GodEnum.Poseidon) && (character.assignedGod2 === GodEnum.Ares || character.assignedGod2 === GodEnum.Poseidon))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RecedingTide);
     }
-    
-    if (!((character.assignedGod1 === GodEnum.Ares || character.assignedGod1 === GodEnum.Aphrodite) && (character.assignedGod2 === GodEnum.Ares || character.assignedGod2 === GodEnum.Aphrodite))) {      
+
+    if (!((character.assignedGod1 === GodEnum.Ares || character.assignedGod1 === GodEnum.Aphrodite) && (character.assignedGod2 === GodEnum.Ares || character.assignedGod2 === GodEnum.Aphrodite))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.WarAndLove);
-    }    
-    
-    if (!((character.assignedGod1 === GodEnum.Dionysus || character.assignedGod1 === GodEnum.Artemis) && (character.assignedGod2 === GodEnum.Dionysus || character.assignedGod2 === GodEnum.Artemis))) {      
+    }
+
+    if (!((character.assignedGod1 === GodEnum.Dionysus || character.assignedGod1 === GodEnum.Artemis) && (character.assignedGod2 === GodEnum.Dionysus || character.assignedGod2 === GodEnum.Artemis))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.AllPrimaryStatsDown);
     }
 
-    if (!((character.assignedGod1 === GodEnum.Hades || character.assignedGod1 === GodEnum.Nemesis) && (character.assignedGod2 === GodEnum.Hades || character.assignedGod2 === GodEnum.Nemesis))) {      
+    if (!((character.assignedGod1 === GodEnum.Hades || character.assignedGod1 === GodEnum.Nemesis) && (character.assignedGod2 === GodEnum.Hades || character.assignedGod2 === GodEnum.Nemesis))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.FieryJudgment);
     }
-    
-    if (!((character.assignedGod1 === GodEnum.Dionysus || character.assignedGod1 === GodEnum.Nemesis) && (character.assignedGod2 === GodEnum.Dionysus || character.assignedGod2 === GodEnum.Nemesis))) {      
+
+    if (!((character.assignedGod1 === GodEnum.Dionysus || character.assignedGod1 === GodEnum.Nemesis) && (character.assignedGod2 === GodEnum.Dionysus || character.assignedGod2 === GodEnum.Nemesis))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.WildJudgment);
     }
-    
-    if (!((character.assignedGod1 === GodEnum.Dionysus || character.assignedGod1 === GodEnum.Aphrodite) && (character.assignedGod2 === GodEnum.Dionysus || character.assignedGod2 === GodEnum.Aphrodite))) {      
+
+    if (!((character.assignedGod1 === GodEnum.Dionysus || character.assignedGod1 === GodEnum.Aphrodite) && (character.assignedGod2 === GodEnum.Dionysus || character.assignedGod2 === GodEnum.Aphrodite))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.WildParty);
     }
-    
-    if (!((character.assignedGod1 === GodEnum.Nemesis || character.assignedGod1 === GodEnum.Zeus) && (character.assignedGod2 === GodEnum.Nemesis || character.assignedGod2 === GodEnum.Zeus))) {      
+
+    if (!((character.assignedGod1 === GodEnum.Nemesis || character.assignedGod1 === GodEnum.Zeus) && (character.assignedGod2 === GodEnum.Nemesis || character.assignedGod2 === GodEnum.Zeus))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.ThunderousRiposte);
     }
-    
-    if (!((character.assignedGod1 === GodEnum.Nemesis || character.assignedGod1 === GodEnum.Poseidon) && (character.assignedGod2 === GodEnum.Nemesis || character.assignedGod2 === GodEnum.Poseidon))) {      
+
+    if (!((character.assignedGod1 === GodEnum.Nemesis || character.assignedGod1 === GodEnum.Poseidon) && (character.assignedGod2 === GodEnum.Nemesis || character.assignedGod2 === GodEnum.Poseidon))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.StaggeringRiposte);
     }
-    
-    if (!((character.assignedGod1 === GodEnum.Nemesis || character.assignedGod1 === GodEnum.Aphrodite) && (character.assignedGod2 === GodEnum.Nemesis || character.assignedGod2 === GodEnum.Aphrodite))) {      
+
+    if (!((character.assignedGod1 === GodEnum.Nemesis || character.assignedGod1 === GodEnum.Aphrodite) && (character.assignedGod2 === GodEnum.Nemesis || character.assignedGod2 === GodEnum.Aphrodite))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Protector);
     }
-    
-    if (!((character.assignedGod1 === GodEnum.Nemesis || character.assignedGod1 === GodEnum.Hera) && (character.assignedGod2 === GodEnum.Nemesis || character.assignedGod2 === GodEnum.Hera))) {      
+
+    if (!((character.assignedGod1 === GodEnum.Nemesis || character.assignedGod1 === GodEnum.Hera) && (character.assignedGod2 === GodEnum.Nemesis || character.assignedGod2 === GodEnum.Hera))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DefensiveShapeshifting);
     }
-    
-    if (!((character.assignedGod1 === GodEnum.Aphrodite || character.assignedGod1 === GodEnum.Hera) && (character.assignedGod2 === GodEnum.Aphrodite || character.assignedGod2 === GodEnum.Hera))) {      
+
+    if (!((character.assignedGod1 === GodEnum.Aphrodite || character.assignedGod1 === GodEnum.Hera) && (character.assignedGod2 === GodEnum.Aphrodite || character.assignedGod2 === GodEnum.Hera))) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.LovingEmbrace);
-    }    
+    }
   }
 
   giveCharactersBonusExp(bonusXp: number) {
@@ -4705,6 +4710,33 @@ export class GlobalService {
       this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong> for completing Round 30 of the Eternal Melee for the first time.", this.globalVar);
       this.gainResource(new ResourceValue(gainedItem, rng));
     }
+    if (previousMax < 40 && newMax >= 40) {
+      var rng = 25;
+      if (this.globalVar.followerData.numberOfFollowersGainedFromColiseum === undefined)
+        this.globalVar.followerData.numberOfFollowersGainedFromColiseum = 0;
+      this.globalVar.followerData.numberOfFollowersGainedFromColiseum += rng;
+      this.globalVar.followerData.availableFollowers += rng;
+      for (var i = 0; i < rng; i++) {
+        this.globalVar.followerData.followers.push(new IndividualFollower());
+      }
+
+      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng + " Followers</strong> for completing Round 40 of the Eternal Melee for the first time.", this.globalVar);
+    }
+    if (previousMax < 50 && newMax >= 50) {
+      var alchemy = this.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+      if (alchemy !== undefined) {
+        alchemy.maxLevel += 25;
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your Alchemy max level increases by <strong>25</strong> to a total of <strong>" + alchemy.maxLevel + "</strong> for completing Round 50 of the Eternal Melee for the first time.", this.globalVar);
+      }
+    }
+    if (previousMax < 60 && newMax >= 60) {
+      //TODO: some unique, update the UI for coliseum to display the new rewards
+      var rng = 1;
+      var gainedItem = ItemsEnum.HermessStaff;
+
+      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong> for completing Round 30 of the Eternal Melee for the first time.", this.globalVar);
+      this.gainResource(new ResourceValue(gainedItem, rng));
+    }
   }
 
   handleEternalMeleeBossRewards(round: number) {
@@ -4803,7 +4835,7 @@ export class GlobalService {
 
       this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.", this.globalVar);
       this.gainResource(new ResourceValue(gainedItem, rng));
-      
+
       var gainedItem2 = ItemsEnum.MetalCore;
 
       this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem2) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem2))) + "</strong>.", this.globalVar);
@@ -4981,10 +5013,10 @@ export class GlobalService {
 
     return items[rng];
   }
-  
+
   getRandomEpicMaterial() {
-    var items: ItemsEnum[] = [];   
-    items.push(ItemsEnum.ImmortalScales); 
+    var items: ItemsEnum[] = [];
+    items.push(ItemsEnum.ImmortalScales);
     items.push(ItemsEnum.SquidInk);
     items.push(ItemsEnum.Peony);
     items.push(ItemsEnum.Mandrake);
@@ -4992,7 +5024,7 @@ export class GlobalService {
     var rng = this.utilityService.getRandomInteger(0, items.length - 1);
 
     return items[rng];
-  }    
+  }
 
   getAbilityCooldown(ability: Ability, character: Character, starting: boolean = false) {
     if (ability.name === "Shapeshift")

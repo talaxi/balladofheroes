@@ -955,9 +955,7 @@ export class BalladService {
     if (type === SubZoneEnum.OlympusMassifThessalyGrasslands)
       name = "Thessaly Grasslands";
     if (type === SubZoneEnum.OlympusMassifInnerThessalyPathways)
-      name = "Inner Thessaly Pathways";
-    if (type === SubZoneEnum.OlympusMassifRoamingThePath)
-      name = "Roaming the Path";
+      name = "Inner Thessaly Pathways";    
     if (type === SubZoneEnum.OlympusMassifLargeOutcroppings)
       name = "Large Outcroppings";
     if (type === SubZoneEnum.OlympusMassifMountainBase)

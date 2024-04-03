@@ -1038,6 +1038,17 @@ export class TrialService {
       }
     }
     else if (stage === 60) {
+      if (includeGameLog) {
+        var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
+        if (jewelcrafting !== undefined) {
+          jewelcrafting.maxLevel += 25;
+
+          var gameLogEntry = "Your Jewelcrafting max level increases by <strong>25</strong> to a total of <strong>" + jewelcrafting.maxLevel + "</strong>.";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry, this.globalService.globalVar);
+        }
+      }
+    }    
+    else if (stage === 70) {
       var itemCount = 1;
       var gainedItem = ItemsEnum.ArmorOfOlympus;
 
@@ -1048,17 +1059,6 @@ export class TrialService {
 
         this.globalService.globalVar.uniques.push(new Uniques(gainedItem));
         this.globalService.gainResource(new ResourceValue(gainedItem, itemCount));
-      }
-    }
-    else if (stage === 70) {
-      if (includeGameLog) {
-        var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
-        if (alchemy !== undefined) {
-          alchemy.maxLevel += 25;
-
-          var gameLogEntry = "Your Alchemy max level increases by <strong>25</strong> to a total of <strong>" + alchemy.maxLevel + "</strong>.";
-          this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry, this.globalService.globalVar);
-        }
       }
     }
     else if (stage % 5 === 0) {

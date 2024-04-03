@@ -623,5 +623,16 @@ export enum ItemsEnum {
   ArmorOfOlympus,
   ArmorOfOlympusUpgrade,
   MisshapenMetalPiece,
-  InfiniteEssence
+  InfiniteEssence,
+  LightToxin,
+  CorrosiveToxin,
+  InkSalve,
+  ShatteringPotion,
+  EndlessPotion,
+  RestorativeElixir,
+  Extraction,
+  VialOfTartaranFlames,
+  ChimeraFur,
+  PureEnergy,
+  Passionflower
 } 
