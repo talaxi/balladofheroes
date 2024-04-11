@@ -14,6 +14,7 @@ import { KeybindService } from 'src/app/services/utility/keybind.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { MenuService } from 'src/app/services/menu/menu.service';
+import { Equipment } from 'src/app/models/resources/equipment.model';
 declare var LZString: any;
 
 @Component({
@@ -36,6 +37,8 @@ export class ColiseumViewComponent implements OnInit {
   battleData = "";
   dialogRef: MatDialogRef<any, any>;
   file: any;
+  hermessStaffDescription: Equipment | undefined;
+  shieldOfUnendingFlamesDescription: Equipment | undefined;
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -68,6 +71,9 @@ export class ColiseumViewComponent implements OnInit {
     if (this.standardColiseumTournaments.length > 0)
       this.selectedTournament = this.dictionaryService.getColiseumInfoFromType(this.standardColiseumTournaments[0]);
 
+    this.hermessStaffDescription = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.HermessStaff);
+    this.shieldOfUnendingFlamesDescription = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShieldOfUnendingFlames);
+    
     if (this.utilityService.isKongregate())
       this.transactionEnabled = false;
   }
@@ -343,7 +349,7 @@ export class ColiseumViewComponent implements OnInit {
       "Completing Round 45: +50-200 Metal Cores<br/>" +
       "Completing Round 50: +75-150 Epic Crafting Materials<br/>" +
       "Completing Round 55: +150-250 Perfect Gem Fragments<br/>" +
-      "Every successive boss fight: +500 Perfect Gem Fragments, 500 Metal Cores, and 500 Infinite Dust<br/><br/>" +
+      "Every successive boss fight: +500 Special Crafting Materials, 100 <span class='uniqueEquipment bold'>Shield of Unending Flames</span> XP<br/><br/>" +
       "<b><i>Rewards will continue to be adjusted as future content is added to the game</i></b>"
 
     return rewardsText;

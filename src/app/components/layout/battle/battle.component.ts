@@ -510,6 +510,8 @@ export class BattleComponent implements OnInit {
           return "Always Active - " + this.dictionaryService.getItemName(Number(effect.caster));
         else if (effect.resolution === EffectResolutionEnum.AlwaysActive)
           return "Always Active";
+          else if (effect.resolution === EffectResolutionEnum.Passive)
+          return "Passive";
       }
       else
         return "Resolves Upon Effect Condition";

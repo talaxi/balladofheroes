@@ -17,7 +17,8 @@ export class CodeCreationService {
   setupRewards() { 
     this.redeemableCode = new RedeemableCode();
     this.redeemableCode.expirationDate = new Date('2025-06-01');   
-    this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Subscriber, 1));           
+    this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Transmutation, 10000000));  
+    this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Extraction, 10));           
     /*this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Coin, 250000));           
     this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Ambrosia, 25));       
     this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.EternalMeleeTicket, 7));           

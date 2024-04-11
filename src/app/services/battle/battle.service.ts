@@ -1210,6 +1210,18 @@ export class BattleService {
         thornsDamageUp = thornsDamageUpEffect.effectiveness;
       }
 
+      var metalElixirBonus = 0;
+      var metalElixir = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.MetalElixir);
+      if (metalElixir !== undefined) {
+        metalElixirBonus = metalElixir.effectiveness;
+      }
+
+      var unendingFlamesMultiplier = 0;
+      var unendingFlames = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.UnendingFlames);
+      if (unendingFlames !== undefined) {
+        unendingFlamesMultiplier = unendingFlames.effectiveness;
+      }
+
       var dispenserOfDuesBonusThorns = this.checkForNemesisSetBonus(target);
 
       var includeAltars = false;
@@ -1219,11 +1231,14 @@ export class BattleService {
       var counterattack = this.lookupService.characterHasAbility("Counterattack", target);
       var thorns = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Thorns);
       if (thorns !== undefined || target.battleStats.thorns > 0 || reprisalThorns > 0 || dispenserOfDuesBonusThorns > 0 ||
+        metalElixirBonus > 0 || unendingFlamesMultiplier > 0 ||
         (includeAltars && (this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.NemesisThorns) !== undefined ||
           this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.NemesisRareThorns) !== undefined)) ||
         (counterattack !== undefined && this.warriorCounterattackActive(target, character))) {
         var thornsPercentDamage = damageDealt * target.battleStats.thorns;
         thornsPercentDamage += damageDealt * reprisalThorns;
+        thornsPercentDamage += damageDealt * metalElixirBonus;
+        thornsPercentDamage += damageDealt * unendingFlamesMultiplier;
 
         if (counterattack !== undefined && this.warriorCounterattackActive(target, character)) {
           var counterAttackEffectiveness = counterattack.effectiveness;
@@ -1417,9 +1432,9 @@ export class BattleService {
         character.overdriveInfo.gaugeAmount = character.overdriveInfo.gaugeTotal;
     }
 
-    if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.ThousandCuts)) {
+    if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.ThousandCuts) && !fromSpecialDelivery) {
       var effect = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ThousandCuts)!;
-      if (effect !== undefined)
+      if (effect !== undefined && effect.count < 20)
         effect.count += 1;
     }
 
@@ -1735,6 +1750,14 @@ export class BattleService {
       abilityCopy.userEffect = abilityCopy.userEffect.filter(item => item.type !== StatusEffectEnum.InstantOstinato);
     }
 
+    if (abilityCopy.name === "Solar Flare" && !fromRepeat) {      
+        ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));      
+    }
+    
+    if (abilityCopy.name === "Raging Fireball" && ability.cooldown > 2) {      
+      ability.cooldown -= 2;
+  }
+
     if (abilityCopy.name === "Upstream") {
       var current = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Current);
       var currentCount = 0;
@@ -1786,7 +1809,7 @@ export class BattleService {
     if (elementalType === ElementalTypeEnum.Random) {
       elementalType = this.lookupService.getRandomElement();
     }
-    
+
     var flamingToxin = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.FlamingToxin);
     if (flamingToxin !== undefined) {
       elementalType = ElementalTypeEnum.Fire;
@@ -2602,7 +2625,7 @@ export class BattleService {
 
     if (user.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.ThousandCuts) && !abilityWillRepeat) {
       var effect = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ThousandCuts)!;
-      if (effect !== undefined)
+      if (effect !== undefined && effect.count < 20)
         effect.count += 1;
     }
 
@@ -4420,6 +4443,11 @@ export class BattleService {
           overallDamageMultiplier *= effect.effectiveness;
         });
       }
+      
+      var warriorDefend = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.WarriorDefend);
+      if (this.warriorCounterattackActive(target, character) && warriorDefend !== undefined) {
+        overallDamageMultiplier *= warriorDefend.effectiveness;
+      }
 
       if (target.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DivineRetribution))
         overallDamageMultiplier = 0;
@@ -4484,7 +4512,7 @@ export class BattleService {
     if (insight !== undefined && ability !== undefined) {
       overallDamageMultiplier *= insight.effectiveness;
     }
-    
+
     return overallDamageMultiplier * thousandCutsDamageIncrease * markDamageIncrease * thyrsusDamageIncrease * enemySpecificAbilityIncrease * altarMultiplier * aoeIncrease * allyDamageBonus;
   }
 
@@ -5537,6 +5565,16 @@ export class BattleService {
       }
     }
 
+    if (target.name === "Khronos") {
+      var finalHour = this.lookupService.characterHasAbility("Final Hour", target);
+      if (finalHour !== undefined) {
+        if (!target.battleInfo.finalHourUsed && target.battleStats.currentHp <= target.battleStats.maxHp * .5) {
+          this.useAbility(false, finalHour, target, this.globalService.getActivePartyCharacters(true), this.battle.currentEnemies.enemyList, false, undefined, undefined, false);
+          target.battleInfo.finalHourUsed = true;
+        }
+      }
+    }
+
     if ((target.name === "The Colchian Dragon" || target.name === "Guardian of the Grove") && (target.battleStats.currentHp / this.lookupService.getAdjustedMaxHp(target, false, false)) < .2) {
       var immortality = this.lookupService.characterHasAbility("Immortality", target);
       if (immortality !== undefined && target.battleInfo.immortalityCount === 0) {
@@ -5849,7 +5887,7 @@ export class BattleService {
 
     if (target === undefined)
       return 1;
-    
+
     var resistanceDown = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.AllElementalResistanceDown)
     if (resistanceDown !== undefined) {
       elementalReduction += resistanceDown.effectiveness;
@@ -6868,7 +6906,7 @@ export class BattleService {
     if (this.battleItemInUse === ItemsEnum.HealingHerb || this.battleItemInUse === ItemsEnum.HealingPoultice
       || this.battleItemInUse === ItemsEnum.RestorativeHerb || this.battleItemInUse === ItemsEnum.RestorativePoultice
       || this.battleItemInUse === ItemsEnum.HoneyPoultice || this.battleItemInUse === ItemsEnum.PeonyPoultice
-      || this.battleItemInUse === ItemsEnum.SoothingHerb) {
+      || this.battleItemInUse === ItemsEnum.SoothingHerb || this.battleItemInUse === ItemsEnum.InkPoultice) {
       if (character.battleStats.currentHp === this.lookupService.getAdjustedMaxHp(character))
         return;
 
@@ -6965,7 +7003,8 @@ export class BattleService {
     }
 
     if (this.battleItemInUse === ItemsEnum.HealingSalve || this.battleItemInUse === ItemsEnum.RestorativeSalve ||
-      this.battleItemInUse === ItemsEnum.HoneySalve || this.battleItemInUse === ItemsEnum.MagicSalve || this.battleItemInUse === ItemsEnum.PeonySalve) {
+      this.battleItemInUse === ItemsEnum.HoneySalve || this.battleItemInUse === ItemsEnum.MagicSalve || this.battleItemInUse === ItemsEnum.PeonySalve ||
+      this.battleItemInUse === ItemsEnum.InkSalve) {
       var itemUsed = false;
 
       if (character.name === "Asclepius") {
@@ -7004,7 +7043,8 @@ export class BattleService {
     if (this.battleItemInUse === ItemsEnum.ThrowingStone || this.battleItemInUse === ItemsEnum.ExplodingPotion ||
       this.battleItemInUse === ItemsEnum.FirePotion || this.battleItemInUse === ItemsEnum.HeftyStone ||
       this.battleItemInUse === ItemsEnum.PotentConcoction || this.battleItemInUse === ItemsEnum.PiercingPotion ||
-      this.battleItemInUse === ItemsEnum.BouncingPotion) {
+      this.battleItemInUse === ItemsEnum.BouncingPotion || this.battleItemInUse === ItemsEnum.BurstingPotion ||
+      this.battleItemInUse === ItemsEnum.EndlessPotion) {
       if (character.battleStats.currentHp <= 0)
         return;
 
@@ -7032,6 +7072,10 @@ export class BattleService {
       var hitCount = 1;
       if (this.battleItemInUse === ItemsEnum.BouncingPotion)
         hitCount = 2;
+      if (this.battleItemInUse === ItemsEnum.BurstingPotion)
+        hitCount = 3;
+      if (this.battleItemInUse === ItemsEnum.EndlessPotion)
+        hitCount = 10;
 
       for (var i = 0; i < hitCount; i++) {
         var damage = this.dealTrueDamage(true, character, effect.trueDamageAmount * damageMultiplier, undefined, elementalType, true);
@@ -7046,11 +7090,14 @@ export class BattleService {
     }
 
     //aoe damage
-    if (this.battleItemInUse === ItemsEnum.UnstablePotion || this.battleItemInUse === ItemsEnum.WildPotion) {
+    if (this.battleItemInUse === ItemsEnum.UnstablePotion || this.battleItemInUse === ItemsEnum.WildPotion ||
+      this.battleItemInUse === ItemsEnum.ShatteringPotion) {
       var itemUsed = false;
       var hitCount = 1;
       if (this.battleItemInUse === ItemsEnum.WildPotion)
         hitCount = 2;
+      if (this.battleItemInUse === ItemsEnum.ShatteringPotion)
+        hitCount = 3;
 
       var baseDamage = effect.trueDamageAmount;
 
@@ -7161,7 +7208,7 @@ export class BattleService {
 
     if (this.battleItemInUse === ItemsEnum.HeroicElixir || this.battleItemInUse === ItemsEnum.RejuvenatingElixir ||
       this.battleItemInUse === ItemsEnum.ElixirOfFortitude || this.battleItemInUse === ItemsEnum.ElixirOfSpeed ||
-      this.battleItemInUse === ItemsEnum.ElixirOfFortune || this.battleItemInUse === ItemsEnum.ElixirOfWill || 
+      this.battleItemInUse === ItemsEnum.ElixirOfFortune || this.battleItemInUse === ItemsEnum.ElixirOfWill ||
       this.battleItemInUse === ItemsEnum.MetalElixir || this.battleItemInUse === ItemsEnum.RestorativeElixir ||
       this.battleItemInUse === ItemsEnum.ElixirOfPower) {
       if (character.battleStats.currentHp <= 0)
@@ -7312,6 +7359,11 @@ export class BattleService {
         var rejuvenatingElixir = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.RejuvenatingElixir);
         if (rejuvenatingElixir !== undefined) {
           totalHpRegen += rejuvenatingElixir.effectiveness;
+        }
+
+        var restorativeElixir = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.RestorativeElixir);
+        if (restorativeElixir !== undefined) {
+          totalHpRegen += restorativeElixir.effectiveness * this.lookupService.getAdjustedMaxHp(character);
         }
 
         if (this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ApolloRareHpRegenIncrease) !== undefined) {
@@ -7950,7 +8002,7 @@ export class BattleService {
       elementalType = ElementalTypeEnum.Air;
     }
 
-    
+
     var flamingToxin = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.FlamingToxin);
     if (flamingToxin !== undefined) {
       elementalType = ElementalTypeEnum.Fire;

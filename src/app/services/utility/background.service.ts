@@ -37,6 +37,8 @@ import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
 import { SubZoneGeneratorService } from 'src/app/services/sub-zone-generator/sub-zone-generator.service';
 import { AffinityLevelRewardEnum } from 'src/app/models/enums/affinity-level-reward-enum.model';
 import { ZodiacService } from 'src/app/services/global/zodiac.service';
+import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
+import { EffectResolutionEnum } from 'src/app/models/enums/effect-resolution-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -81,6 +83,7 @@ export class BackgroundService {
         this.battleService.handleStatusEffectDurations(true, partyMember, enemies, party, deltaTime);
         this.checkForThornsGems(partyMember);
         this.checkGodStatuses(partyMember);
+        this.checkWarriorStatus(partyMember, enemies);
 
         if (partyMember.overdriveInfo !== undefined && partyMember.overdriveInfo.isActive && partyMember.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Revenge && partyMember.overdriveInfo.revengeTime !== undefined) {
           if (partyMember.overdriveInfo.revengeTime <= 0) {
@@ -107,6 +110,21 @@ export class BackgroundService {
         }
       }
     });
+  }
+
+  checkWarriorStatus(member: Character, enemies: Character[]) {
+    var counterattack = this.lookupService.characterHasAbility("Counterattack", member);
+    if (counterattack !== undefined && member.type === CharacterEnum.Warrior &&
+      (member.battleStats.currentHp / this.lookupService.getAdjustedMaxHp(member, true) <= counterattack.threshold)) {
+      if (!member.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.WarriorDefend)) {
+        var warriorDefendEffect = this.globalService.createStatusEffect(StatusEffectEnum.WarriorDefend, -1, .5, false, true);
+        warriorDefendEffect.resolution = EffectResolutionEnum.Passive;
+        this.battleService.applyStatusEffect(warriorDefendEffect, member, enemies);
+      }
+    }
+    else {
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.WarriorDefend);
+    }
   }
 
   handleLinkCooldown(member: Character, deltaTime: number) {

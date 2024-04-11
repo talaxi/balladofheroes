@@ -222,7 +222,7 @@ export class InitializationService {
     this.initializeBalladOfTheWitch();
     this.initializeBalladOfTheEagle();
     this.initializeBalladOfRedemption();
-    this.initializeBalladOfTime(); 
+    this.initializeBalladOfTime();
   }
 
   initializeSettings() {
@@ -478,7 +478,7 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeBuccheroKantharos, 1));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeGildedKantharos, 1));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCrackedKantharos, 1));
-    
+
     /*this.lookupService.gainResource(new ResourceValue(ItemsEnum.PerfectCrackedKantharos, 1));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.PerfectGildedKantharos, 1));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.PerfectBuccheroKantharos, 1));
@@ -495,6 +495,14 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.VialOfTheLethe, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.VialOfLakeLerna, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.VialOfTheBlackSea, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SpiderSilk, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.PureEnergy, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.MisshapenMetalPiece, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.VialOfTartaranFlames, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.InfiniteEssence, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.ImmortalScales, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.MetalCore, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Passionflower, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.Goldroot, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.Lousewort, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.Sorrel, 10000));
@@ -651,6 +659,20 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.AphroditesShield, 1));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.AphroditesNecklace, 1));
 
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.TempestToxin, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.MetalElixir, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.BurstingPotion, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.ElixirOfPower, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Transmutation, 1000000000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.InkPoultice, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LightToxin, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.CorrosiveToxin, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.InkSalve, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.EndlessPotion, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.ShatteringPotion, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.RestorativeElixir, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Extraction, 100));
+
     this.globalService.globalVar.currentStoryId = 310;
     this.globalService.globalVar.isDpsUnlocked = true;
     this.globalService.globalVar.altars.isUnlocked = true;
@@ -671,6 +693,30 @@ export class InitializationService {
 
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.PoisonExtractPotion));
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.HeroicElixir));
+
+    var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+    if (alchemy !== undefined) {
+      for (var i = 0; i < 175; i++) {
+        alchemy.level += 1;
+
+        if (alchemy.level === alchemy.maxLevel)
+          alchemy.exp = 0;
+        var newRecipeLearned = this.alchemyService.checkForNewRecipes();
+        this.alchemyService.getLevelUpReward();
+      }
+    }
+
+    var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
+    if (jewelcrafting !== undefined) {
+      for (var i = 0; i < 175; i++) {
+        jewelcrafting.level += 1;
+
+        if (jewelcrafting.level === jewelcrafting.maxLevel)
+          jewelcrafting.exp = 0;
+        var newRecipeLearned = this.jewelcraftingService.checkForNewRecipes();
+        this.jewelcraftingService.getLevelUpReward();
+      }
+    }
 
     var allAchievementsComplete = true;
 
@@ -760,10 +806,10 @@ export class InitializationService {
     resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ScorpionStingerUnique, 1);
     if (resource !== undefined)
       this.lookupService.gainResource(resource);
-    
-      resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ArmorOfOlympus, 1);
-      if (resource !== undefined)
-        this.lookupService.gainResource(resource);
+
+    resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ArmorOfOlympus, 1);
+    if (resource !== undefined)
+      this.lookupService.gainResource(resource);
 
     resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.BucklerOfPerfectHarmonyEpic, 1);
     if (resource !== undefined)
@@ -1602,25 +1648,27 @@ export class InitializationService {
         aphrodite!.affinityLevel = 15;
       }
 
-      var characterLevel = 25;
-      this.globalService.globalVar.characters.forEach(character => {
-        for (var i = 0; i < characterLevel; i++) {
-          this.globalService.levelUpPartyMember(character);
-        }
-        character.level = 1;
-        character.exp = 0;
-        character.baseStats = this.globalService.getCharacterBaseStats(character.type);
-      });
+      for (var j = 0; j < 25; j++) {
+        var characterLevel = 25;
+        this.globalService.globalVar.characters.forEach(character => {
+          for (var i = 0; i < characterLevel; i++) {
+            this.globalService.levelUpPartyMember(character);
+          }
+          character.level = 1;
+          character.exp = 0;
+          character.baseStats = this.globalService.getCharacterBaseStats(character.type);
+        });
 
-      var characterLevel = 1;
-      this.globalService.globalVar.characters.forEach(character => {
-        for (var i = 0; i < characterLevel; i++) {
-          this.globalService.levelUpPartyMember(character);
-        }
-        character.level = 1;
-        character.exp = 0;
-        character.baseStats = this.globalService.getCharacterBaseStats(character.type);
-      });
+        var characterLevel = 1;
+        this.globalService.globalVar.characters.forEach(character => {
+          for (var i = 0; i < characterLevel; i++) {
+            this.globalService.levelUpPartyMember(character);
+          }
+          character.level = 1;
+          character.exp = 0;
+          character.baseStats = this.globalService.getCharacterBaseStats(character.type);
+        });
+      }
 
       var characterLevel = 39;
       this.globalService.globalVar.characters.forEach(character => {
@@ -1661,13 +1709,13 @@ export class InitializationService {
         character.baseStats = this.globalService.getCharacterBaseStats(character.type);
         character.maxLevel = 50;
       });
-      
+
       var characterLevel = 54;
       this.globalService.globalVar.characters.forEach(character => {
         for (var i = 0; i < characterLevel; i++) {
           this.globalService.levelUpPartyMember(character);
         }
- 
+
         character.level = 1;
         character.exp = 0;
         character.linkInfo.totalLinks = 0;
@@ -1675,14 +1723,14 @@ export class InitializationService {
         character.baseStats = this.globalService.getCharacterBaseStats(character.type);
         character.maxLevel = 100;
       });
-      
+
 
       var characterLevel = 59;
       this.globalService.globalVar.characters.forEach(character => {
         for (var i = 0; i < characterLevel; i++) {
           this.globalService.levelUpPartyMember(character);
         }
- 
+
         character.level = 1;
         character.exp = 0;
         character.linkInfo.totalLinks = 0;
@@ -1690,13 +1738,13 @@ export class InitializationService {
         character.baseStats = this.globalService.getCharacterBaseStats(character.type);
         character.maxLevel = 100;
       });
-      
+
       var characterLevel = 64;
       this.globalService.globalVar.characters.forEach(character => {
         for (var i = 0; i < characterLevel; i++) {
           this.globalService.levelUpPartyMember(character);
         }
- 
+
         //character.level = 1;
         character.exp = 0;
         //character.linkInfo.totalLinks = 0;
@@ -2204,9 +2252,9 @@ export class InitializationService {
     zone1.type = ZoneEnum.OlympusMassif;
     zone1.zoneName = "Olympus Massif";
     zone1.subzones.push(new SubZone(SubZoneEnum.OlympusMassifThessalyGrasslands));
-    zone1.subzones.push(new SubZone(SubZoneEnum.OlympusMassifInnerThessalyPathways));    
+    zone1.subzones.push(new SubZone(SubZoneEnum.OlympusMassifInnerThessalyPathways));
     zone1.subzones.push(new SubZone(SubZoneEnum.OlympusMassifLargeOutcroppings));
-    zone1.subzones.push(new SubZone(SubZoneEnum.OlympusMassifMountainBase));    
+    zone1.subzones.push(new SubZone(SubZoneEnum.OlympusMassifMountainBase));
     zone1.notificationType = zone1.shouldShowSideQuestNotification();
     ballad.zones.push(zone1);
 
@@ -2219,13 +2267,13 @@ export class InitializationService {
     zone2.subzones.push(new SubZone(SubZoneEnum.TheAscentFinalAscent));
     zone2.notificationType = zone2.shouldShowSideQuestNotification();
     ballad.zones.push(zone2);
-    
+
     var zone3 = new Zone();
     zone3.type = ZoneEnum.WarForTheMountainTwo;
     zone3.zoneName = "War for the Mountain 2";
     zone3.subzones.push(new SubZone(SubZoneEnum.WarForTheMountainTwoSpoiledCourtyard));
     zone3.subzones.push(new SubZone(SubZoneEnum.WarForTheMountainTwoGardens));
-    zone3.subzones.push(new SubZone(SubZoneEnum.WarForTheMountainTwoForOlympus));    
+    zone3.subzones.push(new SubZone(SubZoneEnum.WarForTheMountainTwoForOlympus));
     zone3.notificationType = zone2.shouldShowSideQuestNotification();
     ballad.zones.push(zone3);
 

@@ -13,19 +13,13 @@ export class Uniques {
         this.xpToNextLevel = 10;
     }
 
-    getMinorEffectLevel() {
-        //if (this.level === 0)
-          //  return 1;
-
+    getMinorEffectLevel() {        
         if (Math.ceil((this.level+1) / 10) > 100)
             return 100;
         return Math.ceil((this.level+1) / 10);
     }
     
-    getMajorEffectLevel() {
-        //if (this.level === 0)
-        //return 1;
-
+    getMajorEffectLevel() {        
         if (Math.ceil((this.level+1) / 100) > 10)
             return 10;
         return Math.ceil((this.level +1) / 100);

@@ -1946,7 +1946,22 @@ export class VersionControlService {
             }
           }
         }
-        if (version === 1) {          
+        if (version === 1) {  
+          //TODO: DO CHECKS TO SEE IF THEY NEED FIRST TIME 40-60 EM REWARDS
+          
+          var warriorClass = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Warrior);
+          if (warriorClass !== undefined) {
+            var ability1 = warriorClass.abilityList.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
+            if (ability1 !== undefined && ability1.targetEffect.length > 1) {
+              ability1.targetEffect[0].isAoe = true;
+              ability1.targetEffect[1].isAoe = true;
+            }
+            var passive = warriorClass.abilityList.find(item => item.requiredLevel === this.utilityService.characterPassiveLevel);
+            if (passive !== undefined) {
+              passive.threshold = .5;
+            }
+          }
+          
           this.initializationService.initializeBalladOfRedemption();
           this.initializationService.initializeBalladOfTime();
           var battleAtSeaSubZone = this.balladService.findSubzone(SubZoneEnum.EscapeFromColchisBattleAtSea);

@@ -84,7 +84,7 @@ export class CurrentEquipmentViewComponent implements OnInit {
     if (this.deviceDetectorService.isMobile())
       this.dialogRef = this.dialog.open(slotMenuContent, { width: '95%', height: '80%', panelClass: 'mat-dialog-no-scroll' });
     else
-      this.dialogRef = this.dialog.open(slotMenuContent, { width: '60%', height: '65%', panelClass: 'mat-dialog-no-scroll' });
+      this.dialogRef = this.dialog.open(slotMenuContent, { width: '60%', height: '80%', panelClass: 'mat-dialog-no-scroll' });
   }
 
   isUnequipped(type: EquipmentTypeEnum) {

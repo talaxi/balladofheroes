@@ -699,6 +699,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.ArmorOfOlympus) {
       return new ResourceValue(ItemsEnum.ArmorOfOlympus, amount);
     }
+    if (type === ItemsEnum.ShieldOfUnendingFlames) {
+      return new ResourceValue(ItemsEnum.ShieldOfUnendingFlames, amount);
+    }
 
     //equippables
     if (type === ItemsEnum.TokenOfSupport) {
@@ -739,6 +742,12 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.PoisonExtractPotion) {
       return new ResourceValue(ItemsEnum.PoisonExtractPotion, amount);
+    }
+    if (type === ItemsEnum.Extraction) {
+      return new ResourceValue(ItemsEnum.Extraction, amount);
+    }
+    if (type === ItemsEnum.Transmutation) {
+      return new ResourceValue(ItemsEnum.Transmutation, amount);
     }
     if (type === ItemsEnum.HeroicElixir) {
       return new ResourceValue(ItemsEnum.HeroicElixir, amount);
@@ -833,6 +842,15 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.BouncingPotion) {
       return new ResourceValue(ItemsEnum.BouncingPotion, amount);
     }
+    if (type === ItemsEnum.BurstingPotion) {
+      return new ResourceValue(ItemsEnum.BurstingPotion, amount);
+    }
+    if (type === ItemsEnum.ShatteringPotion) {
+      return new ResourceValue(ItemsEnum.ShatteringPotion, amount);
+    }
+    if (type === ItemsEnum.EndlessPotion) {
+      return new ResourceValue(ItemsEnum.EndlessPotion, amount);
+    }
     if (type === ItemsEnum.MagicRevivify) {
       return new ResourceValue(ItemsEnum.MagicRevivify, amount);
     }
@@ -859,6 +877,12 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.PeonySalve) {
       return new ResourceValue(ItemsEnum.PeonySalve, amount);
+    }
+    if (type === ItemsEnum.InkPoultice) {
+      return new ResourceValue(ItemsEnum.InkPoultice, amount);
+    }
+    if (type === ItemsEnum.InkSalve) {
+      return new ResourceValue(ItemsEnum.InkSalve, amount);
     }
     if (type === ItemsEnum.RareToEpicTransmutation) {
       return new ResourceValue(ItemsEnum.RareToEpicTransmutation, amount);

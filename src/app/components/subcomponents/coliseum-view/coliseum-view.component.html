@@ -150,13 +150,13 @@
                 <br />
                 <span [ngClass]='isRoundComplete(20)'>Completing Round 20: +1 Dark Orb</span>
                 <br />
-                <span [ngClass]='isRoundComplete(30)'>Completing Round 30: <span class="specialEquipment bold">Hermes's Staff</span></span>
+                <span [ngClass]='isRoundComplete(30)'>Completing Round 30: <span customToolTip [isDelayed]="false" [isLargeTooltip]="true" [contentTemplate]="hermessStaffView" class="specialEquipment bold">Hermes's Staff</span></span>
                 <br/>
                 <span [ngClass]='isRoundComplete(40)'>Completing Round 40: +25 Followers</span>
                 <br/>
                 <span [ngClass]='isRoundComplete(50)'>Completing Round 50: +25 Max Alchemy Level</span>
                 <br/>
-                <span [ngClass]='isRoundComplete(60)'>Completing Round 60: TODO</span>
+                <span [ngClass]='isRoundComplete(60)'>Completing Round 60: <span customToolTip [isDelayed]="false" [isLargeTooltip]="true" [contentTemplate]="shieldOfUnendingFlamesView" class="uniqueEquipment bold">Shield of Unending Flames</span></span>
             </div>
             <div class="vr">
                 <hr class="vrHr" />
@@ -186,7 +186,7 @@
                 <br />
                 Completing Round 55: +150-250 Perfect Gem Fragments
                 <br />
-                Every successive boss fight: +500 Perfect Gem Fragments, 500 Metal Cores, and 500 Infinite Dust <!--TODO:X Perfect Gems, X Special Crafting Materials (Metal Cores, Infinite Dust), 100 Unique Shield XP-->
+                Every successive boss fight: +500 Special Crafting Materials, 100 <span customToolTip [isDelayed]="false" [isLargeTooltip]="true" [contentTemplate]="shieldOfUnendingFlamesView" class="uniqueEquipment bold">Shield of Unending Flames</span> XP
                 <br /><br />
             </div>
         </div>
@@ -205,3 +205,19 @@
     <ng-template #purchaseBox>
         <app-confirmation-box [confirmationText]="transactionConfirmationText"></app-confirmation-box>
     </ng-template>
+
+    <ng-template #hermessStaffView>
+        <div class="compareEquipment">
+          <span class="item item1">
+            <app-equipment-item-view [equipment]="hermessStaffDescription"></app-equipment-item-view>
+          </span>          
+        </div>
+      </ng-template>
+      
+    <ng-template #shieldOfUnendingFlamesView>
+        <div class="compareEquipment">
+          <span class="item item1">
+            <app-equipment-item-view [equipment]="shieldOfUnendingFlamesDescription"></app-equipment-item-view>
+          </span>          
+        </div>
+      </ng-template>

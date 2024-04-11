@@ -13,6 +13,7 @@ import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { ResourceViewSortEnum } from 'src/app/models/enums/resource-view-sort-enum.model';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { MenuService } from 'src/app/services/menu/menu.service';
 
 @Component({
   selector: 'app-slot-menu-view',
@@ -35,20 +36,62 @@ export class SlotMenuViewComponent {
   currentSlottedItemCount: number;
   sortType: ResourceViewSortEnum = ResourceViewSortEnum.Quality;
   ascendingSort: boolean = true;
+  itemsEnum = ItemsEnum;
+  transmutationAmount = 1;
+  customTransmutationAmount = 0;
 
   constructor(private globalService: GlobalService, private lookupService: LookupService, public dialog: MatDialog,
-    private gameLoopService: GameLoopService, private dictionaryService: DictionaryService, private deviceDetectorService: DeviceDetectorService) {
+    private gameLoopService: GameLoopService, private dictionaryService: DictionaryService, private deviceDetectorService: DeviceDetectorService,
+    private menuService: MenuService) {
 
   }
 
   ngOnInit() {
-    if (this.globalService.globalVar.settings.get("slotsSortType") !== undefined && this.globalService.globalVar.settings.get("slotsSortType") !== "") 
+    if (this.globalService.globalVar.settings.get("slotsSortType") !== undefined && this.globalService.globalVar.settings.get("slotsSortType") !== "")
       this.sortType = this.globalService.globalVar.settings.get("slotsSortType");
-      if (this.globalService.globalVar.settings.get("slotsSort") !== undefined && this.globalService.globalVar.settings.get("slotsSort") !== "") 
+    if (this.globalService.globalVar.settings.get("slotsSort") !== undefined && this.globalService.globalVar.settings.get("slotsSort") !== "")
       this.ascendingSort = this.globalService.globalVar.settings.get("slotsSort");
 
     this.assignResource();
     this.setupAvailableGems();
+  }
+
+
+  changeTransmutationAmount(amount: number, resetCustomAmount: boolean = false) {
+    if (amount <= this.lookupService.getResourceAmountIgnoreExtras(ItemsEnum.Transmutation)) {
+      this.transmutationAmount = amount;
+
+      var unique = this.globalService.globalVar.uniques.find(item => item.type === this.resource.item);
+      if (unique !== undefined) {
+
+        var xpToMax = this.lookupService.getRemainingUniqueXpToMax(unique);
+        if (this.transmutationAmount > xpToMax)
+          this.transmutationAmount = xpToMax;
+      }
+
+
+      if (resetCustomAmount)
+        this.customTransmutationAmount = 0;
+    }
+  }
+
+  useCustomAmount() {
+    if (this.customTransmutationAmount > 0 && this.customTransmutationAmount <= this.lookupService.getResourceAmountIgnoreExtras(ItemsEnum.Transmutation))
+      this.changeTransmutationAmount(this.customTransmutationAmount);
+    else if (this.customTransmutationAmount > this.lookupService.getResourceAmountIgnoreExtras(ItemsEnum.Transmutation))
+      this.changeTransmutationAmount(this.lookupService.getResourceAmountIgnoreExtras(ItemsEnum.Transmutation));
+  }
+
+  getTotalItemToTransmutationAmount() {
+    return this.lookupService.getResourceAmountIgnoreExtras(ItemsEnum.Transmutation);
+  }
+
+  inTextbox() {
+    this.menuService.inTextbox = true;
+  }
+
+  outOfTextbox() {
+    this.menuService.inTextbox = false;
   }
 
   setupAvailableGems() {
@@ -100,20 +143,19 @@ export class SlotMenuViewComponent {
     }
 
     if (this.sortType === ResourceViewSortEnum.Quality) {
-    var itemA = this.lookupService.getSlotItemQuality(a.item);
-    var itemB = this.lookupService.getSlotItemQuality(b.item);
+      var itemA = this.lookupService.getSlotItemQuality(a.item);
+      var itemB = this.lookupService.getSlotItemQuality(b.item);
 
-    //if they are the same, sort by name secondarily
-    var matchingValue = 0;
-    if  (itemA === itemB)
-    {
-      var nameA = this.dictionaryService.getItemName(a.item);
-      var nameB = this.dictionaryService.getItemName(b.item);
+      //if they are the same, sort by name secondarily
+      var matchingValue = 0;
+      if (itemA === itemB) {
+        var nameA = this.dictionaryService.getItemName(a.item);
+        var nameB = this.dictionaryService.getItemName(b.item);
 
-      matchingValue = nameA < nameB ? descending : nameA > nameB ? ascending : 0;
-    }
+        matchingValue = nameA < nameB ? descending : nameA > nameB ? ascending : 0;
+      }
 
-    return itemA < itemB ? descending : itemA > itemB ? ascending : matchingValue;
+      return itemA < itemB ? descending : itemA > itemB ? ascending : matchingValue;
     }
 
     if (this.sortType === ResourceViewSortEnum.Name) {
@@ -123,7 +165,7 @@ export class SlotMenuViewComponent {
       return nameA < nameB ? descending : nameA > nameB ? ascending : 0;
     }
 
-    if (this.sortType === ResourceViewSortEnum.EnumValue) {      
+    if (this.sortType === ResourceViewSortEnum.EnumValue) {
       return a.item < b.item ? descending : a.item > b.item ? ascending : 0;
     }
 
@@ -188,22 +230,100 @@ export class SlotMenuViewComponent {
 
   slotItem() {
     if (this.selectedItem !== undefined) {
-      this.resource = this.lookupService.makeResourceCopy(this.globalService.addExtraToBaseResource(this.lookupService.makeResourceCopy(this.resource), this.selectedItem.item));
-      this.itemSlottedEmitter.emit(true);
+      if (this.selectedItem.item === ItemsEnum.Transmutation) {
+        for (var i = 0; i < this.transmutationAmount; i++) {
+          var unique = this.globalService.globalVar.uniques.find(item => item.type === this.resource.item);
+          if (unique !== undefined) {
+            this.lookupService.giveUniqueXp(unique, 1);
+          }
+        }
 
-      if (this.isResourceEquipped) {
-        var equippedItem = undefined;
-        var character = this.globalService.globalVar.characters.find(item => item.type === this.equippedCharacter);
-        if (character !== undefined) {
-          var equipment = this.lookupService.getEquipmentPieceByItemType(this.resource.item);
-          if (equipment !== undefined) {
-            equippedItem = character.equipmentSet.getPieceBasedOnType(equipment.equipmentType);
-            if (equippedItem !== undefined)
-              equippedItem.associatedResource = this.resource;
+        this.lookupService.useResource(ItemsEnum.Transmutation, this.transmutationAmount);
+
+        if (this.getTotalItemToTransmutationAmount() < this.transmutationAmount) {
+          this.transmutationAmount = 1;
+          this.customTransmutationAmount = 0;
+        }
+      }
+      else if (this.selectedItem.item === ItemsEnum.Extraction) {        
+        var unique = this.globalService.globalVar.uniques.find(item => item.type === this.resource.item);
+        if (unique !== undefined) {
+          var uniqueResource = this.globalService.globalVar.resources.find(item => item.item === unique!.type);
+          var totalUniqueXp = this.lookupService.getTotalUniqueXp(unique);
+          unique.level = 0;
+          unique.xp = 0;
+          unique.xpToNextLevel = 10;
+          this.lookupService.gainResource(new ResourceValue(ItemsEnum.Transmutation, totalUniqueXp));
+          this.lookupService.useResource(ItemsEnum.Extraction, 1);
+
+          this.globalService.globalVar.characters.forEach(character => {
+            if (character.equipmentSet.weapon !== undefined && character.equipmentSet.weapon.itemType === unique!.type) {
+              var equipmentPiece = this.lookupService.getEquipmentPieceByItemType(unique!.type);
+              if (equipmentPiece !== undefined) {
+                this.globalService.unequipItem(EquipmentTypeEnum.Weapon, character.type);
+                equipmentPiece.associatedResource = uniqueResource;
+                this.globalService.equipItem(equipmentPiece, character);
+              }
+            }
+      
+            if (character.equipmentSet.armor !== undefined && character.equipmentSet.armor.itemType === unique!.type) {
+              var equipmentPiece = this.lookupService.getEquipmentPieceByItemType(unique!.type);
+              if (equipmentPiece !== undefined) {
+                this.globalService.unequipItem(EquipmentTypeEnum.Armor, character.type);
+                equipmentPiece.associatedResource = uniqueResource;
+                this.globalService.equipItem(equipmentPiece, character);
+              }
+            }
+      
+            if (character.equipmentSet.shield !== undefined && character.equipmentSet.shield.itemType === unique!.type) {
+              var equipmentPiece = this.lookupService.getEquipmentPieceByItemType(unique!.type);
+              if (equipmentPiece !== undefined) {
+                this.globalService.unequipItem(EquipmentTypeEnum.Shield, character.type);
+                equipmentPiece.associatedResource = uniqueResource;
+                this.globalService.equipItem(equipmentPiece, character);
+              }
+            }
+      
+            if (character.equipmentSet.ring !== undefined && character.equipmentSet.ring.itemType === unique!.type) {
+              var equipmentPiece = this.lookupService.getEquipmentPieceByItemType(unique!.type);
+              if (equipmentPiece !== undefined) {
+                this.globalService.unequipItem(EquipmentTypeEnum.Ring, character.type);
+                equipmentPiece.associatedResource = uniqueResource;
+                this.globalService.equipItem(equipmentPiece, character);
+              }
+            }
+      
+            if (character.equipmentSet.necklace !== undefined && character.equipmentSet.necklace.itemType === unique!.type) {
+              var equipmentPiece = this.lookupService.getEquipmentPieceByItemType(unique!.type);
+              if (equipmentPiece !== undefined) {
+                this.globalService.unequipItem(EquipmentTypeEnum.Necklace, character.type);
+                equipmentPiece.associatedResource = uniqueResource;
+                this.globalService.equipItem(equipmentPiece, character);
+              }
+            }
+          });
+        }
+
+        this.setupAvailableGems();
+      }
+      else {
+        this.resource = this.lookupService.makeResourceCopy(this.globalService.addExtraToBaseResource(this.lookupService.makeResourceCopy(this.resource), this.selectedItem.item));
+
+        if (this.isResourceEquipped) {
+          var equippedItem = undefined;
+          var character = this.globalService.globalVar.characters.find(item => item.type === this.equippedCharacter);
+          if (character !== undefined) {
+            var equipment = this.lookupService.getEquipmentPieceByItemType(this.resource.item);
+            if (equipment !== undefined) {
+              equippedItem = character.equipmentSet.getPieceBasedOnType(equipment.equipmentType);
+              if (equippedItem !== undefined)
+                equippedItem.associatedResource = this.resource;
+            }
           }
         }
       }
 
+      this.itemSlottedEmitter.emit(true);
       this.assignResource();
       this.availableGems = this.availableGems.filter(item => item.amount > 0);
       this.removeUnavailableGems();
@@ -241,9 +361,30 @@ export class SlotMenuViewComponent {
   }
 
   slotsAvailable() {
-    if (this.lookupService.isItemAddingASlot(this.selectedItem === undefined ? ItemsEnum.None : this.selectedItem.item))
-    {      
+    if (this.lookupService.isItemAddingASlot(this.selectedItem === undefined ? ItemsEnum.None : this.selectedItem.item)) {
       return (this.lookupService.getMaxSlotsPerItem(this.resource) - this.lookupService.getTotalNumberOfSlots(this.resource)) > 0;
+    }
+    else if (this.selectedItem !== undefined && this.selectedItem.item === ItemsEnum.Extraction) {
+      var unique = this.globalService.globalVar.uniques.find(item => item.type === this.resource.item);
+      if (unique === undefined)
+        return false;
+
+      if (unique.level === 0 && unique.xp === 0)
+        return false;
+
+      return true;
+    }
+    else if (this.selectedItem !== undefined && this.selectedItem.item === ItemsEnum.Transmutation) {
+      var unique = this.globalService.globalVar.uniques.find(item => item.type === this.resource.item);
+      if (unique === undefined)
+        return false;
+
+      var xpToMax = this.lookupService.getRemainingUniqueXpToMax(unique);
+
+      if (unique.level >= 1000 || this.transmutationAmount > xpToMax)
+        return false;
+      else
+        return true;
     }
     else
       return this.lookupService.getNumberOfOpenSlots(this.resource);
@@ -297,19 +438,23 @@ export class SlotMenuViewComponent {
     if (this.lookupService.getTotalNumberOfSlots(this.resource) >= 5) {
       this.availableGems = this.availableGems.filter(item => item.item !== ItemsEnum.WeaponSlotAddition && item.item !== ItemsEnum.RingSlotAddition &&
         item.item !== ItemsEnum.NecklaceSlotAddition && item.item !== ItemsEnum.ShieldSlotAddition && item.item !== ItemsEnum.ArmorSlotAddition);
-        
+
       if (this.selectedItem !== undefined && (this.selectedItem.item === ItemsEnum.WeaponSlotAddition || this.selectedItem.item === ItemsEnum.RingSlotAddition ||
-        this.selectedItem.item === ItemsEnum.NecklaceSlotAddition || this.selectedItem.item === ItemsEnum.ShieldSlotAddition || this.selectedItem.item === ItemsEnum.ArmorSlotAddition))      
+        this.selectedItem.item === ItemsEnum.NecklaceSlotAddition || this.selectedItem.item === ItemsEnum.ShieldSlotAddition || this.selectedItem.item === ItemsEnum.ArmorSlotAddition))
         this.selectedItem = undefined;
     }
 
     if (this.lookupService.getTotalNumberOfSlots(this.resource) >= 7) {
       this.availableGems = this.availableGems.filter(item => item.item !== ItemsEnum.MajorWeaponSlotAddition && item.item !== ItemsEnum.MajorRingSlotAddition &&
         item.item !== ItemsEnum.MajorNecklaceSlotAddition && item.item !== ItemsEnum.MajorShieldSlotAddition && item.item !== ItemsEnum.MajorArmorSlotAddition);
-        
+
       if (this.selectedItem !== undefined && (this.selectedItem.item === ItemsEnum.MajorWeaponSlotAddition || this.selectedItem.item === ItemsEnum.MajorRingSlotAddition ||
-        this.selectedItem.item === ItemsEnum.MajorNecklaceSlotAddition || this.selectedItem.item === ItemsEnum.MajorShieldSlotAddition || this.selectedItem.item === ItemsEnum.MajorArmorSlotAddition))      
+        this.selectedItem.item === ItemsEnum.MajorNecklaceSlotAddition || this.selectedItem.item === ItemsEnum.MajorShieldSlotAddition || this.selectedItem.item === ItemsEnum.MajorArmorSlotAddition))
         this.selectedItem = undefined;
+    }
+
+    if (this.resourceAsEquipment.quality !== EquipmentQualityEnum.Unique) {
+      this.availableGems = this.availableGems.filter(item => item.item !== ItemsEnum.Extraction && item.item !== ItemsEnum.Transmutation);
     }
 
     this.availableGems = this.availableGems.filter(item => item.amount > 0);

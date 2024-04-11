@@ -138,8 +138,22 @@ export class DictionaryService {
       name = "Peony Salve";
     else if (type === ItemsEnum.PeonyPoultice)
       name = "Peony Poultice";
+      else if (type === ItemsEnum.InkSalve)
+        name = "Ink Salve";
+      else if (type === ItemsEnum.InkPoultice)
+        name = "Ink Poultice";
     else if (type === ItemsEnum.WildPotion)
       name = "Wild Potion";
+      else if (type === ItemsEnum.BurstingPotion)
+      name = "Bursting Potion";
+      else if (type === ItemsEnum.ShatteringPotion)
+      name = "Shattering Potion";
+      else if (type === ItemsEnum.EndlessPotion)
+      name = "Endless Potion";
+      else if (type === ItemsEnum.Transmutation)
+      name = "Transmutation";
+      else if (type === ItemsEnum.Extraction)
+      name = "Extraction";
     else if (type === ItemsEnum.TidalToxin)
       name = "Tidal Toxin";
     else if (type === ItemsEnum.UnsteadyingToxin)
@@ -399,6 +413,8 @@ export class DictionaryService {
       name = "Sword of Olympus";
     else if (type === ItemsEnum.ArmorOfOlympus)
       name = "Armor of Olympus";
+      else if (type === ItemsEnum.ShieldOfUnendingFlames)
+      name = "Shield of Unending Flames";
 
     //shields
     else if (type === ItemsEnum.IronShield)
@@ -1094,29 +1110,15 @@ export class DictionaryService {
     else if (type === ItemsEnum.LightToxin)
       name = "Light Toxin";
     else if (type === ItemsEnum.CorrosiveToxin)
-      name = "Corrosive Toxin";
-    else if (type === ItemsEnum.InkSalve)
-      name = "Ink Salve";
-    else if (type === ItemsEnum.ShatteringPotion)
-      name = "Shattering Potion";
-    else if (type === ItemsEnum.EndlessPotion)
-      name = "Endless Potion";
+      name = "Corrosive Toxin";    
     else if (type === ItemsEnum.RestorativeElixir)
-      name = "Restorative Elixir";
-    else if (type === ItemsEnum.Extraction)
-      name = "Extraction";
+      name = "Restorative Elixir";    
     else if (type === ItemsEnum.TempestToxin)
-      name = "Tempest Toxin";
-    else if (type === ItemsEnum.BurstingPotion)
-      name = "Bursting Potion";
+      name = "Tempest Toxin";    
     else if (type === ItemsEnum.ElixirOfPower)
-      name = "Elixir of Power";
-    else if (type === ItemsEnum.Transmutation)
-      name = "Transmutation";
+      name = "Elixir of Power";    
     else if (type === ItemsEnum.MetalElixir)
-      name = "Metal Elixir";
-    else if (type === ItemsEnum.InkPoultice)
-      name = "Ink Poultice";
+      name = "Metal Elixir";    
 
     //charms
     else if (type === ItemsEnum.SmallCharmOfDetermination)

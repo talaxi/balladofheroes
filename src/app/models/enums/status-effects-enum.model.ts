@@ -255,5 +255,7 @@ export enum StatusEffectEnum {
     MetalElixir,
     ElixirOfPower,
     RestorativeElixir,
-    CorrosiveToxin
+    CorrosiveToxin,
+    WarriorDefend,
+    UnendingFlames
   }

@@ -4085,15 +4085,15 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.WarForTheMountainTwoSpoiledCourtyard) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.isDoubleBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Antaeus));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Clytius));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Polybotes));
       battleOptions.push(enemyTeam);
     }
     if (type === SubZoneEnum.WarForTheMountainTwoGardens) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.isDoubleBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.TitanPlaceholder1));
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.TitanPlaceholder2));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Perses));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Astraeus));
       battleOptions.push(enemyTeam);
     }
     if (type === SubZoneEnum.WarForTheMountainTwoForOlympus) {
@@ -4242,7 +4242,7 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.TartarusTitanHoldingGrounds) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.isBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.TitanPlaceholder3));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Hyperion));
       battleOptions.push(enemyTeam);
     }
     if (type === SubZoneEnum.MountOthrysCaveOpening) {

@@ -313,6 +313,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.Break) {
       src += "break.svg";
     }
+    if (effect.type === StatusEffectEnum.UnendingFlames) {
+      src += "unendingFlames.svg";
+    }
     if (effect.type === StatusEffectEnum.SwordOfOlympus) {
       src += "omega.svg";
     }
@@ -417,6 +420,27 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     }
     if (effect.type === StatusEffectEnum.Focus) {
       src += "focus.svg";
+    }
+    if (effect.type === StatusEffectEnum.TempestToxin) {
+      src += "tempestToxin.svg";
+    }
+    if (effect.type === StatusEffectEnum.CorrosiveToxin) {
+      src += "corrosiveToxin.svg";
+    }
+    if (effect.type === StatusEffectEnum.LightToxin) {
+      src += "lightToxin.svg";
+    }
+    if (effect.type === StatusEffectEnum.ElixirOfPower) {
+      src += "elixirOfPower.svg";
+    }
+    if (effect.type === StatusEffectEnum.MetalElixir) {
+      src += "metalElixir.svg";
+    }
+    if (effect.type === StatusEffectEnum.RestorativeElixir) {
+      src += "restorativeElixir.svg";
+    }
+    if (effect.type === StatusEffectEnum.WarriorDefend) {
+      src += "warriorDefend.svg";
     }
     if (effect.type === StatusEffectEnum.ItemBoost) {
       src += "itemBoost.svg";
@@ -685,6 +709,8 @@ export class IndividualStatusEffectViewComponent implements OnInit {
           return "Always Active - " + this.dictionaryService.getItemName(Number(effect.caster));
         else if (effect.resolution === EffectResolutionEnum.AlwaysActive)
           return "Always Active";
+          else if (effect.resolution === EffectResolutionEnum.Passive)
+          return "Passive";
       }
       else
         return "Resolves Upon Effect Condition";
