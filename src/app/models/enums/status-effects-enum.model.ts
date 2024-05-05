@@ -257,5 +257,11 @@ export enum StatusEffectEnum {
     RestorativeElixir,
     CorrosiveToxin,
     WarriorDefend,
-    UnendingFlames
+    UnendingFlames,
+    DealMissingHpPercentAfterTime,
+    RedHerb,
+    YellowHerb,
+    GreenHerb,
+    TransferStatusEffect,
+    Illusion
   }

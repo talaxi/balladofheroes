@@ -517,5 +517,15 @@ export enum BestiaryEnum {
   FlittingEssence,
   ReorientingElemental,
   MobileStatue,
-  Khronos
+  Khronos,
+  Briareus,
+  Gyges,
+  Cottus,
+  Hecatoncheires,
+  DivineWolf,
+  Hecate,
+  Mnemosyne,
+  Metis,
+  Helios,
+  DivineTiger
 }

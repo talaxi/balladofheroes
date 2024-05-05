@@ -816,7 +816,7 @@ export class BattleService {
 
     character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(effect => effect.isPermanent || effect.duration > 0);
 
-    if (character.name === "Athena") { //Trial of Skill
+    if (character.name === "Athena" || character.name.includes("Protected Warrior")) { //Trial of Skill
       var totalEffectiveness = 11;
       var amountPerDebuff = 1.25;
       var totalDebuffs = character.battleInfo.statusEffects.filter(item => !item.isPositive).length;
@@ -1750,13 +1750,32 @@ export class BattleService {
       abilityCopy.userEffect = abilityCopy.userEffect.filter(item => item.type !== StatusEffectEnum.InstantOstinato);
     }
 
-    if (abilityCopy.name === "Solar Flare" && !fromRepeat) {      
-        ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));      
+    if ((abilityCopy.name === "Solar Flare" || abilityCopy.name === "Raid") && !fromRepeat) {
+      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
     }
-    
-    if (abilityCopy.name === "Raging Fireball" && ability.cooldown > 2) {      
+
+    if (abilityCopy.name === "Raging Fireball" && ability.cooldown > 2) {
       ability.cooldown -= 2;
-  }
+    }
+
+    if (abilityCopy.name === "Prophecy") {
+      var rng = this.utilityService.getRandomInteger(0, 2);
+
+      if (rng === 0) {
+        abilityCopy.userEffect.unshift(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtUp, 15, 2, false, true));
+      }
+      else if (rng === 1) {
+        abilityCopy.userEffect.unshift(this.globalService.createStatusEffect(StatusEffectEnum.DamageOverTimeTakenDown, 15, .2, false, true));
+      }
+      else if (rng === 2) {
+        abilityCopy.userEffect.unshift(this.globalService.createStatusEffect(StatusEffectEnum.AirDamageTakenDown, 15, .2, false, true));
+        abilityCopy.userEffect.unshift(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageTakenDown, 15, .2, false, true));
+        abilityCopy.userEffect.unshift(this.globalService.createStatusEffect(StatusEffectEnum.WaterDamageTakenDown, 15, .2, false, true));
+        abilityCopy.userEffect.unshift(this.globalService.createStatusEffect(StatusEffectEnum.LightningDamageTakenDown, 15, .2, false, true));
+        abilityCopy.userEffect.unshift(this.globalService.createStatusEffect(StatusEffectEnum.HolyDamageTakenDown, 15, .2, false, true));
+        abilityCopy.userEffect.unshift(this.globalService.createStatusEffect(StatusEffectEnum.EarthDamageTakenDown, 15, .2, false, true));
+      }
+    }
 
     if (abilityCopy.name === "Upstream") {
       var current = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Current);
@@ -4443,7 +4462,7 @@ export class BattleService {
           overallDamageMultiplier *= effect.effectiveness;
         });
       }
-      
+
       var warriorDefend = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.WarriorDefend);
       if (this.warriorCounterattackActive(target, character) && warriorDefend !== undefined) {
         overallDamageMultiplier *= warriorDefend.effectiveness;
@@ -5570,6 +5589,12 @@ export class BattleService {
       if (finalHour !== undefined) {
         if (!target.battleInfo.finalHourUsed && target.battleStats.currentHp <= target.battleStats.maxHp * .5) {
           this.useAbility(false, finalHour, target, this.globalService.getActivePartyCharacters(true), this.battle.currentEnemies.enemyList, false, undefined, undefined, false);
+          var enrage = this.lookupService.characterHasAbility("Enrage", target);
+          if (enrage !== undefined) {
+            enrage.cooldown = 10;
+            if (enrage.currentCooldown > enrage.cooldown)
+              enrage.currentCooldown = enrage.cooldown;
+          }
           target.battleInfo.finalHourUsed = true;
         }
       }
