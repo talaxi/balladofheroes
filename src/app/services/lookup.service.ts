@@ -12907,13 +12907,25 @@ export class LookupService {
 
     var previousSeedValue = 0;
 
-    if (dayBreakpoint === 3)
-      previousSeedValue = date.getDay() + date.getMonth() + date.getFullYear() + 2;
+    if (dayBreakpoint === 3) {
+      if (date.getHours() < this.utilityService.preferredGodEndTime3)
+        previousSeedValue = yesterday.getDay() + yesterday.getMonth() + yesterday.getFullYear() + 2;
+      else
+        previousSeedValue = date.getDay() + date.getMonth() + date.getFullYear() + 2;
+    }
     else if (dayBreakpoint === 2)
       previousSeedValue = date.getDay() + date.getMonth() + date.getFullYear() + 1;
     else if (dayBreakpoint === 1) {
       previousSeedValue = yesterday.getDay() + yesterday.getMonth() + yesterday.getFullYear() + 3;
     }
+
+    /*if (dayBreakpoint === 3)
+      previousSeedValue = date.getDay() + date.getMonth() + date.getFullYear() + 2;
+    else if (dayBreakpoint === 2)
+      previousSeedValue = date.getDay() + date.getMonth() + date.getFullYear() + 1;
+    else if (dayBreakpoint === 1) {
+      previousSeedValue = yesterday.getDay() + yesterday.getMonth() + yesterday.getFullYear() + 3;
+    }*/
 
     this.globalService.globalVar.gods.filter(item => item.isAvailable).forEach(god => {
       availableEnums.push(god.type);

@@ -17957,7 +17957,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Briareus) {
       enemy.name = "Briareus";
-      enemy.battleStats = new CharacterStats(1748321100, 568900, 6200000, 7000000, 1750000, 1750000);
+      enemy.battleStats = new CharacterStats(3802140000, 601500, 6800000, 7500000, 2000000, 2000000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 10;
       enemy.xpGainFromDefeat = 6000000;
@@ -18020,7 +18020,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Gyges) {
       enemy.name = "Gyges";
-      enemy.battleStats = new CharacterStats(1748321100, 568900, 6200000, 7000000, 1750000, 1750000);
+      enemy.battleStats = new CharacterStats(4023500000, 638000, 7450000, 8000000, 2500000, 2500000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 10;
       enemy.xpGainFromDefeat = 6250000;
@@ -18082,7 +18082,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Cottus) {
       enemy.name = "Cottus";
-      enemy.battleStats = new CharacterStats(1748321100, 568900, 6200000, 7000000, 1750000, 1750000);
+      enemy.battleStats = new CharacterStats(4402500000, 675000, 8000000, 8500000, 3000000, 3000000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 10;
       enemy.xpGainFromDefeat = 6500000;
@@ -18147,7 +18147,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Hecatoncheires) {
       enemy.name = "Hecatoncheires";
-      enemy.battleStats = new CharacterStats(1748321100, 568900, 6200000, 7000000, 1750000, 1750000);
+      enemy.battleStats = new CharacterStats(4832500000, 718000, 8500000, 9000000, 3500000, 3500000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 10;
       enemy.xpGainFromDefeat = 7000000;
@@ -18235,7 +18235,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.DivineTiger) {
       enemy.name = "Divine Tiger";
-      enemy.battleStats = new CharacterStats(1748321100, 568900, 6200000, 7000000, 1750000, 1750000);
+      enemy.battleStats = new CharacterStats(2613330000, 735000, 8800000, 10000000, 3800000, 3800000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 10;
       enemy.xpGainFromDefeat = 3700000;
@@ -18293,7 +18293,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Hecate) {
       enemy.name = "Hecate";
-      enemy.battleStats = new CharacterStats(1748321100, 568900, 6200000, 7000000, 1750000, 1750000);
+      enemy.battleStats = new CharacterStats(5582800000, 780000, 9500000, 11000000, 4250000, 4250000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 10;
       enemy.xpGainFromDefeat = 7750000;
@@ -18342,7 +18342,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Mnemosyne) {
       enemy.name = "Mnemosyne";
-      enemy.battleStats = new CharacterStats(1748321100, 568900, 6200000, 7000000, 1750000, 1750000);
+      enemy.battleStats = new CharacterStats(6032800000, 825000, 1000000, 12000000, 4750000, 4750000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 10;
       enemy.xpGainFromDefeat = 8000000;
@@ -18397,11 +18397,10 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Metis) {
       enemy.name = "Metis";
-      enemy.battleStats = new CharacterStats(1748321100, 568900, 6200000, 7000000, 1750000, 1750000);
+      enemy.battleStats = new CharacterStats(6612800000, 875000, 1050000, 13000000, 5250000, 5250000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 10;
       enemy.xpGainFromDefeat = 8300000;
-      
       enemy.battleStats.elementIncrease.fire += .25;
       enemy.battleStats.elementIncrease.water += .25;
       enemy.battleStats.elementIncrease.lightning += .25;
@@ -18463,7 +18462,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Helios) {
       enemy.name = "Helios";
-      enemy.battleStats = new CharacterStats(1748321100, 568900, 6200000, 7000000, 1750000, 1750000);
+      enemy.battleStats = new CharacterStats(7212800000, 950000, 1150000, 15000000, 6000000, 6000000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 10;
       enemy.xpGainFromDefeat = 8500000;
@@ -18522,7 +18521,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.DivineWolf) {
       enemy.name = "Divine Wolf";
-      enemy.battleStats = new CharacterStats(1748321100, 568900, 6200000, 7000000, 1750000, 1750000);
+      enemy.battleStats = new CharacterStats(2301000000, 100000, 1250000, 20000000, 6500000, 6500000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 10;
       enemy.xpGainFromDefeat = 2500000;
