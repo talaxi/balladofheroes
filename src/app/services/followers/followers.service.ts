@@ -384,7 +384,7 @@ export class FollowersService {
         }
       }
     }
-    
+
     if (type === ZoneEnum.MountOlympus) {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.EssenceOfFire, 4));
 
@@ -398,7 +398,7 @@ export class FollowersService {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.EssenceOfHoly, 3));
       }
     }
-    
+
     if (type === ZoneEnum.HuntForYarrow) {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.EssenceOfWater, 3));
 
@@ -412,7 +412,7 @@ export class FollowersService {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MagicCore, 2));
       }
     }
-    
+
     if (type === ZoneEnum.WarForTheMountain) {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RoughOpalFragment, 6));
 
@@ -426,7 +426,7 @@ export class FollowersService {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Nectar, 1));
       }
     }
-    
+
     if (type === ZoneEnum.Crete) {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.VialOfTheCretanSea, 3));
 
@@ -440,12 +440,12 @@ export class FollowersService {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SharpFeather, 3));
       }
     }
-    
+
     if (type === ZoneEnum.Labyrinth) {
       if (rewardLevel <= 3)
-      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MetalNuggets, 2));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MetalNuggets, 2));
       else
-      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MetalNuggets, 5));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MetalNuggets, 5));
 
       if (rewardLevel >= 2) {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MagicDust, 3));
@@ -454,7 +454,7 @@ export class FollowersService {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Coin, 200));
       }
     }
-     
+
     if (type === ZoneEnum.Aiaia) {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.VialOfForeignWaters, 3));
 
@@ -468,7 +468,7 @@ export class FollowersService {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RutileAmethystFragment, 3));
       }
     }
-     
+
     if (type === ZoneEnum.StraitsOfMessina) {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.UnstableElement, 3));
 
@@ -483,7 +483,7 @@ export class FollowersService {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RutileRubyFragment, 3));
       }
     }
-    
+
     if (type === ZoneEnum.ReturnToColchis) {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SquidInk, 3));
 
@@ -494,10 +494,10 @@ export class FollowersService {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SpiderSilk, 3));
       }
       if (rewardLevel >= 4) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ImmortalScales, 3));        
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ImmortalScales, 3));
       }
     }
-    
+
     if (type === ZoneEnum.EscapeFromColchis) {
       if (rewardLevel === 1)
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MetalCore, 2));
@@ -509,6 +509,72 @@ export class FollowersService {
       }
       else if (rewardLevel === 4) {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MetalCore, 8));
+      }
+    }
+
+    if (type === ZoneEnum.OlympusMassif) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.UnstableElement, 3));
+
+      if (rewardLevel >= 2) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectAmethystFragment, 4));
+      }
+      if (rewardLevel >= 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectAquamarineFragment, 4));
+      }
+      if (rewardLevel >= 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ChimeraFur, 3));
+      }
+    }
+    if (type === ZoneEnum.TheAscent) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Passionflower, 3));
+
+      if (rewardLevel >= 2) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectTopazFragment, 4));
+      }
+      if (rewardLevel >= 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectEmeraldFragment, 4));
+      }
+      if (rewardLevel >= 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.UnstableElement, 6));
+      }
+    }
+    if (type === ZoneEnum.WarForTheMountainTwo) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Passionflower, 3));
+
+      if (rewardLevel >= 2) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectRubyFragment, 4));
+      }
+      if (rewardLevel >= 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectOpalFragment, 4));
+      }
+      if (rewardLevel >= 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PureEnergy, 4));
+      }
+    }
+    if (type === ZoneEnum.Tartarus) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.VialOfTartaranFlames, 3));
+
+      if (rewardLevel >= 2) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MisshapenMetalPiece, 2));
+      }
+      if (rewardLevel >= 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectOpalFragment, 4));
+      }
+      if (rewardLevel >= 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PerfectRubyFragment, 4));
+      }
+    }
+    if (type === ZoneEnum.MountOthrys) {
+      if (rewardLevel <= 2)
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PureEnergy, 3));
+      else
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PureEnergy, 10));
+
+      if (rewardLevel >= 2) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SpiderSilk, 3));
+      }
+      if (rewardLevel >= 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.InfiniteEssence, 5));
       }
     }
 

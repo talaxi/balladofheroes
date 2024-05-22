@@ -138,15 +138,29 @@ export class StoryService {
       this.showStory = true;
     else if (this.globalService.globalVar.currentStoryId === 51 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.StraitsOfMessinaUnavoidablePath))
       this.showStory = true;
-      else if (this.globalService.globalVar.currentStoryId === 52 && this.balladService.getActiveSubZone().type === SubZoneEnum.ReturnToColchisPhasisBeach)
+    else if (this.globalService.globalVar.currentStoryId === 52 && this.balladService.getActiveSubZone().type === SubZoneEnum.ReturnToColchisPhasisBeach)
       this.showStory = true;
-      else if (this.globalService.globalVar.currentStoryId === 53 && this.balladService.getActiveSubZone().type === SubZoneEnum.ReturnToColchisReturnToTheGrove)
+    else if (this.globalService.globalVar.currentStoryId === 53 && this.balladService.getActiveSubZone().type === SubZoneEnum.ReturnToColchisReturnToTheGrove)
       this.showStory = true;
-      else if (this.globalService.globalVar.currentStoryId === 54 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.EscapeFromColchisEscape2))
+    else if (this.globalService.globalVar.currentStoryId === 54 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.EscapeFromColchisEscape2))
       this.showStory = true;
-      else if (this.globalService.globalVar.currentStoryId === 55 && this.balladService.getActiveSubZone().type === SubZoneEnum.EscapeFromColchisBattleAtSea)
+    else if (this.globalService.globalVar.currentStoryId === 55 && this.balladService.getActiveSubZone().type === SubZoneEnum.EscapeFromColchisBattleAtSea)
       this.showStory = true;
-      else if (this.globalService.globalVar.currentStoryId === 56 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.EscapeFromColchisBattleAtSea))
+    else if (this.globalService.globalVar.currentStoryId === 56 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.EscapeFromColchisBattleAtSea))
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 57 && this.balladService.getActiveSubZone().type === SubZoneEnum.OlympusMassifLargeOutcroppings)
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 58 && this.balladService.getActiveSubZone().type === SubZoneEnum.TheAscentFinalAscent)
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 59 && this.balladService.getActiveSubZone().type === SubZoneEnum.WarForTheMountainTwoSpoiledCourtyard)
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 60 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.WarForTheMountainTwoForOlympus))
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 61 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.TartarusTitanHoldingGrounds))
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 62 && this.balladService.getActiveSubZone().type === SubZoneEnum.MountOthrysCavernOfTime)
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 63 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.MountOthrysCavernOfTime))
       this.showStory = true;
 
     if (this.showStory)
@@ -167,6 +181,10 @@ export class StoryService {
 
   poseidonText(text: string) {
     return "<span class='poseidonColor bold'>" + text + "</span>";
+  }
+  
+  heraText(text: string) {
+    return "<span class='heraColor bold'>" + text + "</span>";
   }
 
   hermesText(text: string) {
@@ -304,8 +322,8 @@ export class StoryService {
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>As you make your way out of the arena, you find Hermes waiting for you at the front gates. " + this.hermesText("“Well done! Couldn't have done too much better myself. I think I may have been mistaken about you two. You're not wrong for the job, you just need a little guidance. Call on me when you need help, I'm never too far. See you around!”") + "</div>" +
           "<div class='sceneDiv'>Free from gods for the time being, you begin the short trek to the ferryman of the Underworld.</div>";
-        else if (pageCount === 3)
-          sceneText = "<div class='sceneDiv s4Heading bold textCentered sidequestText'>Coliseum Available!</div>" +
+      else if (pageCount === 3)
+        sceneText = "<div class='sceneDiv s4Heading bold textCentered sidequestText'>Coliseum Available!</div>" +
           "Return to the coliseum throughout your journey for increasingly more difficult and rewarding battles. Use the special <b class='smallCaps'>Eternal Melee</b> fight to gain a massive amount of experience for your entire team.";
     }
     else if (storyId === 13) {
@@ -674,13 +692,13 @@ export class StoryService {
       else if (pageCount === 4)
         sceneText = "<div class='sceneDiv'>Zosime hurriedly tells the story of her journey so far. The chance meeting in Delphi, the magic attached to Thales by Athena and Khronos, their conquests over monsters, and the fall of Olympus.</div>" +
           "<div class='sceneDiv'>Circe listened patiently for the story to end. She paused for a moment upon its completion, mulling over what she had heard. Zosime thought she noticed the Witch flinch upon the mention of Athena, but otherwise Circe gave nothing away.</div>" +
-          "<div>Circe and her lionness continued to step forward, stalking closer to Zosime. " + this.commonCharacterText("“I have no love for the Olympians or the games they play. What difference does it make to me who lives on the mountain while I am forced to live here?”") + "</div>"; 
+          "<div>Circe and her lionness continued to step forward, stalking closer to Zosime. " + this.commonCharacterText("“I have no love for the Olympians or the games they play. What difference does it make to me who lives on the mountain while I am forced to live here?”") + "</div>";
       else if (pageCount === 5)
         sceneText = "<div class='sceneDiv'>As Circe approaches, Zosime finally began to feel alarm. She decides that this will likely come to combat, but a warm radiance from behind stops her from raising her bow.</div>" +
           "<div class='sceneDiv'>Zosime turns to see the source of this aura, and notices her own lioness by her side. After swallowing down a brief instinct to move, she saw that her lioness had a slight golden glow. Artemis.</div>" +
           "<div class='sceneDiv'>" + this.commonCharacterText("“I believe this is the first time we have met. Your brothers and sisters have all been by to make their demands or have their fun of course. I wondered if your absence was out of respect or indifference.”") + "</div>" +
-          "<div class='sceneDiv'>With a sigh, she turns to Zosime and continues. </div>" + 
-          "<div>" + this.commonCharacterText("“I will return your friend to you, and you will leave this place. I do not want Athena's ire, but I will not be a pawn in her games. She has taken enough from me.”") + "</div>"; 
+          "<div class='sceneDiv'>With a sigh, she turns to Zosime and continues. </div>" +
+          "<div>" + this.commonCharacterText("“I will return your friend to you, and you will leave this place. I do not want Athena's ire, but I will not be a pawn in her games. She has taken enough from me.”") + "</div>";
       else if (pageCount === 6)
         sceneText = "<div class='sceneDiv'>Feeling her chance slipping away, Zosime decides to push her luck.</div>" +
           "<div class='sceneDiv'>" + this.zosimeText("“It's not just about the gods. It's about your brother, Aeëtes. He spreads corruption to all around him, keeping the dead alive for his bidding. I aim to stop him and the terrors he inflicts upon those around him, and I cannot do it without your help.”") + "</div>" +
@@ -691,83 +709,128 @@ export class StoryService {
     else if (storyId === 49) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>You find a beautiful flower matching the description given by Circe. After picking it, you wait awhile and see that it returns. You suppose that picking a flower over and over isn't that much different than fighting the same monster multiple times. After picking a sizable amount, you make your way back the way you came.</div>" +
-          "<div>When you return to the home of the Witch, she is nowhere to be seen but the door has been left open. You hesitate, not certain that you can truly trust her. Zosime proceeds into the house though, unwavering, and you follow.</div>";          
+          "<div>When you return to the home of the Witch, she is nowhere to be seen but the door has been left open. You hesitate, not certain that you can truly trust her. Zosime proceeds into the house though, unwavering, and you follow.</div>";
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>The house is filled with various flora and is more inviting and warm than you expected. Circe is in an open room off to the side, working with different herbs. She turns towards you as you enter and gives a small nod of approval when she sees your bushel of flowers.</div>" +
-          "<div class='sceneDiv'>" + this.commonCharacterText("“You can leave those on the table.”") + " She says, putting her own herbs down as well. She walks over to you and you notice her demeanor soften slightly.</div>" + 
+          "<div class='sceneDiv'>" + this.commonCharacterText("“You can leave those on the table.”") + " She says, putting her own herbs down as well. She walks over to you and you notice her demeanor soften slightly.</div>" +
           "<div>" + this.commonCharacterText("“There was a time when Aeëtes was my best friend. My only friend. My sister would mock him, asking why Helios's favored son would waste his time.”") + "</div>";
-          else if (pageCount === 3)
+      else if (pageCount === 3)
         sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“When I was first sent away, I knew that no one would think of me, except for perhaps him. I thought he loved me as I loved him, and that he would surely come to see me in my exile.”") + "</div>" +
-          "<div class='sceneDiv'>You could tell she was choosing her words carefully, deciding how much she should share. Circe had lived in isolation for a long time, and she seemed both on guard and longing for connection.</div>" + 
+          "<div class='sceneDiv'>You could tell she was choosing her words carefully, deciding how much she should share. Circe had lived in isolation for a long time, and she seemed both on guard and longing for connection.</div>" +
           "<div>" + this.commonCharacterText("“He did not. I do not fault him for that. I have only seen him once since, lifetimes later, in pursuit of my niece Medea after I allowed her safe passage.”") + " She begins to speak again, then pauses and seems to change her mind. " + this.commonCharacterText("“That was the only time I saw him for who he was.”") + " She does not elaborate.</div>";
-          else if (pageCount === 4)
+      else if (pageCount === 4)
         sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“I will not help you kill him, but I will help you with your dilemma. First, you will need to seek out Scylla. She is long gone, but to you that should be no issue. Go to her, defeat her, and return with her scales. We will continue from there.”") + "</div>" +
           "<div>You agree and withdraw from Circe's home. You are honestly surprised that she decided to help you, but you are grateful nonetheless. You return back to your vessel and convince the crew to go on a new journey.</div>";
     }
     else if (storyId === 50) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>On a calm and sunny day, the narrow path finally appears upon the horizon. As you approach, the still waters become more vigorous, and you start to feel the pull of the great whirlpool.</div>" +
-      "<div class='sceneDiv'>Traveling through here was once like picking your own poison. To avoid the disastrous whirlpool Charybdis, you would be driven straight into the lair of the monstrous Scylla.</div>" +
-      "<div>That is the path you take today. Your ship careens in the darkness through the rocky cove.</div>";
+          "<div class='sceneDiv'>Traveling through here was once like picking your own poison. To avoid the disastrous whirlpool Charybdis, you would be driven straight into the lair of the monstrous Scylla.</div>" +
+          "<div>That is the path you take today. Your ship careens in the darkness through the rocky cove.</div>";
       else if (pageCount === 2)
         sceneText = "<div>As always, your magic holds. The waves part to reveal one head, then two, then too many thrashing about to count. The monster seemed to relish in the opportunity to take one more set of victims, and you were in for the fight of your life.</div>";
     }
     else if (storyId === 51) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>Victorious, you set sail back to the island of Aiaia. Upon your return, you find Circe tending to an array of chickens and you briefly wonder if they had been humans in the past.</div>" +
-        "<div>Zosime steps forward and proudly displays the scales taken from the sea monster's corpse. " + this.zosimeText("“Lady Circe, we have what you requested. Will this do?”") + "</div>";
+          "<div>Zosime steps forward and proudly displays the scales taken from the sea monster's corpse. " + this.zosimeText("“Lady Circe, we have what you requested. Will this do?”") + "</div>";
       else if (pageCount === 2)
-        sceneText = "<div class='sceneDiv'>Circe takes the scales and makes her way back to her house. She places the scales down and enters her room filled with herbs. " + this.commonCharacterText("“The scales are for me. A reminder of how a single act of cruelty can lead to the agony of so many.") + "</div>" + 
-        "<div class='sceneDiv'>" + this.commonCharacterText("And proof. Aeëtes was the strongest of us. If you could not defeat Scylla, you could not withstand him.”") + "</div>" +
-        "<div>She proffers a bushel of herbs with dark black roots and white leaves to Thales.</div>";
+        sceneText = "<div class='sceneDiv'>Circe takes the scales and makes her way back to her house. She places the scales down and enters her room filled with herbs. " + this.commonCharacterText("“The scales are for me. A reminder of how a single act of cruelty can lead to the agony of so many.") + "</div>" +
+          "<div class='sceneDiv'>" + this.commonCharacterText("And proof. Aeëtes was the strongest of us. If you could not defeat Scylla, you could not withstand him.”") + "</div>" +
+          "<div>She proffers a bushel of herbs with dark black roots and white leaves to Thales.</div>";
       else if (pageCount === 3)
         sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“This is what you need. Do not lose them -- you will never find more, as a mortal cannot pick Moly. The gods use it to protect themselves from magic and poisons. Take this when you want the magic to stop for a time, and it will.”") + "</div>" +
-      "<div class='sceneDiv'>You take the herbs and give thanks.</div>" + 
-      "<div>" + this.commonCharacterText("“He is more powerful than even I realize. Good luck. You will need it.”") + "</div>";
+          "<div class='sceneDiv'>You take the herbs and give thanks.</div>" +
+          "<div>" + this.commonCharacterText("“He is more powerful than even I realize. Good luck. You will need it.”") + "</div>";
     }
     else if (storyId === 52) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>Your journey from Aiaia to Colchis spans weeks. Aiaia is hidden away on the far west beyond Greece. Colchis was the opposite, sitting on the eastern edge of the Black Sea. Fortunately, the chilly weather of early Spring had passed, making the water travels more enjoyable.</div>" +
-        "<div>You pass by the mainland a little over halfway through your travels, and as soon as you pass Greece, Aeetes's meddling is immediately evident. Small, coastal towns are sparsely populated. The closer you are to your destination, the more frequently you encountered those husks from before.</div>";
+          "<div>You pass by the mainland a little over halfway through your travels, and as soon as you pass Greece, Aeetes's meddling is immediately evident. Small, coastal towns are sparsely populated. The closer you are to your destination, the more frequently you encountered those husks from before.</div>";
       else if (pageCount === 2)
-        sceneText = "<div class='sceneDiv'>Under the cover of night, you bring your vessel into the Colchis beach far away from the docks. Like Jason before you, you cover your boat in reeds hoping to avoid detection. Fortunately, you see no signs of the mindless corpses this far out.</div>" + 
-        "<div>Zosime takes point as you work your way into the capital. Her hunting skills are just as useful in evading detection, and you try to follow her every step.</div>";     
+        sceneText = "<div class='sceneDiv'>Under the cover of night, you bring your vessel into the Colchis beach far away from the docks. Like Jason before you, you cover your boat in reeds hoping to avoid detection. Fortunately, you see no signs of the mindless corpses this far out.</div>" +
+          "<div>Zosime takes point as you work your way into the capital. Her hunting skills are just as useful in evading detection, and you try to follow her every step.</div>";
     }
     else if (storyId === 53) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>As you press forward, you begin to notice the husks guarding Colchis. Mindless sentinels standing motionless, scattered throughout the town.</div>" +
-        "<div>Despite your best efforts, conflict is unavoidable. Under the moonlight, you slowly make your way to your destination as carefully and quietly as possible.</div>";
+          "<div>Despite your best efforts, conflict is unavoidable. Under the moonlight, you slowly make your way to your destination as carefully and quietly as possible.</div>";
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>With the Grove of Ares in sight, you quicken your pace. Surprisingly, there are no guards here.</div>" +
-        "<div>You make your way to the golden fleece. Aeetes's prized possession. You move to grab it but hear a hiss in the darkness. Instinctively, you dodge out of the way right as a gargantuan snake dives at you. Aeetes's guardian, the immortal Colchian Dragon. It would seem Aeetes does leave a guard here -- his greatest.</div>";      
+          "<div>You make your way to the golden fleece. Aeetes's prized possession. You move to grab it but hear a hiss in the darkness. Instinctively, you dodge out of the way right as a gargantuan snake dives at you. Aeetes's guardian, the immortal Colchian Dragon. It would seem Aeetes does leave a guard here -- his greatest.</div>";
     }
     else if (storyId === 54) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>With the golden fleece in hand, you race back to your boat. Thankfully, your hiding spot remained hidden. With haste, you move your boat back in the water.</div>" +
-        "<div class='sceneDiv'>" + this.thalesText("“You think he'll follow?”") + "</div>" + 
-        "<div >" + this.zosimeText("“He'll follow.”") + "</div>";      
-    }    
-    else if (storyId === 55) {      
+          "<div class='sceneDiv'>" + this.thalesText("“You think he'll follow?”") + "</div>" +
+          "<div>" + this.zosimeText("“He'll follow.”") + "</div>";
+    }
+    else if (storyId === 55) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>The sun begins to rise only a few hours after your escape. As the visibility improves, you see a dot on the horizon. Zosime was right -- Aeetes was on the hunt.</div>" +
-        "<div>You are in the middle of the Black Sea. You look around you and see no land masses. Your boat begins to slow. You wait.</div>";        
+          "<div>You are in the middle of the Black Sea. You look around you and see no land masses. Your boat begins to slow. You wait.</div>";
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“You two.”") + "</div>" +
-        "<div class='sceneDiv'>Aeetes's much larger vessel caught up to your ship and his crew had boarded. The King of Colchis looks irate.</div>" + 
-        "<div>" + this.commonCharacterText("“The Golden Fleece is <i><b>MINE</b></i>. I should have killed you the first time we met. Let me correct my mistake.”") + "</div>";        
+          "<div class='sceneDiv'>Aeetes's much larger vessel caught up to your ship and his crew had boarded. The King of Colchis looks irate.</div>" +
+          "<div>" + this.commonCharacterText("“The Golden Fleece is <i><b>MINE</b></i>. I should have killed you the first time we met. Let me correct my mistake.”") + "</div>";
     }
-    else if (storyId === 56) {      
+    else if (storyId === 56) {
       if (pageCount === 1)
-      sceneText = "<div class='sceneDiv'>After a fierce battle, you finally bring Aeetes to his knees. You quickly ingest the Moly given to you by Circe before striking the final blow. For several tense seconds, you wait.</div>" +
-      "<div class='sceneDiv'>The Eagle King does not return. The magic reanimating the corpses falters, as the bodies fall to the ground. The spirits of the dead finally find their way to the underworld. </div>" + 
-      "<div>You can't help but let out a cheer.</div>";        
-    else if (pageCount === 2)
-      sceneText = "<div class='sceneDiv'>Your crew spends the next few weeks returning back to the island of Aiaia. You and Zosime discussed what your next steps should be, and giving the Golden Fleece to Aeetes next of kin seemed like the right thing to do.</div>" +
-      "<div class='sceneDiv'>Circe was conflicted when you told her the news, but kind. She knew that Aeetes overreached and that one day his arrogance would lead to his demise.</div>" + 
-      "<div class='sceneDiv'>The Witch accepted the Golden Fleece, another trinket reminding her of past lives. In return, she provides you with more of the magical root Moly.</div>" +
-      "<div>You finally had the answer to your problem. It was time to take back the mountain.</div>";        
-      else if (pageCount === 3)
-        sceneText = "<div><i class='s4Heading'>This is the end of current main story content. Check back again in May for more!</i></div>";
+        sceneText = "<div class='sceneDiv'>After a fierce battle, you finally bring Aeetes to his knees. You quickly ingest the Moly given to you by Circe before striking the final blow. For several tense seconds, you wait.</div>" +
+          "<div class='sceneDiv'>The Eagle King does not return. The magic reanimating the corpses falters, as the bodies fall to the ground. The spirits of the dead finally find their way to the underworld. </div>" +
+          "<div>You can't help but let out a cheer.</div>";
+      else if (pageCount === 2)
+        sceneText = "<div class='sceneDiv'>Your crew spends the next few weeks returning back to the island of Aiaia. You and Zosime discussed what your next steps should be, and giving the Golden Fleece to Aeetes next of kin seemed like the right thing to do.</div>" +
+          "<div class='sceneDiv'>Circe was conflicted when you told her the news, but kind. She knew that Aeetes overreached and that one day his arrogance would lead to his demise.</div>" +
+          "<div class='sceneDiv'>The Witch accepted the Golden Fleece, another trinket reminding her of past lives. In return, she provides you with more of the magical root Moly.</div>" +
+          "<div>You finally had the answer to your problem. It was time to take back the mountain.</div>";      
+    }
+    else if (storyId === 57) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>You arrive at the base of Mount Olympus. As you traveled, you tried to anticipate what trials would be ahead of you but you did not quite expect this.</div>" +
+          "<div class='sceneDiv'>At a glance, you saw chimeras, harpies, and two headed monstrosities. It would seem that the spawn of the titan Typhon were given charge here, given orders to prevent any who would try to ascend no doubt.</div>" +
+          "<div>You will not be intimidated. With the might of the Olympic pantheon behind you, you press forward.</div>";
+    }
+    else if (storyId === 58) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>You climb the mountain, dealing with every manner of monster. As you approach the peak, you are halted by the terrible titan Typhon. The heads of snakes sprouted from its massive shoulders, biting in all directions. Before it has the chance to prepare, you ingest a piece of Moly and rush in to attack.</div>";
+    }
+    else if (storyId === 59) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>You finally make your way to the top of the mountain, and it is a terrible sight. The palaces are in complete disarray and the gardens uprooted. The new rulers of Olympus were alerted to your presence during your battle with Typhon and are at the gates ready to greet you. </div>" +
+      "<div>But this time, you are prepared. You make certain the effects of the Moly are still active, and then enter Olympus.</div>";
+    }
+    else if (storyId === 60) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>You strike the final blow against the Giant leader Enceladus, finally gaining your revenge. With his defeat, the remaining Giants and Titans surrender against the might of the Olympians.</div>" +
+          "<div class='sceneDiv'>Noticeably missing from the battle was Khronos. There was no grand entrance or master plan to unfold. You are not the only one curious about his absence.</div>" +
+          "<div class='sceneDiv'>" + this.heraText("“Olympus is not truly ours until the snake Khronos is dealt with.”") + " Hera, Queen of the Gods, says to you. " + this.heraText("“He must be found and dealt with.”") + "</div>" +
+          "<div>" + this.heraText("“I will find him. And then we will end this.”") + "</div>";
+      else if (pageCount === 2)
+        sceneText = "<div class='sceneDiv'>There were only a few places that Khronos could hide, and no one could hide from Hera for long. Her crows were scattered all throughout Greece and beyond. While she searched, you decide to search near the last place you spotted him -- the Underworld.</div>" +
+          "<div>After the first war between Olympians and Titans, several of the Titans were banished to Tartarus for eternity. You thought that there may be a chance Khronos had returned to his old resting place.</div>";      
+    }
+    else if (storyId === 61) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>You search the holding grounds of the Titans but see no sign of Khronos. After a while, you end your search and return to the surface. Soon after, you spot a crow looking at you curiously.</div>" +
+      "<div class='sceneDiv'>" + this.commonCharacterText("“Othyrs!”") + " The crow chirped to your surprise. " + this.commonCharacterText("“Othyrs! Othrys!”") + "</div>" +
+      "<div>After a moment, Zosime spoke. " + this.zosimeText("“Hera must have found Khronos. He must be on Mount Othyrs!”") + "</div>";
+    }
+    else if (storyId === 62) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>As you traverse the caves, the air is filled with the uncomfortable feeling of magic in the air. Chunks of rock float on their own, larger pieces act in life-like ways. You wind your way through the maze of paths, the air filling more and more with magic. As it starts to become unbearable, you find yourself in a small opening, the Titan Khronos in front of you.</div>" +      
+      "<div>Before he has the opportunity to cast the paralyzing spell from before, you rush in and seek redemption.</div>";
+    }
+    else if (storyId === 63) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>With one final swing of your blade, the Titan falls. You made sure to ingest Moly before the battle, sending Khronos back to his resting place in Tartarus. As you catch your breath from the vigorous battle, you notice a new shape entering the cave. The goddess Athena.</div>" +
+          "<div class='sceneDiv'>" + this.athenaText("“You have done well, my champion.”") + " The goddess says, acknowledging you and then Zosime. " + this.athenaText("“I knew I was right to choose you.”") + "</div>" +
+          "<div class='sceneDiv'>Athena steps towards you and proffers a potion. " + this.athenaText("“Drink this and the spell will be lifted. You will no longer be cursed to live amongst those who should be gone. Or blessed to live amongst them, perhaps. Take it whenever you desire.”") + "</div>" +
+          "<div>Athena takes a step back. " + this.athenaText("“You both are forever welcome on Olympus.”") + " With that, she vanished.</div>";
+      else if (pageCount === 2)
+        sceneText = "<div class='sceneDiv'>You both exit the cave, feeling the weight of your journey as this chapter finally comes to a close. You've seen more than you could ever imagine traveling the world with Zosime, and you aren't ready to stop yet.</div>" +
+          "<div class='sceneDiv'>" + this.zosimeText("“When will you drink the potion?”") + " Zosime asks. She seems to be thinking the same thing.</div>" +
+          "<div>" + this.thalesText("“Soon… but maybe not yet. Have any other names on your list you want to cross off first?”") + "</div>";      
     }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
@@ -985,7 +1048,28 @@ export class StoryService {
       this.pageCount = 2;
     }
     if (this.globalService.globalVar.currentStoryId === 56) {
-      this.pageCount = 3; //TODO: after next ballad, set this to 2
+      this.pageCount = 2;
+    }    
+    if (this.globalService.globalVar.currentStoryId === 57) {
+      this.pageCount = 1;
+    }
+    if (this.globalService.globalVar.currentStoryId === 58) {
+      this.pageCount = 1;
+    }
+    if (this.globalService.globalVar.currentStoryId === 59) {
+      this.pageCount = 1;
+    }
+    if (this.globalService.globalVar.currentStoryId === 60) {
+      this.pageCount = 2;
+    }
+    if (this.globalService.globalVar.currentStoryId === 61) {
+      this.pageCount = 1;
+    }
+    if (this.globalService.globalVar.currentStoryId === 62) {
+      this.pageCount = 1;
+    }
+    if (this.globalService.globalVar.currentStoryId === 63) {
+      this.pageCount = 2;
     }
 
     this.sceneText = this.getStoryText(this.globalService.globalVar.currentStoryId, this.currentPage);
@@ -1134,6 +1218,13 @@ export class StoryService {
           this.globalService.globalVar.achievements.push(achievement);
         });
       }
+    }
+    if (this.globalService.globalVar.currentStoryId === 60) {
+      var hera = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hera);
+      if (hera !== undefined) {
+        hera.isAvailable = true;
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You have gained the powers of Hera, Queen of the Gods.", this.globalService.globalVar);
+      }      
     }
 
     return this.showStory;
@@ -1291,12 +1382,12 @@ export class StoryService {
     if (scene === OptionalSceneEnum.CirceAlchemy) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>You return to Circe's home. You do not see her outside, but the door is open. You decide it best to knock -- no need to give Circe any reason to transform you once again.</div>" +
-        "<div class='sceneDiv'>" + this.commonCharacterText("“Come in.”") + "</div>" +
-        "<div class='sceneDiv'>You enter the abode at the Witch's request. Despite living alone, Circe's home was not cold. On this day, various animals moved about including the lionness laying calmly by Circe's side. The Witch herself was hard at work spinning yarn with her beautiful loom. You clear your throat, trying to think of the right way to ask for another favor.</div>";
+          "<div class='sceneDiv'>" + this.commonCharacterText("“Come in.”") + "</div>" +
+          "<div class='sceneDiv'>You enter the abode at the Witch's request. Despite living alone, Circe's home was not cold. On this day, various animals moved about including the lionness laying calmly by Circe's side. The Witch herself was hard at work spinning yarn with her beautiful loom. You clear your throat, trying to think of the right way to ask for another favor.</div>";
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>" + this.thalesText("“Do you think you could show me some of your potions?”") + " You finally blurt out. All who know of Circe know that she has perhaps the greatest mind of potions and herbs amongst the living. You didn't want to miss an opportunity to improve your craft.</div>" +
-        "<div class='sceneDiv'>Circe continued to work at her loom without acknowledgement. Finally, she spoke. " + this.commonCharacterText("“Have you been touched by Hecate? You continue to surprise me.”") + " She said without looking away from her work.</div>" + 
-        "<div>" + this.commonCharacterText("“I'm in need of some roots from the forest. Bring me some and we'll talk.”") + "</div>";
+          "<div class='sceneDiv'>Circe continued to work at her loom without acknowledgement. Finally, she spoke. " + this.commonCharacterText("“Have you been touched by Hecate? You continue to surprise me.”") + " She said without looking away from her work.</div>" +
+          "<div>" + this.commonCharacterText("“I'm in need of some roots from the forest. Bring me some and we'll talk.”") + "</div>";
     }
     if (scene === OptionalSceneEnum.CirceAlchemy2) {
       if (pageCount === 1)
@@ -1513,15 +1604,6 @@ export class StoryService {
           this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, "Your max Alchemy level has increased by <strong>25</strong> to a total of <strong>" + alchemy.maxLevel + "</strong>.", this.globalService.globalVar);
         }
       }
-      /*if (this.showOptionalStory === OptionalSceneEnum.BrokenHuskJewelcrafting) {
-        var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
-        if (jewelcrafting !== undefined) {
-          jewelcrafting.maxLevel += 25;
-
-          var gameLogEntry = "Working with the intricate piece of metal has given you inspiration. Your Jewelcrafting max level increases by <strong>25</strong> to a total of <strong>" + jewelcrafting.maxLevel + "</strong>.";
-          this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry, this.globalService.globalVar);
-        }
-      }*/
 
       this.currentPage = 1;
       this.globalService.globalVar.optionalScenesViewed.push(this.showOptionalStory);

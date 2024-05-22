@@ -635,5 +635,8 @@ export enum ItemsEnum {
   ChimeraFur,
   PureEnergy,
   Passionflower,
-  ShieldOfUnendingFlames
+  ShieldOfUnendingFlames,
+  PerfectGemstone,
+  MagicalVial,
+  
 } 

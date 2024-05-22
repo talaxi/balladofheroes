@@ -147,6 +147,8 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       return "PEN";
     if (effect.type === StatusEffectEnum.HpRegenUp)
       return "RGN";
+    if (effect.type === StatusEffectEnum.DealMissingHpPercentAfterTime)
+      return "HP";
     if (effect.type === StatusEffectEnum.Shapeshift) {
       if (effect.count === 1)
         return "P";
@@ -304,8 +306,23 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.ElixirOfWill) {
       src += "elixirOfWill.svg";
     }
+    if (effect.type === StatusEffectEnum.GreenHerb) {
+      src += "healingHerb.svg";
+    }
+    if (effect.type === StatusEffectEnum.YellowHerb) {
+      src += "yellowHerb.svg";
+    }
+    if (effect.type === StatusEffectEnum.RedHerb) {
+      src += "restorativeHerb.svg";
+    }
     if (effect.type === StatusEffectEnum.UnsteadyingToxin) {
       src += "unsteadyingToxin.svg";
+    }
+    if (effect.type === StatusEffectEnum.DealMissingHpPercentAfterTime) {
+      src += "dealMissingHpAfterTime.svg";
+    }
+    if (effect.type === StatusEffectEnum.Illusion) {
+      src += "illusion.svg";
     }
     if (effect.type === StatusEffectEnum.HeroicElixir) {
       src += "heroicElixir.svg";

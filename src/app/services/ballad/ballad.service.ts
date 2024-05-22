@@ -1232,6 +1232,22 @@ export class BalladService {
     if (type === SubZoneEnum.EscapeFromColchisBackAgainstTheWall || type === SubZoneEnum.EscapeFromColchisBattleAtSea)
       victories = bossVictories;
 
+    if (type === SubZoneEnum.OlympusMassifThessalyGrasslands || type === SubZoneEnum.OlympusMassifInnerThessalyPathways || type === SubZoneEnum.OlympusMassifLargeOutcroppings ||
+      type === SubZoneEnum.TheAscentHarshRise || type === SubZoneEnum.TheAscentAbundantGreenery || type === SubZoneEnum.TheAscentHigherElevation)
+      victories = defaultVictories;
+      
+    if (type === SubZoneEnum.TartarusWesternPath || type === SubZoneEnum.TartarusDesolateFields || type === SubZoneEnum.TartarusPlainsOfJudgment ||
+      type === SubZoneEnum.TartarusWallsOfFire || type === SubZoneEnum.TartarusPhlegethonRiver || type === SubZoneEnum.TartarusScorchedMeadow ||
+      type === SubZoneEnum.TartarusUnholyHalls || type === SubZoneEnum.MountOthrysCaveOpening || type === SubZoneEnum.MountOthrysTightPassage || type === SubZoneEnum.MountOthrysFracturedWall)
+      victories = defaultVictories;
+
+    if (type === SubZoneEnum.OlympusMassifMountainBase || type === SubZoneEnum.TheAscentFinalAscent || type === SubZoneEnum.WarForTheMountainTwoSpoiledCourtyard || 
+      type === SubZoneEnum.WarForTheMountainTwoGardens || type === SubZoneEnum.WarForTheMountainTwoForOlympus || type === SubZoneEnum.TartarusTitanHoldingGrounds || 
+      type === SubZoneEnum.MountOthrysCavernOfTime)
+      victories = bossVictories;
+
+    //todo add victory count
+
     return victories;
   }
 

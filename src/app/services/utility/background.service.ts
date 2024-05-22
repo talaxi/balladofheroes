@@ -1055,7 +1055,7 @@ export class BackgroundService {
 
           if (enemy.loot !== undefined && enemy.loot.length > 0) {
             enemy.loot.forEach(loot => {
-              if (loot.item === ItemsEnum.GoldenApple || loot.item === ItemsEnum.FireAbsorptionPotionRecipe || loot.item === ItemsEnum.WaterAbsorptionPotionRecipe ||
+              if (loot.item === ItemsEnum.GoldenApple || loot.item === ItemsEnum.PerfectGemstone || loot.item === ItemsEnum.MagicalVial || loot.item === ItemsEnum.FireAbsorptionPotionRecipe || loot.item === ItemsEnum.WaterAbsorptionPotionRecipe ||
                 loot.item === ItemsEnum.LightningAbsorptionPotionRecipe || loot.item === ItemsEnum.EarthAbsorptionPotionRecipe || loot.item === ItemsEnum.HolyAbsorptionPotionRecipe ||
                 loot.item === ItemsEnum.AirAbsorptionPotionRecipe || loot.item === ItemsEnum.PoisonExtractPotionRecipe || loot.item === ItemsEnum.PotentConcoctionRecipe)
                 return;
@@ -1089,7 +1089,7 @@ export class BackgroundService {
 
           if (enemy.loot !== undefined && enemy.loot.length > 0) {
             enemy.loot.forEach(loot => {
-              if (loot.item === ItemsEnum.GoldenApple || loot.item === ItemsEnum.FireAbsorptionPotionRecipe || loot.item === ItemsEnum.WaterAbsorptionPotionRecipe ||
+              if (loot.item === ItemsEnum.GoldenApple || loot.item === ItemsEnum.PerfectGemstone || loot.item === ItemsEnum.MagicalVial || loot.item === ItemsEnum.FireAbsorptionPotionRecipe || loot.item === ItemsEnum.WaterAbsorptionPotionRecipe ||
                 loot.item === ItemsEnum.LightningAbsorptionPotionRecipe || loot.item === ItemsEnum.EarthAbsorptionPotionRecipe || loot.item === ItemsEnum.HolyAbsorptionPotionRecipe ||
                 loot.item === ItemsEnum.AirAbsorptionPotionRecipe || loot.item === ItemsEnum.PoisonExtractPotionRecipe || loot.item === ItemsEnum.PotentConcoctionRecipe)
                 return;

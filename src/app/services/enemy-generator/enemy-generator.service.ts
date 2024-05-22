@@ -17942,8 +17942,7 @@ export class EnemyGeneratorService {
       purify.isAvailable = true;
       purify.cooldown = purify.currentCooldown = 15;
       purify = this.randomizeCooldown(purify);
-      purify.dealsDirectDamage = false;
-      //TODO: need to code this and image it
+      purify.dealsDirectDamage = false;      
       purify.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DealMissingHpPercentAfterTime, 10, .75, false, false));
       enemy.abilityList.push(purify);
 
@@ -17998,15 +17997,14 @@ export class EnemyGeneratorService {
       earthShatteringStomp.isAoe = true;
       enemy.abilityList.push(earthShatteringStomp);
 
-      //TODO: set correct immobolize release value
       var strangle = new Ability();
       strangle.name = "Grapple";
       strangle.isAvailable = true;
       strangle.cooldown = strangle.currentCooldown = 26;
       strangle = this.randomizeCooldown(strangle);
       strangle.dealsDirectDamage = false;
-      strangle.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.CastingImmobilize, -1, 1, false, true, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 25000));
-      strangle.targetEffect.push(this.globalService.createDamageOverTimeEffect(1000, 3, 3, strangle.name, dotTypeEnum.BasedOnAttack));
+      strangle.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.CastingImmobilize, -1, 1, false, true, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 500000000));
+      strangle.targetEffect.push(this.globalService.createDamageOverTimeEffect(1000, 3, 4, strangle.name, dotTypeEnum.BasedOnAttack));
       strangle.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Immobilize, -1, 1, false, false));
       enemy.abilityList.push(strangle);
 
@@ -18187,16 +18185,15 @@ export class EnemyGeneratorService {
       earthShatteringStomp.elementalType = ElementalTypeEnum.Earth;
       earthShatteringStomp.isAoe = true;
       enemy.abilityList.push(earthShatteringStomp);
-      
-      //TODO: set correct immobolize release value
+            
       var strangle = new Ability();
       strangle.name = "Grapple";
       strangle.isAvailable = true;
       strangle.cooldown = strangle.currentCooldown = 22;
       strangle = this.randomizeCooldown(strangle);
       strangle.dealsDirectDamage = false;
-      strangle.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.CastingImmobilize, -1, 1, false, true, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 25000));
-      strangle.targetEffect.push(this.globalService.createDamageOverTimeEffect(1000, 3, .75, strangle.name, dotTypeEnum.BasedOnAttack));
+      strangle.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.CastingImmobilize, -1, 1, false, true, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 500000000));
+      strangle.targetEffect.push(this.globalService.createDamageOverTimeEffect(1000, 3, 4, strangle.name, dotTypeEnum.BasedOnAttack));
       strangle.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Immobilize, -1, 1, false, false));
       enemy.abilityList.push(strangle);
 
@@ -18305,8 +18302,7 @@ export class EnemyGeneratorService {
       mixRedHerb.isAvailable = true;
       mixRedHerb.cooldown = mixRedHerb.currentCooldown = 22;
       mixRedHerb = this.randomizeCooldown(mixRedHerb);
-      mixRedHerb.dealsDirectDamage = false;
-      //TODO: image
+      mixRedHerb.dealsDirectDamage = false;      
       mixRedHerb.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RedHerb, -1, 1, false, true, false));
       enemy.abilityList.push(mixRedHerb);
 
@@ -18316,8 +18312,7 @@ export class EnemyGeneratorService {
       mixGreenHerb.isAvailable = true;
       mixGreenHerb.cooldown = mixGreenHerb.currentCooldown = 22;
       mixGreenHerb = this.randomizeCooldown(mixGreenHerb);
-      mixGreenHerb.dealsDirectDamage = false;
-      //TODO: image
+      mixGreenHerb.dealsDirectDamage = false;      
       mixGreenHerb.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.GreenHerb, -1, 1, false, true, false));
       enemy.abilityList.push(mixGreenHerb);
       
@@ -18327,8 +18322,7 @@ export class EnemyGeneratorService {
       mixYellowHerb.isAvailable = true;
       mixYellowHerb.cooldown = mixYellowHerb.currentCooldown = 22;
       mixYellowHerb = this.randomizeCooldown(mixYellowHerb);
-      mixYellowHerb.dealsDirectDamage = false;
-      //TODO: image
+      mixYellowHerb.dealsDirectDamage = false;      
       mixYellowHerb.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.YellowHerb, -1, 1, false, true, false));
       enemy.abilityList.push(mixYellowHerb);
 
@@ -18377,7 +18371,6 @@ export class EnemyGeneratorService {
       chaos.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResetRandomCooldown, -1, 1, true, false, true));
       enemy.abilityList.push(chaos);
       
-      //todo: give one debuff on you to an enemy
       var realFake = new Ability();
       realFake.name = "Real or Fake?";
       realFake.isAvailable = true;
@@ -18438,8 +18431,7 @@ export class EnemyGeneratorService {
       mixYellowHerb.isAvailable = true;
       mixYellowHerb.cooldown = mixYellowHerb.currentCooldown = 22;
       mixYellowHerb = this.randomizeCooldown(mixYellowHerb);
-      mixYellowHerb.dealsDirectDamage = false;
-      //TODO: image
+      mixYellowHerb.dealsDirectDamage = false;      
       mixYellowHerb.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Illusion, 10, .333, false, true, false));
       enemy.abilityList.push(mixYellowHerb);
       
@@ -19503,7 +19495,7 @@ export class EnemyGeneratorService {
       enemy.battleStats.elementResistance.fire += .25;
       enemy.battleStats.elementResistance.lightning += .25;
       enemy.battleStats.elementResistance.water += .25;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.ChimeraFur, ItemTypeEnum.CraftingMaterial, 1, .03));
 
       var fireball = new Ability();
       fireball.name = "Fireball";
@@ -19544,7 +19536,7 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
       enemy.battleStats.elementResistance.air += .25;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.PerfectAmethystFragment, ItemTypeEnum.CraftingMaterial, 1, .02));
 
       var ravage = new Ability();
       ravage.name = "Ravage";
@@ -19581,7 +19573,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.PerfectOpalFragment, ItemTypeEnum.CraftingMaterial, 1, .02));
 
       var twoHeadedBite = new Ability();
       twoHeadedBite.name = "Two-Headed Bite";
@@ -19610,7 +19602,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.PerfectTopazFragment, ItemTypeEnum.CraftingMaterial, 1, .02));
 
       var scratch = new Ability();
       scratch.name = "Scratch";
@@ -19648,7 +19640,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.PerfectRubyFragment, ItemTypeEnum.CraftingMaterial, 1, .02));
 
       var fang = new Ability();
       fang.name = "Fang";
@@ -19679,7 +19671,8 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.PerfectOpalFragment, ItemTypeEnum.CraftingMaterial, 1, .01));
+      enemy.loot.push(new LootItem(ItemsEnum.ChimeraFur, ItemTypeEnum.CraftingMaterial, 1, .05));
 
       var fireball = new Ability();
       fireball.name = "Fire Breath";
@@ -19729,7 +19722,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.Passionflower, ItemTypeEnum.CraftingMaterial, 1, .05));
 
       var ravage = new Ability();
       ravage.name = "Ravage";
@@ -19769,7 +19762,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.PerfectEmeraldFragment, ItemTypeEnum.CraftingMaterial, 1, .03));
 
       var dive = new Ability();
       dive.name = "Dive";
@@ -19813,7 +19806,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.Passionflower, ItemTypeEnum.CraftingMaterial, 2, .02));
 
       var ravage = new Ability();
       ravage.name = "Ravage";
@@ -19843,7 +19836,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.PerfectAquamarineFragment, ItemTypeEnum.CraftingMaterial, 1, .03));
 
       var scratch = new Ability();
       scratch.name = "Scratch";
@@ -19871,7 +19864,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.UnstableElement, ItemTypeEnum.CraftingMaterial, 1, .1));
 
       var monstrousAura = new Ability();
       monstrousAura.name = "Monstrous Aura";
@@ -19929,7 +19922,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.PureEnergy, ItemTypeEnum.CraftingMaterial, 1, .04));
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.GaiasBlessing, -1, .5, false, true));
 
       var wildSwingCombo = new Ability();
@@ -19984,7 +19977,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.PureEnergy, ItemTypeEnum.CraftingMaterial, 1, .04));
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.GaiasBlessing, -1, .5, false, true));
 
       var savageSlam = new Ability();
@@ -20039,7 +20032,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.PureEnergy, ItemTypeEnum.CraftingMaterial, 1, .04));
 
       var savageSlam = new Ability();
       savageSlam.name = "Titanic Slam";
@@ -20086,7 +20079,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.PureEnergy, ItemTypeEnum.CraftingMaterial, 1, .04));
 
       var savageSlam = new Ability();
       savageSlam.name = "Titanic Slam";
@@ -20134,7 +20127,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.PureEnergy, ItemTypeEnum.CraftingMaterial, 1, .04));
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.GaiasBlessing, -1, .5, false, true));
 
       var visionOfTheFuture = new Ability();
@@ -20192,7 +20185,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.MisshapenMetalPiece, ItemTypeEnum.CraftingMaterial, 1, .01));
 
       var soulRip = new Ability();
       soulRip.name = "Soul Rip";
@@ -20230,7 +20223,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.PerfectEmeraldFragment, ItemTypeEnum.CraftingMaterial, 1, .03));
 
       var slam = new Ability();
       slam.name = "Slam";
@@ -20265,7 +20258,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.PerfectAquamarineFragment, ItemTypeEnum.CraftingMaterial, 1, .03));
 
       var sap = new Ability();
       sap.name = "Sap";
@@ -20291,7 +20284,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.PerfectEmeraldFragment, ItemTypeEnum.CraftingMaterial, 1, .03));
 
       var burn = new Ability();
       burn.name = "Burn";
@@ -20318,7 +20311,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.PerfectRubyFragment, ItemTypeEnum.CraftingMaterial, 1, .03));
 
       var shadowBlast = new Ability();
       shadowBlast.name = "Shadow Blast";
@@ -20344,7 +20337,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.PerfectOpalFragment, ItemTypeEnum.CraftingMaterial, 1, .03));
 
       var dualSlice = new Ability();
       dualSlice.name = "3x Slice";
@@ -20374,7 +20367,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.PerfectTopazFragment, ItemTypeEnum.CraftingMaterial, 1, .03));
 
       var sap = new Ability();
       sap.name = "Sap";
@@ -20411,6 +20404,7 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
       enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.PerfectGemstone, ItemTypeEnum.CraftingMaterial, 1, 1));
       //TODO: titan persistent effect to always reduce elemental damage taken by 50% and ignore armor penetration?
 
       var cleansingSpirits = new Ability();
@@ -20477,6 +20471,7 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
       enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.PerfectAquamarineFragment, ItemTypeEnum.CraftingMaterial, 1, .03));
 
       var burn = new Ability();
       burn.name = "Burn";
@@ -20504,6 +20499,7 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
       enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.PerfectOpalFragment, ItemTypeEnum.CraftingMaterial, 1, .03));
 
       var burn = new Ability();
       burn.name = "Burn";
@@ -20530,7 +20526,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.SpiderSilk, ItemTypeEnum.CraftingMaterial, 1, .04));
 
       var spiderBites = new Ability();
       spiderBites.name = "Spider Bite";
@@ -20559,7 +20555,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.InfiniteEssence, ItemTypeEnum.CraftingMaterial, 1, .02));
 
       var burn = new Ability();
       burn.name = "Shudder";
@@ -20584,7 +20580,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.InfiniteEssence, ItemTypeEnum.CraftingMaterial, 1, .02));
 
       var shatter = new Ability();
       shatter.name = "Shatter";
@@ -20613,7 +20609,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.InfiniteEssence, ItemTypeEnum.CraftingMaterial, 2, .01));
 
       var smash = new Ability();
       smash.name = "Smash";
@@ -20639,7 +20635,9 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 6350;
-      enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.MagicalVial, ItemTypeEnum.CraftingMaterial, 1, 1));
+      enemy.loot.push(new LootItem(ItemsEnum.InfiniteEssence, ItemTypeEnum.CraftingMaterial, 5, .01));
+      //todo: unique item?
 
       var wallop = new Ability();
       wallop.name = "Distortion Blast";

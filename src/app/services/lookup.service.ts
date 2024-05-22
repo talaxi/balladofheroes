@@ -294,7 +294,7 @@ export class LookupService {
       type === ItemsEnum.FlawedRuby || type === ItemsEnum.FlawedTopaz || type === ItemsEnum.FlawedOpal || type === ItemsEnum.FlawedAmethyst ||
       type === ItemsEnum.FlawedEmerald || type === ItemsEnum.FlawedAquamarine || type === ItemsEnum.PerfectFlawedRuby || type === ItemsEnum.PerfectFlawedTopaz || type === ItemsEnum.PerfectFlawedOpal ||
       type === ItemsEnum.PerfectFlawedEmerald || type === ItemsEnum.PerfectFlawedAquamarine || type === ItemsEnum.LesserFlawedRuby || type === ItemsEnum.LesserFlawedTopaz || type === ItemsEnum.LesserFlawedOpal ||
-      type === ItemsEnum.LesserFlawedEmerald || type === ItemsEnum.LesserFlawedAquamarine)
+      type === ItemsEnum.LesserFlawedEmerald || type === ItemsEnum.LesserFlawedAquamarine || type === ItemsEnum.LesserFlawedAmethyst)
       return EquipmentQualityEnum.Rare;
 
     if (type === ItemsEnum.RutilatedRuby || type === ItemsEnum.RutilatedTopaz || type === ItemsEnum.RutilatedOpal || type === ItemsEnum.RutilatedAmethyst ||
@@ -440,7 +440,7 @@ export class LookupService {
       || type === ItemsEnum.AressCrest || type === ItemsEnum.AressSigil || type === ItemsEnum.NemesissCrest || type === ItemsEnum.NemesissSigil
       || type === ItemsEnum.DionysussCrest || type === ItemsEnum.DionysussSigil || type === ItemsEnum.ZeussCrest || type === ItemsEnum.ZeussSigil
       || type === ItemsEnum.PoseidonsCrest || type === ItemsEnum.PoseidonsSigil || type === ItemsEnum.AphroditesCrest || type === ItemsEnum.AphroditesSigil
-      || type === ItemsEnum.HerasCrest || type === ItemsEnum.HerasSigil || type === ItemsEnum.TimeFragment)
+      || type === ItemsEnum.HerasCrest || type === ItemsEnum.HerasSigil || type === ItemsEnum.TimeFragment || type === ItemsEnum.PerfectGemstone || type === ItemsEnum.MagicalVial)
       return ItemTypeEnum.Progression;
 
     return ItemTypeEnum.None;
@@ -758,6 +758,10 @@ export class LookupService {
       name = "Gain <span class='aresColor smallCaps'>Ares</span> as an equippable god";
     else if (type === ItemsEnum.GoldenApple)
       name = "Each Golden Apple increase max Alchemy level by 1. Can only obtain 25 Golden Apples.";
+    else if (type === ItemsEnum.PerfectGemstone)
+      name = "The perfect gemstone. Increase max Jewelcrafting level by 25. Can only obtain one from Hyperion.";
+    else if (type === ItemsEnum.MagicalVial)
+      name = "A vial full of magical potential. Increase max Alchemy level by 25. Can only obtain one from Khronos.";
     else if (type === ItemsEnum.TimeFragment)
       name = "Each Time Fragment allows you to automatically run any completed subzone or certain battles in the background. You will gain their rewards, including Coins and XP, at a reduced rate. Open the Time Fragment overview option in the Quick View section for more information.";
     else if (type === ItemsEnum.OlympicCommendation)
@@ -13495,7 +13499,13 @@ export class LookupService {
       description = "After a disastrous result at Mount Olympus, you retreat and attempt to come up with a new plan.";
     else if (type === BalladEnum.Witch)
       description = "Your next move puts you face to face with the Witch of Aiaia, Circe. You attempt to gain her favor in exchange for her help in lifting your magical curse.";
-    //TODO
+    else if (type === BalladEnum.Eagle)
+      description = "You journey back to Colchis and seek to put an end to the mad sorcerer Aeëtes.";
+    else if (type === BalladEnum.Redemption)
+      description = "With the power of Moly in hand, you return to Mount Olympus. With the might of the Olympic gods behind you, you try to take back the mountain.";
+    else if (type === BalladEnum.Time)
+      description = "Conspicuously missing from the battle on Olympus was Khronos. You search high and low for the Titan of Time to ensure his scheming comes to an end.";
+    
 
     return description;
   }

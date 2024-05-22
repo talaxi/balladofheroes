@@ -792,6 +792,16 @@ export class BattleService {
         }
       }
 
+      if (effect.type === StatusEffectEnum.DealMissingHpPercentAfterTime && effect.duration <= 0) {
+        var missingHp = (this.lookupService.getAdjustedMaxHp(character, true) - character.battleStats.currentHp);
+        var damageAmount = missingHp * effect.effectiveness;
+        this.dealTrueDamage(isPartyMember, character, damageAmount, undefined, undefined, true);
+        if (this.globalService.globalVar.gameLogSettings.get("partyStatusEffect")) {
+          var effectGameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " loses " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, damageAmount) + " HP.";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, effectGameLogEntry, this.globalService.globalVar);
+        }
+      }
+
       if (effect.type === StatusEffectEnum.HighTide && effect.duration <= 0) {
         this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.Cancer, -1, 1, false, true, false, character.name, undefined, true), character, undefined, undefined, undefined, false);
       }
@@ -1737,6 +1747,22 @@ export class BattleService {
     var userEffects: StatusEffect[] = [];
     var targetEffects: StatusEffect[] = [];
     var wasDamageCritical: boolean = false;
+
+    if (target !== undefined) {
+    var illusion = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Illusion);
+    if (illusion !== undefined) {
+      var rng = this.utilityService.getRandomInteger(0, 1);
+      if (rng <= illusion.effectiveness) {
+        if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAutoAttacks")) ||
+          (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAutoAttacks"))) {
+          var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + "'s ability misses!";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry, this.globalService.globalVar);
+        }
+
+        return true;
+      }
+    }
+  }
 
     var keepFlow = false;
     this.handleConditionalAbilityChanges(abilityCopy, user, party, fromRepeat, target);
@@ -3640,6 +3666,13 @@ export class BattleService {
               newTarget.battleInfo.statusEffects = newTarget.battleInfo.statusEffects.filter(item => item !== randomBuff);
             });
           }
+        }
+
+        if (instantEffect.type === StatusEffectEnum.TransferStatusEffect) {
+          var negativeStatusEffects = user.battleInfo.statusEffects.filter(item => !item.isPositive);
+          var rng = this.utilityService.getRandomInteger(0, negativeStatusEffects.length - 1);
+          target.battleInfo.statusEffects.push(negativeStatusEffects[rng]);
+          user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item !== negativeStatusEffects[rng]);
         }
 
         if (instantEffect.type === StatusEffectEnum.ResetRandomCooldown) {
@@ -6581,9 +6614,6 @@ export class BattleService {
           else if (itemCopy.item === ItemsEnum.WaterAbsorptionPotionRecipe) {
             this.professionService.learnRecipe(ProfessionEnum.Alchemy, ItemsEnum.WaterAbsorptionPotion);
           }
-          //else if (itemCopy.item === ItemsEnum.DuoAbilityAccess) {
-          //this.globalService.globalVar.sidequestData.duosUnlocked = true;
-          //}
           else if (itemCopy.item === ItemsEnum.GoldenApple && this.globalService.globalVar.sidequestData.goldenApplesObtained <= 25) {
             this.globalService.globalVar.sidequestData.goldenApplesObtained += item.amount;
             var difference = 0;
@@ -6595,6 +6625,20 @@ export class BattleService {
             if (alchemy !== undefined) {
               alchemy.maxLevel += item.amount - difference;
               this.addLootToResources(new ResourceValue(item.item, item.amount - difference));
+            }
+          }
+          else if (itemCopy.item === ItemsEnum.PerfectGemstone && this.lookupService.getResourceAmount(ItemsEnum.PerfectGemstone) < 1) {                        
+            var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
+            if (jewelcrafting !== undefined) {
+              jewelcrafting.maxLevel += 25;
+              this.addLootToResources(new ResourceValue(item.item, 1));
+            }
+          }
+          else if (itemCopy.item === ItemsEnum.MagicalVial && this.lookupService.getResourceAmount(ItemsEnum.MagicalVial) < 1) {                        
+            var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+            if (alchemy !== undefined) {
+              alchemy.maxLevel += 25;
+              this.addLootToResources(new ResourceValue(item.item, 1));
             }
           }
           else {
@@ -6654,6 +6698,10 @@ export class BattleService {
       if (enemy.loot !== undefined && enemy.loot.length > 0) {
         enemy.loot.forEach(loot => {
           if (loot.item === ItemsEnum.GoldenApple && this.globalService.globalVar.sidequestData.goldenApplesObtained > 25)
+            return;
+          if (loot.item === ItemsEnum.PerfectGemstone && this.lookupService.getResourceAmount(ItemsEnum.PerfectGemstone) >= 1)
+            return;
+          if (loot.item === ItemsEnum.MagicalVial && this.lookupService.getResourceAmount(ItemsEnum.MagicalVial) >= 1)
             return;
 
           var rng = this.utilityService.getRandomNumber(0, 1);
