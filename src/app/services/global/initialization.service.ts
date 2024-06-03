@@ -1443,7 +1443,7 @@ export class InitializationService {
         character1.assignedGod1 = GodEnum.Hermes;
         character1.assignedGod2 = GodEnum.Poseidon;
         character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.PoseidonsTrident);
-        character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.PoseidonsShield);
+        character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShieldOfUnendingFlames);
         character1.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.PoseidonsArmor);
         character1.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.PoseidonsRing);
         character1.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.PoseidonsNecklace);

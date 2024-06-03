@@ -80,6 +80,10 @@ export class BalladService {
       name = "Witch";
     if (type === BalladEnum.Eagle)
       name = "Eagle";
+    if (type === BalladEnum.Redemption)
+      name = "Redemption";
+    if (type === BalladEnum.Time)
+      name = "Time";
 
     return name;
   }

@@ -9118,6 +9118,8 @@ export class LookupService {
             var unique = this.globalService.globalVar.uniques.find(item => item.type === equipment.itemType);
             if (unique !== undefined)
               equipmentEffects += "Dealing <strong>" + (unique.getMajorEffectLevel() * 10) + "%</strong> damage back to auto attackers.<br/>";
+            else 
+              equipmentEffects += "Deal a percentage of damage back to auto attackers.<br/>";
           }
 
           if (effect.type === StatusEffectEnum.BoundingBand)
