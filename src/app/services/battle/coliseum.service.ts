@@ -481,7 +481,7 @@ export class ColiseumService {
     return battleOptions;
   }
 
-  generateWeeklyMeleeOptions(round: number) {
+  generateWeeklyMeleeOptions(round: number) {    
     var enemyCount = 3;
     if (round % 5 === 4)
       enemyCount = 4;
@@ -550,7 +550,7 @@ export class ColiseumService {
     //console.log("Searching for: ");
     //console.log("Is Boss: " + isBoss);
     //console.log("Enemy Count: " + enemyCount);
-
+    
     var allRelevantEnemyParties: EnemyTeam[] = [];
     for (const [propertyKey, propertyValue] of Object.entries(SubZoneEnum)) {
       if (!Number.isNaN(Number(propertyKey))) {

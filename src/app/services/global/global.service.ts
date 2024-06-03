@@ -4662,6 +4662,7 @@ export class GlobalService {
 
       var bonusXpBase = 50;
       var growthFactor = 1.3725;
+
       var additive = Math.floor((losingRound - 1) / 5) * (450000 * (Math.ceil((losingRound - 1) / 20)));
 
       var bonusXp = Math.round((bonusXpBase * (growthFactor ** (losingRound - 1))) + (((losingRound - 1) * 5) * bonusXpBase) + additive);
