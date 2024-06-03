@@ -87,7 +87,9 @@ export class AchievementService {
       subzoneType === SubZoneEnum.WarForTheMountainThePeak || subzoneType === SubZoneEnum.BlackSeaWindyGale || subzoneType === SubZoneEnum.CreteWhirlpool ||
       subzoneType === SubZoneEnum.TheLabyrinthLabyrinthCenter || subzoneType === SubZoneEnum.AegeanSeaSympegadesOverlook || subzoneType === SubZoneEnum.ColchisReinforcementsFromAeetes ||
       subzoneType === SubZoneEnum.AiaiaFlowerGarden || subzoneType === SubZoneEnum.StraitsOfMessinaUnavoidablePath || subzoneType === SubZoneEnum.StraitsOfMessinaMawOfTheMonster ||
-      subzoneType === SubZoneEnum.ReturnToColchisReturnToTheGrove || subzoneType === SubZoneEnum.EscapeFromColchisBackAgainstTheWall || subzoneType === SubZoneEnum.EscapeFromColchisBattleAtSea) {
+      subzoneType === SubZoneEnum.ReturnToColchisReturnToTheGrove || subzoneType === SubZoneEnum.EscapeFromColchisBackAgainstTheWall || subzoneType === SubZoneEnum.EscapeFromColchisBattleAtSea ||
+      subzoneType === SubZoneEnum.OlympusMassifMountainBase || subzoneType === SubZoneEnum.TheAscentFinalAscent || subzoneType === SubZoneEnum.WarForTheMountainTwoSpoiledCourtyard ||
+      subzoneType === SubZoneEnum.WarForTheMountainTwoGardens || subzoneType === SubZoneEnum.WarForTheMountainTwoForOlympus || subzoneType === SubZoneEnum.TartarusTitanHoldingGrounds || subzoneType === SubZoneEnum.MountOthrysCavernOfTime) {
       newAchievements.push(thirtySecondClear);
     }
 
@@ -107,7 +109,9 @@ export class AchievementService {
       subzoneType === SubZoneEnum.WarForTheMountainThePeak || subzoneType === SubZoneEnum.BlackSeaWindyGale || subzoneType === SubZoneEnum.CreteWhirlpool ||
       subzoneType === SubZoneEnum.TheLabyrinthLabyrinthCenter || subzoneType === SubZoneEnum.AegeanSeaSympegadesOverlook || subzoneType === SubZoneEnum.ColchisReinforcementsFromAeetes ||
       subzoneType === SubZoneEnum.AiaiaFlowerGarden || subzoneType === SubZoneEnum.StraitsOfMessinaUnavoidablePath || subzoneType === SubZoneEnum.StraitsOfMessinaMawOfTheMonster ||
-      subzoneType === SubZoneEnum.ReturnToColchisReturnToTheGrove || subzoneType === SubZoneEnum.EscapeFromColchisBackAgainstTheWall || subzoneType === SubZoneEnum.EscapeFromColchisBattleAtSea)
+      subzoneType === SubZoneEnum.ReturnToColchisReturnToTheGrove || subzoneType === SubZoneEnum.EscapeFromColchisBackAgainstTheWall || subzoneType === SubZoneEnum.EscapeFromColchisBattleAtSea ||
+      subzoneType === SubZoneEnum.OlympusMassifMountainBase || subzoneType === SubZoneEnum.TheAscentFinalAscent || subzoneType === SubZoneEnum.WarForTheMountainTwoSpoiledCourtyard ||
+      subzoneType === SubZoneEnum.WarForTheMountainTwoGardens || subzoneType === SubZoneEnum.WarForTheMountainTwoForOlympus || subzoneType === SubZoneEnum.TartarusTitanHoldingGrounds || subzoneType === SubZoneEnum.MountOthrysCavernOfTime)
       newAchievements.push(tenSecondClear);
 
     var completeClear = new Achievement(AchievementTypeEnum.Complete, subzoneType);
@@ -501,7 +505,7 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.RutileAquamarineFragment, 50));
       else if (subzoneType === SubZoneEnum.StraitsOfMessinaMawOfTheMonster)
         rewards.push(new ResourceValue(ItemsEnum.RutileAmethystFragment, 50));
-      
+
       else if (subzoneType === SubZoneEnum.ReturnToColchisPhasisBeach)
         rewards.push(new ResourceValue(ItemsEnum.SquidInk, 50));
       else if (subzoneType === SubZoneEnum.ReturnToColchisUnderTheStars)
@@ -509,7 +513,7 @@ export class AchievementService {
       else if (subzoneType === SubZoneEnum.ReturnToColchisColchisOutskirts)
         rewards.push(new ResourceValue(ItemsEnum.RutileEmeraldFragment, 100));
       else if (subzoneType === SubZoneEnum.ReturnToColchisColchisStreets)
-        rewards.push(new ResourceValue(ItemsEnum.MetalCore, 50)); 
+        rewards.push(new ResourceValue(ItemsEnum.MetalCore, 50));
       else if (subzoneType === SubZoneEnum.ReturnToColchisReturnToTheGrove)
         rewards.push(new ResourceValue(ItemsEnum.ImmortalScales, 50));
 
@@ -523,6 +527,57 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.MetalCore, 100));
       else if (subzoneType === SubZoneEnum.EscapeFromColchisBattleAtSea)
         rewards.push(new ResourceValue(ItemsEnum.RutileRubyFragment, 100));
+
+      else if (subzoneType === SubZoneEnum.OlympusMassifThessalyGrasslands)
+        rewards.push(new ResourceValue(ItemsEnum.ChimeraFur, 25));
+      else if (subzoneType === SubZoneEnum.OlympusMassifInnerThessalyPathways)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectAmethystFragment, 50));
+      else if (subzoneType === SubZoneEnum.OlympusMassifLargeOutcroppings)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectTopazFragment, 50));
+      else if (subzoneType === SubZoneEnum.OlympusMassifMountainBase)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectOpalFragment, 75));
+
+      else if (subzoneType === SubZoneEnum.TheAscentHarshRise)
+        rewards.push(new ResourceValue(ItemsEnum.Passionflower, 40));
+      else if (subzoneType === SubZoneEnum.TheAscentAbundantGreenery)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectEmeraldFragment, 50));
+      else if (subzoneType === SubZoneEnum.TheAscentHigherElevation)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectAquamarineFragment, 50));
+      else if (subzoneType === SubZoneEnum.TheAscentFinalAscent)
+        rewards.push(new ResourceValue(ItemsEnum.UnstableElement, 100));
+
+      else if (subzoneType === SubZoneEnum.WarForTheMountainTwoSpoiledCourtyard)
+        rewards.push(new ResourceValue(ItemsEnum.PureEnergy, 100));
+      else if (subzoneType === SubZoneEnum.WarForTheMountainTwoGardens)
+        rewards.push(new ResourceValue(ItemsEnum.PureEnergy, 100));
+      else if (subzoneType === SubZoneEnum.WarForTheMountainTwoForOlympus)
+        rewards.push(new ResourceValue(ItemsEnum.PureEnergy, 100));
+
+      else if (subzoneType === SubZoneEnum.TartarusWesternPath)
+        rewards.push(new ResourceValue(ItemsEnum.MisshapenMetalPiece, 30));
+      else if (subzoneType === SubZoneEnum.TartarusDesolateFields)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectTopazFragment, 100));
+      else if (subzoneType === SubZoneEnum.TartarusPlainsOfJudgment)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectEmeraldFragment, 100));
+      else if (subzoneType === SubZoneEnum.TartarusWallsOfFire)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectRubyFragment, 100));
+      else if (subzoneType === SubZoneEnum.TartarusPhlegethonRiver)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectAquamarineFragment, 100));
+      else if (subzoneType === SubZoneEnum.TartarusScorchedMeadow)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectOpalFragment, 100));
+      else if (subzoneType === SubZoneEnum.TartarusUnholyHalls)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectAmethystFragment, 100));
+      else if (subzoneType === SubZoneEnum.TartarusTitanHoldingGrounds)
+        rewards.push(new ResourceValue(ItemsEnum.MetalCore, 250));
+
+      else if (subzoneType === SubZoneEnum.MountOthrysCaveOpening)
+        rewards.push(new ResourceValue(ItemsEnum.InfiniteEssence, 100));
+      else if (subzoneType === SubZoneEnum.MountOthrysTightPassage)
+        rewards.push(new ResourceValue(ItemsEnum.InfiniteEssence, 100));
+      else if (subzoneType === SubZoneEnum.MountOthrysFracturedWall)
+        rewards.push(new ResourceValue(ItemsEnum.InfiniteEssence, 100));
+      else if (subzoneType === SubZoneEnum.MountOthrysCavernOfTime)
+        rewards.push(new ResourceValue(ItemsEnum.HourglassRing, 100));
     }
 
     if (achievementType === AchievementTypeEnum.ThousandVictories) {
@@ -553,6 +608,11 @@ export class AchievementService {
       var straitsOfMessinaBoonBonus = .04;
       var returnToColchisBoonBonus = .04;
       var escapeFromColchisBoonBonus = .05;
+      var olympusMassifBoonBonus = .05;
+      var theAscentBoonBonus = .05;
+      var warForTheMountain2BoonBonus = .08;
+      var tartarusBoonBonus = .05;
+      var mountOthrysBoonBonus = .1;
 
       if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Aigosthena))
         rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, aigosthenaBoonBonus));
@@ -608,6 +668,16 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, returnToColchisBoonBonus));
       else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.EscapeFromColchis))
         rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, escapeFromColchisBoonBonus));
+      else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.OlympusMassif))
+        rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, olympusMassifBoonBonus));
+      else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.TheAscent))
+        rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, theAscentBoonBonus));
+      else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.WarForTheMountainTwo))
+        rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, warForTheMountain2BoonBonus));
+      else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Tartarus))
+        rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, tartarusBoonBonus));
+      else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.MountOthrys))
+        rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, mountOthrysBoonBonus));
     }
 
     if (achievementType === AchievementTypeEnum.TenThousandVictories) {
@@ -1010,6 +1080,57 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.PerfectOrnateKantharos, 1));
       else if (subzoneType === SubZoneEnum.EscapeFromColchisBattleAtSea)
         rewards.push(new ResourceValue(ItemsEnum.PerfectCrackedKantharos, 1));
+
+      else if (subzoneType === SubZoneEnum.OlympusMassifThessalyGrasslands)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfAirDestruction, 1));
+      else if (subzoneType === SubZoneEnum.OlympusMassifInnerThessalyPathways)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfDetermination, 1));
+      else if (subzoneType === SubZoneEnum.OlympusMassifLargeOutcroppings)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfEarthProtection, 1));
+      else if (subzoneType === SubZoneEnum.OlympusMassifMountainBase)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectGildedKantharos, 1));
+
+      else if (subzoneType === SubZoneEnum.TheAscentHarshRise)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfIngenuity, 1));
+      else if (subzoneType === SubZoneEnum.TheAscentAbundantGreenery)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfFireProtection, 1));
+      else if (subzoneType === SubZoneEnum.TheAscentHigherElevation)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfEarthDestruction, 1));
+      else if (subzoneType === SubZoneEnum.TheAscentFinalAscent)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectCrackedKantharos, 1));
+
+      else if (subzoneType === SubZoneEnum.WarForTheMountainTwoSpoiledCourtyard)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectSilverKantharos, 1));
+      else if (subzoneType === SubZoneEnum.WarForTheMountainTwoGardens)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectOrnateKantharos, 1));
+      else if (subzoneType === SubZoneEnum.WarForTheMountainTwoForOlympus)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectBuccheroKantharos, 1));
+
+      else if (subzoneType === SubZoneEnum.TartarusWesternPath)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectSilverKantharos, 1));
+      else if (subzoneType === SubZoneEnum.TartarusDesolateFields)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHolyDestruction, 1));
+      else if (subzoneType === SubZoneEnum.TartarusPlainsOfJudgment)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectOrnateKantharos, 1));
+      else if (subzoneType === SubZoneEnum.TartarusWallsOfFire)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, 1));
+      else if (subzoneType === SubZoneEnum.TartarusPhlegethonRiver)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectOrnateKantharos, 1));
+      else if (subzoneType === SubZoneEnum.TartarusScorchedMeadow)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfLightningDestruction, 1));
+      else if (subzoneType === SubZoneEnum.TartarusUnholyHalls)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectCrackedKantharos, 1));
+      else if (subzoneType === SubZoneEnum.TartarusTitanHoldingGrounds)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectBlackKantharos, 1));
+
+      else if (subzoneType === SubZoneEnum.MountOthrysCaveOpening)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectGildedKantharos, 1));
+      else if (subzoneType === SubZoneEnum.MountOthrysTightPassage)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfLightningProtection, 1));
+      else if (subzoneType === SubZoneEnum.MountOthrysFracturedWall)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectOrnateKantharos, 1));
+      else if (subzoneType === SubZoneEnum.MountOthrysCavernOfTime)
+        rewards.push(new ResourceValue(ItemsEnum.HourglassRing, 2500));
     }
 
     if (achievementType === AchievementTypeEnum.ThirtySecondClear) {
@@ -1087,6 +1208,20 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.PerfectSilverKantharos, 1));
       if (subzoneType === SubZoneEnum.EscapeFromColchisBattleAtSea)
         rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterDestruction, 1));
+      if (subzoneType === SubZoneEnum.OlympusMassifMountainBase)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectBuccheroKantharos, 1));
+      if (subzoneType === SubZoneEnum.TheAscentFinalAscent)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectCrackedKantharos, 1));
+      if (subzoneType === SubZoneEnum.WarForTheMountainTwoSpoiledCourtyard)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectBlackKantharos, 1));
+      if (subzoneType === SubZoneEnum.WarForTheMountainTwoGardens)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectGildedKantharos, 1));
+      if (subzoneType === SubZoneEnum.WarForTheMountainTwoForOlympus)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectBlackKantharos, 1));
+      if (subzoneType === SubZoneEnum.TartarusTitanHoldingGrounds)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectSilverKantharos, 1));
+      if (subzoneType === SubZoneEnum.MountOthrysCavernOfTime)
+        rewards.push(new ResourceValue(ItemsEnum.HourglassRing, 200));
     }
 
     if (achievementType === AchievementTypeEnum.TenSecondClear) {
@@ -1166,6 +1301,20 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.PerfectGildedKantharos, 1));
       if (subzoneType === SubZoneEnum.EscapeFromColchisBattleAtSea)
         rewards.push(new ResourceValue(ItemsEnum.PerfectBlackKantharos, 1));
+      if (subzoneType === SubZoneEnum.OlympusMassifMountainBase)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectGildedKantharos, 1));
+      if (subzoneType === SubZoneEnum.TheAscentFinalAscent)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectSilverKantharos, 1));
+      if (subzoneType === SubZoneEnum.WarForTheMountainTwoSpoiledCourtyard)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectBlackKantharos, 1));
+      if (subzoneType === SubZoneEnum.WarForTheMountainTwoGardens)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectBuccheroKantharos, 1));
+      if (subzoneType === SubZoneEnum.WarForTheMountainTwoForOlympus)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectCrackedKantharos, 1));
+      if (subzoneType === SubZoneEnum.TartarusTitanHoldingGrounds)
+        rewards.push(new ResourceValue(ItemsEnum.PerfectBuccheroKantharos, 1));
+      if (subzoneType === SubZoneEnum.MountOthrysCavernOfTime)
+        rewards.push(new ResourceValue(ItemsEnum.TimeFragment, 1));
     }
 
     if (achievementType === AchievementTypeEnum.Complete) {
@@ -1252,7 +1401,14 @@ export class AchievementService {
         completedAchievement.push(hundredVictories);
         hundredVictories.completed = true;
         rewards.forEach(bonus => {
-          this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
+          if (bonus.item === ItemsEnum.HourglassRing) {            
+            var existingUnique = this.globalService.globalVar.uniques.find(item => item.type === bonus.item);
+            if (existingUnique !== undefined) {              
+              this.lookupService.giveUniqueXp(existingUnique, bonus.amount);
+            }
+          }
+          else
+            this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
         });
       }
 
@@ -1272,6 +1428,13 @@ export class AchievementService {
         completedAchievement.push(tenThousandVictories);
         tenThousandVictories.completed = true;
         rewards.forEach(bonus => {
+          if (bonus.item === ItemsEnum.HourglassRing) {
+            var existingUnique = this.globalService.globalVar.uniques.find(item => item.type === bonus.item);
+            if (existingUnique !== undefined) {
+              this.lookupService.giveUniqueXp(existingUnique, bonus.amount);
+            }
+          }
+          else
           this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
         });
       }
@@ -1439,6 +1602,12 @@ export class AchievementService {
           if (bonus.item === ItemsEnum.PoisonExtractPotionRecipe) {
             this.professionService.learnRecipe(ProfessionEnum.Alchemy, ItemsEnum.PoisonExtractPotion);
           }
+          else if (bonus.item === ItemsEnum.HourglassRing) {
+            var existingUnique = this.globalService.globalVar.uniques.find(item => item.type === bonus.item);
+            if (existingUnique !== undefined) {
+              this.lookupService.giveUniqueXp(existingUnique, bonus.amount);
+            }
+          }
           else
             this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
         });
@@ -1450,6 +1619,13 @@ export class AchievementService {
         completedAchievement.push(thirtySecondClear);
         thirtySecondClear.completed = true;
         rewards.forEach(bonus => {
+          if (bonus.item === ItemsEnum.HourglassRing) {
+            var existingUnique = this.globalService.globalVar.uniques.find(item => item.type === bonus.item);
+            if (existingUnique !== undefined) {
+              this.lookupService.giveUniqueXp(existingUnique, bonus.amount);
+            }
+          }
+          else
           this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
         });
       }

@@ -25,3 +25,7 @@
 .largeButtons {
     font-size: 1.5rem;
 }
+
+.link {
+    color: var(--foreground-quaternary);
+}

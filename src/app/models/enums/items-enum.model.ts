@@ -622,5 +622,21 @@ export enum ItemsEnum {
   BlackInkRing,
   ArmorOfOlympus,
   ArmorOfOlympusUpgrade,
-  MisshapenMetalPiece
+  MisshapenMetalPiece,
+  InfiniteEssence,
+  LightToxin,
+  CorrosiveToxin,
+  InkSalve,
+  ShatteringPotion,
+  EndlessPotion,
+  RestorativeElixir,
+  Extraction,
+  VialOfTartaranFlames,
+  ChimeraFur,
+  PureEnergy,
+  Passionflower,
+  ShieldOfUnendingFlames,
+  PerfectGemstone,
+  MagicalVial,
+  HourglassRing
 } 

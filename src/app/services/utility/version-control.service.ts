@@ -34,6 +34,7 @@ import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { AchievementTypeEnum } from 'src/app/models/enums/achievement-type-enum.copy';
 import { Character } from 'src/app/models/character/character.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
+import { Uniques } from 'src/app/models/resources/uniques.model';
 declare var LZString: any;
 
 @Injectable({
@@ -47,7 +48,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.85,0.82, 0.81, 0.8, 0.76, 0.75, 0.71, 0.7, 0.65, 0.64, 0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [1, 0.85, 0.82, 0.81, 0.8, 0.76, 0.75, 0.71, 0.7, 0.65, 0.64, 0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -1681,23 +1682,23 @@ export class VersionControlService {
           if (blazingSun !== undefined && blazingSunUpgrades !== undefined && blazingSunUpgrades.amount > 0) {
             for (var i = 0; i < blazingSunUpgrades.amount; i++) {
               if (this.globalService.globalVar.isSubscriber)
-              this.lookupService.giveUniqueXp(blazingSun, 19);
+                this.lookupService.giveUniqueXp(blazingSun, 19);
               else
-              this.lookupService.giveUniqueXp(blazingSun, 9);
+                this.lookupService.giveUniqueXp(blazingSun, 9);
             }
           }
-          
+
           var darkMoonUpgrades = this.globalService.globalVar.resources.find(item => item.item === ItemsEnum.DarkMoonPendantUniqueUpgrade);
           var darkMoon = this.globalService.globalVar.uniques.find(item => item.type === ItemsEnum.DarkMoonPendantUnique);
           if (darkMoon !== undefined && darkMoonUpgrades !== undefined && darkMoonUpgrades.amount > 0) {
             for (var i = 0; i < darkMoonUpgrades.amount; i++) {
               if (this.globalService.globalVar.isSubscriber)
-              this.lookupService.giveUniqueXp(darkMoon, 19);
+                this.lookupService.giveUniqueXp(darkMoon, 19);
               else
-              this.lookupService.giveUniqueXp(darkMoon, 9);
+                this.lookupService.giveUniqueXp(darkMoon, 9);
             }
           }
-          
+
           this.globalService.globalVar.gods.forEach(god => {
             god.gainModifiers = god.getGainModifier(god.type);
 
@@ -1751,7 +1752,7 @@ export class VersionControlService {
             }
           }
 
-          if (monkClass !== undefined) {           
+          if (monkClass !== undefined) {
             var permanentAbility1Upgrades = monkClass.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
             if (permanentAbility1Upgrades !== undefined) {
               permanentAbility1Upgrades.effectiveness = 0;
@@ -1772,7 +1773,7 @@ export class VersionControlService {
           }
 
           var priestClass = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Priest);
-          if (priestClass !== undefined) {                  
+          if (priestClass !== undefined) {
             var permanentPassiveUpgrades = priestClass.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.characterPassiveLevel);
             if (permanentPassiveUpgrades !== undefined) {
               permanentPassiveUpgrades!.effectiveness = 0;
@@ -1781,7 +1782,7 @@ export class VersionControlService {
                 permanentPassiveUpgrades!.effectiveness += item[1] * (.01 * Math.ceil(item[0] / 10));
               });
             }
-            
+
             var permanentAbility1Upgrades = priestClass.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
             if (permanentAbility1Upgrades !== undefined) {
               permanentAbility1Upgrades.effectiveness = 0;
@@ -1801,7 +1802,7 @@ export class VersionControlService {
           }
 
           var archerClass = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Archer);
-          if (archerClass !== undefined) {  
+          if (archerClass !== undefined) {
             var permanentPassiveUpgrades = archerClass.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.characterPassiveLevel);
             if (permanentPassiveUpgrades !== undefined && permanentPassiveUpgrades.targetEffect.length > 0) {
               permanentPassiveUpgrades!.targetEffect[0].effectiveness = 0;
@@ -1821,7 +1822,7 @@ export class VersionControlService {
           }
 
           var warriorClass = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Warrior);
-          if (warriorClass !== undefined) {  
+          if (warriorClass !== undefined) {
             var permanentAbility1Upgrades = warriorClass.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
             if (permanentAbility1Upgrades !== undefined && permanentAbility1Upgrades.targetEffect.length > 0) {
               permanentAbility1Upgrades.targetEffect[0].effectiveness = 0;
@@ -1830,7 +1831,7 @@ export class VersionControlService {
                 permanentAbility1Upgrades!.targetEffect[0].effectiveness += item[1] * (.03 * Math.ceil(item[0] / 10));
               });
             }
-                     
+
             var permanentAbility2Upgrades = warriorClass.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.characterAbility2Level);
             if (permanentAbility2Upgrades !== undefined) {
               permanentAbility2Upgrades!.effectiveness = 0;
@@ -1841,7 +1842,7 @@ export class VersionControlService {
           }
 
           var thaumaturgeClass = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Thaumaturge);
-          if (thaumaturgeClass !== undefined) { 
+          if (thaumaturgeClass !== undefined) {
             var permanentPassiveUpgrades = thaumaturgeClass.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.characterPassiveLevel);
             if (permanentPassiveUpgrades !== undefined) {
               permanentPassiveUpgrades!.effectiveness = 0;
@@ -1862,7 +1863,7 @@ export class VersionControlService {
 
           var artemis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis);
           if (artemis !== undefined) {
-            var passive = artemis.abilityList.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);           
+            var passive = artemis.abilityList.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
 
             var permanentPassive = artemis.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
             if (permanentPassive !== undefined) {
@@ -1894,11 +1895,11 @@ export class VersionControlService {
             }
           }
         }
-        if (version === .81) {          
+        if (version === .81) {
           var AiaiaOpenClearing = this.lookupService.getSubZoneByType(SubZoneEnum.AiaiaOpenClearing);
-          if (AiaiaOpenClearing.isAvailable) {            
+          if (AiaiaOpenClearing.isAvailable) {
             this.globalService.globalVar.achievements = this.globalService.globalVar.achievements.filter(item => item.subzone !== SubZoneEnum.AiaiaOpenClearing);
-            this.achievementService.createDefaultAchievementsForSubzone(SubZoneEnum.AiaiaOpenClearing).forEach(achievement => {              
+            this.achievementService.createDefaultAchievementsForSubzone(SubZoneEnum.AiaiaOpenClearing).forEach(achievement => {
               if (achievement.type === AchievementTypeEnum.HundredVictories && AiaiaOpenClearing !== undefined && AiaiaOpenClearing.victoryCount >= 100)
                 achievement.completed = true;
               if (achievement.type === AchievementTypeEnum.ThousandVictories && AiaiaOpenClearing !== undefined && AiaiaOpenClearing.victoryCount >= 500)
@@ -1910,9 +1911,9 @@ export class VersionControlService {
             });
           }
         }
-        if (version === .82) {          
+        if (version === .82) {
           var aphroditeGod = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Aphrodite);
-          if (aphroditeGod !== undefined) {            
+          if (aphroditeGod !== undefined) {
             var permanentAbility1 = aphroditeGod.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
             if (permanentAbility1 !== undefined && permanentAbility1.userEffect.length > 0) {
               permanentAbility1.userEffect[0].effectiveness = permanentAbility1.userEffect[0].threshold;
@@ -1920,7 +1921,7 @@ export class VersionControlService {
             }
           }
         }
-        if (version === .85) {          
+        if (version === .85) {
           this.initializationService.initializeBalladOfTheEagle();
           var unavoidablePathSubZone = this.balladService.findSubzone(SubZoneEnum.StraitsOfMessinaUnavoidablePath);
           if (unavoidablePathSubZone !== undefined && unavoidablePathSubZone.isAvailable && unavoidablePathSubZone.victoryCount > 0) {
@@ -1941,6 +1942,72 @@ export class VersionControlService {
               phasisBeach.notify = true;
 
               this.achievementService.createDefaultAchievementsForSubzone(phasisBeach.type).forEach(achievement => {
+                this.globalService.globalVar.achievements.push(achievement);
+              });
+            }
+          }
+        }
+        if (version === 1) {          
+          if (this.globalService.globalVar.sidequestData.highestWeeklyMeleeRound >= 40) {
+            var rng = 25;
+            if (this.globalService.globalVar.followerData.numberOfFollowersGainedFromColiseum === undefined)
+              this.globalService.globalVar.followerData.numberOfFollowersGainedFromColiseum = 0;
+            this.globalService.globalVar.followerData.numberOfFollowersGainedFromColiseum += rng;
+            this.globalService.globalVar.followerData.availableFollowers += rng;
+            for (var i = 0; i < rng; i++) {
+              this.globalService.globalVar.followerData.followers.push(new IndividualFollower());
+            }            
+          }
+
+          if (this.globalService.globalVar.sidequestData.highestWeeklyMeleeRound >= 50) {
+            var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+            if (alchemy !== undefined) {
+              alchemy.maxLevel += 25;              
+            }
+          }
+
+          if (this.globalService.globalVar.sidequestData.highestWeeklyMeleeRound >= 60) {
+            var rng = 1;
+            var gainedItem = ItemsEnum.ShieldOfUnendingFlames;
+
+            this.globalService.globalVar.uniques.push(new Uniques(gainedItem));            
+            this.globalService.gainResource(new ResourceValue(gainedItem, rng));
+          }
+
+          var warriorClass = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Warrior);
+          if (warriorClass !== undefined) {
+            var ability1 = warriorClass.abilityList.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
+            if (ability1 !== undefined && ability1.targetEffect.length > 1) {
+              ability1.targetEffect[0].isAoe = true;
+              ability1.targetEffect[1].isAoe = true;
+            }
+            var passive = warriorClass.abilityList.find(item => item.requiredLevel === this.utilityService.characterPassiveLevel);
+            if (passive !== undefined) {
+              passive.threshold = .5;
+            }
+          }
+
+          this.initializationService.initializeBalladOfRedemption();
+          this.initializationService.initializeBalladOfTime();
+          var battleAtSeaSubZone = this.balladService.findSubzone(SubZoneEnum.EscapeFromColchisBattleAtSea);
+          if (battleAtSeaSubZone !== undefined && battleAtSeaSubZone.isAvailable && battleAtSeaSubZone.victoryCount > 0) {
+            var redemption = this.balladService.findBallad(BalladEnum.Redemption);
+            var olympusMassif = this.balladService.findZone(ZoneEnum.OlympusMassif);
+            var thessalyGrasslands = this.balladService.findSubzone(SubZoneEnum.OlympusMassifThessalyGrasslands);
+
+            if (redemption !== undefined) {
+              redemption.isAvailable = true;
+              redemption.notify = true;
+            }
+            if (olympusMassif !== undefined) {
+              olympusMassif.isAvailable = true;
+              olympusMassif.notify = true;
+            }
+            if (thessalyGrasslands !== undefined) {
+              thessalyGrasslands.isAvailable = true;
+              thessalyGrasslands.notify = true;
+
+              this.achievementService.createDefaultAchievementsForSubzone(thessalyGrasslands.type).forEach(achievement => {
                 this.globalService.globalVar.achievements.push(achievement);
               });
             }

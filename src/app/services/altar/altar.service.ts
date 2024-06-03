@@ -608,7 +608,7 @@ export class AltarService {
     }
     if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.DionysusRareFastDebuffs) {
       altarEffect.duration = altarEffect.totalDuration = 60;
-      altarEffect.effectiveness = 1.025;
+      altarEffect.effectiveness = 1.02;
       altarEffect.stacks = false;
     }
     if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.DionysusRareMultiBarrier) {

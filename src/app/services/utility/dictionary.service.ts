@@ -138,8 +138,22 @@ export class DictionaryService {
       name = "Peony Salve";
     else if (type === ItemsEnum.PeonyPoultice)
       name = "Peony Poultice";
+      else if (type === ItemsEnum.InkSalve)
+        name = "Ink Salve";
+      else if (type === ItemsEnum.InkPoultice)
+        name = "Ink Poultice";
     else if (type === ItemsEnum.WildPotion)
       name = "Wild Potion";
+      else if (type === ItemsEnum.BurstingPotion)
+      name = "Bursting Potion";
+      else if (type === ItemsEnum.ShatteringPotion)
+      name = "Shattering Potion";
+      else if (type === ItemsEnum.EndlessPotion)
+      name = "Endless Potion";
+      else if (type === ItemsEnum.Transmutation)
+      name = "Transmutation";
+      else if (type === ItemsEnum.Extraction)
+      name = "Extraction";
     else if (type === ItemsEnum.TidalToxin)
       name = "Tidal Toxin";
     else if (type === ItemsEnum.UnsteadyingToxin)
@@ -273,6 +287,8 @@ export class DictionaryService {
       name = "Carcanet of the Centaur";
     else if (type === ItemsEnum.CarcanetOfTheCentaurUnique)
       name = "Carcanet of the Centaur";
+    else if (type === ItemsEnum.HourglassRing)
+      name = "Hourglass Ring";
     else if (type === ItemsEnum.BoundingBandEpic)
       name = "Bounding Band";
     else if (type === ItemsEnum.BoundingBandSpecial)
@@ -399,6 +415,8 @@ export class DictionaryService {
       name = "Sword of Olympus";
     else if (type === ItemsEnum.ArmorOfOlympus)
       name = "Armor of Olympus";
+      else if (type === ItemsEnum.ShieldOfUnendingFlames)
+      name = "Shield of Unending Flames";
 
     //shields
     else if (type === ItemsEnum.IronShield)
@@ -680,8 +698,8 @@ export class DictionaryService {
     else if (type === ItemsEnum.RutileTopazFragment)
       name = "Rutile Topaz Fragment";
     else if (type === ItemsEnum.RutileRubyFragment)
-      name = "Rutile Ruby Fragment";    
-      else if (type === ItemsEnum.PerfectAmethystFragment)
+      name = "Rutile Ruby Fragment";
+    else if (type === ItemsEnum.PerfectAmethystFragment)
       name = "Perfect Amethyst Fragment";
     else if (type === ItemsEnum.PerfectOpalFragment)
       name = "Perfect Opal Fragment";
@@ -789,6 +807,10 @@ export class DictionaryService {
       name = "Bronze Beak";
     else if (type === ItemsEnum.GoldenApple)
       name = "Golden Apple";
+    else if (type === ItemsEnum.PerfectGemstone)
+      name = "Perfect Gemstone";
+    else if (type === ItemsEnum.MagicalVial)
+      name = "Magical Vial";
     else if (type === ItemsEnum.OlympicCommendation)
       name = "Olympic Commendation";
     else if (type === ItemsEnum.MagicTreeBark)
@@ -1045,20 +1067,30 @@ export class DictionaryService {
       name = "Mandrake";
     else if (type === ItemsEnum.ColossalRoot)
       name = "Colossal Root";
-      else if (type === ItemsEnum.MisshapenMetalPiece)
+    else if (type === ItemsEnum.MisshapenMetalPiece)
       name = "Misshapen Metal Piece";
     else if (type === ItemsEnum.UnstableElement)
       name = "Unstable Element";
     else if (type === ItemsEnum.VialOfForeignWaters)
-      name = "Vial Of Foreign Waters";
+      name = "Vial of Foreign Waters";
     else if (type === ItemsEnum.SquidInk)
       name = "Squid Ink";
     else if (type === ItemsEnum.SpiderSilk)
       name = "Spider Silk";
     else if (type === ItemsEnum.ImmortalScales)
       name = "Immortal Scales";
+    else if (type === ItemsEnum.InfiniteEssence)
+      name = "Infinite Essence";
     else if (type === ItemsEnum.MetalCore)
       name = "Metal Core";
+    else if (type === ItemsEnum.VialOfTartaranFlames)
+      name = "Vial of Tartaran Flames";
+    else if (type === ItemsEnum.ChimeraFur)
+      name = "Chimera Fur";
+    else if (type === ItemsEnum.PureEnergy)
+      name = "Pure Energy";
+    else if (type === ItemsEnum.Passionflower)
+      name = "Passionflower";
 
     //recipes
     else if (type === ItemsEnum.PoisonExtractPotionRecipe)
@@ -1081,6 +1113,18 @@ export class DictionaryService {
       name = "Lightning Absorption Recipe";
     else if (type === ItemsEnum.AirAbsorptionPotionRecipe)
       name = "Air Absorption Recipe";
+    else if (type === ItemsEnum.LightToxin)
+      name = "Light Toxin";
+    else if (type === ItemsEnum.CorrosiveToxin)
+      name = "Corrosive Toxin";    
+    else if (type === ItemsEnum.RestorativeElixir)
+      name = "Restorative Elixir";    
+    else if (type === ItemsEnum.TempestToxin)
+      name = "Tempest Toxin";    
+    else if (type === ItemsEnum.ElixirOfPower)
+      name = "Elixir of Power";    
+    else if (type === ItemsEnum.MetalElixir)
+      name = "Metal Elixir";    
 
     //charms
     else if (type === ItemsEnum.SmallCharmOfDetermination)
@@ -1404,7 +1448,7 @@ export class DictionaryService {
       return "Trial of the Stars (Hard)";
     if (type === TrialEnum.TrialOfTheStarsVeryHard)
       return "Trial of the Stars (Very Hard)";
-      if (type === TrialEnum.TrialOfTheStarsUltimate)
+    if (type === TrialEnum.TrialOfTheStarsUltimate)
       return "Trial of the Stars (Ultimate)";
 
     return "";

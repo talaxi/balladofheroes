@@ -1312,8 +1312,7 @@ export class JewelcraftingService {
       recipe.displayOrder = 4;
 
       recipe.expGain = 100;
-    }//TODO: uncomment this as they become available
-     /*
+    }
     if (item === ItemsEnum.MajorWeaponSlotAddition) {
       recipe.quality = EquipmentQualityEnum.Extraordinary;
       recipe.ingredients.push(new ResourceValue(ItemsEnum.MetalCore, 25));
@@ -1496,7 +1495,7 @@ export class JewelcraftingService {
       recipe.displayOrder = 10;
 
       recipe.expGain = 150;
-    }*/
+    }
 
     if (this.globalService.globalVar.isSubscriber)
       recipe.expGain *= 2;

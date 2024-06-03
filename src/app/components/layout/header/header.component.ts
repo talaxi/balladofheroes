@@ -116,8 +116,34 @@ export class HeaderComponent implements OnInit {
     const month = now.getMonth() + 1;
     const day = now.getDate();
     var zodiacStartDate: Date = new Date();
+    var zodiacSign = this.zodiacService.getCurrentZodiac();
 
-    if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) {
+    if (zodiacSign === ZodiacEnum.Aquarius)
+      zodiacStartDate = new Date(year, 0, 20);
+    if (zodiacSign === ZodiacEnum.Pisces)
+      zodiacStartDate = new Date(year, 1, 19);
+    if (zodiacSign === ZodiacEnum.Aries)
+      zodiacStartDate = new Date(year, 2, 20);
+    if (zodiacSign === ZodiacEnum.Taurus)
+      zodiacStartDate = new Date(year, 3, 19);
+    if (zodiacSign === ZodiacEnum.Gemini)
+      zodiacStartDate = new Date(year, 4, 20);
+    if (zodiacSign === ZodiacEnum.Cancer)
+      zodiacStartDate = new Date(year, 5, 20);
+    if (zodiacSign === ZodiacEnum.Leo)
+      zodiacStartDate = new Date(year, 6, 22);
+    if (zodiacSign === ZodiacEnum.Virgo)
+      zodiacStartDate = new Date(year, 7, 22);
+    if (zodiacSign === ZodiacEnum.Libra)
+      zodiacStartDate = new Date(year, 8, 22);
+    if (zodiacSign === ZodiacEnum.Scorpio)
+      zodiacStartDate = new Date(year, 9, 22);
+    if (zodiacSign === ZodiacEnum.Sagittarius)
+      zodiacStartDate = new Date(year, 10, 21);
+    if (zodiacSign === ZodiacEnum.Capricorn)
+      zodiacStartDate = new Date(year, 11, 21);
+
+    /*if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) {
       zodiacStartDate = new Date(year, 0, 20);
     } else if ((month === 2 && day >= 19) || (month === 3 && day <= 20)) {
       zodiacStartDate = new Date(year, 1, 19);
@@ -143,7 +169,7 @@ export class HeaderComponent implements OnInit {
       zodiacStartDate = new Date(year, 11, 22);
     } else {
       zodiacStartDate = new Date(0); // Default to an invalid date
-    }
+    }*/
 
     return formatDate(zodiacStartDate, 'MMMM d', 'en-US');
   }
@@ -154,8 +180,34 @@ export class HeaderComponent implements OnInit {
     const month = now.getMonth() + 1; // JavaScript months are 0-indexed
     const day = now.getDate();
     var zodiacEndDate: Date = new Date();
+    var zodiacSign = this.zodiacService.getCurrentZodiac();
 
-    if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) {
+    if (zodiacSign === ZodiacEnum.Aquarius)
+      zodiacEndDate = new Date(year, 1, 18);
+    if (zodiacSign === ZodiacEnum.Pisces)
+      zodiacEndDate = new Date(year, 2, 19);
+    if (zodiacSign === ZodiacEnum.Aries)
+      zodiacEndDate = new Date(year, 3, 18);
+    if (zodiacSign === ZodiacEnum.Taurus)
+      zodiacEndDate = new Date(year, 4, 19);
+    if (zodiacSign === ZodiacEnum.Gemini)
+      zodiacEndDate = new Date(year, 5, 19);
+    if (zodiacSign === ZodiacEnum.Cancer)
+      zodiacEndDate = new Date(year, 6, 21);
+    if (zodiacSign === ZodiacEnum.Leo)
+      zodiacEndDate = new Date(year, 7, 21);
+    if (zodiacSign === ZodiacEnum.Virgo)
+      zodiacEndDate = new Date(year, 8, 21);
+    if (zodiacSign === ZodiacEnum.Libra)
+      zodiacEndDate = new Date(year, 9, 21);
+    if (zodiacSign === ZodiacEnum.Scorpio)
+      zodiacEndDate = new Date(year, 10, 20);
+    if (zodiacSign === ZodiacEnum.Sagittarius)
+      zodiacEndDate = new Date(year, 11, 20);
+    if (zodiacSign === ZodiacEnum.Capricorn)
+      zodiacEndDate = new Date(year, 0, 19);
+
+    /*if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) {
       zodiacEndDate = new Date(year, 1, 18);
     } else if ((month === 2 && day >= 19) || (month === 3 && day <= 20)) {
       zodiacEndDate = new Date(year, 2, 20);
@@ -181,7 +233,7 @@ export class HeaderComponent implements OnInit {
       zodiacEndDate = new Date(year, 12, 19);
     } else {
       zodiacEndDate = new Date(0); // Default to an invalid date
-    }
+    }*/
 
     return formatDate(zodiacEndDate, 'MMMM d', 'en-US');
   }

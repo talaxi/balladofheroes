@@ -51,6 +51,21 @@
                         <span [innerHtml]="getItemDescription(selectedItem)"></span>
                         <br />
                         <br />
+                        <div *ngIf="this.selectedItem.item === itemsEnum.Transmutation">
+                        <div class="flex">
+                            <button class="buttonAsText clickableText filterOption" [ngClass]="{'filterActive': transmutationAmount === 1}"
+                              (click)="changeTransmutationAmount(1, true)">1x</button>
+                            <button class="buttonAsText clickableText filterOption" [ngClass]="{'filterActive': transmutationAmount === 5}"
+                              (click)="changeTransmutationAmount(5, true)">5x</button>
+                            <button class="buttonAsText clickableText filterOption" [ngClass]="{'filterActive': transmutationAmount === 25}"
+                              (click)="changeTransmutationAmount(25, true)">25x</button>
+                            <button class="buttonAsText clickableText filterOption"
+                              [ngClass]="{'filterActive': transmutationAmount !== 1 && transmutationAmount !== 5 && transmutationAmount !== 25 && transmutationAmount === getTotalItemToTransmutationAmount()}"
+                              (click)="changeTransmutationAmount(getTotalItemToTransmutationAmount(), true)">All</button>
+                              <input class="customNumberWidth" (focus)="inTextbox()" (blur)="outOfTextbox()" (change)="useCustomAmount()" type="text" maxlength="30" [(ngModel)]="customTransmutationAmount" />
+                          </div>
+                          <br/>
+                          </div>
                         <button [disabled]="!slotsAvailable()" class="buttonStyled" (click)="slotItem()">Add</button>
                 </div>
             </div>

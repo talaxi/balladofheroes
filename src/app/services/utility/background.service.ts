@@ -37,6 +37,8 @@ import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
 import { SubZoneGeneratorService } from 'src/app/services/sub-zone-generator/sub-zone-generator.service';
 import { AffinityLevelRewardEnum } from 'src/app/models/enums/affinity-level-reward-enum.model';
 import { ZodiacService } from 'src/app/services/global/zodiac.service';
+import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
+import { EffectResolutionEnum } from 'src/app/models/enums/effect-resolution-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -81,6 +83,7 @@ export class BackgroundService {
         this.battleService.handleStatusEffectDurations(true, partyMember, enemies, party, deltaTime);
         this.checkForThornsGems(partyMember);
         this.checkGodStatuses(partyMember);
+        this.checkWarriorStatus(partyMember, enemies);
 
         if (partyMember.overdriveInfo !== undefined && partyMember.overdriveInfo.isActive && partyMember.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Revenge && partyMember.overdriveInfo.revengeTime !== undefined) {
           if (partyMember.overdriveInfo.revengeTime <= 0) {
@@ -107,6 +110,21 @@ export class BackgroundService {
         }
       }
     });
+  }
+
+  checkWarriorStatus(member: Character, enemies: Character[]) {
+    var counterattack = this.lookupService.characterHasAbility("Counterattack", member);
+    if (counterattack !== undefined && member.type === CharacterEnum.Warrior &&
+      (member.battleStats.currentHp / this.lookupService.getAdjustedMaxHp(member, true) <= counterattack.threshold)) {
+      if (!member.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.WarriorDefend)) {
+        var warriorDefendEffect = this.globalService.createStatusEffect(StatusEffectEnum.WarriorDefend, -1, .5, false, true);
+        warriorDefendEffect.resolution = EffectResolutionEnum.Passive;
+        this.battleService.applyStatusEffect(warriorDefendEffect, member, enemies);
+      }
+    }
+    else {
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.WarriorDefend);
+    }
   }
 
   handleLinkCooldown(member: Character, deltaTime: number) {
@@ -279,7 +297,8 @@ export class BackgroundService {
       if (effect.type === AltarEffectsEnum.HadesRareDealElementalDamage) {
         if (enemies !== undefined) {
           enemies.forEach(member => {
-            this.battleService.dealTrueDamage(true, member, effect.effectiveness, undefined, effect.element);
+            if (member !== undefined)
+              this.battleService.dealTrueDamage(true, member, effect.effectiveness, undefined, effect.element);
           });
         }
       }
@@ -287,7 +306,8 @@ export class BackgroundService {
       if (effect.type === AltarEffectsEnum.NemesisDealDamage) {
         if (enemies !== undefined) {
           var target = this.lookupService.getRandomPartyMember(enemies);
-          this.battleService.dealTrueDamage(true, target, effect.effectiveness);
+          if (target !== undefined)
+            this.battleService.dealTrueDamage(true, target, effect.effectiveness);
         }
       }
 
@@ -453,7 +473,8 @@ export class BackgroundService {
 
       if (enemies !== undefined) {
         enemies.forEach(member => {
-          this.battleService.dealTrueDamage(true, member, totalHp);
+          if (member !== undefined)
+            this.battleService.dealTrueDamage(true, member, totalHp);
         });
       }
     }
@@ -549,7 +570,8 @@ export class BackgroundService {
         var damage = totalAttack * effect.effectiveness;
 
         var target = this.lookupService.getRandomPartyMember(enemies);
-        this.battleService.dealTrueDamage(true, target, damage, undefined, ElementalTypeEnum.Water);
+        if (target !== undefined)
+          this.battleService.dealTrueDamage(true, target, damage, undefined, ElementalTypeEnum.Water);
       }
     }
 
@@ -591,7 +613,8 @@ export class BackgroundService {
         var damage = totalAttack * effect.effectiveness;
 
         enemies.forEach(enemy => {
-          this.battleService.dealTrueDamage(true, enemy, damage);
+          if (enemy !== undefined)
+            this.battleService.dealTrueDamage(true, enemy, damage);
         });
       }
     }
@@ -845,11 +868,11 @@ export class BackgroundService {
 
         if (trialType === undefined || trialType.count === 0)
           return;
-        
+
         run.clearTime = this.getTimeFragmentClearRate(run);
       }
 
-      if (run.selectedTrial === TrialEnum.TrialOfTheStarsNormal || run.selectedTrial === TrialEnum.TrialOfTheStarsHard || run.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard  || run.selectedTrial === TrialEnum.TrialOfTheStarsUltimate) {        
+      if (run.selectedTrial === TrialEnum.TrialOfTheStarsNormal || run.selectedTrial === TrialEnum.TrialOfTheStarsHard || run.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard || run.selectedTrial === TrialEnum.TrialOfTheStarsUltimate) {
         var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
           item.zodiacType === this.zodiacService.getCurrentZodiac());
 
@@ -999,8 +1022,8 @@ export class BackgroundService {
     var xpList: number[] = [];
     var coinList: number[] = [];
     var xpGained = 0;
-    var coinsGained = 0;    
-    var fragmentEfficiency =  this.globalService.globalVar.isSubscriber ? this.utilityService.supporterTimeFragmentEfficiency : this.utilityService.timeFragmentEfficiency;
+    var coinsGained = 0;
+    var fragmentEfficiency = this.globalService.globalVar.isSubscriber ? this.utilityService.supporterTimeFragmentEfficiency : this.utilityService.timeFragmentEfficiency;
 
     if (run.selectedTrial !== undefined) {
       /*var trialType: TrialDefeatCount | undefined;
@@ -1032,7 +1055,7 @@ export class BackgroundService {
 
           if (enemy.loot !== undefined && enemy.loot.length > 0) {
             enemy.loot.forEach(loot => {
-              if (loot.item === ItemsEnum.GoldenApple || loot.item === ItemsEnum.FireAbsorptionPotionRecipe || loot.item === ItemsEnum.WaterAbsorptionPotionRecipe ||
+              if (loot.item === ItemsEnum.GoldenApple || loot.item === ItemsEnum.PerfectGemstone || loot.item === ItemsEnum.MagicalVial || loot.item === ItemsEnum.FireAbsorptionPotionRecipe || loot.item === ItemsEnum.WaterAbsorptionPotionRecipe ||
                 loot.item === ItemsEnum.LightningAbsorptionPotionRecipe || loot.item === ItemsEnum.EarthAbsorptionPotionRecipe || loot.item === ItemsEnum.HolyAbsorptionPotionRecipe ||
                 loot.item === ItemsEnum.AirAbsorptionPotionRecipe || loot.item === ItemsEnum.PoisonExtractPotionRecipe || loot.item === ItemsEnum.PotentConcoctionRecipe)
                 return;
@@ -1066,7 +1089,7 @@ export class BackgroundService {
 
           if (enemy.loot !== undefined && enemy.loot.length > 0) {
             enemy.loot.forEach(loot => {
-              if (loot.item === ItemsEnum.GoldenApple || loot.item === ItemsEnum.FireAbsorptionPotionRecipe || loot.item === ItemsEnum.WaterAbsorptionPotionRecipe ||
+              if (loot.item === ItemsEnum.GoldenApple || loot.item === ItemsEnum.PerfectGemstone || loot.item === ItemsEnum.MagicalVial || loot.item === ItemsEnum.FireAbsorptionPotionRecipe || loot.item === ItemsEnum.WaterAbsorptionPotionRecipe ||
                 loot.item === ItemsEnum.LightningAbsorptionPotionRecipe || loot.item === ItemsEnum.EarthAbsorptionPotionRecipe || loot.item === ItemsEnum.HolyAbsorptionPotionRecipe ||
                 loot.item === ItemsEnum.AirAbsorptionPotionRecipe || loot.item === ItemsEnum.PoisonExtractPotionRecipe || loot.item === ItemsEnum.PotentConcoctionRecipe)
                 return;

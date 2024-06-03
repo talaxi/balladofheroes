@@ -600,7 +600,8 @@ export class ColiseumService {
       var battleOptions = this.subZoneGeneratorService.generateBattleOptions(enumValue);
       battleOptions.filter(option => (!isBoss && option.enemyList.length === enemyCount && !option.isBossFight && !option.isDoubleBossFight) ||
         (isBoss && (option.isBossFight || option.isDoubleBossFight))).forEach(option => {
-          allRelevantEnemyParties.push(option);
+          if (!option.enemyList.some(item => item.bestiaryType === BestiaryEnum.Gration || item.bestiaryType === BestiaryEnum.Aristaeus))
+            allRelevantEnemyParties.push(option);
         });
     }
 

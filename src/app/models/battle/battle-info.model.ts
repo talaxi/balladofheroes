@@ -25,6 +25,7 @@ export class BattleInfo {
     duoAbilityUsed: boolean;
     duoAbilityCooldown: number;
     immortalityCount: number;
+    finalHourUsed: boolean;
 
     constructor(characterType?: CharacterEnum, enemyType?: BestiaryEnum) {
         this.autoAttackTimer = 0;
@@ -43,5 +44,6 @@ export class BattleInfo {
         this.duoAbilityUsed = false;
         this.immortalityCount = 0;
         this.duoAbilityCooldown = 0;
+        this.finalHourUsed = false;
     }
 }

@@ -150,7 +150,13 @@
                 <br />
                 <span [ngClass]='isRoundComplete(20)'>Completing Round 20: +1 Dark Orb</span>
                 <br />
-                <span [ngClass]='isRoundComplete(30)'>Completing Round 30: <span class="specialEquipment bold">Hermes's Staff</span></span>
+                <span [ngClass]='isRoundComplete(30)'>Completing Round 30: <span customToolTip [isDelayed]="false" [isLargeTooltip]="true" [contentTemplate]="hermessStaffView" class="specialEquipment bold">Hermes's Staff</span></span>
+                <br/>
+                <span [ngClass]='isRoundComplete(40)'>Completing Round 40: +25 Followers</span>
+                <br/>
+                <span [ngClass]='isRoundComplete(50)'>Completing Round 50: +25 Max Alchemy Level</span>
+                <br/>
+                <span [ngClass]='isRoundComplete(60)'>Completing Round 60: <span customToolTip [isDelayed]="false" [isLargeTooltip]="true" [contentTemplate]="shieldOfUnendingFlamesView" class="uniqueEquipment bold">Shield of Unending Flames</span></span>
             </div>
             <div class="vr">
                 <hr class="vrHr" />
@@ -158,25 +164,29 @@
             <div class="column">
                 <div class="bold smallCaps">every attempt</div>
                 <br/>
-                Completing Round 5: +10-50 Basic Crafting Materials
+                Completing Round 5: +75-150 Basic Crafting Materials
                 <br />
-                Completing Round 10: +30-70 Rough Gem Fragments
+                Completing Round 10: +150-250 Rough Gem Fragments
                 <br />
-                Completing Round 15: +25-100 Metal Scraps
+                Completing Round 15: +25-200 Metal Scraps
                 <br />
                 Completing Round 20: +25-150 Chthonic Favor
                 <br />
-                Completing Round 25: +30-70 Uncommon Crafting Materials
+                Completing Round 25: +75-150 Uncommon Crafting Materials
                 <br />
-                Completing Round 30: +200 Rough Gem Fragments
+                Completing Round 30: +50-200 Metal Nuggets
                 <br />
-                Completing Round 35: +100K <span class='coinKeyword'>Coins</span>
+                Completing Round 35: +75-150 Rare Crafting Materials
                 <br />
-                Completing Round 40: +60-130 Rare Crafting Materials
+                Completing Round 40: +150-250 Rutile Gem Fragments
                 <br />
-                Completing Round 45: +50-200 Metal Nuggets
+                Completing Round 45: +50-200 Metal Cores
                 <br />
-                Every successive boss fight: +250 Rutile Gem Fragments
+                Completing Round 50: +75-150 Epic Crafting Materials
+                <br />
+                Completing Round 55: +150-250 Perfect Gem Fragments
+                <br />
+                Every successive boss fight: +500 Special Crafting Materials, 100 <span customToolTip [isDelayed]="false" [isLargeTooltip]="true" [contentTemplate]="shieldOfUnendingFlamesView" class="uniqueEquipment bold">Shield of Unending Flames</span> XP
                 <br /><br />
             </div>
         </div>
@@ -195,3 +205,19 @@
     <ng-template #purchaseBox>
         <app-confirmation-box [confirmationText]="transactionConfirmationText"></app-confirmation-box>
     </ng-template>
+
+    <ng-template #hermessStaffView>
+        <div class="compareEquipment">
+          <span class="item item1">
+            <app-equipment-item-view [equipment]="hermessStaffDescription"></app-equipment-item-view>
+          </span>          
+        </div>
+      </ng-template>
+      
+    <ng-template #shieldOfUnendingFlamesView>
+        <div class="compareEquipment">
+          <span class="item item1">
+            <app-equipment-item-view [equipment]="shieldOfUnendingFlamesDescription"></app-equipment-item-view>
+          </span>          
+        </div>
+      </ng-template>

@@ -89,7 +89,7 @@ export class UtilityService {
   public characterPermanentPassiveObtainCap = 25;
   public characterPermanentStatObtainCap = 25;
 
-  public maxTrialOfResolveStage = 50;
+  public maxTrialOfResolveStage = 70;
   
   public damageLinkBoost = 10;
   public nonDamageLinkBoost = 15;
@@ -159,6 +159,16 @@ export class UtilityService {
   public supporterTimeFragmentEfficiency = .3;
 
   constructor(public sanitizer: DomSanitizer, public dialog: MatDialog) { }
+
+  isMainSite() {
+    var isMainSite = false;
+    var url = (window.location != window.parent.location) ? document.referrer : document.location.href;
+    if (url.toLowerCase().includes("talaxi.github")) {
+      isMainSite = true;
+    }
+
+    return isMainSite;
+  }
 
   isKongregate() {
     var isKongregate = false;
@@ -465,6 +475,72 @@ export class UtilityService {
       else
         reducedNumber += "AB";
     }
+    else if (this.getDigitCount(originalAmount) <= 24) {
+      var leadingNumberCount = this.getDigitCount(originalAmount) - 21;
+      reducedNumber = originalAmount.toString().substring(0, leadingNumberCount);
+      if (3 - leadingNumberCount > 0) {
+        var remainingCount = 3 - leadingNumberCount;
+        reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
+      }
+
+      if (includeSpan)
+        reducedNumber += "<span class='abNumber'>AC</span>";
+      else
+        reducedNumber += "AC";
+    }
+    else if (this.getDigitCount(originalAmount) <= 27) {
+      var leadingNumberCount = this.getDigitCount(originalAmount) - 24;
+      reducedNumber = originalAmount.toString().substring(0, leadingNumberCount);
+      if (3 - leadingNumberCount > 0) {
+        var remainingCount = 3 - leadingNumberCount;
+        reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
+      }
+
+      if (includeSpan)
+        reducedNumber += "<span class='abNumber'>AD</span>";
+      else
+        reducedNumber += "AD";
+    }
+    else if (this.getDigitCount(originalAmount) <= 30) {
+      var leadingNumberCount = this.getDigitCount(originalAmount) - 27;
+      reducedNumber = originalAmount.toString().substring(0, leadingNumberCount);
+      if (3 - leadingNumberCount > 0) {
+        var remainingCount = 3 - leadingNumberCount;
+        reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
+      }
+
+      if (includeSpan)
+        reducedNumber += "<span class='abNumber'>AE</span>";
+      else
+        reducedNumber += "AE";
+    }
+    else if (this.getDigitCount(originalAmount) <= 33) {
+      var leadingNumberCount = this.getDigitCount(originalAmount) - 30;
+      reducedNumber = originalAmount.toString().substring(0, leadingNumberCount);
+      if (3 - leadingNumberCount > 0) {
+        var remainingCount = 3 - leadingNumberCount;
+        reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
+      }
+
+      if (includeSpan)
+        reducedNumber += "<span class='abNumber'>AF</span>";
+      else
+        reducedNumber += "AF";
+    }
+    else if (this.getDigitCount(originalAmount) <= 36) {
+      var leadingNumberCount = this.getDigitCount(originalAmount) - 33;
+      reducedNumber = originalAmount.toString().substring(0, leadingNumberCount);
+      if (3 - leadingNumberCount > 0) {
+        var remainingCount = 3 - leadingNumberCount;
+        reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
+      }
+
+      if (includeSpan)
+        reducedNumber += "<span class='abNumber'>AG</span>";
+      else
+        reducedNumber += "AG";
+    }
+    //gg you beat the game
 
     return reducedNumber;
   }
@@ -500,6 +576,12 @@ export class UtilityService {
 
     if (text === "Vial of the Cretan Sea")
       return "Vials of the Cretan Sea";
+
+      if (text === "Vial of Foreign Waters")
+      return "Vials of Foreign Waters";
+
+      if (text === "Vial of Tartaran Flames")
+      return "Vials of Tartaran Flames";
 
     if (text === "Essence of Fire")
       return "Essences of Fire";

@@ -364,13 +364,12 @@ export class TrialService {
     if (stage === 50) {
       enemyTeam.isBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineVulture));
-    }
-    //todo: bring back on next version
-    /*if (stage === 51) {
+    }    
+    if (stage === 51) {
       enemyTeam.isDoubleBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Sphinx));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Sphinx));
-    } */
+    }
     if (stage === 52) {
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Griffin));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Griffin));
@@ -413,6 +412,40 @@ export class TrialService {
     if (stage === 60) {
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineCrane));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineCrane));
+    }
+    if (stage === 61) {
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Briareus));      
+    }
+    if (stage === 62) {
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Gyges));      
+    }
+    if (stage === 63) {
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Cottus));      
+    }
+    if (stage === 64) {
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Hecatoncheires));      
+    }
+    if (stage === 65) {
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineTiger));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineTiger));      
+    }
+    if (stage === 66) {
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Hecate));      
+    }
+    if (stage === 67) {
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Mnemosyne));      
+    }
+    if (stage === 68) {
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Metis));      
+    }
+    if (stage === 69) {
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Helios));      
+    }
+    if (stage === 70) {
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineWolf));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineWolf));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineWolf));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineWolf));      
     }
 
     return enemyTeam;
@@ -1038,6 +1071,17 @@ export class TrialService {
       }
     }
     else if (stage === 60) {
+      if (includeGameLog) {
+        var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
+        if (jewelcrafting !== undefined) {
+          jewelcrafting.maxLevel += 25;
+
+          var gameLogEntry = "Your Jewelcrafting max level increases by <strong>25</strong> to a total of <strong>" + jewelcrafting.maxLevel + "</strong>.";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry, this.globalService.globalVar);
+        }
+      }
+    }    
+    else if (stage === 70) {
       var itemCount = 1;
       var gainedItem = ItemsEnum.ArmorOfOlympus;
 
@@ -1048,28 +1092,6 @@ export class TrialService {
 
         this.globalService.globalVar.uniques.push(new Uniques(gainedItem));
         this.globalService.gainResource(new ResourceValue(gainedItem, itemCount));
-      }
-    }
-    else if (stage === 70) {
-      if (includeGameLog) {
-        var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
-        if (alchemy !== undefined) {
-          alchemy.maxLevel += 25;
-
-          var gameLogEntry = "Your Alchemy max level increases by <strong>25</strong> to a total of <strong>" + alchemy.maxLevel + "</strong>.";
-          this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry, this.globalService.globalVar);
-        }
-      }
-    }
-    else if (stage === 80) {
-      if (includeGameLog) {
-        var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
-        if (jewelcrafting !== undefined) {
-          jewelcrafting.maxLevel += 25;
-
-          var gameLogEntry = "Your Jewelcrafting max level increases by <strong>25</strong> to a total of <strong>" + jewelcrafting.maxLevel + "</strong>.";
-          this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry, this.globalService.globalVar);
-        }
       }
     }
     else if (stage % 5 === 0) {

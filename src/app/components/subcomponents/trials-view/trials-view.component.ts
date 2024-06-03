@@ -75,7 +75,7 @@ export class TrialsViewComponent {
       }
 
       var enumValue = propertyValue as TrialEnum;
-      if (enumValue !== TrialEnum.None && enumValue !== TrialEnum.TrialOfTheStarsUltimate) {
+      if (enumValue !== TrialEnum.None) {
         Trials.push(enumValue);
       }
     }
@@ -273,13 +273,10 @@ export class TrialsViewComponent {
       return "<span class='bold smallCaps uniqueEquipment'>Sword of Olympus</span>";
     }
     else if (this.globalService.globalVar.sidequestData.trialStage === 60) {
-      return "<span class='bold smallCaps uniqueEquipment'>Armor of Olympus</span>";
+      return "<span class='bold smallCaps jewelcraftingText'>+25 Jewelcrafting Level</span>";      
     }
     else if (this.globalService.globalVar.sidequestData.trialStage === 70) {
-      return "<span class='bold smallCaps alchemyText'>+25 Alchemy Max Level</span>";
-    }
-    else if (this.globalService.globalVar.sidequestData.trialStage === 80) {
-      return "<span class='bold smallCaps jewelcraftingText'>+25 Jewelcrafting Level</span>";
+      return "<span class='bold smallCaps uniqueEquipment'>Armor of Olympus</span>";
     }
     else if (reward === undefined)
       return "";

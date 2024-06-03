@@ -206,6 +206,10 @@
   --trillionsColor: #508FFE;
   --aaColor: #e3b352;
   --abColor: #BAB0BF;
+  --acColor: #DCA5E2;
+  --adColor: #FF6250;
+  --aeColor: #B2B69A;
+  --afColor: #f0f0f0;
 
   --barrierColor: #0FCCC6;
   --linkText: #DCA5E2;
@@ -790,6 +794,26 @@ body {
 
 .abNumber {
   color: var(--abColor);
+  font-weight: bold;
+}
+
+.acNumber {
+  color: var(--acColor);
+  font-weight: bold;
+}
+
+.adNumber {
+  color: var(--adColor);
+  font-weight: bold;
+}
+
+.aeNumber {
+  color: var(--aeColor);
+  font-weight: bold;
+}
+
+.afNumber {
+  color: var(--afColor);
   font-weight: bold;
 }
 

@@ -519,6 +519,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.CarcanetOfTheCentaurUnique) {
       return new ResourceValue(ItemsEnum.CarcanetOfTheCentaurUnique, amount);
     }
+    if (type === ItemsEnum.HourglassRing) {
+      return new ResourceValue(ItemsEnum.HourglassRing, amount);
+    }
     if (type === ItemsEnum.BoundingBandEpic) {
       return new ResourceValue(ItemsEnum.BoundingBandEpic, amount);
     }
@@ -699,6 +702,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.ArmorOfOlympus) {
       return new ResourceValue(ItemsEnum.ArmorOfOlympus, amount);
     }
+    if (type === ItemsEnum.ShieldOfUnendingFlames) {
+      return new ResourceValue(ItemsEnum.ShieldOfUnendingFlames, amount);
+    }
 
     //equippables
     if (type === ItemsEnum.TokenOfSupport) {
@@ -739,6 +745,12 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.PoisonExtractPotion) {
       return new ResourceValue(ItemsEnum.PoisonExtractPotion, amount);
+    }
+    if (type === ItemsEnum.Extraction) {
+      return new ResourceValue(ItemsEnum.Extraction, amount);
+    }
+    if (type === ItemsEnum.Transmutation) {
+      return new ResourceValue(ItemsEnum.Transmutation, amount);
     }
     if (type === ItemsEnum.HeroicElixir) {
       return new ResourceValue(ItemsEnum.HeroicElixir, amount);
@@ -812,8 +824,35 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.MagicToxin) {
       return new ResourceValue(ItemsEnum.MagicToxin, amount);
     }
+    if (type === ItemsEnum.TempestToxin) {
+      return new ResourceValue(ItemsEnum.TempestToxin, amount);
+    }
+    if (type === ItemsEnum.LightToxin) {
+      return new ResourceValue(ItemsEnum.LightToxin, amount);
+    }
+    if (type === ItemsEnum.CorrosiveToxin) {
+      return new ResourceValue(ItemsEnum.CorrosiveToxin, amount);
+    }
+    if (type === ItemsEnum.MetalElixir) {
+      return new ResourceValue(ItemsEnum.MetalElixir, amount);
+    }
+    if (type === ItemsEnum.RestorativeElixir) {
+      return new ResourceValue(ItemsEnum.RestorativeElixir, amount);
+    }
+    if (type === ItemsEnum.ElixirOfPower) {
+      return new ResourceValue(ItemsEnum.ElixirOfPower, amount);
+    }
     if (type === ItemsEnum.BouncingPotion) {
       return new ResourceValue(ItemsEnum.BouncingPotion, amount);
+    }
+    if (type === ItemsEnum.BurstingPotion) {
+      return new ResourceValue(ItemsEnum.BurstingPotion, amount);
+    }
+    if (type === ItemsEnum.ShatteringPotion) {
+      return new ResourceValue(ItemsEnum.ShatteringPotion, amount);
+    }
+    if (type === ItemsEnum.EndlessPotion) {
+      return new ResourceValue(ItemsEnum.EndlessPotion, amount);
     }
     if (type === ItemsEnum.MagicRevivify) {
       return new ResourceValue(ItemsEnum.MagicRevivify, amount);
@@ -841,6 +880,12 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.PeonySalve) {
       return new ResourceValue(ItemsEnum.PeonySalve, amount);
+    }
+    if (type === ItemsEnum.InkPoultice) {
+      return new ResourceValue(ItemsEnum.InkPoultice, amount);
+    }
+    if (type === ItemsEnum.InkSalve) {
+      return new ResourceValue(ItemsEnum.InkSalve, amount);
     }
     if (type === ItemsEnum.RareToEpicTransmutation) {
       return new ResourceValue(ItemsEnum.RareToEpicTransmutation, amount);
@@ -898,8 +943,23 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.ImmortalScales) {
       return new ResourceValue(ItemsEnum.ImmortalScales, amount);
     }
+    if (type === ItemsEnum.InfiniteEssence) {
+      return new ResourceValue(ItemsEnum.InfiniteEssence, amount);
+    }
     if (type === ItemsEnum.SpiderSilk) {
       return new ResourceValue(ItemsEnum.SpiderSilk, amount);
+    }
+    if (type === ItemsEnum.VialOfTartaranFlames) {
+      return new ResourceValue(ItemsEnum.VialOfTartaranFlames, amount);
+    }
+    if (type === ItemsEnum.ChimeraFur) {
+      return new ResourceValue(ItemsEnum.ChimeraFur, amount);
+    }
+    if (type === ItemsEnum.PureEnergy) {
+      return new ResourceValue(ItemsEnum.PureEnergy, amount);
+    }
+    if (type === ItemsEnum.Passionflower) {
+      return new ResourceValue(ItemsEnum.Passionflower, amount);
     }
     if (type === ItemsEnum.SquidInk) {
       return new ResourceValue(ItemsEnum.SquidInk, amount);

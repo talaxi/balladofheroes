@@ -870,6 +870,24 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.RutileAmethystFragment) {
       purchasePrice.push(new ResourceValue(ItemsEnum.RoughAmethystFragment, 100));
     }
+    if (item === ItemsEnum.PerfectRubyFragment) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.RutileRubyFragment, 100));
+    }
+    if (item === ItemsEnum.PerfectOpalFragment) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.RutileOpalFragment, 100));
+    }
+    if (item === ItemsEnum.PerfectAquamarineFragment) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.RutileAquamarineFragment, 100));
+    }
+    if (item === ItemsEnum.PerfectEmeraldFragment) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.RutileEmeraldFragment, 100));
+    }
+    if (item === ItemsEnum.PerfectTopazFragment) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.RutileTopazFragment, 100));
+    }
+    if (item === ItemsEnum.PerfectAmethystFragment) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.RutileAmethystFragment, 100));
+    }
     if (item === ItemsEnum.DullRuby) {
       purchasePrice.push(new ResourceValue(ItemsEnum.PerfectCrackedRuby, 1));
     }
@@ -923,6 +941,60 @@ export class ShopItemGeneratorService {
     }
     if (item === ItemsEnum.RutilatedAquamarine) {
       purchasePrice.push(new ResourceValue(ItemsEnum.PerfectFlawedAquamarine, 2));
+    }
+    if (item === ItemsEnum.BrilliantRuby) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.PerfectRutilatedRuby, 2));
+    }
+    if (item === ItemsEnum.BrilliantAmethyst) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.PerfectRutilatedAmethyst, 2));
+    }
+    if (item === ItemsEnum.BrilliantTopaz) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.PerfectRutilatedTopaz, 2));
+    }
+    if (item === ItemsEnum.BrilliantOpal) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.PerfectRutilatedOpal, 2));
+    }
+    if (item === ItemsEnum.BrilliantEmerald) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.PerfectRutilatedEmerald, 2));
+    }
+    if (item === ItemsEnum.BrilliantAquamarine) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.PerfectRutilatedAquamarine, 2));
+    }
+    if (item === ItemsEnum.FlawlessRuby) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.PerfectBrilliantRuby, 3));
+    }
+    if (item === ItemsEnum.FlawlessAmethyst) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.PerfectBrilliantAmethyst, 3));
+    }
+    if (item === ItemsEnum.FlawlessTopaz) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.PerfectBrilliantTopaz, 3));
+    }
+    if (item === ItemsEnum.FlawlessOpal) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.PerfectBrilliantOpal, 3));
+    }
+    if (item === ItemsEnum.FlawlessEmerald) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.PerfectBrilliantEmerald, 3));
+    }
+    if (item === ItemsEnum.FlawlessAquamarine) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.PerfectBrilliantAquamarine, 3));
+    }
+    if (item === ItemsEnum.AdamantineRuby) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.PerfectFlawlessRuby, 5));
+    }
+    if (item === ItemsEnum.AdamantineAmethyst) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.PerfectFlawlessAmethyst, 5));
+    }
+    if (item === ItemsEnum.AdamantineTopaz) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.PerfectFlawlessTopaz, 5));
+    }
+    if (item === ItemsEnum.AdamantineOpal) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.PerfectFlawlessOpal, 5));
+    }
+    if (item === ItemsEnum.AdamantineEmerald) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.PerfectFlawlessEmerald, 5));
+    }
+    if (item === ItemsEnum.AdamantineAquamarine) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.PerfectFlawlessAquamarine, 5));
     }
     if (item === ItemsEnum.SoothingHerb) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500));

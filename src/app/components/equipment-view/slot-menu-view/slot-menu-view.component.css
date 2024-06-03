@@ -104,6 +104,24 @@
 }
 
 
+.filterOption {
+  color: var(--inactive-filter);
+  font-size: 1.2rem;
+}
+
+.filterOption.filterActive {
+  color: var(--active-filter);
+}
+
+.sellItem {
+  text-align: center;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-around;
+}
+
 .autoProgressIcon {
   height: 1.1rem;
   display:flex;

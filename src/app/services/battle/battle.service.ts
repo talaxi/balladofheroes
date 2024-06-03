@@ -792,6 +792,16 @@ export class BattleService {
         }
       }
 
+      if (effect.type === StatusEffectEnum.DealMissingHpPercentAfterTime && effect.duration <= 0) {
+        var missingHp = (this.lookupService.getAdjustedMaxHp(character, true) - character.battleStats.currentHp);
+        var damageAmount = missingHp * effect.effectiveness;
+        this.dealTrueDamage(isPartyMember, character, damageAmount, undefined, undefined, true);
+        if (this.globalService.globalVar.gameLogSettings.get("partyStatusEffect")) {
+          var effectGameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " loses " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, damageAmount) + " HP.";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, effectGameLogEntry, this.globalService.globalVar);
+        }
+      }
+
       if (effect.type === StatusEffectEnum.HighTide && effect.duration <= 0) {
         this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.Cancer, -1, 1, false, true, false, character.name, undefined, true), character, undefined, undefined, undefined, false);
       }
@@ -816,7 +826,7 @@ export class BattleService {
 
     character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(effect => effect.isPermanent || effect.duration > 0);
 
-    if (character.name === "Athena") { //Trial of Skill
+    if (character.name === "Athena" || character.name.includes("Protected Warrior")) { //Trial of Skill
       var totalEffectiveness = 11;
       var amountPerDebuff = 1.25;
       var totalDebuffs = character.battleInfo.statusEffects.filter(item => !item.isPositive).length;
@@ -1009,23 +1019,6 @@ export class BattleService {
 
     if (elementalType === ElementalTypeEnum.None) {
       elementalType = this.checkUserForEnElement(character);
-    }
-
-    var flamingToxin = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.FlamingToxin);
-    if (flamingToxin !== undefined) {
-      elementalType = ElementalTypeEnum.Fire;
-    }
-    var sandToxin = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.SandToxin);
-    if (sandToxin !== undefined) {
-      elementalType = ElementalTypeEnum.Earth;
-    }
-    var electrifiedToxin = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ElectrifiedToxin);
-    if (electrifiedToxin !== undefined) {
-      elementalType = ElementalTypeEnum.Lightning;
-    }
-    var tidalToxin = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.TidalToxin);
-    if (tidalToxin !== undefined) {
-      elementalType = ElementalTypeEnum.Water;
     }
 
     var elementalText = "";
@@ -1227,6 +1220,18 @@ export class BattleService {
         thornsDamageUp = thornsDamageUpEffect.effectiveness;
       }
 
+      var metalElixirBonus = 0;
+      var metalElixir = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.MetalElixir);
+      if (metalElixir !== undefined) {
+        metalElixirBonus = metalElixir.effectiveness;
+      }
+
+      var unendingFlamesMultiplier = 0;
+      var unendingFlames = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.UnendingFlames);
+      if (unendingFlames !== undefined) {
+        unendingFlamesMultiplier = unendingFlames.effectiveness;
+      }
+
       var dispenserOfDuesBonusThorns = this.checkForNemesisSetBonus(target);
 
       var includeAltars = false;
@@ -1236,11 +1241,14 @@ export class BattleService {
       var counterattack = this.lookupService.characterHasAbility("Counterattack", target);
       var thorns = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Thorns);
       if (thorns !== undefined || target.battleStats.thorns > 0 || reprisalThorns > 0 || dispenserOfDuesBonusThorns > 0 ||
+        metalElixirBonus > 0 || unendingFlamesMultiplier > 0 ||
         (includeAltars && (this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.NemesisThorns) !== undefined ||
           this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.NemesisRareThorns) !== undefined)) ||
         (counterattack !== undefined && this.warriorCounterattackActive(target, character))) {
         var thornsPercentDamage = damageDealt * target.battleStats.thorns;
         thornsPercentDamage += damageDealt * reprisalThorns;
+        thornsPercentDamage += damageDealt * metalElixirBonus;
+        thornsPercentDamage += damageDealt * unendingFlamesMultiplier;
 
         if (counterattack !== undefined && this.warriorCounterattackActive(target, character)) {
           var counterAttackEffectiveness = counterattack.effectiveness;
@@ -1434,9 +1442,9 @@ export class BattleService {
         character.overdriveInfo.gaugeAmount = character.overdriveInfo.gaugeTotal;
     }
 
-    if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.ThousandCuts)) {
+    if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.ThousandCuts) && !fromSpecialDelivery) {
       var effect = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ThousandCuts)!;
-      if (effect !== undefined)
+      if (effect !== undefined && effect.count < 20)
         effect.count += 1;
     }
 
@@ -1740,6 +1748,22 @@ export class BattleService {
     var targetEffects: StatusEffect[] = [];
     var wasDamageCritical: boolean = false;
 
+    if (target !== undefined) {
+      var illusion = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Illusion);
+      if (illusion !== undefined) {
+        var rng = this.utilityService.getRandomInteger(0, 1);
+        if (rng <= illusion.effectiveness) {
+          if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAutoAttacks")) ||
+            (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAutoAttacks"))) {
+            var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + "'s ability misses!";
+            this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry, this.globalService.globalVar);
+          }
+
+          return true;
+        }
+      }
+    }
+
     var keepFlow = false;
     this.handleConditionalAbilityChanges(abilityCopy, user, party, fromRepeat, target);
     var ally = party.find(item => item.type !== user.type);
@@ -1750,6 +1774,44 @@ export class BattleService {
 
     if (abilityCopy.name === "Sun and Moon") {
       abilityCopy.userEffect = abilityCopy.userEffect.filter(item => item.type !== StatusEffectEnum.InstantOstinato);
+    }
+
+    if ((abilityCopy.name === "Solar Flare" || abilityCopy.name === "Raid") && !fromRepeat) {
+      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
+    }
+
+    if (abilityCopy.name === "Raging Fireball" && ability.cooldown > 2) {
+      ability.cooldown -= 2;
+    }
+
+    if (abilityCopy.name === "Mix Herb") {
+      var rng = this.utilityService.getRandomInteger(0, 2);
+
+      if (rng === 0)
+      abilityCopy.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RedHerb, -1, 1, false, true, false));
+      else if (rng === 1)
+        abilityCopy.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.GreenHerb, -1, 1, false, true, false));
+      else if (rng === 2)
+        abilityCopy.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.YellowHerb, -1, 1, false, true, false));
+    }
+
+    if (abilityCopy.name === "Prophecy") {
+      var rng = this.utilityService.getRandomInteger(0, 2);
+
+      if (rng === 0) {
+        abilityCopy.userEffect.unshift(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtUp, 15, 2, false, true));
+      }
+      else if (rng === 1) {
+        abilityCopy.userEffect.unshift(this.globalService.createStatusEffect(StatusEffectEnum.DamageOverTimeTakenDown, 15, .2, false, true));
+      }
+      else if (rng === 2) {
+        abilityCopy.userEffect.unshift(this.globalService.createStatusEffect(StatusEffectEnum.AirDamageTakenDown, 15, .2, false, true));
+        abilityCopy.userEffect.unshift(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageTakenDown, 15, .2, false, true));
+        abilityCopy.userEffect.unshift(this.globalService.createStatusEffect(StatusEffectEnum.WaterDamageTakenDown, 15, .2, false, true));
+        abilityCopy.userEffect.unshift(this.globalService.createStatusEffect(StatusEffectEnum.LightningDamageTakenDown, 15, .2, false, true));
+        abilityCopy.userEffect.unshift(this.globalService.createStatusEffect(StatusEffectEnum.HolyDamageTakenDown, 15, .2, false, true));
+        abilityCopy.userEffect.unshift(this.globalService.createStatusEffect(StatusEffectEnum.EarthDamageTakenDown, 15, .2, false, true));
+      }
     }
 
     if (abilityCopy.name === "Upstream") {
@@ -1802,6 +1864,31 @@ export class BattleService {
 
     if (elementalType === ElementalTypeEnum.Random) {
       elementalType = this.lookupService.getRandomElement();
+    }
+
+    var flamingToxin = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.FlamingToxin);
+    if (flamingToxin !== undefined) {
+      elementalType = ElementalTypeEnum.Fire;
+    }
+    var sandToxin = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.SandToxin);
+    if (sandToxin !== undefined) {
+      elementalType = ElementalTypeEnum.Earth;
+    }
+    var electrifiedToxin = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ElectrifiedToxin);
+    if (electrifiedToxin !== undefined) {
+      elementalType = ElementalTypeEnum.Lightning;
+    }
+    var tidalToxin = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.TidalToxin);
+    if (tidalToxin !== undefined) {
+      elementalType = ElementalTypeEnum.Water;
+    }
+    var lightToxin = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.LightToxin);
+    if (lightToxin !== undefined) {
+      elementalType = ElementalTypeEnum.Holy;
+    }
+    var tempestToxin = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.TempestToxin);
+    if (tempestToxin !== undefined) {
+      elementalType = ElementalTypeEnum.Air;
     }
 
     if (user.battleInfo.lastUsedPoseidonAbility && !fromRepeat && (abilityCopy.name === "Crashing Waves" || abilityCopy.name === "Whirlpool" || abilityCopy.name === "Tsunami")) {
@@ -2594,7 +2681,7 @@ export class BattleService {
 
     if (user.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.ThousandCuts) && !abilityWillRepeat) {
       var effect = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ThousandCuts)!;
-      if (effect !== undefined)
+      if (effect !== undefined && effect.count < 20)
         effect.count += 1;
     }
 
@@ -2893,6 +2980,110 @@ export class BattleService {
 
     if (isPartyUsing)
       this.altarService.incrementAltarCount(AltarConditionEnum.AbilityUse);
+
+    //code specific to Hecate
+    if (user.name === "Hecate" && user.battleInfo.statusEffects.filter(item => item.type === StatusEffectEnum.RedHerb || item.type === StatusEffectEnum.YellowHerb || item.type === StatusEffectEnum.GreenHerb).length >= 2) {
+      var redHerbCount = user.battleInfo.statusEffects.filter(item => item.type === StatusEffectEnum.RedHerb).length;
+      var greenHerbCount = user.battleInfo.statusEffects.filter(item => item.type === StatusEffectEnum.GreenHerb).length;
+      var yellowHerbCount = user.battleInfo.statusEffects.filter(item => item.type === StatusEffectEnum.YellowHerb).length;
+      var herbsUsed = false;
+
+      if (redHerbCount === 1 && greenHerbCount === 1) {        
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RedHerb);
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.GreenHerb);
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.YellowHerb);
+        
+        var mixRedHerb = new Ability();
+        mixRedHerb.name = "Red Green Herb";
+        mixRedHerb.isAvailable = true;
+        mixRedHerb.cooldown = mixRedHerb.currentCooldown = 0;               
+        mixRedHerb.dealsDirectDamage = false;
+        mixRedHerb.heals = true;
+        mixRedHerb.effectiveness = 15;
+        mixRedHerb.targetsAllies = true;
+        mixRedHerb.targetType = TargetEnum.Self;
+        mixRedHerb.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, 45, 3, false, true, false));
+        this.useAbility(isPartyUsing, mixRedHerb, user, targets, party, isGodAbility);
+      }
+      else if (redHerbCount === 1 && yellowHerbCount === 1) {        
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RedHerb);
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.GreenHerb);
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.YellowHerb);
+        
+        var mixRedHerb = new Ability();
+        mixRedHerb.name = "Yellow Red Herb";
+        mixRedHerb.isAvailable = true;
+        mixRedHerb.cooldown = mixRedHerb.currentCooldown = 0;        
+        mixRedHerb.dealsDirectDamage = true;
+        mixRedHerb.effectiveness = 45;        
+        mixRedHerb.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtUp, 45, 1.5, false, true, false));
+        this.useAbility(isPartyUsing, mixRedHerb, user, targets, party, isGodAbility);
+      }
+
+      else if (yellowHerbCount === 1 && greenHerbCount === 1) {        
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RedHerb);
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.GreenHerb);
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.YellowHerb);
+        
+        var mixRedHerb = new Ability();
+        mixRedHerb.name = "Yellow Green Herb";
+        mixRedHerb.isAvailable = true;
+        mixRedHerb.cooldown = mixRedHerb.currentCooldown = 0;               
+        mixRedHerb.dealsDirectDamage = false;
+        mixRedHerb.heals = true;
+        mixRedHerb.effectiveness = 12;
+        mixRedHerb.targetsAllies = true;
+        mixRedHerb.targetType = TargetEnum.Self;
+        mixRedHerb.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenDown, 45, .7, false, true, false));
+        this.useAbility(isPartyUsing, mixRedHerb, user, targets, party, isGodAbility);
+      }
+
+      else if (redHerbCount >= 2) {        
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RedHerb);
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.GreenHerb);
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.YellowHerb);
+
+        var mixRedHerb = new Ability();
+        mixRedHerb.name = "Double Red Herb";
+        mixRedHerb.isAvailable = true;
+        mixRedHerb.cooldown = mixRedHerb.currentCooldown = 0;        
+        mixRedHerb.dealsDirectDamage = true;
+        mixRedHerb.effectiveness = 45;
+        mixRedHerb.isAoe = true;
+        mixRedHerb.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DealMissingHpPercent, 0, .5, true, false, true));
+        this.useAbility(isPartyUsing, mixRedHerb, user, targets, party, isGodAbility);
+      }
+      else if (greenHerbCount >= 2) {        
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RedHerb);
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.GreenHerb);
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.YellowHerb);
+        
+        var mixRedHerb = new Ability();
+        mixRedHerb.name = "Double Green Herb";
+        mixRedHerb.isAvailable = true;
+        mixRedHerb.cooldown = mixRedHerb.currentCooldown = 0;               
+        mixRedHerb.dealsDirectDamage = false;
+        mixRedHerb.heals = true;
+        mixRedHerb.effectiveness = 30;
+        mixRedHerb.targetsAllies = true;
+        mixRedHerb.targetType = TargetEnum.Self;
+        this.useAbility(isPartyUsing, mixRedHerb, user, targets, party, isGodAbility);
+      }
+      else if (yellowHerbCount >= 2) {        
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RedHerb);
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.GreenHerb);
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.YellowHerb);
+        
+        var mixRedHerb = new Ability();
+        mixRedHerb.name = "Double Yellow Herb";
+        mixRedHerb.isAvailable = true;
+        mixRedHerb.cooldown = mixRedHerb.currentCooldown = 0;        
+        mixRedHerb.dealsDirectDamage = false;        
+        mixRedHerb.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenDown, 45, .5, false, true, false));
+        mixRedHerb.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtUp, 45, 2, false, true, false));
+        this.useAbility(isPartyUsing, mixRedHerb, user, targets, party, isGodAbility);
+      }
+    }
 
     //code specific to Ixion
     if (user.name === "Ixion" && user.battleInfo.statusEffects.some(item => (item.type === StatusEffectEnum.AgilityUp || item.type === StatusEffectEnum.AttackUp) && item.stackCount > 3)) {
@@ -3592,6 +3783,13 @@ export class BattleService {
           }
         }
 
+        if (instantEffect.type === StatusEffectEnum.TransferStatusEffect) {
+          var negativeStatusEffects = user.battleInfo.statusEffects.filter(item => !item.isPositive);
+          var rng = this.utilityService.getRandomInteger(0, negativeStatusEffects.length - 1);
+          target.battleInfo.statusEffects.push(negativeStatusEffects[rng]);
+          user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item !== negativeStatusEffects[rng]);
+        }
+
         if (instantEffect.type === StatusEffectEnum.ResetRandomCooldown) {
           var abilityList: Ability[] = [];
 
@@ -4119,6 +4317,15 @@ export class BattleService {
       if (blasting !== undefined)
         blasting.currentCooldown = 20;
     }
+    
+    if (ability.name === "Final Wallop") {
+      var openingWallop = this.lookupService.characterHasAbility("Opening Wallop", user);
+      var thwack = this.lookupService.characterHasAbility("Thwack", user);
+      if (openingWallop !== undefined)
+        openingWallop.currentCooldown = 10;
+      if (thwack !== undefined)
+        thwack.currentCooldown = 12;
+    }
   }
 
   handleExtraPoseidonFunctionality(user: Character, ability: Ability) {
@@ -4413,6 +4620,11 @@ export class BattleService {
         });
       }
 
+      var warriorDefend = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.WarriorDefend);
+      if (this.warriorCounterattackActive(target, character) && warriorDefend !== undefined) {
+        overallDamageMultiplier *= warriorDefend.effectiveness;
+      }
+
       if (target.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DivineRetribution))
         overallDamageMultiplier = 0;
 
@@ -4476,7 +4688,7 @@ export class BattleService {
     if (insight !== undefined && ability !== undefined) {
       overallDamageMultiplier *= insight.effectiveness;
     }
-    
+
     return overallDamageMultiplier * thousandCutsDamageIncrease * markDamageIncrease * thyrsusDamageIncrease * enemySpecificAbilityIncrease * altarMultiplier * aoeIncrease * allyDamageBonus;
   }
 
@@ -5529,6 +5741,22 @@ export class BattleService {
       }
     }
 
+    if (target.name === "Khronos") {
+      var finalHour = this.lookupService.characterHasAbility("Final Hour", target);
+      if (finalHour !== undefined) {
+        if (!target.battleInfo.finalHourUsed && target.battleStats.currentHp <= target.battleStats.maxHp * .5) {
+          this.useAbility(false, finalHour, target, this.globalService.getActivePartyCharacters(true), this.battle.currentEnemies.enemyList, false, undefined, undefined, false);
+          var enrage = this.lookupService.characterHasAbility("Enrage", target);
+          if (enrage !== undefined) {
+            enrage.cooldown = 10;
+            if (enrage.currentCooldown > enrage.cooldown)
+              enrage.currentCooldown = enrage.cooldown;
+          }
+          target.battleInfo.finalHourUsed = true;
+        }
+      }
+    }
+
     if ((target.name === "The Colchian Dragon" || target.name === "Guardian of the Grove") && (target.battleStats.currentHp / this.lookupService.getAdjustedMaxHp(target, false, false)) < .2) {
       var immortality = this.lookupService.characterHasAbility("Immortality", target);
       if (immortality !== undefined && target.battleInfo.immortalityCount === 0) {
@@ -5838,6 +6066,9 @@ export class BattleService {
     var decrease = 0;
     var elementalReduction = 0;
     var elementalIncrease = 0;
+
+    if (target === undefined)
+      return 1;
 
     var resistanceDown = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.AllElementalResistanceDown)
     if (resistanceDown !== undefined) {
@@ -6507,9 +6738,6 @@ export class BattleService {
           else if (itemCopy.item === ItemsEnum.WaterAbsorptionPotionRecipe) {
             this.professionService.learnRecipe(ProfessionEnum.Alchemy, ItemsEnum.WaterAbsorptionPotion);
           }
-          //else if (itemCopy.item === ItemsEnum.DuoAbilityAccess) {
-          //this.globalService.globalVar.sidequestData.duosUnlocked = true;
-          //}
           else if (itemCopy.item === ItemsEnum.GoldenApple && this.globalService.globalVar.sidequestData.goldenApplesObtained <= 25) {
             this.globalService.globalVar.sidequestData.goldenApplesObtained += item.amount;
             var difference = 0;
@@ -6521,6 +6749,20 @@ export class BattleService {
             if (alchemy !== undefined) {
               alchemy.maxLevel += item.amount - difference;
               this.addLootToResources(new ResourceValue(item.item, item.amount - difference));
+            }
+          }
+          else if (itemCopy.item === ItemsEnum.PerfectGemstone && this.lookupService.getResourceAmount(ItemsEnum.PerfectGemstone) < 1) {
+            var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
+            if (jewelcrafting !== undefined) {
+              jewelcrafting.maxLevel += 25;
+              this.addLootToResources(new ResourceValue(item.item, 1));
+            }
+          }
+          else if (itemCopy.item === ItemsEnum.MagicalVial && this.lookupService.getResourceAmount(ItemsEnum.MagicalVial) < 1) {
+            var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+            if (alchemy !== undefined) {
+              alchemy.maxLevel += 25;
+              this.addLootToResources(new ResourceValue(item.item, 1));
             }
           }
           else {
@@ -6580,6 +6822,10 @@ export class BattleService {
       if (enemy.loot !== undefined && enemy.loot.length > 0) {
         enemy.loot.forEach(loot => {
           if (loot.item === ItemsEnum.GoldenApple && this.globalService.globalVar.sidequestData.goldenApplesObtained > 25)
+            return;
+          if (loot.item === ItemsEnum.PerfectGemstone && this.lookupService.getResourceAmount(ItemsEnum.PerfectGemstone) >= 1)
+            return;
+          if (loot.item === ItemsEnum.MagicalVial && this.lookupService.getResourceAmount(ItemsEnum.MagicalVial) >= 1)
             return;
 
           var rng = this.utilityService.getRandomNumber(0, 1);
@@ -6857,7 +7103,7 @@ export class BattleService {
     if (this.battleItemInUse === ItemsEnum.HealingHerb || this.battleItemInUse === ItemsEnum.HealingPoultice
       || this.battleItemInUse === ItemsEnum.RestorativeHerb || this.battleItemInUse === ItemsEnum.RestorativePoultice
       || this.battleItemInUse === ItemsEnum.HoneyPoultice || this.battleItemInUse === ItemsEnum.PeonyPoultice
-      || this.battleItemInUse === ItemsEnum.SoothingHerb) {
+      || this.battleItemInUse === ItemsEnum.SoothingHerb || this.battleItemInUse === ItemsEnum.InkPoultice) {
       if (character.battleStats.currentHp === this.lookupService.getAdjustedMaxHp(character))
         return;
 
@@ -6954,7 +7200,8 @@ export class BattleService {
     }
 
     if (this.battleItemInUse === ItemsEnum.HealingSalve || this.battleItemInUse === ItemsEnum.RestorativeSalve ||
-      this.battleItemInUse === ItemsEnum.HoneySalve || this.battleItemInUse === ItemsEnum.MagicSalve || this.battleItemInUse === ItemsEnum.PeonySalve) {
+      this.battleItemInUse === ItemsEnum.HoneySalve || this.battleItemInUse === ItemsEnum.MagicSalve || this.battleItemInUse === ItemsEnum.PeonySalve ||
+      this.battleItemInUse === ItemsEnum.InkSalve) {
       var itemUsed = false;
 
       if (character.name === "Asclepius") {
@@ -6993,7 +7240,8 @@ export class BattleService {
     if (this.battleItemInUse === ItemsEnum.ThrowingStone || this.battleItemInUse === ItemsEnum.ExplodingPotion ||
       this.battleItemInUse === ItemsEnum.FirePotion || this.battleItemInUse === ItemsEnum.HeftyStone ||
       this.battleItemInUse === ItemsEnum.PotentConcoction || this.battleItemInUse === ItemsEnum.PiercingPotion ||
-      this.battleItemInUse === ItemsEnum.BouncingPotion) {
+      this.battleItemInUse === ItemsEnum.BouncingPotion || this.battleItemInUse === ItemsEnum.BurstingPotion ||
+      this.battleItemInUse === ItemsEnum.EndlessPotion) {
       if (character.battleStats.currentHp <= 0)
         return;
 
@@ -7021,6 +7269,10 @@ export class BattleService {
       var hitCount = 1;
       if (this.battleItemInUse === ItemsEnum.BouncingPotion)
         hitCount = 2;
+      if (this.battleItemInUse === ItemsEnum.BurstingPotion)
+        hitCount = 3;
+      if (this.battleItemInUse === ItemsEnum.EndlessPotion)
+        hitCount = 10;
 
       for (var i = 0; i < hitCount; i++) {
         var damage = this.dealTrueDamage(true, character, effect.trueDamageAmount * damageMultiplier, undefined, elementalType, true);
@@ -7035,11 +7287,14 @@ export class BattleService {
     }
 
     //aoe damage
-    if (this.battleItemInUse === ItemsEnum.UnstablePotion || this.battleItemInUse === ItemsEnum.WildPotion) {
+    if (this.battleItemInUse === ItemsEnum.UnstablePotion || this.battleItemInUse === ItemsEnum.WildPotion ||
+      this.battleItemInUse === ItemsEnum.ShatteringPotion) {
       var itemUsed = false;
       var hitCount = 1;
       if (this.battleItemInUse === ItemsEnum.WildPotion)
         hitCount = 2;
+      if (this.battleItemInUse === ItemsEnum.ShatteringPotion)
+        hitCount = 3;
 
       var baseDamage = effect.trueDamageAmount;
 
@@ -7128,7 +7383,9 @@ export class BattleService {
       this.battleItemInUse === ItemsEnum.FlamingToxin || this.battleItemInUse === ItemsEnum.ParalyzingToxin ||
       this.battleItemInUse === ItemsEnum.SandToxin || this.battleItemInUse === ItemsEnum.ElectrifiedToxin ||
       this.battleItemInUse === ItemsEnum.MagicToxin || this.battleItemInUse === ItemsEnum.TidalToxin ||
-      this.battleItemInUse === ItemsEnum.UnsteadyingToxin || this.battleItemInUse === ItemsEnum.AgonizingToxin) {
+      this.battleItemInUse === ItemsEnum.UnsteadyingToxin || this.battleItemInUse === ItemsEnum.AgonizingToxin ||
+      this.battleItemInUse === ItemsEnum.CorrosiveToxin || this.battleItemInUse === ItemsEnum.TempestToxin ||
+      this.battleItemInUse === ItemsEnum.LightToxin) {
       if (character.battleStats.currentHp <= 0)
         return;
 
@@ -7148,7 +7405,9 @@ export class BattleService {
 
     if (this.battleItemInUse === ItemsEnum.HeroicElixir || this.battleItemInUse === ItemsEnum.RejuvenatingElixir ||
       this.battleItemInUse === ItemsEnum.ElixirOfFortitude || this.battleItemInUse === ItemsEnum.ElixirOfSpeed ||
-      this.battleItemInUse === ItemsEnum.ElixirOfFortune || this.battleItemInUse === ItemsEnum.ElixirOfWill) {
+      this.battleItemInUse === ItemsEnum.ElixirOfFortune || this.battleItemInUse === ItemsEnum.ElixirOfWill ||
+      this.battleItemInUse === ItemsEnum.MetalElixir || this.battleItemInUse === ItemsEnum.RestorativeElixir ||
+      this.battleItemInUse === ItemsEnum.ElixirOfPower) {
       if (character.battleStats.currentHp <= 0)
         return;
 
@@ -7202,6 +7461,15 @@ export class BattleService {
     if (type === ItemsEnum.FlamingToxin) {
       return StatusEffectEnum.FlamingToxin;
     }
+    if (type === ItemsEnum.CorrosiveToxin) {
+      return StatusEffectEnum.CorrosiveToxin;
+    }
+    if (type === ItemsEnum.LightToxin) {
+      return StatusEffectEnum.LightToxin;
+    }
+    if (type === ItemsEnum.TempestToxin) {
+      return StatusEffectEnum.TempestToxin;
+    }
     if (type === ItemsEnum.ParalyzingToxin) {
       return StatusEffectEnum.ParalyzingToxin;
     }
@@ -7219,6 +7487,15 @@ export class BattleService {
     }
     if (type === ItemsEnum.ElixirOfFortune) {
       return StatusEffectEnum.ElixirOfFortune;
+    }
+    if (type === ItemsEnum.ElixirOfPower) {
+      return StatusEffectEnum.ElixirOfPower;
+    }
+    if (type === ItemsEnum.MetalElixir) {
+      return StatusEffectEnum.MetalElixir;
+    }
+    if (type === ItemsEnum.RestorativeElixir) {
+      return StatusEffectEnum.RestorativeElixir;
     }
     if (type === ItemsEnum.MagicToxin) {
       return StatusEffectEnum.MagicToxin;
@@ -7279,6 +7556,11 @@ export class BattleService {
         var rejuvenatingElixir = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.RejuvenatingElixir);
         if (rejuvenatingElixir !== undefined) {
           totalHpRegen += rejuvenatingElixir.effectiveness;
+        }
+
+        var restorativeElixir = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.RestorativeElixir);
+        if (restorativeElixir !== undefined) {
+          totalHpRegen += restorativeElixir.effectiveness * this.lookupService.getAdjustedMaxHp(character);
         }
 
         if (this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ApolloRareHpRegenIncrease) !== undefined) {
@@ -7550,8 +7832,6 @@ export class BattleService {
         if (equipmentEffect.trigger === trigger) {
 
           equipmentEffect.userEffect.forEach(effect => {
-            //console.log("For effect")
-            //console.log(effect);
             if (trigger === EffectTriggerEnum.ChanceOnAutoAttack || trigger === EffectTriggerEnum.ChanceOnAbilityUse || trigger === EffectTriggerEnum.ChanceOnCriticalHit ||
               trigger === EffectTriggerEnum.ChanceWhenDamageTaken || trigger === EffectTriggerEnum.ChanceOnHeal || trigger === EffectTriggerEnum.ChanceOnDotTick ||
               trigger === EffectTriggerEnum.ChanceOnDebuff || trigger === EffectTriggerEnum.ChanceWhenNonCriticalDamageTaken) {
@@ -7802,6 +8082,16 @@ export class BattleService {
       }
     }
 
+    var corrosiveToxin = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.CorrosiveToxin);
+    if (corrosiveToxin !== undefined) {
+      for (var i = 0; i < totalAttempts; i++) {
+        var rng = this.utilityService.getRandomNumber(0, 1);
+        if (rng <= corrosiveToxin.effectiveness) {
+          this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 16, .8, false, false), target, undefined, user);
+        }
+      }
+    }
+
     var paralyzingToxin = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ParalyzingToxin);
     if (paralyzingToxin !== undefined) {
       for (var i = 0; i < totalAttempts; i++) {
@@ -7907,6 +8197,32 @@ export class BattleService {
       elementalType = ElementalTypeEnum.Air;
     }
 
+
+    var flamingToxin = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.FlamingToxin);
+    if (flamingToxin !== undefined) {
+      elementalType = ElementalTypeEnum.Fire;
+    }
+    var sandToxin = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.SandToxin);
+    if (sandToxin !== undefined) {
+      elementalType = ElementalTypeEnum.Earth;
+    }
+    var electrifiedToxin = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ElectrifiedToxin);
+    if (electrifiedToxin !== undefined) {
+      elementalType = ElementalTypeEnum.Lightning;
+    }
+    var tidalToxin = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.TidalToxin);
+    if (tidalToxin !== undefined) {
+      elementalType = ElementalTypeEnum.Water;
+    }
+    var tempestToxin = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.TempestToxin);
+    if (tempestToxin !== undefined) {
+      elementalType = ElementalTypeEnum.Air;
+    }
+    var lightToxin = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.LightToxin);
+    if (lightToxin !== undefined) {
+      elementalType = ElementalTypeEnum.Holy;
+    }
+
     if (elementalType === ElementalTypeEnum.None && character.overdriveInfo.isActive && character.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Nature) {
       elementalType = character.overdriveInfo.lastUsedElement;
     }
@@ -7964,7 +8280,8 @@ export class BattleService {
     if (effect === StatusEffectEnum.WitheringToxin || effect === StatusEffectEnum.VenomousToxin || effect === StatusEffectEnum.DebilitatingToxin ||
       effect === StatusEffectEnum.PoisonousToxin || effect === StatusEffectEnum.FlamingToxin || effect === StatusEffectEnum.ParalyzingToxin ||
       effect === StatusEffectEnum.SandToxin || effect === StatusEffectEnum.ElectrifiedToxin || effect === StatusEffectEnum.MagicToxin ||
-      effect === StatusEffectEnum.TidalToxin || effect === StatusEffectEnum.UnsteadyingToxin || effect === StatusEffectEnum.AgonizingToxin)
+      effect === StatusEffectEnum.TidalToxin || effect === StatusEffectEnum.UnsteadyingToxin || effect === StatusEffectEnum.AgonizingToxin ||
+      effect === StatusEffectEnum.CorrosiveToxin || effect === StatusEffectEnum.LightToxin || effect === StatusEffectEnum.TempestToxin)
       return true;
 
     return false;
@@ -7972,7 +8289,8 @@ export class BattleService {
 
   isStatusEffectAnElixir(effect: StatusEffectEnum) {
     if (effect === StatusEffectEnum.ElixirOfFortitude || effect === StatusEffectEnum.HeroicElixir || effect === StatusEffectEnum.RejuvenatingElixir ||
-      effect === StatusEffectEnum.ElixirOfSpeed || effect === StatusEffectEnum.ElixirOfFortune || effect === StatusEffectEnum.ElixirOfWill)
+      effect === StatusEffectEnum.ElixirOfSpeed || effect === StatusEffectEnum.ElixirOfFortune || effect === StatusEffectEnum.ElixirOfWill ||
+      effect === StatusEffectEnum.ElixirOfPower || effect === StatusEffectEnum.MetalElixir || effect === StatusEffectEnum.RestorativeElixir)
       return true;
 
     return false;

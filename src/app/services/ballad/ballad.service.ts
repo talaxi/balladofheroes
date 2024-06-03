@@ -47,8 +47,12 @@ export class BalladService {
       name = "Ballad of the Labyrinth";
     if (type === BalladEnum.Witch)
       name = "Ballad of the Witch";
-      if (type === BalladEnum.Eagle)
+    if (type === BalladEnum.Eagle)
       name = "Ballad of the Eagle";
+    if (type === BalladEnum.Redemption)
+      name = "Ballad of Redemption";
+    if (type === BalladEnum.Time)
+      name = "Ballad of Time";
 
     return name;
   }
@@ -74,7 +78,7 @@ export class BalladService {
       name = "Labyrinth";
     if (type === BalladEnum.Witch)
       name = "Witch";
-      if (type === BalladEnum.Eagle)
+    if (type === BalladEnum.Eagle)
       name = "Eagle";
 
     return name;
@@ -948,6 +952,52 @@ export class BalladService {
       name = "Back Against the Wall";
     if (type === SubZoneEnum.EscapeFromColchisBattleAtSea)
       name = "Battle at Sea";
+    if (type === SubZoneEnum.OlympusMassifThessalyGrasslands)
+      name = "Thessaly Grasslands";
+    if (type === SubZoneEnum.OlympusMassifInnerThessalyPathways)
+      name = "Inner Thessaly Pathways";    
+    if (type === SubZoneEnum.OlympusMassifLargeOutcroppings)
+      name = "Large Outcroppings";
+    if (type === SubZoneEnum.OlympusMassifMountainBase)
+      name = "Mountain Base";
+    if (type === SubZoneEnum.TheAscentHarshRise)
+      name = "Harsh Rise";
+    if (type === SubZoneEnum.TheAscentAbundantGreenery)
+      name = "Abundant Greenery";
+    if (type === SubZoneEnum.TheAscentHigherElevation)
+      name = "Higher Elevation";
+    if (type === SubZoneEnum.TheAscentFinalAscent)
+      name = "Final Ascent";
+    if (type === SubZoneEnum.WarForTheMountainTwoSpoiledCourtyard)
+      name = "Spoiled Courtyard";
+    if (type === SubZoneEnum.WarForTheMountainTwoGardens)
+      name = "Gardens";
+    if (type === SubZoneEnum.WarForTheMountainTwoForOlympus)
+      name = "For Olympus";
+    if (type === SubZoneEnum.TartarusWesternPath)
+      name = "Western Path";
+    if (type === SubZoneEnum.TartarusDesolateFields)
+      name = "Desolate Fields";
+    if (type === SubZoneEnum.TartarusPlainsOfJudgment)
+      name = "Plains  of Judgment";
+    if (type === SubZoneEnum.TartarusWallsOfFire)
+      name = "Walls of Fire";
+    if (type === SubZoneEnum.TartarusPhlegethonRiver)
+      name = "Phlegethon River";
+    if (type === SubZoneEnum.TartarusScorchedMeadow)
+      name = "Scorched Meadow";
+    if (type === SubZoneEnum.TartarusUnholyHalls)
+      name = "Unholy Halls";
+    if (type === SubZoneEnum.TartarusTitanHoldingGrounds)
+      name = "Titan Holding Grounds";
+    if (type === SubZoneEnum.MountOthrysCaveOpening)
+      name = "Cave Opening";
+    if (type === SubZoneEnum.MountOthrysTightPassage)
+      name = "Tight Passage";
+    if (type === SubZoneEnum.MountOthrysFracturedWall)
+      name = "Fractured Wall";
+    if (type === SubZoneEnum.MountOthrysCavernOfTime)
+      name = "Cavern of Time";
 
     return name;
   }
@@ -1180,6 +1230,20 @@ export class BalladService {
       victories = defaultVictories;
 
     if (type === SubZoneEnum.EscapeFromColchisBackAgainstTheWall || type === SubZoneEnum.EscapeFromColchisBattleAtSea)
+      victories = bossVictories;
+
+    if (type === SubZoneEnum.OlympusMassifThessalyGrasslands || type === SubZoneEnum.OlympusMassifInnerThessalyPathways || type === SubZoneEnum.OlympusMassifLargeOutcroppings ||
+      type === SubZoneEnum.TheAscentHarshRise || type === SubZoneEnum.TheAscentAbundantGreenery || type === SubZoneEnum.TheAscentHigherElevation)
+      victories = defaultVictories;
+      
+    if (type === SubZoneEnum.TartarusWesternPath || type === SubZoneEnum.TartarusDesolateFields || type === SubZoneEnum.TartarusPlainsOfJudgment ||
+      type === SubZoneEnum.TartarusWallsOfFire || type === SubZoneEnum.TartarusPhlegethonRiver || type === SubZoneEnum.TartarusScorchedMeadow ||
+      type === SubZoneEnum.TartarusUnholyHalls || type === SubZoneEnum.MountOthrysCaveOpening || type === SubZoneEnum.MountOthrysTightPassage || type === SubZoneEnum.MountOthrysFracturedWall)
+      victories = defaultVictories;
+
+    if (type === SubZoneEnum.OlympusMassifMountainBase || type === SubZoneEnum.TheAscentFinalAscent || type === SubZoneEnum.WarForTheMountainTwoSpoiledCourtyard || 
+      type === SubZoneEnum.WarForTheMountainTwoGardens || type === SubZoneEnum.WarForTheMountainTwoForOlympus || type === SubZoneEnum.TartarusTitanHoldingGrounds || 
+      type === SubZoneEnum.MountOthrysCavernOfTime)
       victories = bossVictories;
 
     return victories;
