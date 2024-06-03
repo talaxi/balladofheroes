@@ -1749,20 +1749,20 @@ export class BattleService {
     var wasDamageCritical: boolean = false;
 
     if (target !== undefined) {
-    var illusion = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Illusion);
-    if (illusion !== undefined) {
-      var rng = this.utilityService.getRandomInteger(0, 1);
-      if (rng <= illusion.effectiveness) {
-        if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAutoAttacks")) ||
-          (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAutoAttacks"))) {
-          var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + "'s ability misses!";
-          this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry, this.globalService.globalVar);
-        }
+      var illusion = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Illusion);
+      if (illusion !== undefined) {
+        var rng = this.utilityService.getRandomInteger(0, 1);
+        if (rng <= illusion.effectiveness) {
+          if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAutoAttacks")) ||
+            (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAutoAttacks"))) {
+            var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + "'s ability misses!";
+            this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry, this.globalService.globalVar);
+          }
 
-        return true;
+          return true;
+        }
       }
     }
-  }
 
     var keepFlow = false;
     this.handleConditionalAbilityChanges(abilityCopy, user, party, fromRepeat, target);
@@ -1782,6 +1782,17 @@ export class BattleService {
 
     if (abilityCopy.name === "Raging Fireball" && ability.cooldown > 2) {
       ability.cooldown -= 2;
+    }
+
+    if (abilityCopy.name === "Mix Herb") {
+      var rng = this.utilityService.getRandomInteger(0, 2);
+
+      if (rng === 0)
+      abilityCopy.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RedHerb, -1, 1, false, true, false));
+      else if (rng === 1)
+        abilityCopy.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.GreenHerb, -1, 1, false, true, false));
+      else if (rng === 2)
+        abilityCopy.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.YellowHerb, -1, 1, false, true, false));
     }
 
     if (abilityCopy.name === "Prophecy") {
@@ -2969,6 +2980,110 @@ export class BattleService {
 
     if (isPartyUsing)
       this.altarService.incrementAltarCount(AltarConditionEnum.AbilityUse);
+
+    //code specific to Hecate
+    if (user.name === "Hecate" && user.battleInfo.statusEffects.filter(item => item.type === StatusEffectEnum.RedHerb || item.type === StatusEffectEnum.YellowHerb || item.type === StatusEffectEnum.GreenHerb).length >= 2) {
+      var redHerbCount = user.battleInfo.statusEffects.filter(item => item.type === StatusEffectEnum.RedHerb).length;
+      var greenHerbCount = user.battleInfo.statusEffects.filter(item => item.type === StatusEffectEnum.GreenHerb).length;
+      var yellowHerbCount = user.battleInfo.statusEffects.filter(item => item.type === StatusEffectEnum.YellowHerb).length;
+      var herbsUsed = false;
+
+      if (redHerbCount === 1 && greenHerbCount === 1) {        
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RedHerb);
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.GreenHerb);
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.YellowHerb);
+        
+        var mixRedHerb = new Ability();
+        mixRedHerb.name = "Red Green Herb";
+        mixRedHerb.isAvailable = true;
+        mixRedHerb.cooldown = mixRedHerb.currentCooldown = 0;               
+        mixRedHerb.dealsDirectDamage = false;
+        mixRedHerb.heals = true;
+        mixRedHerb.effectiveness = 15;
+        mixRedHerb.targetsAllies = true;
+        mixRedHerb.targetType = TargetEnum.Self;
+        mixRedHerb.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, 45, 3, false, true, false));
+        this.useAbility(isPartyUsing, mixRedHerb, user, targets, party, isGodAbility);
+      }
+      else if (redHerbCount === 1 && yellowHerbCount === 1) {        
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RedHerb);
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.GreenHerb);
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.YellowHerb);
+        
+        var mixRedHerb = new Ability();
+        mixRedHerb.name = "Yellow Red Herb";
+        mixRedHerb.isAvailable = true;
+        mixRedHerb.cooldown = mixRedHerb.currentCooldown = 0;        
+        mixRedHerb.dealsDirectDamage = true;
+        mixRedHerb.effectiveness = 45;        
+        mixRedHerb.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtUp, 45, 1.5, false, true, false));
+        this.useAbility(isPartyUsing, mixRedHerb, user, targets, party, isGodAbility);
+      }
+
+      else if (yellowHerbCount === 1 && greenHerbCount === 1) {        
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RedHerb);
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.GreenHerb);
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.YellowHerb);
+        
+        var mixRedHerb = new Ability();
+        mixRedHerb.name = "Yellow Green Herb";
+        mixRedHerb.isAvailable = true;
+        mixRedHerb.cooldown = mixRedHerb.currentCooldown = 0;               
+        mixRedHerb.dealsDirectDamage = false;
+        mixRedHerb.heals = true;
+        mixRedHerb.effectiveness = 12;
+        mixRedHerb.targetsAllies = true;
+        mixRedHerb.targetType = TargetEnum.Self;
+        mixRedHerb.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenDown, 45, .7, false, true, false));
+        this.useAbility(isPartyUsing, mixRedHerb, user, targets, party, isGodAbility);
+      }
+
+      else if (redHerbCount >= 2) {        
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RedHerb);
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.GreenHerb);
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.YellowHerb);
+
+        var mixRedHerb = new Ability();
+        mixRedHerb.name = "Double Red Herb";
+        mixRedHerb.isAvailable = true;
+        mixRedHerb.cooldown = mixRedHerb.currentCooldown = 0;        
+        mixRedHerb.dealsDirectDamage = true;
+        mixRedHerb.effectiveness = 45;
+        mixRedHerb.isAoe = true;
+        mixRedHerb.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DealMissingHpPercent, 0, .5, true, false, true));
+        this.useAbility(isPartyUsing, mixRedHerb, user, targets, party, isGodAbility);
+      }
+      else if (greenHerbCount >= 2) {        
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RedHerb);
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.GreenHerb);
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.YellowHerb);
+        
+        var mixRedHerb = new Ability();
+        mixRedHerb.name = "Double Green Herb";
+        mixRedHerb.isAvailable = true;
+        mixRedHerb.cooldown = mixRedHerb.currentCooldown = 0;               
+        mixRedHerb.dealsDirectDamage = false;
+        mixRedHerb.heals = true;
+        mixRedHerb.effectiveness = 30;
+        mixRedHerb.targetsAllies = true;
+        mixRedHerb.targetType = TargetEnum.Self;
+        this.useAbility(isPartyUsing, mixRedHerb, user, targets, party, isGodAbility);
+      }
+      else if (yellowHerbCount >= 2) {        
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RedHerb);
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.GreenHerb);
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.YellowHerb);
+        
+        var mixRedHerb = new Ability();
+        mixRedHerb.name = "Double Yellow Herb";
+        mixRedHerb.isAvailable = true;
+        mixRedHerb.cooldown = mixRedHerb.currentCooldown = 0;        
+        mixRedHerb.dealsDirectDamage = false;        
+        mixRedHerb.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenDown, 45, .5, false, true, false));
+        mixRedHerb.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtUp, 45, 2, false, true, false));
+        this.useAbility(isPartyUsing, mixRedHerb, user, targets, party, isGodAbility);
+      }
+    }
 
     //code specific to Ixion
     if (user.name === "Ixion" && user.battleInfo.statusEffects.some(item => (item.type === StatusEffectEnum.AgilityUp || item.type === StatusEffectEnum.AttackUp) && item.stackCount > 3)) {
@@ -4201,6 +4316,15 @@ export class BattleService {
         craftFireLaser.currentCooldown = 20;
       if (blasting !== undefined)
         blasting.currentCooldown = 20;
+    }
+    
+    if (ability.name === "Final Wallop") {
+      var openingWallop = this.lookupService.characterHasAbility("Opening Wallop", user);
+      var thwack = this.lookupService.characterHasAbility("Thwack", user);
+      if (openingWallop !== undefined)
+        openingWallop.currentCooldown = 10;
+      if (thwack !== undefined)
+        thwack.currentCooldown = 12;
     }
   }
 
@@ -6627,14 +6751,14 @@ export class BattleService {
               this.addLootToResources(new ResourceValue(item.item, item.amount - difference));
             }
           }
-          else if (itemCopy.item === ItemsEnum.PerfectGemstone && this.lookupService.getResourceAmount(ItemsEnum.PerfectGemstone) < 1) {                        
+          else if (itemCopy.item === ItemsEnum.PerfectGemstone && this.lookupService.getResourceAmount(ItemsEnum.PerfectGemstone) < 1) {
             var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
             if (jewelcrafting !== undefined) {
               jewelcrafting.maxLevel += 25;
               this.addLootToResources(new ResourceValue(item.item, 1));
             }
           }
-          else if (itemCopy.item === ItemsEnum.MagicalVial && this.lookupService.getResourceAmount(ItemsEnum.MagicalVial) < 1) {                        
+          else if (itemCopy.item === ItemsEnum.MagicalVial && this.lookupService.getResourceAmount(ItemsEnum.MagicalVial) < 1) {
             var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
             if (alchemy !== undefined) {
               alchemy.maxLevel += 25;
@@ -7708,8 +7832,6 @@ export class BattleService {
         if (equipmentEffect.trigger === trigger) {
 
           equipmentEffect.userEffect.forEach(effect => {
-            //console.log("For effect")
-            //console.log(effect);
             if (trigger === EffectTriggerEnum.ChanceOnAutoAttack || trigger === EffectTriggerEnum.ChanceOnAbilityUse || trigger === EffectTriggerEnum.ChanceOnCriticalHit ||
               trigger === EffectTriggerEnum.ChanceWhenDamageTaken || trigger === EffectTriggerEnum.ChanceOnHeal || trigger === EffectTriggerEnum.ChanceOnDotTick ||
               trigger === EffectTriggerEnum.ChanceOnDebuff || trigger === EffectTriggerEnum.ChanceWhenNonCriticalDamageTaken) {

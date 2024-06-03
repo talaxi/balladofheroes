@@ -1246,8 +1246,6 @@ export class BalladService {
       type === SubZoneEnum.MountOthrysCavernOfTime)
       victories = bossVictories;
 
-    //todo add victory count
-
     return victories;
   }
 

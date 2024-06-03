@@ -16,19 +16,10 @@ export class CodeCreationService {
   
   setupRewards() { 
     this.redeemableCode = new RedeemableCode();
-    this.redeemableCode.expirationDate = new Date('2024-06-01');   
-    //this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Transmutation, 10000000));  
-    //this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Extraction, 10));           
-    this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Coin, 500000));           
-    this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Ambrosia, 50));       
-    this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.EternalMeleeTicket, 14));           
-    this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RutileAmethystFragment, 200));       
-    this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RutileAquamarineFragment, 200));       
-    this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RutileEmeraldFragment, 200));       
-    this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RutileRubyFragment, 200));       
-    this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RutileOpalFragment, 200));       
-    this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RutileTopazFragment, 200));     
-    this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MetalCore, 200));     
+    this.redeemableCode.expirationDate = new Date('2025-01-01');            
+    this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Coin, 50000));               
+    this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.EternalMeleeTicket, 5));           
+    this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Transmutation, 50));           
   }
 
   createCode() {

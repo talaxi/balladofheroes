@@ -519,6 +519,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.CarcanetOfTheCentaurUnique) {
       return new ResourceValue(ItemsEnum.CarcanetOfTheCentaurUnique, amount);
     }
+    if (type === ItemsEnum.HourglassRing) {
+      return new ResourceValue(ItemsEnum.HourglassRing, amount);
+    }
     if (type === ItemsEnum.BoundingBandEpic) {
       return new ResourceValue(ItemsEnum.BoundingBandEpic, amount);
     }

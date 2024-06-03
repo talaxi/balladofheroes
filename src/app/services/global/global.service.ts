@@ -4734,7 +4734,6 @@ export class GlobalService {
       }
     }
     if (previousMax < 60 && newMax >= 60) {
-      //TODO: some unique, update the UI for coliseum to display the new rewards
       var rng = 1;
       var gainedItem = ItemsEnum.ShieldOfUnendingFlames;
 

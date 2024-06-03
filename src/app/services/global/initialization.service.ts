@@ -781,6 +781,9 @@ export class InitializationService {
     if (resource !== undefined)
       this.lookupService.gainResource(resource);
 
+    resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.HourglassRing, 1);
+    if (resource !== undefined)
+      this.lookupService.gainResource(resource);
 
     resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SwordOfFlames, 1);
     if (resource !== undefined)
@@ -974,12 +977,12 @@ export class InitializationService {
       this.globalService.globalVar.sidequestData.goldenApplesObtained = 25;
       //this.globalService.globalVar.sidequestData.duosUnlocked = true;
 
-      this.globalService.globalVar.chthonicPowers.attackBoostLevel = 22;
-      this.globalService.globalVar.chthonicPowers.defenseBoostLevel = 20;
-      this.globalService.globalVar.chthonicPowers.maxHpBoostLevel = 21;
-      this.globalService.globalVar.chthonicPowers.resistanceBoostLevel = 20;
-      this.globalService.globalVar.chthonicPowers.luckBoostLevel = 21;
-      this.globalService.globalVar.chthonicPowers.agilityBoostLevel = 20;
+      this.globalService.globalVar.chthonicPowers.attackBoostLevel = 220;
+      this.globalService.globalVar.chthonicPowers.defenseBoostLevel = 200;
+      this.globalService.globalVar.chthonicPowers.maxHpBoostLevel = 210;
+      this.globalService.globalVar.chthonicPowers.resistanceBoostLevel = 200;
+      this.globalService.globalVar.chthonicPowers.luckBoostLevel = 210;
+      this.globalService.globalVar.chthonicPowers.agilityBoostLevel = 200;
       this.globalService.globalVar.altars.largeAltarsUnlocked = true;
       this.globalService.globalVar.extraSpeedTimeRemaining = 8 * 60 * 60;
       this.globalService.globalVar.extraSpeedEnabled = true;
@@ -1412,6 +1415,7 @@ export class InitializationService {
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.ArmorOfOlympus));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.BucklerOfPerfectHarmonyUnique));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.CarcanetOfTheCentaurUnique));
+      this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.HourglassRing));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.ScathingBeautyUnique));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.RainbowScaledPlatingUnique));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.GlowingChokerUnique));
@@ -1421,7 +1425,7 @@ export class InitializationService {
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.AstralRingUnique));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.GleamingLoopUnique));
 
-      this.globalService.globalVar.activePartyMember1 = CharacterEnum.Adventurer;
+      this.globalService.globalVar.activePartyMember1 = CharacterEnum.Monk;
       this.globalService.globalVar.characters.forEach(character => { character.isAvailable = true; character.unlockedOverdrives.push(OverdriveNameEnum.Reprisal); character.unlockedOverdrives.push(OverdriveNameEnum.Preservation); character.unlockedOverdrives.push(OverdriveNameEnum.Harmony); character.unlockedOverdrives.push(OverdriveNameEnum.Bullseye); });     //
       this.globalService.globalVar.activePartyMember2 = CharacterEnum.Archer;
       this.globalService.globalVar.itemBeltSize = 1;
@@ -1436,28 +1440,28 @@ export class InitializationService {
 
       var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
       if (character1 !== undefined) {
-        character1.assignedGod1 = GodEnum.Artemis;
-        character1.assignedGod2 = GodEnum.Apollo;
-        character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.BatteringMaceUnique);
-        character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShadowShield);
-        character1.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShadowArmor);
-        character1.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShadowRing);
-        character1.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShadowNecklace);
+        character1.assignedGod1 = GodEnum.Hermes;
+        character1.assignedGod2 = GodEnum.Poseidon;
+        character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.PoseidonsTrident);
+        character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.PoseidonsShield);
+        character1.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.PoseidonsArmor);
+        character1.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.PoseidonsRing);
+        character1.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.PoseidonsNecklace);
       }
 
       var character2 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember2);
       if (character2 !== undefined) {
-        character2.assignedGod1 = GodEnum.Athena;
-        character2.assignedGod2 = GodEnum.Nemesis;
-        character2.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SwordOfFlames);
-        character2.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenShield);
-        character2.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenArmor);
-        character2.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenRing);
-        character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.PendantOfPower);
+        character2.assignedGod1 = GodEnum.Ares;
+        character2.assignedGod2 = GodEnum.Dionysus;
+        character2.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AressSpear);
+        character2.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AressShield);
+        character2.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AressArmor);
+        character2.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AressRing);
+        character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AressNecklace);
       }
 
       var chthonicResetCount = 1;
-      var godLevel = 2500;
+      var godLevel = 10;
 
       for (var j = 0; j < chthonicResetCount; j++) {
         var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
@@ -1471,9 +1475,9 @@ export class InitializationService {
         this.globalService.assignGodAbilityInfo(athena!);
 
         if (j < chthonicResetCount - 1)
-          godLevel = 2500;
+          godLevel = 10;
         else
-          godLevel = 2500;
+          godLevel = 10;
 
         for (var i = 0; i < godLevel; i++) {
           this.globalService.levelUpGod(athena!);

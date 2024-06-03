@@ -788,12 +788,12 @@ export class StoryService {
     else if (storyId === 57) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>You arrive at the base of Mount Olympus. As you traveled, you tried to anticipate what trials would be ahead of you but you did not quite expect this.</div>" +
-          "<div class='sceneDiv'>At a glance, you saw chimeras, harpies, and two headed monstrosities. It would seem that the spawn of the titan Typhon were given charge here, given orders to prevent any who would try to ascend no doubt.</div>" +
+          "<div class='sceneDiv'>At a glance, you saw chimeras, harpies, and two headed monstrosities. It would seem that the spawn of the Titan Typhon were given charge here, given orders to prevent any who would try to ascend no doubt.</div>" +
           "<div>You will not be intimidated. With the might of the Olympic pantheon behind you, you press forward.</div>";
     }
     else if (storyId === 58) {
       if (pageCount === 1)
-        sceneText = "<div class='sceneDiv'>You climb the mountain, dealing with every manner of monster. As you approach the peak, you are halted by the terrible titan Typhon. The heads of snakes sprouted from its massive shoulders, biting in all directions. Before it has the chance to prepare, you ingest a piece of Moly and rush in to attack.</div>";
+        sceneText = "<div class='sceneDiv'>You climb the mountain, dealing with every manner of monster. As you approach the peak, you are halted by the terrible Titan Typhon. The heads of snakes sprouted from its massive shoulders, biting in all directions. Before it has the chance to prepare, you ingest a piece of Moly and rush in to attack.</div>";
     }
     else if (storyId === 59) {
       if (pageCount === 1)
@@ -831,6 +831,9 @@ export class StoryService {
         sceneText = "<div class='sceneDiv'>You both exit the cave, feeling the weight of your journey as this chapter finally comes to a close. You've seen more than you could ever imagine traveling the world with Zosime, and you aren't ready to stop yet.</div>" +
           "<div class='sceneDiv'>" + this.zosimeText("“When will you drink the potion?”") + " Zosime asks. She seems to be thinking the same thing.</div>" +
           "<div>" + this.thalesText("“Soon… but maybe not yet. Have any other names on your list you want to cross off first?”") + "</div>";      
+          else if (pageCount === 3)
+            sceneText = "<div class='sceneDiv s4Heading'><i>End of Story</i></div>" +
+              "<div>Thank you for playing! Continue to enjoy post game content at the Trials of Mount Olympus and the Coliseum in Elysium.</div>";      
     }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
@@ -838,6 +841,7 @@ export class StoryService {
     sceneText = sceneText.replaceAll("Athena", "<span class='athenaColor storyCharacterName'>Athena</span>");
     sceneText = sceneText.replaceAll("Hades", "<span class='hadesColor storyCharacterName'>Hades</span>");
     sceneText = sceneText.replaceAll("Hermes", "<span class='hermesColor storyCharacterName'>Hermes</span>");
+    sceneText = sceneText.replaceAll("Hera", "<span class='heraColor storyCharacterName'>Hera</span>");
     sceneText = sceneText.replaceAll("Artemis", "<span class='artemisColor storyCharacterName'>Artemis</span>");
     sceneText = sceneText.replaceAll("Ares", "<span class='aresColor storyCharacterName'>Ares</span>");
     sceneText = sceneText.replaceAll("Apollo", "<span class='apolloColor storyCharacterName'>Apollo</span>");
@@ -864,6 +868,7 @@ export class StoryService {
     sceneText = sceneText.replaceAll("Gration", "<span class='commonCharacterColor storyCharacterName'>Gration</span>");
     sceneText = sceneText.replaceAll("Aristaeus", "<span class='commonCharacterColor storyCharacterName'>Aristaeus</span>");
     sceneText = sceneText.replaceAll("Helios", "<span class='commonCharacterColor storyCharacterName'>Helios</span>");
+    sceneText = sceneText.replaceAll("Typhon", "<span class='commonCharacterColor storyCharacterName'>Typhon</span>");
 
     return sceneText;
   }
@@ -1221,7 +1226,7 @@ export class StoryService {
     }
     if (this.globalService.globalVar.currentStoryId === 60) {
       var hera = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hera);
-      if (hera !== undefined) {
+      if (hera !== undefined && !hera.isAvailable) {
         hera.isAvailable = true;
         this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You have gained the powers of Hera, Queen of the Gods.", this.globalService.globalVar);
       }      

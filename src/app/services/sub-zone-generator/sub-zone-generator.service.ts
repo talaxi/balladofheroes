@@ -4554,6 +4554,12 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.StraitsOfMessinaUnavoidablePath) {
       balladEnums.push(BalladEnum.Eagle);
     }
+    if (type === SubZoneEnum.EscapeFromColchisBattleAtSea) {
+      balladEnums.push(BalladEnum.Redemption);
+    }
+    if (type === SubZoneEnum.WarForTheMountainTwoForOlympus) {
+      balladEnums.push(BalladEnum.Time);
+    }
 
     return balladEnums;
   }
@@ -4636,6 +4642,21 @@ export class SubZoneGeneratorService {
     }
     if (type === SubZoneEnum.ReturnToColchisReturnToTheGrove) {
       zoneEnums.push(ZoneEnum.EscapeFromColchis);
+    }
+    if (type === SubZoneEnum.EscapeFromColchisBattleAtSea) {
+      zoneEnums.push(ZoneEnum.OlympusMassif);
+    }
+    if (type === SubZoneEnum.OlympusMassifMountainBase) {
+      zoneEnums.push(ZoneEnum.TheAscent);
+    }
+    if (type === SubZoneEnum.TheAscentFinalAscent) {
+      zoneEnums.push(ZoneEnum.WarForTheMountainTwo);
+    }
+    if (type === SubZoneEnum.WarForTheMountainTwoForOlympus) {
+      zoneEnums.push(ZoneEnum.Tartarus);
+    }
+    if (type === SubZoneEnum.TartarusTitanHoldingGrounds) {
+      zoneEnums.push(ZoneEnum.MountOthrys);
     }
 
     return zoneEnums;
@@ -5232,6 +5253,9 @@ export class SubZoneGeneratorService {
       subZoneEnums.push(SubZoneEnum.TartarusWesternPath);
     }
     if (type === SubZoneEnum.TartarusWesternPath) {
+      subZoneEnums.push(SubZoneEnum.TartarusDesolateFields);
+    }
+    if (type === SubZoneEnum.TartarusDesolateFields) {
       subZoneEnums.push(SubZoneEnum.TartarusPlainsOfJudgment);
     }
     if (type === SubZoneEnum.TartarusPlainsOfJudgment) {
@@ -5632,6 +5656,36 @@ export class SubZoneGeneratorService {
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.RutilatedTopaz, SubZoneEnum.NemeaCleonea));
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.RutilatedEmerald, SubZoneEnum.NemeaCleonea));
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.RutilatedAmethyst, SubZoneEnum.NemeaCleonea));
+    }
+    if (level >= 6) {
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BrilliantRuby, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BrilliantAquamarine, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BrilliantOpal, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BrilliantTopaz, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BrilliantEmerald, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BrilliantAmethyst, SubZoneEnum.NemeaCleonea));
+    }
+    if (level >= 7) {
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.PerfectRubyFragment, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.PerfectAquamarineFragment, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.PerfectOpalFragment, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.PerfectTopazFragment, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.PerfectEmeraldFragment, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.PerfectAmethystFragment, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FlawlessRuby, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FlawlessAquamarine, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FlawlessOpal, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FlawlessTopaz, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FlawlessEmerald, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FlawlessAmethyst, SubZoneEnum.NemeaCleonea));
+    }
+    if (level >= 8) {
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AdamantineRuby, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AdamantineAquamarine, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AdamantineOpal, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AdamantineTopaz, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AdamantineEmerald, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AdamantineAmethyst, SubZoneEnum.NemeaCleonea));
     }
 
     return shopOptions;

@@ -287,6 +287,8 @@ export class DictionaryService {
       name = "Carcanet of the Centaur";
     else if (type === ItemsEnum.CarcanetOfTheCentaurUnique)
       name = "Carcanet of the Centaur";
+    else if (type === ItemsEnum.HourglassRing)
+      name = "Hourglass Ring";
     else if (type === ItemsEnum.BoundingBandEpic)
       name = "Bounding Band";
     else if (type === ItemsEnum.BoundingBandSpecial)

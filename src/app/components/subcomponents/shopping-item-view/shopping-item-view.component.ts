@@ -207,7 +207,7 @@ export class ShoppingItemViewComponent implements OnInit {
           for (var i = 0; i < this.buyMultiplier; i++) {
             this.globalService.giveCharactersBonusExp(5000);
             this.globalService.globalVar.sidequestData.sparringMatchMultiplier *= 1.1;
-          }
+          }          
           /*
           this.globalService.globalVar.uniques.forEach(item => {
             item.level += 99;

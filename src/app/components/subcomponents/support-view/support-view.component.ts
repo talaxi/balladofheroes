@@ -11,6 +11,7 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 export class SupportViewComponent {
   isMobile = false;
   isKongregate = false;
+  isMainSite = false;
 
   constructor(private globalService: GlobalService, private deviceDetectorService: DeviceDetectorService, private utilityService: UtilityService) {
 
@@ -19,6 +20,7 @@ export class SupportViewComponent {
   ngOnInit() {  
     this.isMobile = this.deviceDetectorService.isMobile();
     this.isKongregate = this.utilityService.isKongregate();
+    this.isMainSite = this.utilityService.isMainSite();
   }
 
   isSupporterAlreadyPurchased() {
