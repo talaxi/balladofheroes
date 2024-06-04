@@ -814,7 +814,7 @@ export class StoryService {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>You search the holding grounds of the Titans but see no sign of Khronos. After a while, you end your search and return to the surface. Soon after, you spot a crow looking at you curiously.</div>" +
       "<div class='sceneDiv'>" + this.commonCharacterText("“Othyrs!”") + " The crow chirped to your surprise. " + this.commonCharacterText("“Othyrs! Othrys!”") + "</div>" +
-      "<div>After a moment, Zosime spoke. " + this.zosimeText("“Hera must have found Khronos. He must be on Mount Othyrs!”") + "</div>";
+      "<div>After a moment, Zosime spoke. " + this.zosimeText("“Hera has found Khronos. He must be on Mount Othyrs!”") + "</div>";
     }
     else if (storyId === 62) {
       if (pageCount === 1)
@@ -841,7 +841,8 @@ export class StoryService {
     sceneText = sceneText.replaceAll("Athena", "<span class='athenaColor storyCharacterName'>Athena</span>");
     sceneText = sceneText.replaceAll("Hades", "<span class='hadesColor storyCharacterName'>Hades</span>");
     sceneText = sceneText.replaceAll("Hermes", "<span class='hermesColor storyCharacterName'>Hermes</span>");
-    sceneText = sceneText.replaceAll("Hera", "<span class='heraColor storyCharacterName'>Hera</span>");
+    sceneText = sceneText.replaceAll("Hera ", "<span class='heraColor storyCharacterName'>Hera </span>");
+    sceneText = sceneText.replaceAll("Hera,", "<span class='heraColor storyCharacterName'>Hera</span>,");
     sceneText = sceneText.replaceAll("Artemis", "<span class='artemisColor storyCharacterName'>Artemis</span>");
     sceneText = sceneText.replaceAll("Ares", "<span class='aresColor storyCharacterName'>Ares</span>");
     sceneText = sceneText.replaceAll("Apollo", "<span class='apolloColor storyCharacterName'>Apollo</span>");
