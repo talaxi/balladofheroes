@@ -20177,6 +20177,7 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 8050;
       enemy.loot.push(new LootItem(ItemsEnum.MisshapenMetalPiece, ItemTypeEnum.CraftingMaterial, 1, .01));
+      enemy.loot.push(new LootItem(ItemsEnum.VialOfTartaranFlames, ItemTypeEnum.CraftingMaterial, 1, .15));
 
       var soulRip = new Ability();
       soulRip.name = "Soul Rip";
@@ -20329,6 +20330,7 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 8300;
       enemy.loot.push(new LootItem(ItemsEnum.PerfectOpalFragment, ItemTypeEnum.CraftingMaterial, 1, .03));
+      enemy.loot.push(new LootItem(ItemsEnum.VialOfTartaranFlames, ItemTypeEnum.CraftingMaterial, 2, .1));
 
       var dualSlice = new Ability();
       dualSlice.name = "3x Slice";
@@ -20395,6 +20397,7 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 7;
       enemy.xpGainFromDefeat = 36500;
       enemy.loot.push(new LootItem(ItemsEnum.MetalCore, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.VialOfTartaranFlames, ItemTypeEnum.CraftingMaterial, 5, .1));
       enemy.loot.push(new LootItem(ItemsEnum.PerfectGemstone, ItemTypeEnum.CraftingMaterial, 1, 1));
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenDown, -1, .75, false, true, false));
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageOverTimeTakenDown, -1, .75, false, true, false));

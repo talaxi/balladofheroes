@@ -274,6 +274,32 @@ export class BestiaryViewComponent {
         if (this.selectedZodiac === ZodiacEnum.Pisces)
         bestiaryItem = BestiaryEnum.RainbowScaledFishVeryHard;
     }
+    else if (this.selectedZodiacDifficulty === "Ultimate") {
+      if (this.selectedZodiac === ZodiacEnum.Aries)
+        bestiaryItem = BestiaryEnum.SoaringRamUltimate;
+      if (this.selectedZodiac === ZodiacEnum.Capricorn)
+        bestiaryItem = BestiaryEnum.SeaGoatUltimate;
+        if (this.selectedZodiac === ZodiacEnum.Taurus)
+        bestiaryItem = BestiaryEnum.GreatBullUltimate;
+        if (this.selectedZodiac === ZodiacEnum.Gemini)
+        bestiaryItem = BestiaryEnum.PolluxUltimate;
+        if (this.selectedZodiac === ZodiacEnum.Cancer)
+        bestiaryItem = BestiaryEnum.GargantuanCrabUltimate;
+        if (this.selectedZodiac === ZodiacEnum.Leo)
+        bestiaryItem = BestiaryEnum.MajesticLionUltimate;
+        if (this.selectedZodiac === ZodiacEnum.Virgo)
+        bestiaryItem = BestiaryEnum.AstraeaUltimate;
+        if (this.selectedZodiac === ZodiacEnum.Libra)
+        bestiaryItem = BestiaryEnum.ThemisUltimate;
+        if (this.selectedZodiac === ZodiacEnum.Scorpio)
+        bestiaryItem = BestiaryEnum.HardenedScorpionUltimate;
+        if (this.selectedZodiac === ZodiacEnum.Sagittarius)
+        bestiaryItem = BestiaryEnum.ChironUltimate;
+        if (this.selectedZodiac === ZodiacEnum.Aquarius)
+        bestiaryItem = BestiaryEnum.GanymedeUltimate;
+        if (this.selectedZodiac === ZodiacEnum.Pisces)
+        bestiaryItem = BestiaryEnum.RainbowScaledFishUltimate;
+    }
 
     var boss = this.enemyGeneratorService.generateEnemy(bestiaryItem);
 
