@@ -97,7 +97,7 @@ openAlchemy(content: any) {
   getTotalAmountToCreate() {
     if (this.alchemy === undefined)
       return 0;
-    return this.alchemy.creationCreateAmount;
+    return Number(this.alchemy.creationCreateAmount);
   }
 
   getAmountCreated() {

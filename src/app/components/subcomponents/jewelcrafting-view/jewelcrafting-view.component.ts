@@ -297,7 +297,7 @@ changeCreateAmount(amount: number, resetCustomAmount: boolean = false) {
 getTotalAmountToCreate() {
   if (this.jewelcrafting === undefined)
     return 0;
-  return this.jewelcrafting.creationCreateAmount;
+  return Number(this.jewelcrafting.creationCreateAmount);
 }
 
 getAmountCreated() {
