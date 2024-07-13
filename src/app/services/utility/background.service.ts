@@ -93,13 +93,23 @@ export class BackgroundService {
             partyMember.overdriveInfo.revengeTime -= deltaTime;
           }
         }
+        
+        if (this.globalService.isDuoAvailable(partyMember.assignedGod1, partyMember.assignedGod2) && this.globalService.globalVar.activeBattle !== undefined && this.globalService.globalVar.activeBattle.currentEnemies !== undefined &&
+          activeSubzone.type !== SubZoneEnum.CalydonAltarOfAsclepius && !(this.balladService.isSubzoneTown(activeSubzone.type) &&
+            this.lookupService.userNotInTownBattle())) {
+          if (partyMember.battleInfo !== undefined && partyMember.battleInfo.duoAbilityCooldown !== undefined && !partyMember.battleInfo.duoAbilityUsed) {
+            if (partyMember.battleInfo.duoAbilityCooldown <= 0 && partyMember.battleInfo.duoAbilityAutoMode) {
+              partyMember.battleInfo.duoAbilityCooldown = 0;
 
-        if (partyMember.battleInfo !== undefined && partyMember.battleInfo.duoAbilityCooldown !== undefined && partyMember.battleInfo.duoAbilityCooldown > 0) {
-          if (partyMember.battleInfo.duoAbilityCooldown <= 0) {
-            partyMember.battleInfo.duoAbilityCooldown = 0;
-          }
-          else {
-            partyMember.battleInfo.duoAbilityCooldown -= deltaTime;
+              if (!partyMember.battleInfo.duoAbilityUsed)
+                this.battleService.useDuoAbility(partyMember);
+            }
+            else {
+              partyMember.battleInfo.duoAbilityCooldown -= deltaTime;
+
+              if (partyMember.battleInfo.duoAbilityCooldown < 0)
+                partyMember.battleInfo.duoAbilityCooldown = 0;
+            }
           }
         }
 

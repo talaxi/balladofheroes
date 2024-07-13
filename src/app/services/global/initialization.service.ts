@@ -887,10 +887,6 @@ export class InitializationService {
     if (resource !== undefined)
       this.lookupService.gainResource(resource);
 
-    resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SturdyShellUnique, 1);
-    if (resource !== undefined)
-      this.lookupService.gainResource(resource);
-
     resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.EnergyShieldUnique, 1);
     if (resource !== undefined)
       this.lookupService.gainResource(resource);
@@ -1420,8 +1416,7 @@ export class InitializationService {
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.RainbowScaledPlatingUnique));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.GlowingChokerUnique));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.BatteringMaceUnique));
-      this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.EnergyShieldUnique));
-      this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.SturdyShellUnique));
+      this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.EnergyShieldUnique));      
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.AstralRingUnique));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.GleamingLoopUnique));
 
@@ -1475,9 +1470,9 @@ export class InitializationService {
         this.globalService.assignGodAbilityInfo(athena!);
 
         if (j < chthonicResetCount - 1)
-          godLevel = 10;
+          godLevel = 1000;
         else
-          godLevel = 10;
+          godLevel = 1000;
 
         for (var i = 0; i < godLevel; i++) {
           this.globalService.levelUpGod(athena!);

@@ -3783,11 +3783,13 @@ export class BattleService {
           }
         }
 
-        if (instantEffect.type === StatusEffectEnum.TransferStatusEffect) {
+        if (instantEffect.type === StatusEffectEnum.TransferStatusEffect) {          
           var negativeStatusEffects = user.battleInfo.statusEffects.filter(item => !item.isPositive);
-          var rng = this.utilityService.getRandomInteger(0, negativeStatusEffects.length - 1);
-          target.battleInfo.statusEffects.push(negativeStatusEffects[rng]);
-          user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item !== negativeStatusEffects[rng]);
+          if (negativeStatusEffects.length > 0) {
+            var rng = this.utilityService.getRandomInteger(0, negativeStatusEffects.length - 1);
+            target.battleInfo.statusEffects.push(negativeStatusEffects[rng]);
+            user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item !== negativeStatusEffects[rng]);
+          }
         }
 
         if (instantEffect.type === StatusEffectEnum.ResetRandomCooldown) {
@@ -5402,7 +5404,7 @@ export class BattleService {
       var gods = [];
       gods.push(GodEnum.Hades);
       gods.push(GodEnum.Nemesis);
-      var fjAbility = this.lookupService.getDuoAbility(gods);
+      var fjAbility = this.globalService.getDuoAbility(gods);
       if (fjAbility !== undefined && partyMembers !== undefined) {
         fjAbility.userEffect = fjAbility.userEffect.filter(item => item.type !== StatusEffectEnum.FieryJudgment);
         this.useAbility(true, fjAbility, target, this.battle.currentEnemies.enemyList, partyMembers, true, undefined, undefined, false);
@@ -6652,6 +6654,14 @@ export class BattleService {
 
     this.globalService.getActivePartyCharacters(true).forEach(member => {
       member.battleInfo.duoAbilityUsed = false;
+
+      var gods = [];
+      gods.push(member.assignedGod1);
+      gods.push(member.assignedGod2);
+  
+      var duoAbility = this.globalService.getDuoAbility(gods);
+      member.battleInfo.duoAbilityCooldown = duoAbility.cooldown;
+
       var shapeshift = member.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Shapeshift);
       if (shapeshift !== undefined) {
         var hera = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hera);
@@ -6768,14 +6778,17 @@ export class BattleService {
           else {
             var isItemUnique = this.lookupService.isItemUnique(itemCopy.item);
             var existingUnique = this.globalService.globalVar.uniques.find(item => item.type === itemCopy.item);
+            var originalAmount = itemCopy.amount;
 
-            if (!isItemUnique || existingUnique === undefined)
+            if (!isItemUnique || existingUnique === undefined) {
+              itemCopy.amount = 1;
               this.addLootToResources(itemCopy);
+            }
 
 
             if (isItemUnique) {
               if (existingUnique !== undefined) {
-                this.lookupService.giveUniqueXp(existingUnique, item.amount);
+                this.lookupService.giveUniqueXp(existingUnique, originalAmount);
               }
               else {
                 this.globalService.globalVar.uniques.push(new Uniques(itemCopy.item));
@@ -6997,15 +7010,19 @@ export class BattleService {
   }
 
   useDuoAbility(character: Character) {
+    if (this.battle === undefined || this.battle.currentEnemies === undefined || this.battle.currentEnemies.enemyList === undefined ||
+      this.battle.currentEnemies.enemyList.length === 0)
+      return;
+
     var gods = [];
     gods.push(character.assignedGod1);
     gods.push(character.assignedGod2);
 
-    var ability = this.lookupService.getDuoAbility(gods);
+    var ability = this.globalService.getDuoAbility(gods);
     this.useAbility(true, ability, character, this.battle.currentEnemies.enemyList, this.globalService.getActivePartyCharacters(true), true);
 
     character.battleInfo.duoAbilityUsed = true;
-    character.battleInfo.duoAbilityCooldown = this.utilityService.duoAbilityCooldown;
+    character.battleInfo.duoAbilityCooldown = ability.cooldown;
   }
 
   useBattleItem(slotNumber: number) {

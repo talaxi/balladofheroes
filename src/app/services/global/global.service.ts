@@ -59,7 +59,7 @@ export class GlobalService {
     private deviceDetectorService: DeviceDetectorService, private zodiacService: ZodiacService) { }
 
   getCurrentVersion() {
-    return 1;
+    return 1.01;
   }
 
   initializeGlobalVariables() {
@@ -2156,7 +2156,7 @@ export class GlobalService {
     }
     if (level > 49) {
       baseXp = 100000;
-      factor = 1.242;
+      factor = 1.24375;
     }
     var additive = level > 4 ? 350 * (level) : 0;
     var exponential = (baseXp * (factor ** (level - 1)));
@@ -4065,6 +4065,12 @@ export class GlobalService {
       party.forEach(partyMember => {
         if (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type)
           equippedCharacterEnum = partyMember.type;
+
+
+        if (this.isDuoAvailable(partyMember.assignedGod1, partyMember.assignedGod2)) {
+          var duoAbility = this.getDuoAbility([partyMember.assignedGod1, partyMember.assignedGod2]);
+          partyMember.battleInfo.duoAbilityCooldown = duoAbility.cooldown;
+        }
       })
 
       var equippedCharacter = this.globalVar.characters.find(item => item.type === equippedCharacterEnum);
@@ -4074,6 +4080,64 @@ export class GlobalService {
           ability.currentCooldown = this.getAbilityCooldown(ability, equippedCharacter !== undefined ? equippedCharacter : new Character(), true);
         });
     });
+  }
+
+  isDuoAvailable(god1: GodEnum, god2: GodEnum) {
+    var god1ConditionMet = false;
+    var god2ConditionMet = false;
+    var gods = [];
+    gods.push(god1);
+    gods.push(god2);
+    if (gods.length < 2)
+      return false;
+
+    for (var i = 0; i < gods.length; i++) {
+      var conditionMet = false;
+
+      if (gods[i] === GodEnum.Athena && this.globalVar.resources.some(item => item.item === ItemsEnum.AthenasCrest && item.amount > 0) &&
+        this.globalVar.resources.some(item => item.item === ItemsEnum.AthenasSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Artemis && this.globalVar.resources.some(item => item.item === ItemsEnum.ArtemissCrest && item.amount > 0) &&
+        this.globalVar.resources.some(item => item.item === ItemsEnum.ArtemissSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Hermes && this.globalVar.resources.some(item => item.item === ItemsEnum.HermessCrest && item.amount > 0) &&
+        this.globalVar.resources.some(item => item.item === ItemsEnum.HermessSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Apollo && this.globalVar.resources.some(item => item.item === ItemsEnum.ApollosCrest && item.amount > 0) &&
+        this.globalVar.resources.some(item => item.item === ItemsEnum.ApollosSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Ares && this.globalVar.resources.some(item => item.item === ItemsEnum.AressCrest && item.amount > 0) &&
+        this.globalVar.resources.some(item => item.item === ItemsEnum.AressSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Hades && this.globalVar.resources.some(item => item.item === ItemsEnum.HadessCrest && item.amount > 0) &&
+        this.globalVar.resources.some(item => item.item === ItemsEnum.HadessSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Nemesis && this.globalVar.resources.some(item => item.item === ItemsEnum.NemesissCrest && item.amount > 0) &&
+        this.globalVar.resources.some(item => item.item === ItemsEnum.NemesissSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Dionysus && this.globalVar.resources.some(item => item.item === ItemsEnum.DionysussCrest && item.amount > 0) &&
+        this.globalVar.resources.some(item => item.item === ItemsEnum.DionysussSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Zeus && this.globalVar.resources.some(item => item.item === ItemsEnum.ZeussCrest && item.amount > 0) &&
+        this.globalVar.resources.some(item => item.item === ItemsEnum.ZeussSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Poseidon && this.globalVar.resources.some(item => item.item === ItemsEnum.PoseidonsCrest && item.amount > 0) &&
+        this.globalVar.resources.some(item => item.item === ItemsEnum.PoseidonsSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Aphrodite && this.globalVar.resources.some(item => item.item === ItemsEnum.AphroditesCrest && item.amount > 0) &&
+        this.globalVar.resources.some(item => item.item === ItemsEnum.AphroditesSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Hera && this.globalVar.resources.some(item => item.item === ItemsEnum.HerasCrest && item.amount > 0) &&
+        this.globalVar.resources.some(item => item.item === ItemsEnum.HerasSigil && item.amount > 0))
+        conditionMet = true;
+
+      if (i === 0)
+        god1ConditionMet = conditionMet;
+      else if (i === 1)
+        god2ConditionMet = conditionMet;
+    }
+
+    return god1ConditionMet && god2ConditionMet;
   }
 
   equipItem(selectedEquipmentPiece: Equipment | undefined, character: Character) {
@@ -4847,7 +4911,7 @@ export class GlobalService {
       if (unique !== undefined)
         this.giveUniqueXp(unique, uniqueXp);
 
-      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + uniqueXp + " Shield of Unending Flames XP</strong>.", this.globalVar);      
+      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + uniqueXp + " Shield of Unending Flames XP</strong>.", this.globalVar);
 
       remainingRounds -= 5;
     }
@@ -4863,8 +4927,8 @@ export class GlobalService {
     }
   }
 
-  levelUpUnique(unique: Uniques) {    
-    unique.level += 1;    
+  levelUpUnique(unique: Uniques) {
+    unique.level += 1;
   }
 
   getUniqueXpToNextLevel(level: number) {
@@ -5146,5 +5210,698 @@ export class GlobalService {
       return this.dialog.open(TutorialBoxComponent, { width: '80%', height: 'auto' });
     else
       return this.dialog.open(TutorialBoxComponent, { width: '40%', height: 'auto' });
+  }
+
+  getDuoAbility(gods: GodEnum[], defaultValues: boolean = false) {
+    var ability: Ability = new Ability();
+    if (gods.length < 2)
+      return new Ability();
+
+    ability.requiredLevel = this.utilityService.duoAbilityLevel;
+
+    var god1 = this.globalVar.gods.find(item => item.type === gods[0]);
+    var god2 = this.globalVar.gods.find(item => item.type === gods[1]);
+    if (god1 === undefined || god2 === undefined)
+      return new Ability();
+
+    var primaryEffectivenessBonus = defaultValues ? 0 : god1.permanentStatGain.duoPermanentEffectiveness + god2.permanentStatGain.duoPermanentEffectiveness;
+    var secondaryEffectivenessBonus = defaultValues ? 0 : .1 * (god1.permanentStatGain.duoPermanentEffectiveness + god2.permanentStatGain.duoPermanentEffectiveness);
+
+    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Artemis)) {
+      ability.name = "Blinding Arrow";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.isAoe = false;
+      ability.effectiveness = 20 + primaryEffectivenessBonus;
+      ability.secondaryEffectiveness = 2 + secondaryEffectivenessBonus * .5;
+      ability.elementalType = ElementalTypeEnum.Holy;
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Hermes)) {
+      ability.name = "Divine Speed";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.AutoAttackDealsElementalDamage, 25 + secondaryEffectivenessBonus * .5, .2 + (primaryEffectivenessBonus * .01), false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Holy, undefined, undefined, "Divine Speed"));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Apollo)) {
+      ability.name = "Cleansing Rain";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.heals = true;
+      ability.isAoe = true;
+      ability.targetsAllies = true;
+      ability.effectiveness = 1.5 + secondaryEffectivenessBonus * .2;
+      ability.userEffect.push(this.createHealOverTimeEffect(20 + secondaryEffectivenessBonus, 5, 1.5 + secondaryEffectivenessBonus * .25, ability.name, undefined, true));
+      ability.cooldown = 15;
+    }
+
+    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Ares)) {
+      ability.name = "Warfare";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.isAoe = true;
+      ability.effectiveness = 8 + primaryEffectivenessBonus * 1.5;
+      ability.elementalType = ElementalTypeEnum.Holy;
+      ability.targetEffect.push(this.createDamageOverTimeEffect(12, 3, .75, ability.name, dotTypeEnum.BasedOnDamage, undefined, true));
+      ability.targetEffect.push(this.createDamageOverTimeEffect(12, 3, .2 + secondaryEffectivenessBonus * .5, ability.name, dotTypeEnum.BasedOnAttack, undefined, true));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Hades)) {
+      ability.name = "Holyflame";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.isAoe = true;
+      ability.effectiveness = 5 + (primaryEffectivenessBonus);
+      ability.elementalType = ElementalTypeEnum.Holy;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.FireDamageUp, 16, 1.5 + secondaryEffectivenessBonus * .1, false, true));
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.HolyDamageUp, 16, 1.5 + secondaryEffectivenessBonus * .1, false, true));
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.EarthDamageUp, 16, 1.5 + secondaryEffectivenessBonus * .1, false, true));
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Fire));
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Earth));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Nemesis)) {
+      ability.name = "Divine Retribution";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.isAoe = false;
+      ability.elementalType = ElementalTypeEnum.Holy;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.DivineRetribution, 60, 31 + primaryEffectivenessBonus * 2.5, false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Holy));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Dionysus)) {
+      ability.name = "Fading";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.isAoe = true;
+      ability.effectiveness = 10 + (primaryEffectivenessBonus * 1.5);
+      ability.elementalType = ElementalTypeEnum.Holy;
+      ability.secondaryEffectiveness = 1 + (secondaryEffectivenessBonus * .1);
+      ability.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Blind, 14, .5, false, false, true, undefined, undefined, undefined, undefined, undefined, undefined, "Fading", 1 + (secondaryEffectivenessBonus * .1)));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Zeus)) {
+      ability.name = "Thunderclap";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.isAoe = true;
+      ability.effectiveness = 5 + primaryEffectivenessBonus * 1.5;
+      ability.elementalType = ElementalTypeEnum.Holy;
+      ability.secondaryEffectiveness = 1;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Lightning));
+      ability.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Blind, 10 + secondaryEffectivenessBonus * 1.5, .5, false, false, true, undefined, undefined, undefined, undefined, undefined, undefined, "Thunderclap", 3));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Poseidon)) {
+      ability.name = "Surging Strike";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.isAoe = false;
+      ability.effectiveness = 5 + primaryEffectivenessBonus * 1.5;
+      ability.elementalType = ElementalTypeEnum.Holy;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Water));
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.ReduceNextAbilityCooldown, -1, 1.5 + secondaryEffectivenessBonus * .025, false, true));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Aphrodite)) {
+      ability.name = "Blinded By Love";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.BlindedByLove, 30 + secondaryEffectivenessBonus, 2 + secondaryEffectivenessBonus * .1, false, true, true, undefined, undefined, undefined, ElementalTypeEnum.Holy, undefined, undefined, "Blinded By Love"));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Hera)) {
+      ability.name = "Soaring Strike";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.isAoe = false;
+      ability.effectiveness = 10 + primaryEffectivenessBonus * 3;
+      ability.secondaryEffectiveness = 5 + secondaryEffectivenessBonus * .5;
+      ability.elementalType = ElementalTypeEnum.Air;
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Hermes)) {
+      ability.name = "Lucky Shots";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.LuckyShots, 25, 1.1 + (primaryEffectivenessBonus * .003), false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, "Lucky Shots", 1.01 + (secondaryEffectivenessBonus * .01)));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Apollo)) {
+      ability.name = "Sun and Moon";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.isAoe = false;
+      ability.effectiveness = 5 + primaryEffectivenessBonus;
+      ability.secondaryEffectiveness = 1.5 + secondaryEffectivenessBonus * .25;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Ares)) {
+      ability.name = "First Blood";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.isAoe = false;
+      ability.effectiveness = 8 + primaryEffectivenessBonus * 2;
+      ability.secondaryEffectiveness = 2.5 + secondaryEffectivenessBonus * .5;
+      ability.targetEffect.push(this.createDamageOverTimeEffect(20, 4, .75, ability.name, dotTypeEnum.BasedOnDamage));
+      ability.cooldown = 5;
+    }
+
+    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Hades)) {
+      ability.name = "Nature's Fury";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.isAoe = true;
+      ability.effectiveness = 5 + primaryEffectivenessBonus * 1.5;
+      ability.elementalType = ElementalTypeEnum.Earth;
+      ability.secondaryEffectiveness = 1.5 + secondaryEffectivenessBonus * .25;
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Dionysus)) {
+      ability.name = "Sickness";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.targetEffect.push(this.createStatusEffect(StatusEffectEnum.AllPrimaryStatsDown, 25 + secondaryEffectivenessBonus * 3, .99 - secondaryEffectivenessBonus * .0095, false, false, true, undefined, undefined, undefined, undefined, undefined, undefined, "Sickness"));
+      ability.cooldown = 5;
+    }
+
+    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Nemesis)) {
+      ability.name = "Chain Shot";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.effectiveness = 5 + primaryEffectivenessBonus * 2.5;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
+      ability.targetEffect.push(this.createStatusEffect(StatusEffectEnum.ChainsOfFate, 15, 1, false, false, true));
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.KeepDues, -1, 1, true, true));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Zeus)) {
+      ability.name = "Binding Arrows";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.isAoe = true;
+      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 1.5;
+      ability.elementalType = ElementalTypeEnum.Lightning;
+      ability.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Stun, 5, 1, false, false, true));
+      ability.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Paralyze, 20 + secondaryEffectivenessBonus, 1, false, false, true));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Poseidon)) {
+      ability.name = "Uneasy Waters";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.isAoe = true;
+      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 1.5;
+      ability.elementalType = ElementalTypeEnum.Water;
+      ability.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Paralyze, 20 + secondaryEffectivenessBonus, 1, false, false, true, undefined, undefined, undefined, undefined, undefined, undefined, "Uneasy Waters"));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Aphrodite)) {
+      ability.name = "Begrudging Alliance";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.effectiveness = 5 + primaryEffectivenessBonus * .5;
+      ability.secondaryEffectiveness = 1.5 + secondaryEffectivenessBonus * .25;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Hera)) {
+      ability.name = "Wildlife Charge";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.isAoe = true;
+      ability.effectiveness = 5 + primaryEffectivenessBonus * 1;
+      ability.elementalType = ElementalTypeEnum.Air;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Air));
+      ability.targetEffect.push(this.createStatusEffect(StatusEffectEnum.DebuffDurationIncrease, 0, 1.1 + secondaryEffectivenessBonus * .02, true, false, true));
+      ability.cooldown = 15;
+    }
+
+    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Apollo)) {
+      ability.name = "Cleansing Attacks";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.CleansingShots, 25 + secondaryEffectivenessBonus * 1.5, 1.1 + (primaryEffectivenessBonus * .003), false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, "Cleansing Shots", .25));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Ares)) {
+      ability.name = "Bleeding Attacks";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.BleedingAttacks, 25, 1.1 + (primaryEffectivenessBonus * .003), false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, "Bleeding Shots", .25 + (secondaryEffectivenessBonus * .1)));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Hades)) {
+      ability.name = "Unnatural Speed";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.AutoAttackDealsElementalDamage, 25 + secondaryEffectivenessBonus * 2, .25 + secondaryEffectivenessBonus * .2, false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Random, undefined, undefined, "Unnatural Speed"));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Dionysus)) {
+      ability.name = "Shielding Attacks";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.ShieldingAttacks, 25 + secondaryEffectivenessBonus, 1.1 + (primaryEffectivenessBonus * .003), false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, "Shielding Attacks", .25));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Nemesis)) {
+      ability.name = "Just Strike";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.effectiveness = 5 + (primaryEffectivenessBonus * 1.25);
+      ability.secondaryEffectiveness = .05 + secondaryEffectivenessBonus * .01;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.KeepDues, -1, 1, true, true));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Zeus)) {
+      ability.name = "Lightning Attacks";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.LightningAttacks, 25 + secondaryEffectivenessBonus, 1.1 + (primaryEffectivenessBonus * .003), false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Lightning, undefined, undefined, "Lightning Attacks", .25));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Poseidon)) {
+      ability.name = "Pure Speed";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.PureSpeed, 15 + secondaryEffectivenessBonus * .5, 1.15 + (secondaryEffectivenessBonus * .025), false, true, false));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Aphrodite)) {
+      ability.name = "Better Together";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.BetterTogether, 25 + secondaryEffectivenessBonus, 1.1 + (primaryEffectivenessBonus * .003), false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, "Better Together", 1 + secondaryEffectivenessBonus * .1));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Hera)) {
+      ability.name = "Wind Attacks";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.WindAttacks, 25 + secondaryEffectivenessBonus, 1.1 + (primaryEffectivenessBonus * .003), false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Air, undefined, undefined, "Wind Attacks", 3));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Ares)) {
+      ability.name = "Course of Battle";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createHealOverTimeEffect(32, 8, 1.5 + secondaryEffectivenessBonus * .25, ability.name, undefined, true));
+      ability.targetEffect.push(this.createDamageOverTimeEffect(32, 8, .5 + secondaryEffectivenessBonus * .35, ability.name, dotTypeEnum.BasedOnAttack, undefined, true));
+      ability.cooldown = 15;
+    }
+
+    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Hades)) {
+      ability.name = "Discordant Melody";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.DiscordantMelody, 25 + secondaryEffectivenessBonus, 1, false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, "Discordant Melody", 2 + secondaryEffectivenessBonus * .1));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Dionysus)) {
+      ability.name = "Warming Brew";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.heals = true;
+      ability.isAoe = true;
+      ability.targetsAllies = true;
+      ability.effectiveness = 1.5 + secondaryEffectivenessBonus * .2;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.AllPrimaryStatsUp, 25 + secondaryEffectivenessBonus * .5, 1.5 + secondaryEffectivenessBonus * .1, false, true, true));
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.Barrier, -1, 1.5 + secondaryEffectivenessBonus * .2, true, true, true, ability.name.toString(), 1.5));
+      ability.cooldown = 15;
+    }
+
+    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Nemesis)) {
+      ability.name = "Passing Judgment";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.effectiveness = 2000 + primaryEffectivenessBonus * 490;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.PassingJudgment, 25, 1.1 + secondaryEffectivenessBonus * .01, false, true, false));
+      ability.cooldown = 5;
+    }
+
+    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Zeus)) {
+      ability.name = "Thunderous Melody";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.isAoe = true;
+      ability.effectiveness = 8 + primaryEffectivenessBonus * 1.25;
+      ability.elementalType = ElementalTypeEnum.Lightning;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.ThunderousMelody, 25 + secondaryEffectivenessBonus, 3, false, true));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Poseidon)) {
+      ability.name = "Flood";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.Flood, 25 + secondaryEffectivenessBonus, 3.5 + secondaryEffectivenessBonus * .075, false, true));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Aphrodite)) {
+      ability.name = "Caring Gaze";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.AllPrimaryStatsUp, 25 + secondaryEffectivenessBonus * 1.5, 1.5 + secondaryEffectivenessBonus * .1, false, true, true));
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.CaringGaze, 25 + secondaryEffectivenessBonus * 1.5, 1.25, false, true, false, ability.name.toString()));
+      ability.cooldown = 15;
+    }
+
+    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Hera)) {
+      ability.name = "Melodic Moves";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.MelodicMoves, 25 + secondaryEffectivenessBonus, .15 + secondaryEffectivenessBonus * .01, false, true, false));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Hades)) {
+      ability.name = "Scars of War";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.isAoe = true;
+      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 1.25;
+      ability.elementalType = ElementalTypeEnum.Fire;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Earth));
+      ability.targetEffect.push(this.createDamageOverTimeEffect(15, 3, .4 + secondaryEffectivenessBonus * .01, ability.name, dotTypeEnum.BasedOnDamage, undefined, true));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Dionysus)) {
+      ability.name = "Revelry and Blood";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.AllPrimaryStatsUp, 25 + secondaryEffectivenessBonus, 1.5 + secondaryEffectivenessBonus * .1, false, true, true));
+      ability.targetEffect.push(this.createDamageOverTimeEffect(15, 3, .2 + secondaryEffectivenessBonus * .5, ability.name, dotTypeEnum.BasedOnAttack, undefined, true));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Nemesis)) {
+      ability.name = "Blistering Riposte";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.BlisteringRiposte, 25 + secondaryEffectivenessBonus, (1 / 3) + secondaryEffectivenessBonus * .5, false, true, false));
+      ability.targetEffect.push(this.createStatusEffect(StatusEffectEnum.ChainsOfFate, 25, 1, false, false, true));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Zeus)) {
+      ability.name = "Lightning Barrage";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.isAoe = false;
+      ability.effectiveness = 7.5 + (primaryEffectivenessBonus * .5);
+      ability.elementalType = ElementalTypeEnum.Lightning;
+      ability.targetEffect.push(this.createDamageOverTimeEffect(12, 4, .25 + secondaryEffectivenessBonus * .05, ability.name, dotTypeEnum.BasedOnDamage, undefined));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Poseidon)) {
+      ability.name = "Receding Tide";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RecedingTide, 30 + secondaryEffectivenessBonus, .2, false, true, false));
+      ability.targetEffect.push(this.createDamageOverTimeEffect(15, 3, .2 + secondaryEffectivenessBonus * .25, ability.name, dotTypeEnum.BasedOnAttack, undefined, true));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Aphrodite)) {
+      ability.name = "War and Love";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.WarAndLove, -1, 1.5 + secondaryEffectivenessBonus * .05, false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, "War and Love", .25 + secondaryEffectivenessBonus * .1));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Hera)) {
+      ability.name = "Animal Instincts";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.effectiveness = 8 + primaryEffectivenessBonus * 2;
+      ability.elementalType = ElementalTypeEnum.Air;
+      ability.targetEffect.push(this.createDamageOverTimeEffect(20, 4, .5 + secondaryEffectivenessBonus * .5, ability.name, dotTypeEnum.BasedOnDamage));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Dionysus)) {
+      ability.name = "Infectious Flames";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.isAoe = true;
+      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 1.75;
+      ability.elementalType = ElementalTypeEnum.Fire;
+      ability.targetEffect.push(this.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDownExcludeHp, 30, .75 - secondaryEffectivenessBonus * .01, true, false, true));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Nemesis)) {
+      ability.name = "Fiery Judgment";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.isAoe = true;
+      ability.effectiveness = 10 + primaryEffectivenessBonus * 1.75;
+      ability.elementalType = ElementalTypeEnum.Fire;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.FieryJudgment, 15 + secondaryEffectivenessBonus * 2, 1, false, true, false));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Zeus)) {
+      ability.name = "Brotherly Contest";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.effectiveness = 10 + primaryEffectivenessBonus * 2;
+      ability.elementalType = ElementalTypeEnum.Fire;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatDamageAfterDelay, 5, 1, false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Lightning));
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatDamageAfterDelay, 10, 1, false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Earth));
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatDamageAfterDelay, 15, 1, false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Lightning));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Poseidon)) {
+      ability.name = "Firestorm";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.isAoe = true;
+      ability.effectiveness = 5 + primaryEffectivenessBonus * 1;
+      ability.secondaryEffectiveness = 1.1 + secondaryEffectivenessBonus * .025;
+      ability.elementalType = ElementalTypeEnum.Fire;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Earth));
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Water));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Aphrodite)) {
+      ability.name = "Love to Death";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.isAoe = true;
+      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 1;
+      ability.secondaryEffectiveness = secondaryEffectivenessBonus;
+      ability.elementalType = ElementalTypeEnum.Fire;
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Hera)) {
+      ability.name = "Lords Above and Below";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.isAoe = true;
+      ability.effectiveness = 5 + primaryEffectivenessBonus * 1.25;
+      ability.elementalType = ElementalTypeEnum.Fire;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Earth));
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Air));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Dionysus) && gods.some(item => item === GodEnum.Nemesis)) {
+      ability.name = "Wild Judgment";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.SelfBarrier, -1, .4 + secondaryEffectivenessBonus * .025, true, true, false, ability.name.toString()));
+      var wildJudgment = this.createStatusEffect(StatusEffectEnum.WildJudgment, 25, 5 + secondaryEffectivenessBonus * .1, false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 10);
+      wildJudgment.count = 10;
+      ability.userEffect.push(wildJudgment);
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Dionysus) && gods.some(item => item === GodEnum.Zeus)) {
+      ability.name = "Wild Storms";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.isAoe = true;
+      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 2.25;
+      ability.elementalType = ElementalTypeEnum.Lightning;
+      ability.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Stun, 3, 1, false, false, true));
+      ability.targetEffect.push(this.createStatusEffect(StatusEffectEnum.AllPrimaryStatsExcludeHpDown, 20, .75 - secondaryEffectivenessBonus * .01, false, false, true));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Dionysus) && gods.some(item => item === GodEnum.Poseidon)) {
+      ability.name = "Warming Waters";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.isAoe = true;
+      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 2.25;
+      ability.elementalType = ElementalTypeEnum.Water;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.ReduceCooldowns, -1, 1.2 + secondaryEffectivenessBonus * .01, true, true, false, ability.name.toString()));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Dionysus) && gods.some(item => item === GodEnum.Aphrodite)) {
+      ability.name = "Wild Party";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.Barrier, -1, 1.5 + secondaryEffectivenessBonus * .2, true, true, true, ability.name.toString()));
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.AbilitySpeedUp, 25 + secondaryEffectivenessBonus * 2, 1.75, false, true, true));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Dionysus) && gods.some(item => item === GodEnum.Hera)) {
+      ability.name = "Wild Assault";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.isAoe = false;
+      ability.effectiveness = 12.5 + primaryEffectivenessBonus * 1.25;
+      ability.elementalType = ElementalTypeEnum.Air;
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Nemesis) && gods.some(item => item === GodEnum.Zeus)) {
+      ability.name = "Thunderous Riposte";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.ThunderousRiposte, 25 + secondaryEffectivenessBonus * 2, 2.5 + secondaryEffectivenessBonus * .05, false, true, false));
+      ability.targetEffect.push(this.createStatusEffect(StatusEffectEnum.ChainsOfFate, 25, 1, false, false, true));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Nemesis) && gods.some(item => item === GodEnum.Poseidon)) {
+      ability.name = "Staggering Riposte";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.StaggeringRiposte, 25 + secondaryEffectivenessBonus * 2.5, 2 + secondaryEffectivenessBonus * .05, false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, undefined, .25));
+      ability.targetEffect.push(this.createStatusEffect(StatusEffectEnum.ChainsOfFate, 25, 1, false, false, true));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Nemesis) && gods.some(item => item === GodEnum.Aphrodite)) {
+      ability.name = "Protector";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.Protector, 25 + secondaryEffectivenessBonus * 1.5, 1.5 + secondaryEffectivenessBonus * .1, false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, undefined, .1));
+      ability.targetEffect.push(this.createStatusEffect(StatusEffectEnum.ChainsOfFate, 25, 1, false, false, true));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Nemesis) && gods.some(item => item === GodEnum.Hera)) {
+      ability.name = "Defensive Shapeshifting";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = false;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.DefensiveShapeshifting, 25 + secondaryEffectivenessBonus, 3 + secondaryEffectivenessBonus * .075, false, true));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Zeus) && gods.some(item => item === GodEnum.Poseidon)) {
+      ability.name = "Destruction";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.effectiveness = 5 + primaryEffectivenessBonus * 1.5;
+      ability.elementalType = ElementalTypeEnum.Lightning;
+      ability.isAoe = true;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatDamageAfterDelay, 10, 1, false, true, false));
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Water));
+      ability.cooldown = 10;
+    }
+    if (gods.some(item => item === GodEnum.Zeus) && gods.some(item => item === GodEnum.Aphrodite)) {
+      ability.name = "Lightning Storm";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 1.5;
+      ability.elementalType = ElementalTypeEnum.Lightning;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatDamageAfterDelay, 10, 1, false, true, false));
+      ability.cooldown = 10;
+    }
+    if (gods.some(item => item === GodEnum.Zeus) && gods.some(item => item === GodEnum.Hera)) {
+      ability.name = "King and Queen";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.effectiveness = 10 + primaryEffectivenessBonus * 2;
+      ability.elementalType = ElementalTypeEnum.Lightning;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatDamageAfterDelay, 5, 1, false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Air));
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatDamageAfterDelay, 10, 1, false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Lightning));
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatDamageAfterDelay, 15, 1, false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Air));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Poseidon) && gods.some(item => item === GodEnum.Aphrodite)) {
+      ability.name = "Heavy Waves";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.effectiveness = 7.5 + primaryEffectivenessBonus;
+      ability.elementalType = ElementalTypeEnum.Water;
+      ability.isAoe = true;
+      ability.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Stagger, 20, .1 + secondaryEffectivenessBonus * .02, false, false, true));
+      ability.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Unsteady, 20, .1 + secondaryEffectivenessBonus * .02, false, false, true));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Poseidon) && gods.some(item => item === GodEnum.Hera)) {
+      ability.name = "Wind and Water";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.effectiveness = 7.5 + primaryEffectivenessBonus;
+      ability.elementalType = ElementalTypeEnum.Water;
+      ability.isAoe = true;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Air));
+      ability.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Unsteady, 20, .1 + secondaryEffectivenessBonus * .02, false, false, true));
+      ability.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Espionage, 20, .1 + secondaryEffectivenessBonus * .02, false, false, true));
+      ability.cooldown = 10;
+    }
+
+    if (gods.some(item => item === GodEnum.Hera) && gods.some(item => item === GodEnum.Aphrodite)) {
+      ability.name = "Loving Embrace";
+      ability.isAvailable = true;
+      ability.dealsDirectDamage = true;
+      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 2.25;
+      ability.elementalType = ElementalTypeEnum.Air;
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.LovingEmbrace, 25 + secondaryEffectivenessBonus * 2, 1.1, false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 15));
+      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Air));
+      ability.cooldown = 10;
+    }
+
+    return ability;
   }
 }

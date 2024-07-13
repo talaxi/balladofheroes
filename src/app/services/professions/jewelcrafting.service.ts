@@ -681,7 +681,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.Polish);
       recipe.displayOrder = 3;
 
-      recipe.expGain = 5;
+      recipe.expGain = 10;
     }
     if (item === ItemsEnum.CrackedAquamarine) {
       recipe.quality = EquipmentQualityEnum.Basic;
@@ -693,7 +693,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.Polish);
       recipe.displayOrder = 4;
 
-      recipe.expGain = 5;
+      recipe.expGain = 10;
     }
     if (item === ItemsEnum.PointedStone) {
       recipe.quality = EquipmentQualityEnum.Basic;
@@ -705,7 +705,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.Polish);
       recipe.displayOrder = 1;
 
-      recipe.expGain = 3;
+      recipe.expGain = 5;
     }
     if (item === ItemsEnum.CrackedOpal) {
       recipe.quality = EquipmentQualityEnum.Basic;
@@ -717,7 +717,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.Polish);
       recipe.displayOrder = 5;
 
-      recipe.expGain = 5;
+      recipe.expGain = 10;
     }
     if (item === ItemsEnum.CrackedTopaz) {
       recipe.quality = EquipmentQualityEnum.Basic;
@@ -729,7 +729,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.Polish);
       recipe.displayOrder = 6;
 
-      recipe.expGain = 8;
+      recipe.expGain = 15;
     }
     if (item === ItemsEnum.CrackedAmethyst) {
       recipe.quality = EquipmentQualityEnum.Basic;
@@ -741,7 +741,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.Polish);
       recipe.displayOrder = 7;
 
-      recipe.expGain = 8;
+      recipe.expGain = 15;
     }
     if (item === ItemsEnum.CrackedEmerald) {
       recipe.quality = EquipmentQualityEnum.Basic;
@@ -753,7 +753,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.Polish);
       recipe.displayOrder = 8;
 
-      recipe.expGain = 8;
+      recipe.expGain = 15;
     }
     if (item === ItemsEnum.ShiningStone) {
       recipe.quality = EquipmentQualityEnum.Basic;
@@ -765,7 +765,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.Polish);
       recipe.displayOrder = 2;
 
-      recipe.expGain = 6;
+      recipe.expGain = 10;
     }
     if (item === ItemsEnum.MinorWeaponSlotAddition) {
       recipe.quality = EquipmentQualityEnum.Rare;
@@ -778,7 +778,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.CoolingMetal);
       recipe.displayOrder = 3;
 
-      recipe.expGain = 20;
+      recipe.expGain = 25;
     }
     if (item === ItemsEnum.MinorRingSlotAddition) {
       recipe.quality = EquipmentQualityEnum.Rare;
@@ -791,7 +791,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.CoolingMetal);
       recipe.displayOrder = 1;
 
-      recipe.expGain = 20;
+      recipe.expGain = 25;
     }
     if (item === ItemsEnum.MinorArmorSlotAddition) {
       recipe.quality = EquipmentQualityEnum.Rare;
@@ -804,7 +804,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.CoolingMetal);
       recipe.displayOrder = 2;
 
-      recipe.expGain = 20;
+      recipe.expGain = 25;
     }
     if (item === ItemsEnum.MinorShieldSlotAddition) {
       recipe.quality = EquipmentQualityEnum.Rare;
@@ -817,7 +817,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.CoolingMetal);
       recipe.displayOrder = 4;
 
-      recipe.expGain = 20;
+      recipe.expGain = 25;
     }
     if (item === ItemsEnum.MinorNecklaceSlotAddition) {
       recipe.quality = EquipmentQualityEnum.Rare;
@@ -830,7 +830,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.CoolingMetal);
       recipe.displayOrder = 5;
 
-      recipe.expGain = 20;
+      recipe.expGain = 25;
     }
     if (item === ItemsEnum.DullRuby) {
       recipe.quality = EquipmentQualityEnum.Uncommon;
@@ -842,7 +842,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.Polish);
       recipe.displayOrder = 3;
 
-      recipe.expGain = 10;
+      recipe.expGain = 18;
     }
     if (item === ItemsEnum.JaggedStone) {
       recipe.quality = EquipmentQualityEnum.Uncommon;
@@ -854,7 +854,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.Polish);
       recipe.displayOrder = 1;
 
-      recipe.expGain = 7;
+      recipe.expGain = 12;
     }
     if (item === ItemsEnum.DullAquamarine) {
       recipe.quality = EquipmentQualityEnum.Uncommon;
@@ -866,7 +866,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.Polish);
       recipe.displayOrder = 4;
 
-      recipe.expGain = 10;
+      recipe.expGain = 18;
     }
     if (item === ItemsEnum.DullOpal) {
       recipe.quality = EquipmentQualityEnum.Uncommon;
@@ -878,7 +878,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.Polish);
       recipe.displayOrder = 5;
 
-      recipe.expGain = 10;
+      recipe.expGain = 18;
     }
     if (item === ItemsEnum.DullTopaz) {
       recipe.quality = EquipmentQualityEnum.Uncommon;
@@ -890,7 +890,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.Polish);
       recipe.displayOrder = 6;
 
-      recipe.expGain = 16;
+      recipe.expGain = 22;
     }
     if (item === ItemsEnum.DullAmethyst) {
       recipe.quality = EquipmentQualityEnum.Uncommon;
@@ -902,7 +902,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.Polish);
       recipe.displayOrder = 7;
 
-      recipe.expGain = 16;
+      recipe.expGain = 22;
     }
     if (item === ItemsEnum.DullEmerald) {
       recipe.quality = EquipmentQualityEnum.Uncommon;
@@ -914,7 +914,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.Polish);
       recipe.displayOrder = 8;
 
-      recipe.expGain = 16;
+      recipe.expGain = 22;
     }
     if (item === ItemsEnum.BlessedStone) {
       recipe.quality = EquipmentQualityEnum.Uncommon;
@@ -926,7 +926,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.Polish);
       recipe.displayOrder = 2;
 
-      recipe.expGain = 12;
+      recipe.expGain = 16;
     }
     if (item === ItemsEnum.RadiatingLightningStone) {
       recipe.quality = EquipmentQualityEnum.Rare;
@@ -939,7 +939,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.Polish);
       recipe.displayOrder = 8;
 
-      recipe.expGain = 18;
+      recipe.expGain = 25;
     }
     if (item === ItemsEnum.RadiatingHolyStone) {
       recipe.quality = EquipmentQualityEnum.Rare;
@@ -952,7 +952,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.Polish);
       recipe.displayOrder = 9;
 
-      recipe.expGain = 18;
+      recipe.expGain = 25;
     }
     if (item === ItemsEnum.FlawedRuby) {
       recipe.quality = EquipmentQualityEnum.Rare;
@@ -964,7 +964,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.Polish);
       recipe.displayOrder = 12;
 
-      recipe.expGain = 20;
+      recipe.expGain = 25;
     }
     if (item === ItemsEnum.FlawedAquamarine) {
       recipe.quality = EquipmentQualityEnum.Rare;
@@ -976,7 +976,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.Polish);
       recipe.displayOrder = 13;
 
-      recipe.expGain = 20;
+      recipe.expGain = 25;
     }
     if (item === ItemsEnum.FlawedOpal) {
       recipe.quality = EquipmentQualityEnum.Rare;
@@ -988,7 +988,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.Polish);
       recipe.displayOrder = 14;
 
-      recipe.expGain = 20;
+      recipe.expGain = 25;
     }
     if (item === ItemsEnum.FlawedTopaz) {
       recipe.quality = EquipmentQualityEnum.Rare;
@@ -1037,7 +1037,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.Polish);
       recipe.displayOrder = 11;
 
-      recipe.expGain = 25;
+      recipe.expGain = 30;
     }
     if (item === ItemsEnum.RadiatingWaterStone) {
       recipe.quality = EquipmentQualityEnum.Rare;
@@ -1050,7 +1050,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.Polish);
       recipe.displayOrder = 7;
 
-      recipe.expGain = 25;
+      recipe.expGain = 30;
     }
     if (item === ItemsEnum.RadiatingFireStone) {
       recipe.quality = EquipmentQualityEnum.Rare;

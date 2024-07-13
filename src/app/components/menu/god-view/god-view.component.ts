@@ -64,11 +64,11 @@ export class GodViewComponent implements OnInit {
           else
             otherGodType = character.assignedGod1;
 
-          if (this.lookupService.isDuoAvailable(this.god.type, otherGodType)) {
+          if (this.globalService.isDuoAvailable(this.god.type, otherGodType)) {
             var gods: GodEnum[] = [];
             gods.push(this.god.type);
             gods.push(otherGodType);
-            this.abilityList.push(this.lookupService.getDuoAbility(gods));
+            this.abilityList.push(this.globalService.getDuoAbility(gods));
           }
         }
       });
@@ -95,11 +95,11 @@ export class GodViewComponent implements OnInit {
               else
                 otherGodType = character.assignedGod1;
 
-              if (this.lookupService.isDuoAvailable(this.god.type, otherGodType)) {
+              if (this.globalService.isDuoAvailable(this.god.type, otherGodType)) {
                 var gods: GodEnum[] = [];
                 gods.push(this.god.type);
                 gods.push(otherGodType);
-                this.abilityList.push(this.lookupService.getDuoAbility(gods));
+                this.abilityList.push(this.globalService.getDuoAbility(gods));
               }
             }
           });
@@ -776,7 +776,7 @@ export class GodViewComponent implements OnInit {
       var gods: GodEnum[] = [];
       gods.push(this.god.type);
       gods.push(otherGod.type)
-      var baseAbility = this.lookupService.getDuoAbility(gods, true);
+      var baseAbility = this.globalService.getDuoAbility(gods, true);
       if (baseAbility === undefined)
         return 0;
 
@@ -808,7 +808,7 @@ export class GodViewComponent implements OnInit {
       var gods: GodEnum[] = [];
       gods.push(this.god.type);
       gods.push(otherGod.type)
-      var baseAbility = this.lookupService.getDuoAbility(gods, true);
+      var baseAbility = this.globalService.getDuoAbility(gods, true);
       if (baseAbility === undefined)
         return 0;
 
@@ -938,7 +938,7 @@ export class GodViewComponent implements OnInit {
       var gods: GodEnum[] = [];
       gods.push(this.god.type);
       gods.push(otherGod.type)
-      var baseDuoAbility = this.lookupService.getDuoAbility(gods, true);
+      var baseDuoAbility = this.globalService.getDuoAbility(gods, true);
       if (baseDuoAbility === undefined)
         return 0;
 
@@ -1000,7 +1000,7 @@ export class GodViewComponent implements OnInit {
       var gods: GodEnum[] = [];
       gods.push(this.god.type);
       gods.push(otherGod.type)
-      var baseDuoAbility = this.lookupService.getDuoAbility(gods, true);
+      var baseDuoAbility = this.globalService.getDuoAbility(gods, true);
       if (baseDuoAbility === undefined)
         return 0;
 
@@ -1037,7 +1037,7 @@ export class GodViewComponent implements OnInit {
       var gods: GodEnum[] = [];
       gods.push(this.god.type);
       gods.push(otherGod.type)
-      var baseDuoAbility = this.lookupService.getDuoAbility(gods, true);
+      var baseDuoAbility = this.globalService.getDuoAbility(gods, true);
       if (baseDuoAbility === undefined)
         return 0;
 
@@ -1074,7 +1074,7 @@ export class GodViewComponent implements OnInit {
       var gods: GodEnum[] = [];
       gods.push(this.god.type);
       gods.push(otherGod.type)
-      var baseDuoAbility = this.lookupService.getDuoAbility(gods, true);
+      var baseDuoAbility = this.globalService.getDuoAbility(gods, true);
       if (baseDuoAbility === undefined)
         return 0;
 
@@ -1115,7 +1115,7 @@ export class GodViewComponent implements OnInit {
       var gods: GodEnum[] = [];
       gods.push(this.god.type);
       gods.push(otherGod.type)
-      var baseDuoAbility = this.lookupService.getDuoAbility(gods, true);
+      var baseDuoAbility = this.globalService.getDuoAbility(gods, true);
       if (baseDuoAbility === undefined)
         return 0;
 
@@ -1152,7 +1152,7 @@ export class GodViewComponent implements OnInit {
     var gods: GodEnum[] = [];
     gods.push(this.god.type);
     gods.push(otherGod.type)
-    var baseDuoAbility = this.lookupService.getDuoAbility(gods, true);    
+    var baseDuoAbility = this.globalService.getDuoAbility(gods, true);    
     if (baseDuoAbility === undefined || ability.requiredLevel !== this.utilityService.duoAbilityLevel) {      
       return 0;
     }
@@ -1177,7 +1177,7 @@ export class GodViewComponent implements OnInit {
     var gods: GodEnum[] = [];
     gods.push(this.god.type);
     gods.push(otherGod.type)
-    var baseDuoAbility = this.lookupService.getDuoAbility(gods, true);
+    var baseDuoAbility = this.globalService.getDuoAbility(gods, true);
     if (baseDuoAbility === undefined || ability.requiredLevel !== this.utilityService.duoAbilityLevel)
       return 0;
 
@@ -1487,11 +1487,11 @@ export class GodViewComponent implements OnInit {
 
     this.globalService.globalVar.gods.filter(item => item.isAvailable && item.type !== this.god.type).forEach((god, index) => {
       text += "<span class='smallCaps bold'>with</span> <span class='smallCaps bold " + god.name.toLowerCase() + "Color'>" + god.name + "</span> - ";
-      if (this.lookupService.isDuoAvailable(this.god.type, god.type)) {
+      if (this.globalService.isDuoAvailable(this.god.type, god.type)) {
         var gods: GodEnum[] = [];
         gods.push(this.god.type);
         gods.push(god.type);
-        var ability = this.lookupService.getDuoAbility(gods);
+        var ability = this.globalService.getDuoAbility(gods);
         var character = this.globalService.globalVar.characters.find(item => item.type === this.characterTemplate);
         text += this.lookupService.getGodAbilityDescription(ability.name, character === undefined ? new Character() : character, ability);
       }

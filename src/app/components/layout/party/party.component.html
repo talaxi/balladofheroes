@@ -20,11 +20,11 @@
                                 <mat-progress-bar *ngIf="getCharacterBarrierValue(character) > 0" mode="determinate"
                                     [value]="getCharacterBarrierPercent(character)"
                                     class="barrier-progress characterBar hpBar highBar">
-                                </mat-progress-bar>                                
+                                </mat-progress-bar>
                             </div>
                             <span class="hpMpText hpAmount" *ngIf="!showPartyHpAsPercent">
-                                <span
-                                    [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}" [innerHTML]="getCurrentHp(character)"></span>
+                                <span [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}"
+                                    [innerHTML]="getCurrentHp(character)"></span>
                                 /
                                 <span [innerHTML]="getMaxHp(character)"></span>
                             </span>
@@ -34,24 +34,27 @@
                                     | number : '1.2-2'}}%</span>
                             </span>
                         </div>
-                        <div *ngIf="!notLowPerformanceMode()" class="lowPerfHpMpText healthUpperMargin">                            
+                        <div *ngIf="!notLowPerformanceMode()" class="lowPerfHpMpText healthUpperMargin">
                             <span class="bold smallCaps healthName statLabel">
                                 health:
                             </span>
-                            <span [ngClass]="{'kod': character.battleStats.currentHp <= 0}" class="hpAmount statValue" *ngIf="!showPartyHpAsPercent">
-                                <span
-                                    [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}" [innerHTML]="getCurrentHp(character)"></span>
+                            <span [ngClass]="{'kod': character.battleStats.currentHp <= 0}" class="hpAmount statValue"
+                                *ngIf="!showPartyHpAsPercent">
+                                <span [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}"
+                                    [innerHTML]="getCurrentHp(character)"></span>
                                 /
                                 <span [innerHTML]="getMaxHp(character)"></span>
                             </span>
-                            <span [ngClass]="{'kod': character.battleStats.currentHp <= 0}" class="hpAmount statValue" *ngIf="showPartyHpAsPercent">
+                            <span [ngClass]="{'kod': character.battleStats.currentHp <= 0}" class="hpAmount statValue"
+                                *ngIf="showPartyHpAsPercent">
                                 <span
                                     [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCharacterHpPercent(character)
                                     | number : '1.2-2'}}%</span>
                             </span>
                         </div>
-                        <div *ngIf="notLowPerformanceMode() && isOverdriveAvailable(character)" class="overdriveBar flex"
-                            (click)="manuallyTrigger(character)" (contextmenu)="toggleAuto(character)">
+                        <div *ngIf="notLowPerformanceMode() && isOverdriveAvailable(character)"
+                            class="overdriveBar flex" (click)="manuallyTrigger(character)"
+                            (contextmenu)="toggleAuto(character)">
                             <span *ngIf="!character.overdriveInfo.autoMode" class="manualOverdriveText">OFF</span>
                             <mat-progress-bar mode="determinate" [value]="getCharacterOverdrivePercent(character)"
                                 class="red-progress characterBar overdriveProgressBar highBar"
@@ -61,12 +64,15 @@
                                 {{getCharacterOverdrivePercent(character) | number : '1.1-1'}}%
                             </span>
                         </div>
-                        <div *ngIf="!notLowPerformanceMode() && isOverdriveAvailable(character)" class="overdriveBar flex lowPerfHpMpText"
-                            (click)="manuallyTrigger(character)" (contextmenu)="toggleAuto(character)">
+                        <div *ngIf="!notLowPerformanceMode() && isOverdriveAvailable(character)"
+                            class="overdriveBar flex lowPerfHpMpText" (click)="manuallyTrigger(character)"
+                            (contextmenu)="toggleAuto(character)">
                             <span class="overdriveName bold smallCaps statLabel">overdrive: </span>
-                            <span [ngClass]="{'overdriveActive': isOverdriveActive(character), 'kod': character.battleStats.currentHp <= 0}" class="statValue">
-                             {{getCharacterOverdrivePercent(character) | number : '1.1-1'}}%
-                        </span>
+                            <span
+                                [ngClass]="{'overdriveActive': isOverdriveActive(character), 'kod': character.battleStats.currentHp <= 0}"
+                                class="statValue">
+                                {{getCharacterOverdrivePercent(character) | number : '1.1-1'}}%
+                            </span>
                         </div>
                     </div>
                     <div class="fullHeight statusEffectGrid">
@@ -74,20 +80,23 @@
                             <app-status-effect-view [character]="character"></app-status-effect-view>
                         </div>
                         <div *ngIf="isDuoAvailable(character)" class="duoAbility" customToolTip
-                            [contentTemplate]="duoAbilityPopover" (click)="triggerDuo(character)">
-                            <img class="duoAbilityImage" [src]="getDuoSource(character)">
+                            [contentTemplate]="duoAbilityPopover" (click)="triggerDuo(character)" (contextmenu)="toggleAutoWeb(character)">                           
+                            <img class="duoAbilityImage" [ngClass]="{'manualOverdriveMode': isDuoCooldownReady(character)}" [src]="getDuoSource(character)">
+                            <span *ngIf="!character.battleInfo.duoAbilityAutoMode" class="manualModeText"><strong>OFF</strong></span>
                         </div>
 
                         <ng-template #duoAbilityPopover>
                             <div>
-                                <strong><span class="s5Heading bold" [innerHtml]="getDuoAbilityName(character)"></span></strong>
-                                <span class="marginLeft" *ngIf="verboseMode">{{getDuoAbilityRemaining(character)}}</span>
+                                <strong><span class="s5Heading bold"
+                                        [innerHtml]="getDuoAbilityName(character)"></span></strong>
+                                <span class="marginLeft"
+                                    *ngIf="verboseMode">{{getDuoAbilityRemaining(character)}}</span>
                                 <hr />
                                 <span [innerHtml]="getDuoAbilityDescription(character)"></span>
                                 <hr />
-                                <span *ngIf="!isMobile">Left click to use ability. Can only be used once per
-                                    battle.</span>
-                                <span *ngIf="isMobile">Tap to use ability. Can only be used once per battle.</span>
+                                <span *ngIf="!isMobile">Right click to toggle between Manual and Auto mode. Left click to use ability in Manual mode.</span>
+                            <span *ngIf="isMobile">Double tap to toggle between Manual and Auto mode. Tap to use ability in Manual
+                                mode.</span>
                             </div>
                         </ng-template>
 

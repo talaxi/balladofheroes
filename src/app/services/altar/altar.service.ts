@@ -865,6 +865,15 @@ export class AltarService {
         }
 
         altarEffect.effectiveness = this.utilityService.roundTo(altarEffect.effectiveness, 5);
+
+        if (altarEffect.type === AltarEffectsEnum.DionysusRareFastDebuffs && altarEffect.effectiveness > 1.99)
+          altarEffect.effectiveness = 1.99;
+        
+        if ((altarEffect.type === AltarEffectsEnum.HeraRareReduceAllEnemyDamageAfter || altarEffect.type === AltarEffectsEnum.HeraReduceEnemyDamageAfter ||
+          altarEffect.type === AltarEffectsEnum.NemesisLuckDebuff || altarEffect.type === AltarEffectsEnum.DionysusRareFullDebuffs || altarEffect.type === AltarEffectsEnum.DionysusRandomDebuff ||
+          altarEffect.type === AltarEffectsEnum.HermesRareReduceAutoAttackCooldown || altarEffect.type === AltarEffectsEnum.ArtemisRareAttackDebuff ||
+          altarEffect.type === AltarEffectsEnum.ArtemisDefenseDebuff) && altarEffect.effectiveness < 0.01)
+          altarEffect.effectiveness = .01;
       }
 
       if (additionalAltarEffect) {

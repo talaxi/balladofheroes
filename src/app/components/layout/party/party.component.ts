@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GlobalService } from 'src/app/services/global/global.service';
@@ -49,6 +49,10 @@ export class PartyComponent implements OnInit {
   @Input() isMobile = false;
   showPartyHpAsPercent: boolean = false;
   verboseMode: boolean = false;
+  @ViewChild('spinnerDiv') spinnerDiv: ElementRef;
+  spinnerDiameter = 10;
+  strokeWidth = 5;
+  longPressStartTime = 0;
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -721,7 +725,7 @@ export class PartyComponent implements OnInit {
     gods.push(character.assignedGod1);
     gods.push(character.assignedGod2);
 
-    var ability = this.lookupService.getDuoAbility(gods);
+    var ability = this.globalService.getDuoAbility(gods);
     return ability.name;
   }
 
@@ -730,7 +734,7 @@ export class PartyComponent implements OnInit {
     gods.push(character.assignedGod1);
     gods.push(character.assignedGod2);
 
-    var ability = this.lookupService.getDuoAbility(gods);
+    var ability = this.globalService.getDuoAbility(gods);
 
     return this.lookupService.getGodAbilityDescription(ability.name, character, ability);
   }
@@ -803,13 +807,19 @@ export class PartyComponent implements OnInit {
     return god1ConditionMet && god2ConditionMet;
   }
 
+  isDuoCooldownReady(character: Character) {
+    var isReady = character.battleInfo.duoAbilityCooldown > 0;
+  
+    return isReady;
+  }
+
   getDuoSource(character: Character) {
     var src = "assets/svg/";
     var gods = [];
     gods.push(character.assignedGod1);
     gods.push(character.assignedGod2);
 
-    if (character.battleInfo.duoAbilityUsed || character.battleInfo.duoAbilityCooldown > 0) {
+    if (character.battleInfo.duoAbilityUsed) {
       src += "inactiveDuo.svg";
       return src;
     }
@@ -961,6 +971,44 @@ export class PartyComponent implements OnInit {
       src += "inactiveDuo.svg";
 
     return src;
+  }
+
+  /*longPressStart() {
+    this.longPressStartTime = performance.now();
+  }
+
+  longPressEnd() {
+    var timePassed = performance.now() - this.longPressStartTime;
+    this.longPressStartTime = 0;
+
+    if (timePassed > 500 && this.isMobile) { //longer than .5 seconds
+      this.toggleDuoAuto();
+    }
+  }*/
+
+  toggleAutoWeb(character: Character) {
+    if (!this.isMobile) {
+      this.toggleDuoAuto(character);
+    }
+
+    return false;
+  }
+
+  toggleDuoAuto(character: Character) {
+    character.battleInfo.duoAbilityAutoMode = !character.battleInfo.duoAbilityAutoMode;
+
+    return false;
+  }
+
+  getStrokeColor() {
+   /* if (this.god !== undefined) {
+      return this.lookupService.getGodColorClass(this.god);
+    }
+    else {
+      return this.lookupService.getCharacterColorClass(this.character.type);
+    }*/
+
+    return "athenaColor";
   }
 
   getCharacterBarrierPercent(character: Character) {

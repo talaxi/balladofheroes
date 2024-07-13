@@ -30,7 +30,6 @@ export class UtilityService {
   public highFps = 64;
 
   public timeFragmentClearRateMinimumSeconds = 3;
-  public duoAbilityCooldown = 1;
   public friendlyCompetitionDamageReduction = .2;
   public trialOfSkillBuffHours = 6;
 

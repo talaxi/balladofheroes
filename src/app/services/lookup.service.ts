@@ -458,65 +458,7 @@ export class LookupService {
 
   giveCharactersBonusExp(amount: number) {
     this.globalService.giveCharactersBonusExp(amount);
-  }
-
-  isDuoAvailable(god1: GodEnum, god2: GodEnum) {
-    var god1ConditionMet = false;
-    var god2ConditionMet = false;
-    var gods = [];
-    gods.push(god1);
-    gods.push(god2);
-    if (gods.length < 2)
-      return false;
-
-    for (var i = 0; i < gods.length; i++) {
-      var conditionMet = false;
-
-      if (gods[i] === GodEnum.Athena && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AthenasCrest && item.amount > 0) &&
-        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AthenasSigil && item.amount > 0))
-        conditionMet = true;
-      if (gods[i] === GodEnum.Artemis && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ArtemissCrest && item.amount > 0) &&
-        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ArtemissSigil && item.amount > 0))
-        conditionMet = true;
-      if (gods[i] === GodEnum.Hermes && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HermessCrest && item.amount > 0) &&
-        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HermessSigil && item.amount > 0))
-        conditionMet = true;
-      if (gods[i] === GodEnum.Apollo && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ApollosCrest && item.amount > 0) &&
-        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ApollosSigil && item.amount > 0))
-        conditionMet = true;
-      if (gods[i] === GodEnum.Ares && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AressCrest && item.amount > 0) &&
-        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AressSigil && item.amount > 0))
-        conditionMet = true;
-      if (gods[i] === GodEnum.Hades && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HadessCrest && item.amount > 0) &&
-        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HadessSigil && item.amount > 0))
-        conditionMet = true;
-      if (gods[i] === GodEnum.Nemesis && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.NemesissCrest && item.amount > 0) &&
-        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.NemesissSigil && item.amount > 0))
-        conditionMet = true;
-      if (gods[i] === GodEnum.Dionysus && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.DionysussCrest && item.amount > 0) &&
-        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.DionysussSigil && item.amount > 0))
-        conditionMet = true;
-      if (gods[i] === GodEnum.Zeus && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ZeussCrest && item.amount > 0) &&
-        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ZeussSigil && item.amount > 0))
-        conditionMet = true;
-      if (gods[i] === GodEnum.Poseidon && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.PoseidonsCrest && item.amount > 0) &&
-        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.PoseidonsSigil && item.amount > 0))
-        conditionMet = true;
-      if (gods[i] === GodEnum.Aphrodite && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AphroditesCrest && item.amount > 0) &&
-        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AphroditesSigil && item.amount > 0))
-        conditionMet = true;
-      if (gods[i] === GodEnum.Hera && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HerasCrest && item.amount > 0) &&
-        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HerasSigil && item.amount > 0))
-        conditionMet = true;
-
-      if (i === 0)
-        god1ConditionMet = conditionMet;
-      else if (i === 1)
-        god2ConditionMet = conditionMet;
-    }
-
-    return god1ConditionMet && god2ConditionMet;
-  }
+  }  
 
   isItemUnique(type: ItemsEnum) {
     var equip = this.getEquipmentPieceByItemType(type);
@@ -4050,6 +3992,7 @@ export class LookupService {
     var relatedSecondaryTargetGainStatusEffectEffectivenessPercent = 0;
     var relatedSecondaryTargetGainStatusEffectDuration = 0;
     var cooldown = 0;
+    var baseCooldown = 0;
     var maxCountTimesEffectivenessPercent = 0;
     var permanentEffectivenessIncrease = 0;
     var permanentAbility: Ability | undefined = undefined;
@@ -4061,6 +4004,7 @@ export class LookupService {
       var permanentTargetEffectEffectivenessIncrease = 0;
       var permanentTargetEffectDurationIncrease = 0;
       var permanentSecondaryEffectivenessIncrease = 0;
+      var baseCooldown = ability.cooldown;
 
       if (god !== undefined) {
         permanentAbility = god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
@@ -4269,149 +4213,149 @@ export class LookupService {
     //Duos
     if (ability !== undefined) {
       if (abilityName === "Blinding Arrow")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage to a target. If critical, increase damage by <strong>" + this.utilityService.genericRound((secondaryEffectiveAmount - 1) * 100) + "%</strong> and 100% Blind the target for 8 seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage to a target. If critical, increase damage by <strong>" + this.utilityService.genericRound((secondaryEffectiveAmount - 1) * 100) + "%</strong> and 100% Blind the target for 8 seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Divine Speed")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage after every auto attack for " + relatedUserGainStatusEffectDuration + " seconds. Heal for 10% of the additional damage dealt. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage after every auto attack for " + relatedUserGainStatusEffectDuration + " seconds. Heal for 10% of the additional damage dealt. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Cleansing Rain")
-        abilityDescription = "Heal all allies for <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent / 2) + "% of Attack + " + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent / 2) + "% of Resistance</strong> HP immediately and then every 5 seconds for " + relatedUserGainStatusEffectDuration + " seconds. While this effect is active, you cannot be inflicted with new debuffs. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Heal all allies for <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent / 2) + "% of Attack + " + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent / 2) + "% of Resistance</strong> HP immediately and then every 5 seconds for " + relatedUserGainStatusEffectDuration + " seconds. While this effect is active, you cannot be inflicted with new debuffs. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Warfare")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage to all targets. Apply two Damage over Time Effects: one dealing <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for " + relatedTargetGainStatusEffectDuration + " seconds and another dealing <strong>" + this.utilityService.genericRound((ability?.targetEffect[1].effectiveness) * 100) + "% of Attack</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for " + relatedTargetGainStatusEffectDuration + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage to all targets. Apply two Damage over Time Effects: one dealing <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for " + relatedTargetGainStatusEffectDuration + " seconds and another dealing <strong>" + this.utilityService.genericRound((ability?.targetEffect[1].effectiveness) * 100) + "% of Attack</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for " + relatedTargetGainStatusEffectDuration + " seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Holyflame")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage to all targets. Repeat with Fire and Earth damage. Increase your damage dealt by all three elements by <strong>" + this.utilityService.genericRound((relatedUserGainStatusEffectEffectiveness - 1) * 100) + "%</strong> for " + relatedUserGainStatusEffectDuration + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage to all targets. Repeat with Fire and Earth damage. Increase your damage dealt by all three elements by <strong>" + this.utilityService.genericRound((relatedUserGainStatusEffectEffectiveness - 1) * 100) + "%</strong> for " + relatedUserGainStatusEffectDuration + " seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Divine Retribution")
-        abilityDescription = "The next time you are attacked, reduce the damage taken by 100% and deal <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "% of Attack</strong> damage back to the target. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "The next time you are attacked, reduce the damage taken by 100% and deal <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "% of Attack</strong> damage back to the target. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Fading")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage to all targets and apply a 50% Blind that lasts for " + relatedTargetGainStatusEffectDuration + " seconds. The duration increases by " + secondaryEffectiveAmount + " second" + (secondaryEffectiveAmount === 1 ? "" : "s") + " every time a new debuff is inflicted on the target. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage to all targets and apply a 50% Blind that lasts for " + relatedTargetGainStatusEffectDuration + " seconds. The duration increases by " + secondaryEffectiveAmount + " second" + (secondaryEffectiveAmount === 1 ? "" : "s") + " every time a new debuff is inflicted on the target. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Thunderclap")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage to all targets. Repeat with Lightning damage. Apply a 50% Blind that lasts for " + relatedTargetGainStatusEffectDuration + " seconds. If the target misses an auto attack, stun them for 3 seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage to all targets. Repeat with Lightning damage. Apply a 50% Blind that lasts for " + relatedTargetGainStatusEffectDuration + " seconds. If the target misses an auto attack, stun them for 3 seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Surging Strike")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage to a target. Repeat with Water damage. Your next ability cast will have its cooldown reduced by " + this.utilityService.genericRound(relatedSecondaryUserGainStatusEffectEffectivenessPercent) + "%. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage to a target. Repeat with Water damage. Your next ability cast will have its cooldown reduced by " + this.utilityService.genericRound(relatedSecondaryUserGainStatusEffectEffectivenessPercent) + "%. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Blinded By Love")
-        abilityDescription = "For " + relatedUserGainStatusEffectDuration + " seconds, your ally's auto attacks 50% Blind their target for 4 seconds and a random enemy takes <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "% of Attack</strong> Holy damage after your ally uses an ability. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "For " + relatedUserGainStatusEffectDuration + " seconds, your ally's auto attacks 50% Blind their target for 4 seconds and a random enemy takes <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "% of Attack</strong> Holy damage after your ally uses an ability. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Soaring Strike")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Air</span> damage to a target. If you are in Peacock form, increase Holy and Air damage dealt by " + this.utilityService.genericRound(secondaryEffectiveAmount * 10) + "% for 20 seconds. If you are in Crow form, 100% Blind the target for " + secondaryEffectiveAmount + " seconds. If you are in Lion form, Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage to a target. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Air</span> damage to a target. If you are in Peacock form, increase Holy and Air damage dealt by " + this.utilityService.genericRound(secondaryEffectiveAmount * 10) + "% for 20 seconds. If you are in Crow form, 100% Blind the target for " + secondaryEffectiveAmount + " seconds. If you are in Lion form, Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage to a target. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
 
       if (abilityName === "Lucky Shots")
-        abilityDescription = "Reduce Auto Attack cooldown by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> for " + relatedUserGainStatusEffectDuration + " seconds. Each auto attack hit is guaranteed to be critical and increases existing debuff duration by <strong>" + this.utilityService.genericRound((relatedUserGainMaxCount - 1) * 100) + "%</strong>. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Reduce Auto Attack cooldown by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> for " + relatedUserGainStatusEffectDuration + " seconds. Each auto attack hit is guaranteed to be critical and increases existing debuff duration by <strong>" + this.utilityService.genericRound((relatedUserGainMaxCount - 1) * 100) + "%</strong>. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Sun and Moon")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> damage to a target, then deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> damage to all targets.  If critical, increase damage by <strong>" + ((secondaryEffectiveAmount - 1) * 100) + "%</strong>. Any criticals also trigger a free Ostinato at 20% effectiveness. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> damage to a target, then deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> damage to all targets.  If critical, increase damage by <strong>" + ((secondaryEffectiveAmount - 1) * 100) + "%</strong>. Any criticals also trigger a free Ostinato at 20% effectiveness. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "First Blood")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> damage to a target. Deal <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for " + relatedTargetGainStatusEffectDuration + " seconds. If this is the first ability used in the battle, increase the Damage over Time effect by <strong>" + this.utilityService.genericRound((secondaryEffectiveAmount - 1) * 100) + "%</strong>. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> damage to a target. Deal <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for " + relatedTargetGainStatusEffectDuration + " seconds. If this is the first ability used in the battle, increase the Damage over Time effect by <strong>" + this.utilityService.genericRound((secondaryEffectiveAmount - 1) * 100) + "%</strong>. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Nature's Fury")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack Earth</strong> damage to all targets.  If critical, increase damage by <strong>" + this.utilityService.genericRound((secondaryEffectiveAmount - 1) * 100) + "%</strong>. Any criticals also stun the enemy for 5 seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack Earth</strong> damage to all targets.  If critical, increase damage by <strong>" + this.utilityService.genericRound((secondaryEffectiveAmount - 1) * 100) + "%</strong>. Any criticals also stun the enemy for 5 seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Sickness")
-        abilityDescription = "Reduce all enemys' stats including Max HP by <strong>" + this.utilityService.genericRound((1 - relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Reduce all enemys' stats including Max HP by <strong>" + this.utilityService.genericRound((1 - relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Binding Arrows")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack Lightning</strong> damage to all targets. Stun all enemies for " + relatedTargetGainStatusEffectDuration + " seconds and Paralyze all enemies for " + relatedSecondaryTargetGainStatusEffectDuration + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack Lightning</strong> damage to all targets. Stun all enemies for " + relatedTargetGainStatusEffectDuration + " seconds and Paralyze all enemies for " + relatedSecondaryTargetGainStatusEffectDuration + " seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Uneasy Waters")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack Water</strong> damage to all targets. Paralyze all enemies for " + relatedTargetGainStatusEffectDuration + " seconds. If they are stunned, also apply a 25% Stagger and Unsteady debuff on them for 10 seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack Water</strong> damage to all targets. Paralyze all enemies for " + relatedTargetGainStatusEffectDuration + " seconds. If they are stunned, also apply a 25% Stagger and Unsteady debuff on them for 10 seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Chain Shot")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> damage to a target three times. Apply Chains of Fate to all targets for " + relatedTargetGainStatusEffectDuration + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> damage to a target three times. Apply Chains of Fate to all targets for " + relatedTargetGainStatusEffectDuration + " seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Begrudging Alliance")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack + " + this.utilityService.genericRound(effectivenessPercent) + "% of Ally's Attack</strong> damage to a target twice. If critical, increase damage by <strong>" + this.utilityService.genericRound((secondaryEffectiveAmount - 1) * 100) + "%</strong>. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack + " + this.utilityService.genericRound(effectivenessPercent) + "% of Ally's Attack</strong> damage to a target twice. If critical, increase damage by <strong>" + this.utilityService.genericRound((secondaryEffectiveAmount - 1) * 100) + "%</strong>. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Wildlife Charge")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack Air</strong> damage to all targets twice. Increase the duration of all debuffs on all targets by <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness - 1) * 100) + "%</strong>. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack Air</strong> damage to all targets twice. Increase the duration of all debuffs on all targets by <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness - 1) * 100) + "%</strong>. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
 
       if (abilityName === "Cleansing Attacks")
-        abilityDescription = "Reduce Auto Attack cooldown by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong>. Each auto attack has a " + this.utilityService.genericRound((relatedUserGainMaxCount) * 100) + "% chance to cleanse a debuff applied to you. Lasts for " + relatedUserGainStatusEffectDuration + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Reduce Auto Attack cooldown by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong>. Each auto attack has a " + this.utilityService.genericRound((relatedUserGainMaxCount) * 100) + "% chance to cleanse a debuff applied to you. Lasts for " + relatedUserGainStatusEffectDuration + " seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Bleeding Attacks")
-        abilityDescription = "Reduce Auto Attack cooldown by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong>. Each auto attack deals an additional " + this.utilityService.genericRound((relatedUserGainMaxCount) * 100) + "% of the damage dealt every 3 seconds for 6 seconds. Lasts for " + relatedUserGainStatusEffectDuration + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Reduce Auto Attack cooldown by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong>. Each auto attack deals an additional " + this.utilityService.genericRound((relatedUserGainMaxCount) * 100) + "% of the damage dealt every 3 seconds for 6 seconds. Lasts for " + relatedUserGainStatusEffectDuration + " seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Unnatural Speed")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "% of Attack</strong> damage of a random element after every auto attack for " + relatedUserGainStatusEffectDuration + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "% of Attack</strong> damage of a random element after every auto attack for " + relatedUserGainStatusEffectDuration + " seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Shielding Attacks")
-        abilityDescription = "Reduce Auto Attack cooldown by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong>. Each auto attack shields an ally for <strong>" + this.utilityService.genericRound((relatedUserGainMaxCount) * 100) + "% of Resistance</strong> HP, up to 100% of their Max HP. Lasts for " + relatedUserGainStatusEffectDuration + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Reduce Auto Attack cooldown by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong>. Each auto attack shields an ally for <strong>" + this.utilityService.genericRound((relatedUserGainMaxCount) * 100) + "% of Resistance</strong> HP, up to 100% of their Max HP. Lasts for " + relatedUserGainStatusEffectDuration + " seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Just Strike")
-        abilityDescription = "Increase Attack by 50% of Agility and deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> damage to a target three times. This does not reduce your Dues total and your Dues total is increased by <strong>" + this.utilityService.genericRound((secondaryEffectiveAmount) * 100) + "%</strong> of the damage dealt after every hit. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Increase Attack by 50% of Agility and deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> damage to a target three times. This does not reduce your Dues total and your Dues total is increased by <strong>" + this.utilityService.genericRound((secondaryEffectiveAmount) * 100) + "%</strong> of the damage dealt after every hit. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Lightning Attacks")
-        abilityDescription = "Reduce Auto Attack cooldown by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong>. Deal <strong>" + this.utilityService.genericRound((relatedUserGainMaxCount) * 100) + "% of Attack</strong> Lightning damage after every auto attack for " + relatedUserGainStatusEffectDuration + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Reduce Auto Attack cooldown by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong>. Deal <strong>" + this.utilityService.genericRound((relatedUserGainMaxCount) * 100) + "% of Attack</strong> Lightning damage after every auto attack for " + relatedUserGainStatusEffectDuration + " seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Pure Speed")
-        abilityDescription = "Reduce Auto Attack and Ability cooldowns by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> for " + relatedUserGainStatusEffectDuration + " seconds.";
+        abilityDescription = "Reduce Auto Attack and Ability cooldowns by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> for " + relatedUserGainStatusEffectDuration + " seconds. Ability cooldown is reset between battles and can only be used once per battle. " + baseCooldown + " second cooldown.";
       if (abilityName === "Better Together")
-        abilityDescription = "Reduce Auto Attack cooldown by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong>. Gain <strong>" + this.utilityService.genericRound((relatedUserGainMaxCount) * 100) + "% of Ally's Agility</strong> when auto attacking. Lasts for " + relatedUserGainStatusEffectDuration + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Reduce Auto Attack cooldown by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong>. Gain <strong>" + this.utilityService.genericRound((relatedUserGainMaxCount) * 100) + "% of Ally's Agility</strong> when auto attacking. Lasts for " + relatedUserGainStatusEffectDuration + " seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Wind Attacks")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound((relatedUserGainMaxCount) * 100) + "% of Attack</strong> Air damage after every auto attack for " + relatedUserGainStatusEffectDuration + " seconds. While this buff is active, casting Shapeshift reduces all other ability cooldowns by " + relatedUserGainMaxCount + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound((relatedUserGainMaxCount) * 100) + "% of Attack</strong> Air damage after every auto attack for " + relatedUserGainStatusEffectDuration + " seconds. While this buff is active, casting Shapeshift reduces all other ability cooldowns by " + relatedUserGainMaxCount + " seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
 
       if (abilityName === "Course of Battle")
-        abilityDescription = "Heal all allies for <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent / 2) + "% of Attack + " + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent / 2) + "% of Resistance</strong> every 8 seconds for 32 seconds. Apply a Damage over Time on all enemies for <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "% of Attack</strong> damage every 8 seconds for 32 seconds. Freely activate Onslaught and Ostinato. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Heal all allies for <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent / 2) + "% of Attack + " + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent / 2) + "% of Resistance</strong> every 8 seconds for 32 seconds. Apply a Damage over Time on all enemies for <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "% of Attack</strong> damage every 8 seconds for 32 seconds. Freely activate Onslaught and Ostinato. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Discordant Melody")
-        abilityDescription = "Instantly gain three stacks of Lord of the Underworld. For <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectDuration) + "</strong> seconds, any ability use will increase the duration of Lord of the Underworld by " + this.utilityService.genericRound(relatedUserGainMaxCount) + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Instantly gain three stacks of Lord of the Underworld. For <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectDuration) + "</strong> seconds, any ability use will increase the duration of Lord of the Underworld by " + this.utilityService.genericRound(relatedUserGainMaxCount) + " seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Warming Brew")
-        abilityDescription = "Revive any KO'd allies and heal all allies for <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Resistance</strong> HP. Give each party member a Barrier of <strong>" + this.utilityService.genericRound(relatedSecondaryUserGainStatusEffectEffectivenessPercent) + "% of Resistance</strong> HP, up to <strong>" + this.utilityService.genericRound(relatedSecondaryUserGainStatusEffectThreshold * 100) + "%</strong> of their Max HP. Increase all stats of all allies by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> for " + relatedUserGainStatusEffectDuration + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Revive any KO'd allies and heal all allies for <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Resistance</strong> HP. Give each party member a Barrier of <strong>" + this.utilityService.genericRound(relatedSecondaryUserGainStatusEffectEffectivenessPercent) + "% of Resistance</strong> HP, up to <strong>" + this.utilityService.genericRound(relatedSecondaryUserGainStatusEffectThreshold * 100) + "%</strong> of their Max HP. Increase all stats of all allies by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> for " + relatedUserGainStatusEffectDuration + " seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Passing Judgment" && ability !== undefined)
-        abilityDescription = "For " + relatedUserGainStatusEffectDuration + " seconds, increase Dues total by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> when casting Ostinato. Immediately increase Dues total by <strong>" + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, ability.effectiveness) + "</strong> and freely cast Ostinato. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "For " + relatedUserGainStatusEffectDuration + " seconds, increase Dues total by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> when casting Ostinato. Immediately increase Dues total by <strong>" + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, ability.effectiveness) + "</strong> and freely cast Ostinato. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Thunderous Melody")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage to all targets. For <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds, using Ostinato stuns all targets for " + relatedUserGainStatusEffectEffectiveness + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage to all targets. For <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds, using Ostinato stuns all targets for " + relatedUserGainStatusEffectEffectiveness + " seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Flood")
         abilityDescription = "For " + relatedUserGainStatusEffectDuration + " seconds, deal <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "% of Attack</strong> <span class='bold'>Water</span> damage to all targets when casting Ostinato.";
       if (abilityName === "Caring Gaze")
-        abilityDescription = "For " + relatedUserGainStatusEffectDuration + " seconds, your party gains <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> to all stats and your buff duration is increased by <strong>" + relatedSecondaryUserGainStatusEffectEffectivenessPercent + "%</strong>. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "For " + relatedUserGainStatusEffectDuration + " seconds, your party gains <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> to all stats and your buff duration is increased by <strong>" + relatedSecondaryUserGainStatusEffectEffectivenessPercent + "%</strong>. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Melodic Moves")
-        abilityDescription = "For " + relatedUserGainStatusEffectDuration + " seconds, casting Shapeshift grants one of Apollo's buffs randomly and casting Ostinato adds <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> to the Air Damage bonus from Shapeshift. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "For " + relatedUserGainStatusEffectDuration + " seconds, casting Shapeshift grants one of Apollo's buffs randomly and casting Ostinato adds <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> to the Air Damage bonus from Shapeshift. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
 
       if (abilityName === "Scars of War")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Fire</span> damage to all targets. Repeat with Earth damage. Apply a damage over time effect dealing <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for " + relatedTargetGainStatusEffectDuration + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Fire</span> damage to all targets. Repeat with Earth damage. Apply a damage over time effect dealing <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for " + relatedTargetGainStatusEffectDuration + " seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Revelry and Blood")
-        abilityDescription = "For " + relatedUserGainStatusEffectDuration + " seconds, your party gains <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> to all stats. Apply a damage over time effect to a target that deals <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "% of Attack</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "For " + relatedUserGainStatusEffectDuration + " seconds, your party gains <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> to all stats. Apply a damage over time effect to a target that deals <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "% of Attack</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Blistering Riposte")
-        abilityDescription = "Apply Chains of Fate to all targets for " + relatedTargetGainStatusEffectDuration + " seconds. For " + relatedUserGainStatusEffectDuration + " seconds, when countering, also apply a damage over time effect dealing <strong>" + this.utilityService.roundTo((relatedUserGainStatusEffectEffectiveness / 3) * 100, 2) + "%</strong> of the damage dealt every 3 seconds for 9 seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Apply Chains of Fate to all targets for " + relatedTargetGainStatusEffectDuration + " seconds. For " + relatedUserGainStatusEffectDuration + " seconds, when countering, also apply a damage over time effect dealing <strong>" + this.utilityService.roundTo((relatedUserGainStatusEffectEffectiveness / 3) * 100, 2) + "%</strong> of the damage dealt every 3 seconds for 9 seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Lightning Barrage")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage to a target. Apply a damage over time effect dealing <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for " + relatedTargetGainStatusEffectDuration + " seconds. Freely activate Onslaught. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage to a target. Apply a damage over time effect dealing <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for " + relatedTargetGainStatusEffectDuration + " seconds. Freely activate Onslaught. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Receding Tide")
-        abilityDescription = " Apply a damage over time effect to all targets that deals <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "% of Attack Water</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. For " + relatedUserGainStatusEffectDuration + " seconds, any target inflicted with a Damage over Time effect also has their ability cooldown speed reduced by " + this.utilityService.genericRound((relatedUserGainStatusEffectEffectiveness) * 100) + "%. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = " Apply a damage over time effect to all targets that deals <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "% of Attack Water</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. For " + relatedUserGainStatusEffectDuration + " seconds, any target inflicted with a Damage over Time effect also has their ability cooldown speed reduced by " + this.utilityService.genericRound((relatedUserGainStatusEffectEffectiveness) * 100) + "%. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "War and Love") {
-        abilityDescription = "Increase the damage of the next ability your ally uses by <strong>" + (relatedUserGainStatusEffectEffectivenessPercent) + "%</strong>. When your ally uses their next ability, apply a damage over time effect dealing <strong>" + this.utilityService.genericRound((relatedUserGainMaxCount) * 100) + "%</strong> of the damage dealt every 4 seconds for 16 seconds. Freely activate Onslaught. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Increase the damage of the next ability your ally uses by <strong>" + (relatedUserGainStatusEffectEffectivenessPercent) + "%</strong>. When your ally uses their next ability, apply a damage over time effect dealing <strong>" + this.utilityService.genericRound((relatedUserGainMaxCount) * 100) + "%</strong> of the damage dealt every 4 seconds for 16 seconds. Freely activate Onslaught. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       }
       if (abilityName === "Animal Instincts")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Air</span> damage to a target. Apply a damage over time effect dealing <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for " + relatedTargetGainStatusEffectDuration + " seconds. Freely activate whichever of Hera's abilities are currently empowered by her Shapeshifting form. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Air</span> damage to a target. Apply a damage over time effect dealing <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for " + relatedTargetGainStatusEffectDuration + " seconds. Freely activate whichever of Hera's abilities are currently empowered by her Shapeshifting form. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
 
       if (abilityName === "Infectious Flames")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Fire</span> damage to all targets. Randomly reduce an enemy's stat (except for Max HP) by " + this.utilityService.genericRound((1 - relatedTargetGainStatusEffectEffectiveness) * 100) + "% for " + relatedTargetGainStatusEffectDuration + " seconds. If any enemy is hit critically, instead reduce all stats except for Max HP. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Fire</span> damage to all targets. Randomly reduce an enemy's stat (except for Max HP) by " + this.utilityService.genericRound((1 - relatedTargetGainStatusEffectEffectiveness) * 100) + "% for " + relatedTargetGainStatusEffectDuration + " seconds. If any enemy is hit critically, instead reduce all stats except for Max HP. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Fiery Judgment")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Fire</span> damage to all targets. If you take damage within " + relatedUserGainStatusEffectDuration + " seconds, repeat this attack. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Fire</span> damage to all targets. If you take damage within " + relatedUserGainStatusEffectDuration + " seconds, repeat this attack. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Brotherly Contest")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Fire</span> damage to a target. Deal the same amount of damage again as Lightning after " + relatedUserGainStatusEffectDuration + " seconds, then again as Earth damage after " + (relatedUserGainStatusEffectDuration * 2) + " seconds, then once again as Lightning damage after " + (relatedUserGainStatusEffectDuration * 3) + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Fire</span> damage to a target. Deal the same amount of damage again as Lightning after " + relatedUserGainStatusEffectDuration + " seconds, then again as Earth damage after " + (relatedUserGainStatusEffectDuration * 2) + " seconds, then once again as Lightning damage after " + (relatedUserGainStatusEffectDuration * 3) + " seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Firestorm")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Fire</span> damage to all targets. Repeat with Earth and Water damage. Reduce the cooldown of one Fire, Earth, and Water ability by <strong>" + this.utilityService.genericRound((secondaryEffectiveAmount - 1) * 100) + "%</strong>. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Fire</span> damage to all targets. Repeat with Earth and Water damage. Reduce the cooldown of one Fire, Earth, and Water ability by <strong>" + this.utilityService.genericRound((secondaryEffectiveAmount - 1) * 100) + "%</strong>. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Lords Above and Below")
-        abilityDescription = "Instantly gain three stacks of Lord of the Underworld. Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Fire</span> damage to all targets. Repeat with Earth and Air damage. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Instantly gain three stacks of Lord of the Underworld. Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Fire</span> damage to all targets. Repeat with Earth and Air damage. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Love to Death")
-        abilityDescription = "Both you and your ally instantly gain three stacks of Lord of the Underworld with an additional <strong>" + this.utilityService.genericRound((secondaryEffectiveAmount)) + "</strong> seconds of duration. Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> + <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Ally's Attack</strong> <span class='bold'>Fire</span> damage to all targets. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Both you and your ally instantly gain three stacks of Lord of the Underworld with an additional <strong>" + this.utilityService.genericRound((secondaryEffectiveAmount)) + "</strong> seconds of duration. Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> + <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Ally's Attack</strong> <span class='bold'>Fire</span> damage to all targets. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
 
       if (abilityName === "Wild Judgment")
-        abilityDescription = "Gain a barrier for <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectiveness * 100) + "% of Resistance</strong> HP, up to 100% of Max HP. For " + relatedSecondaryUserGainStatusEffectDuration + " seconds, if you take damage while your Barrier is active counter for <strong>" + this.utilityService.genericRound(relatedSecondaryUserGainStatusEffectEffectivenessPercent) + "% of Attack</strong> damage, up to 10 times. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Gain a barrier for <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectiveness * 100) + "% of Resistance</strong> HP, up to 100% of Max HP. For " + relatedSecondaryUserGainStatusEffectDuration + " seconds, if you take damage while your Barrier is active counter for <strong>" + this.utilityService.genericRound(relatedSecondaryUserGainStatusEffectEffectivenessPercent) + "% of Attack</strong> damage, up to 10 times. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Wild Storms")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack Lightning</strong> damage to all targets. Stun all enemies for " + relatedTargetGainStatusEffectDuration + " seconds and reduce all of their stats except for Max HP by " + this.utilityService.genericRound((1 - relatedSecondaryTargetGainStatusEffectEffectiveness) * 100) + "% for " + relatedSecondaryTargetGainStatusEffectDuration + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack Lightning</strong> damage to all targets. Stun all enemies for " + relatedTargetGainStatusEffectDuration + " seconds and reduce all of their stats except for Max HP by " + this.utilityService.genericRound((1 - relatedSecondaryTargetGainStatusEffectEffectiveness) * 100) + "% for " + relatedSecondaryTargetGainStatusEffectDuration + " seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Warming Waters")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack Water</strong> damage to all targets. Reduce all of your cooldowns by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong>. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack Water</strong> damage to all targets. Reduce all of your cooldowns by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong>. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Wild Party")
-        abilityDescription = "Give each party member a Barrier of <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectiveness * 100) + "% of Resistance</strong> HP. Increase ability cooldown speed by <strong>" + this.utilityService.genericRound(relatedSecondaryUserGainStatusEffectEffectivenessPercent) + "%</strong> for " + relatedSecondaryUserGainStatusEffectDuration + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Give each party member a Barrier of <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectiveness * 100) + "% of Resistance</strong> HP. Increase ability cooldown speed by <strong>" + this.utilityService.genericRound(relatedSecondaryUserGainStatusEffectEffectivenessPercent) + "%</strong> for " + relatedSecondaryUserGainStatusEffectDuration + " seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Wild Assault")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack Air</strong> damage to a target. Repeat for every unique debuff the target has when used. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack Air</strong> damage to a target. Repeat for every unique debuff the target has when used. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
 
       if (abilityName === "Thunderous Riposte")
-        abilityDescription = "Apply Chains of Fate to all targets for " + relatedTargetGainStatusEffectDuration + " seconds. For " + relatedUserGainStatusEffectDuration + " seconds, your counter attacks have the Lightning element and deal an additional <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Apply Chains of Fate to all targets for " + relatedTargetGainStatusEffectDuration + " seconds. For " + relatedUserGainStatusEffectDuration + " seconds, your counter attacks have the Lightning element and deal an additional <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Staggering Riposte")
-        abilityDescription = "Apply Chains of Fate to all targets for " + relatedTargetGainStatusEffectDuration + " seconds. For " + relatedUserGainStatusEffectDuration + " seconds, your counter attacks deal an additional <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "% of Attack</strong> <span class='bold'>Water</span> damage as well as apply a Stagger and Unsteady of 25% onto the target for 10 seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Apply Chains of Fate to all targets for " + relatedTargetGainStatusEffectDuration + " seconds. For " + relatedUserGainStatusEffectDuration + " seconds, your counter attacks deal an additional <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "% of Attack</strong> <span class='bold'>Water</span> damage as well as apply a Stagger and Unsteady of 25% onto the target for 10 seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Protector")
-        abilityDescription = "Apply Chains of Fate to all targets for " + relatedTargetGainStatusEffectDuration + " seconds. For " + relatedUserGainStatusEffectDuration + " seconds, increase the damage of your ally by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> and <strong>" + this.utilityService.genericRound(relatedUserGainMaxCount * 100) + "%</strong> of their damage dealt goes to your Dues. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Apply Chains of Fate to all targets for " + relatedTargetGainStatusEffectDuration + " seconds. For " + relatedUserGainStatusEffectDuration + " seconds, increase the damage of your ally by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> and <strong>" + this.utilityService.genericRound(relatedUserGainMaxCount * 100) + "%</strong> of their damage dealt goes to your Dues. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Defensive Shapeshifting")
-        abilityDescription = "For " + relatedUserGainStatusEffectDuration + " seconds, deal <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "% of Attack</strong> <span class='bold'>Air</span> true damage when Shapeshifting and freely cast Retribution. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "For " + relatedUserGainStatusEffectDuration + " seconds, deal <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "% of Attack</strong> <span class='bold'>Air</span> true damage when Shapeshifting and freely cast Retribution. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
 
       if (abilityName === "Destruction")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage to all targets. Repeat with Water damage. Deal the same amount of damage again after " + relatedUserGainStatusEffectDuration + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage to all targets. Repeat with Water damage. Deal the same amount of damage again after " + relatedUserGainStatusEffectDuration + " seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Lightning Storm")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage to a target. Your ally also deals <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage to a target. Deal the same amount of damage again after " + relatedUserGainStatusEffectDuration + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage to a target. Your ally also deals <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage to a target. Deal the same amount of damage again after " + relatedUserGainStatusEffectDuration + " seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "King and Queen")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage to a target. Deal the same amount of damage again as Air after " + relatedUserGainStatusEffectDuration + " seconds, then again as Lightning damage after " + (relatedUserGainStatusEffectDuration * 2) + " seconds, then once again as Air damage after " + (relatedUserGainStatusEffectDuration * 3) + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage to a target. Deal the same amount of damage again as Air after " + relatedUserGainStatusEffectDuration + " seconds, then again as Lightning damage after " + (relatedUserGainStatusEffectDuration * 2) + " seconds, then once again as Air damage after " + (relatedUserGainStatusEffectDuration * 3) + " seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
 
       if (abilityName === "Heavy Waves")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack + " + this.utilityService.genericRound(effectivenessPercent) + "% of Ally's Attack Water</strong> damage to all targets. Apply <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> Stagger and Unsteady effects to all targets. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack + " + this.utilityService.genericRound(effectivenessPercent) + "% of Ally's Attack Water</strong> damage to all targets. Apply <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> Stagger and Unsteady effects to all targets. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Wind and Water")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack Water</strong> damage to all targets. Repeat with Air damage. Apply <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> Unsteady and Espionage effects to all targets. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack Water</strong> damage to all targets. Repeat with Air damage. Apply <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> Unsteady and Espionage effects to all targets. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
 
 
       if (abilityName === "Loving Embrace")
-        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Air</span> damage to a target twice. For " + relatedUserGainStatusEffectDuration + " seconds when you Shapeshift, gain a stacking buff increasing all stats of all allies by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> for " + relatedUserGainMaxCount + " seconds. This ability must be activated manually and can only be used once per battle.  " + this.utilityService.duoAbilityCooldown + " second cooldown.";
+        abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Air</span> damage to a target twice. For " + relatedUserGainStatusEffectDuration + " seconds when you Shapeshift, gain a stacking buff increasing all stats of all allies by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> for " + relatedUserGainMaxCount + " seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
     }
 
     return abilityDescription;
@@ -9474,634 +9418,7 @@ export class LookupService {
     });
 
     return totalGainCount;
-  }
-
-  getDuoAbility(gods: GodEnum[], defaultValues: boolean = false) {
-    var ability: Ability = new Ability();
-    if (gods.length < 2)
-      return new Ability();
-
-    ability.requiredLevel = this.utilityService.duoAbilityLevel;
-
-    var god1 = this.globalService.globalVar.gods.find(item => item.type === gods[0]);
-    var god2 = this.globalService.globalVar.gods.find(item => item.type === gods[1]);
-    if (god1 === undefined || god2 === undefined)
-      return new Ability();
-
-    var primaryEffectivenessBonus = defaultValues ? 0 : god1.permanentStatGain.duoPermanentEffectiveness + god2.permanentStatGain.duoPermanentEffectiveness;
-    var secondaryEffectivenessBonus = defaultValues ? 0 : .1 * (god1.permanentStatGain.duoPermanentEffectiveness + god2.permanentStatGain.duoPermanentEffectiveness);
-
-    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Artemis)) {
-      ability.name = "Blinding Arrow";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.isAoe = false;
-      ability.effectiveness = 20 + primaryEffectivenessBonus;
-      ability.secondaryEffectiveness = 2 + secondaryEffectivenessBonus * .5;
-      ability.elementalType = ElementalTypeEnum.Holy;
-    }
-
-    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Hermes)) {
-      ability.name = "Divine Speed";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AutoAttackDealsElementalDamage, 25 + secondaryEffectivenessBonus * .5, .2 + (primaryEffectivenessBonus * .01), false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Holy, undefined, undefined, "Divine Speed"));
-    }
-
-    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Apollo)) {
-      ability.name = "Cleansing Rain";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.heals = true;
-      ability.isAoe = true;
-      ability.targetsAllies = true;
-      ability.effectiveness = 1.5 + secondaryEffectivenessBonus * .2;
-      ability.userEffect.push(this.globalService.createHealOverTimeEffect(20 + secondaryEffectivenessBonus, 5, 1.5 + secondaryEffectivenessBonus * .25, ability.name, undefined, true));
-    }
-
-    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Ares)) {
-      ability.name = "Warfare";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.isAoe = true;
-      ability.effectiveness = 8 + primaryEffectivenessBonus * 1.5;
-      ability.elementalType = ElementalTypeEnum.Holy;
-      ability.targetEffect.push(this.globalService.createDamageOverTimeEffect(12, 3, .75, ability.name, dotTypeEnum.BasedOnDamage, undefined, true));
-      ability.targetEffect.push(this.globalService.createDamageOverTimeEffect(12, 3, .2 + secondaryEffectivenessBonus * .5, ability.name, dotTypeEnum.BasedOnAttack, undefined, true));
-    }
-
-    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Hades)) {
-      ability.name = "Holyflame";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.isAoe = true;
-      ability.effectiveness = 5 + (primaryEffectivenessBonus);
-      ability.elementalType = ElementalTypeEnum.Holy;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 16, 1.5 + secondaryEffectivenessBonus * .1, false, true));
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.HolyDamageUp, 16, 1.5 + secondaryEffectivenessBonus * .1, false, true));
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.EarthDamageUp, 16, 1.5 + secondaryEffectivenessBonus * .1, false, true));
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Fire));
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Earth));
-    }
-
-    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Nemesis)) {
-      ability.name = "Divine Retribution";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.isAoe = false;
-      ability.elementalType = ElementalTypeEnum.Holy;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DivineRetribution, 60, 31 + primaryEffectivenessBonus * 2.5, false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Holy));
-    }
-
-    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Dionysus)) {
-      ability.name = "Fading";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.isAoe = true;
-      ability.effectiveness = 10 + (primaryEffectivenessBonus * 1.5);
-      ability.elementalType = ElementalTypeEnum.Holy;
-      ability.secondaryEffectiveness = 1 + (secondaryEffectivenessBonus * .1);
-      ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Blind, 14, .5, false, false, true, undefined, undefined, undefined, undefined, undefined, undefined, "Fading", 1 + (secondaryEffectivenessBonus * .1)));
-    }
-
-    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Zeus)) {
-      ability.name = "Thunderclap";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.isAoe = true;
-      ability.effectiveness = 5 + primaryEffectivenessBonus * 1.5;
-      ability.elementalType = ElementalTypeEnum.Holy;
-      ability.secondaryEffectiveness = 1;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Lightning));
-      ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Blind, 10 + secondaryEffectivenessBonus * 1.5, .5, false, false, true, undefined, undefined, undefined, undefined, undefined, undefined, "Thunderclap", 3));
-    }
-
-    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Poseidon)) {
-      ability.name = "Surging Strike";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.isAoe = false;
-      ability.effectiveness = 5 + primaryEffectivenessBonus * 1.5;
-      ability.elementalType = ElementalTypeEnum.Holy;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Water));
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceNextAbilityCooldown, -1, 1.5 + secondaryEffectivenessBonus * .025, false, true));
-    }
-
-    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Aphrodite)) {
-      ability.name = "Blinded By Love";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.BlindedByLove, 30 + secondaryEffectivenessBonus, 2 + secondaryEffectivenessBonus * .1, false, true, true, undefined, undefined, undefined, ElementalTypeEnum.Holy, undefined, undefined, "Blinded By Love"));
-    }
-
-    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Hera)) {
-      ability.name = "Soaring Strike";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.isAoe = false;
-      ability.effectiveness = 10 + primaryEffectivenessBonus * 3;
-      ability.secondaryEffectiveness = 5 + secondaryEffectivenessBonus * .5;
-      ability.elementalType = ElementalTypeEnum.Air;
-    }
-
-    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Hermes)) {
-      ability.name = "Lucky Shots";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckyShots, 25, 1.1 + (primaryEffectivenessBonus * .003), false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, "Lucky Shots", 1.01 + (secondaryEffectivenessBonus * .01)));
-    }
-
-    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Apollo)) {
-      ability.name = "Sun and Moon";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.isAoe = false;
-      ability.effectiveness = 5 + primaryEffectivenessBonus;
-      ability.secondaryEffectiveness = 1.5 + secondaryEffectivenessBonus * .25;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false));
-    }
-
-    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Ares)) {
-      ability.name = "First Blood";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.isAoe = false;
-      ability.effectiveness = 8 + primaryEffectivenessBonus * 2;
-      ability.secondaryEffectiveness = 2.5 + secondaryEffectivenessBonus * .5;
-      ability.targetEffect.push(this.globalService.createDamageOverTimeEffect(20, 4, .75, ability.name, dotTypeEnum.BasedOnDamage));
-    }
-
-    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Hades)) {
-      ability.name = "Nature's Fury";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.isAoe = true;
-      ability.effectiveness = 5 + primaryEffectivenessBonus * 1.5;
-      ability.elementalType = ElementalTypeEnum.Earth;
-      ability.secondaryEffectiveness = 1.5 + secondaryEffectivenessBonus * .25;
-    }
-
-    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Dionysus)) {
-      ability.name = "Sickness";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsDown, 25 + secondaryEffectivenessBonus * 3, .99 - secondaryEffectivenessBonus * .0095, false, false, true, undefined, undefined, undefined, undefined, undefined, undefined, "Sickness"));
-    }
-
-    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Nemesis)) {
-      ability.name = "Chain Shot";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.effectiveness = 5 + primaryEffectivenessBonus * 2.5;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
-      ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ChainsOfFate, 15, 1, false, false, true));
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.KeepDues, -1, 1, true, true));
-    }
-
-    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Zeus)) {
-      ability.name = "Binding Arrows";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.isAoe = true;
-      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 1.5;
-      ability.elementalType = ElementalTypeEnum.Lightning;
-      ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 5, 1, false, false, true));
-      ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Paralyze, 20 + secondaryEffectivenessBonus, 1, false, false, true));
-    }
-
-    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Poseidon)) {
-      ability.name = "Uneasy Waters";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.isAoe = true;
-      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 1.5;
-      ability.elementalType = ElementalTypeEnum.Water;
-      ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Paralyze, 20 + secondaryEffectivenessBonus, 1, false, false, true, undefined, undefined, undefined, undefined, undefined, undefined, "Uneasy Waters"));
-    }
-
-    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Aphrodite)) {
-      ability.name = "Begrudging Alliance";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.effectiveness = 5 + primaryEffectivenessBonus * .5;
-      ability.secondaryEffectiveness = 1.5 + secondaryEffectivenessBonus * .25;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
-    }
-
-    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Hera)) {
-      ability.name = "Wildlife Charge";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.isAoe = true;
-      ability.effectiveness = 5 + primaryEffectivenessBonus * 1;
-      ability.elementalType = ElementalTypeEnum.Air;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Air));
-      ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DebuffDurationIncrease, 0, 1.1 + secondaryEffectivenessBonus * .02, true, false, true));
-    }
-
-    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Apollo)) {
-      ability.name = "Cleansing Attacks";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.CleansingShots, 25 + secondaryEffectivenessBonus * 1.5, 1.1 + (primaryEffectivenessBonus * .003), false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, "Cleansing Shots", .25));
-    }
-
-    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Ares)) {
-      ability.name = "Bleeding Attacks";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.BleedingAttacks, 25, 1.1 + (primaryEffectivenessBonus * .003), false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, "Bleeding Shots", .25 + (secondaryEffectivenessBonus * .1)));
-    }
-
-    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Hades)) {
-      ability.name = "Unnatural Speed";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AutoAttackDealsElementalDamage, 25 + secondaryEffectivenessBonus * 2, .25 + secondaryEffectivenessBonus * .2, false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Random, undefined, undefined, "Unnatural Speed"));
-    }
-
-    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Dionysus)) {
-      ability.name = "Shielding Attacks";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ShieldingAttacks, 25 + secondaryEffectivenessBonus, 1.1 + (primaryEffectivenessBonus * .003), false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, "Shielding Attacks", .25));
-    }
-
-    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Nemesis)) {
-      ability.name = "Just Strike";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.effectiveness = 5 + (primaryEffectivenessBonus * 1.25);
-      ability.secondaryEffectiveness = .05 + secondaryEffectivenessBonus * .01;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.KeepDues, -1, 1, true, true));
-    }
-
-    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Zeus)) {
-      ability.name = "Lightning Attacks";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LightningAttacks, 25 + secondaryEffectivenessBonus, 1.1 + (primaryEffectivenessBonus * .003), false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Lightning, undefined, undefined, "Lightning Attacks", .25));
-    }
-
-    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Poseidon)) {
-      ability.name = "Pure Speed";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.PureSpeed, 15 + secondaryEffectivenessBonus * .5, 1.15 + (secondaryEffectivenessBonus * .025), false, true, false));
-    }
-
-    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Aphrodite)) {
-      ability.name = "Better Together";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.BetterTogether, 25 + secondaryEffectivenessBonus, 1.1 + (primaryEffectivenessBonus * .003), false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, "Better Together", 1 + secondaryEffectivenessBonus * .1));
-    }
-
-    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Hera)) {
-      ability.name = "Wind Attacks";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.WindAttacks, 25 + secondaryEffectivenessBonus, 1.1 + (primaryEffectivenessBonus * .003), false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Air, undefined, undefined, "Wind Attacks", 3));
-    }
-
-    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Ares)) {
-      ability.name = "Course of Battle";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createHealOverTimeEffect(32, 8, 1.5 + secondaryEffectivenessBonus * .25, ability.name, undefined, true));
-      ability.targetEffect.push(this.globalService.createDamageOverTimeEffect(32, 8, .5 + secondaryEffectivenessBonus * .35, ability.name, dotTypeEnum.BasedOnAttack, undefined, true));
-    }
-
-    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Hades)) {
-      ability.name = "Discordant Melody";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DiscordantMelody, 25 + secondaryEffectivenessBonus, 1, false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, "Discordant Melody", 2 + secondaryEffectivenessBonus * .1));
-    }
-
-    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Dionysus)) {
-      ability.name = "Warming Brew";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.heals = true;
-      ability.isAoe = true;
-      ability.targetsAllies = true;
-      ability.effectiveness = 1.5 + secondaryEffectivenessBonus * .2;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsUp, 25 + secondaryEffectivenessBonus * .5, 1.5 + secondaryEffectivenessBonus * .1, false, true, true));
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 1.5 + secondaryEffectivenessBonus * .2, true, true, true, ability.name.toString(), 1.5));
-    }
-
-    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Nemesis)) {
-      ability.name = "Passing Judgment";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.effectiveness = 2000 + primaryEffectivenessBonus * 490;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.PassingJudgment, 25, 1.1 + secondaryEffectivenessBonus * .01, false, true, false));
-    }
-
-    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Zeus)) {
-      ability.name = "Thunderous Melody";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.isAoe = true;
-      ability.effectiveness = 8 + primaryEffectivenessBonus * 1.25;
-      ability.elementalType = ElementalTypeEnum.Lightning;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ThunderousMelody, 25 + secondaryEffectivenessBonus, 3, false, true));
-    }
-
-    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Poseidon)) {
-      ability.name = "Flood";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Flood, 25 + secondaryEffectivenessBonus, 3.5 + secondaryEffectivenessBonus * .075, false, true));
-    }
-
-    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Aphrodite)) {
-      ability.name = "Caring Gaze";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsUp, 25 + secondaryEffectivenessBonus * 1.5, 1.5 + secondaryEffectivenessBonus * .1, false, true, true));
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.CaringGaze, 25 + secondaryEffectivenessBonus * 1.5, 1.25, false, true, false, ability.name.toString()));
-    }
-
-    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Hera)) {
-      ability.name = "Melodic Moves";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.MelodicMoves, 25 + secondaryEffectivenessBonus, .15 + secondaryEffectivenessBonus * .01, false, true, false));
-    }
-
-    if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Hades)) {
-      ability.name = "Scars of War";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.isAoe = true;
-      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 1.25;
-      ability.elementalType = ElementalTypeEnum.Fire;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Earth));
-      ability.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 3, .4 + secondaryEffectivenessBonus * .01, ability.name, dotTypeEnum.BasedOnDamage, undefined, true));
-    }
-
-    if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Dionysus)) {
-      ability.name = "Revelry and Blood";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsUp, 25 + secondaryEffectivenessBonus, 1.5 + secondaryEffectivenessBonus * .1, false, true, true));
-      ability.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 3, .2 + secondaryEffectivenessBonus * .5, ability.name, dotTypeEnum.BasedOnAttack, undefined, true));
-    }
-
-    if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Nemesis)) {
-      ability.name = "Blistering Riposte";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.BlisteringRiposte, 25 + secondaryEffectivenessBonus, (1 / 3) + secondaryEffectivenessBonus * .5, false, true, false));
-      ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ChainsOfFate, 25, 1, false, false, true));
-    }
-
-    if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Zeus)) {
-      ability.name = "Lightning Barrage";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.isAoe = false;
-      ability.effectiveness = 7.5 + (primaryEffectivenessBonus * .5);
-      ability.elementalType = ElementalTypeEnum.Lightning;
-      ability.targetEffect.push(this.globalService.createDamageOverTimeEffect(12, 4, .25 + secondaryEffectivenessBonus * .05, ability.name, dotTypeEnum.BasedOnDamage, undefined));
-    }
-
-    if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Poseidon)) {
-      ability.name = "Receding Tide";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RecedingTide, 30 + secondaryEffectivenessBonus, .2, false, true, false));
-      ability.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 3, .2 + secondaryEffectivenessBonus * .25, ability.name, dotTypeEnum.BasedOnAttack, undefined, true));
-    }
-
-    if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Aphrodite)) {
-      ability.name = "War and Love";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.WarAndLove, -1, 1.5 + secondaryEffectivenessBonus * .05, false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, "War and Love", .25 + secondaryEffectivenessBonus * .1));
-    }
-
-    if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Hera)) {
-      ability.name = "Animal Instincts";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.effectiveness = 8 + primaryEffectivenessBonus * 2;
-      ability.elementalType = ElementalTypeEnum.Air;
-      ability.targetEffect.push(this.globalService.createDamageOverTimeEffect(20, 4, .5 + secondaryEffectivenessBonus * .5, ability.name, dotTypeEnum.BasedOnDamage));
-    }
-
-    if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Dionysus)) {
-      ability.name = "Infectious Flames";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.isAoe = true;
-      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 1.75;
-      ability.elementalType = ElementalTypeEnum.Fire;
-      ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDownExcludeHp, 30, .75 - secondaryEffectivenessBonus * .01, true, false, true));
-    }
-
-    if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Nemesis)) {
-      ability.name = "Fiery Judgment";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.isAoe = true;
-      ability.effectiveness = 10 + primaryEffectivenessBonus * 1.75;
-      ability.elementalType = ElementalTypeEnum.Fire;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FieryJudgment, 15 + secondaryEffectivenessBonus * 2, 1, false, true, false));
-    }
-
-    if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Zeus)) {
-      ability.name = "Brotherly Contest";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.effectiveness = 10 + primaryEffectivenessBonus * 2;
-      ability.elementalType = ElementalTypeEnum.Fire;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatDamageAfterDelay, 5, 1, false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Lightning));
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatDamageAfterDelay, 10, 1, false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Earth));
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatDamageAfterDelay, 15, 1, false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Lightning));
-    }
-
-    if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Poseidon)) {
-      ability.name = "Firestorm";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.isAoe = true;
-      ability.effectiveness = 5 + primaryEffectivenessBonus * 1;
-      ability.secondaryEffectiveness = 1.1 + secondaryEffectivenessBonus * .025;
-      ability.elementalType = ElementalTypeEnum.Fire;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Earth));
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Water));
-    }
-
-    if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Aphrodite)) {
-      ability.name = "Love to Death";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.isAoe = true;
-      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 1;
-      ability.secondaryEffectiveness = secondaryEffectivenessBonus;
-      ability.elementalType = ElementalTypeEnum.Fire;
-    }
-
-    if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Hera)) {
-      ability.name = "Lords Above and Below";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.isAoe = true;
-      ability.effectiveness = 5 + primaryEffectivenessBonus * 1.25;
-      ability.elementalType = ElementalTypeEnum.Fire;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Earth));
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Air));
-    }
-
-    if (gods.some(item => item === GodEnum.Dionysus) && gods.some(item => item === GodEnum.Nemesis)) {
-      ability.name = "Wild Judgment";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.SelfBarrier, -1, .4 + secondaryEffectivenessBonus * .025, true, true, false, ability.name.toString()));
-      var wildJudgment = this.globalService.createStatusEffect(StatusEffectEnum.WildJudgment, 25, 5 + secondaryEffectivenessBonus * .1, false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 10);
-      wildJudgment.count = 10;
-      ability.userEffect.push(wildJudgment);
-    }
-
-    if (gods.some(item => item === GodEnum.Dionysus) && gods.some(item => item === GodEnum.Zeus)) {
-      ability.name = "Wild Storms";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.isAoe = true;
-      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 2.25;
-      ability.elementalType = ElementalTypeEnum.Lightning;
-      ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 3, 1, false, false, true));
-      ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsExcludeHpDown, 20, .75 - secondaryEffectivenessBonus * .01, false, false, true));
-    }
-
-    if (gods.some(item => item === GodEnum.Dionysus) && gods.some(item => item === GodEnum.Poseidon)) {
-      ability.name = "Warming Waters";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.isAoe = true;
-      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 2.25;
-      ability.elementalType = ElementalTypeEnum.Water;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceCooldowns, -1, 1.2 + secondaryEffectivenessBonus * .01, true, true, false, ability.name.toString()));
-    }
-
-    if (gods.some(item => item === GodEnum.Dionysus) && gods.some(item => item === GodEnum.Aphrodite)) {
-      ability.name = "Wild Party";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 1.5 + secondaryEffectivenessBonus * .2, true, true, true, ability.name.toString()));
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbilitySpeedUp, 25 + secondaryEffectivenessBonus * 2, 1.75, false, true, true));
-    }
-
-    if (gods.some(item => item === GodEnum.Dionysus) && gods.some(item => item === GodEnum.Hera)) {
-      ability.name = "Wild Assault";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.isAoe = false;
-      ability.effectiveness = 12.5 + primaryEffectivenessBonus * 1.25;
-      ability.elementalType = ElementalTypeEnum.Air;
-    }
-
-    if (gods.some(item => item === GodEnum.Nemesis) && gods.some(item => item === GodEnum.Zeus)) {
-      ability.name = "Thunderous Riposte";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ThunderousRiposte, 25 + secondaryEffectivenessBonus * 2, 2.5 + secondaryEffectivenessBonus * .05, false, true, false));
-      ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ChainsOfFate, 25, 1, false, false, true));
-    }
-
-    if (gods.some(item => item === GodEnum.Nemesis) && gods.some(item => item === GodEnum.Poseidon)) {
-      ability.name = "Staggering Riposte";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.StaggeringRiposte, 25 + secondaryEffectivenessBonus * 2.5, 2 + secondaryEffectivenessBonus * .05, false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, undefined, .25));
-      ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ChainsOfFate, 25, 1, false, false, true));
-    }
-
-    if (gods.some(item => item === GodEnum.Nemesis) && gods.some(item => item === GodEnum.Aphrodite)) {
-      ability.name = "Protector";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Protector, 25 + secondaryEffectivenessBonus * 1.5, 1.5 + secondaryEffectivenessBonus * .1, false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, undefined, .1));
-      ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ChainsOfFate, 25, 1, false, false, true));
-    }
-
-    if (gods.some(item => item === GodEnum.Nemesis) && gods.some(item => item === GodEnum.Hera)) {
-      ability.name = "Defensive Shapeshifting";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = false;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefensiveShapeshifting, 25 + secondaryEffectivenessBonus, 3 + secondaryEffectivenessBonus * .075, false, true));
-    }
-
-    if (gods.some(item => item === GodEnum.Zeus) && gods.some(item => item === GodEnum.Poseidon)) {
-      ability.name = "Destruction";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.effectiveness = 5 + primaryEffectivenessBonus * 1.5;
-      ability.elementalType = ElementalTypeEnum.Lightning;
-      ability.isAoe = true;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatDamageAfterDelay, 10, 1, false, true, false));
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Water));
-    }
-    if (gods.some(item => item === GodEnum.Zeus) && gods.some(item => item === GodEnum.Aphrodite)) {
-      ability.name = "Lightning Storm";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 1.5;
-      ability.elementalType = ElementalTypeEnum.Lightning;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatDamageAfterDelay, 10, 1, false, true, false));
-    }
-    if (gods.some(item => item === GodEnum.Zeus) && gods.some(item => item === GodEnum.Hera)) {
-      ability.name = "King and Queen";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.effectiveness = 10 + primaryEffectivenessBonus * 2;
-      ability.elementalType = ElementalTypeEnum.Lightning;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatDamageAfterDelay, 5, 1, false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Air));
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatDamageAfterDelay, 10, 1, false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Lightning));
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatDamageAfterDelay, 15, 1, false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Air));
-    }
-
-    if (gods.some(item => item === GodEnum.Poseidon) && gods.some(item => item === GodEnum.Aphrodite)) {
-      ability.name = "Heavy Waves";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.effectiveness = 7.5 + primaryEffectivenessBonus;
-      ability.elementalType = ElementalTypeEnum.Water;
-      ability.isAoe = true;
-      ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stagger, 20, .1 + secondaryEffectivenessBonus * .02, false, false, true));
-      ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Unsteady, 20, .1 + secondaryEffectivenessBonus * .02, false, false, true));
-    }
-
-    if (gods.some(item => item === GodEnum.Poseidon) && gods.some(item => item === GodEnum.Hera)) {
-      ability.name = "Wind and Water";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.effectiveness = 7.5 + primaryEffectivenessBonus;
-      ability.elementalType = ElementalTypeEnum.Water;
-      ability.isAoe = true;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Air));
-      ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Unsteady, 20, .1 + secondaryEffectivenessBonus * .02, false, false, true));
-      ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Espionage, 20, .1 + secondaryEffectivenessBonus * .02, false, false, true));
-    }
-
-    if (gods.some(item => item === GodEnum.Hera) && gods.some(item => item === GodEnum.Aphrodite)) {
-      ability.name = "Loving Embrace";
-      ability.isAvailable = true;
-      ability.dealsDirectDamage = true;
-      ability.effectiveness = 7.5 + primaryEffectivenessBonus * 2.25;
-      ability.elementalType = ElementalTypeEnum.Air;
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LovingEmbrace, 25 + secondaryEffectivenessBonus * 2, 1.1, false, true, false, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 15));
-      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, false, undefined, undefined, undefined, ElementalTypeEnum.Air));
-    }
-
-    return ability;
-  }
+  }  
 
   getCharacterColorClass(type: CharacterEnum) {
     return {
