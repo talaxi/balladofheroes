@@ -319,6 +319,7 @@ export class InitializationService {
     this.globalService.globalVar.settings.set("showLowPerformanceAnimationFlash", false);
     this.globalService.globalVar.settings.set("showAbilityCooldownPercents", true);
     this.globalService.globalVar.settings.set("showBigNumberColors", false);
+    this.globalService.globalVar.settings.set("doubleClickTiming", 250);
 
     this.globalService.globalVar.settings.set("autoProgressType", CompletionStatusEnum.Cleared);
     this.globalService.globalVar.settings.set("autoProgressIncludeSideQuests", true);

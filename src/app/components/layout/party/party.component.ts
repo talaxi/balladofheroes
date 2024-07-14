@@ -53,6 +53,8 @@ export class PartyComponent implements OnInit {
   spinnerDiameter = 10;
   strokeWidth = 5;
   longPressStartTime = 0;
+  clickCount = 0;
+  doubleClickTiming = 250;
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -67,6 +69,7 @@ export class PartyComponent implements OnInit {
   ngOnInit(): void {
     this.showPartyHpAsPercent = this.globalService.globalVar.settings.get("showPartyHpAsPercent") ?? false;
     this.verboseMode = this.globalService.globalVar.settings.get("verboseMode") ?? false;
+    this.doubleClickTiming = this.globalService.globalVar.settings.get("doubleClickTiming") ?? this.utilityService.quickDoubleClickTiming;
 
     this.party = this.globalService.getActivePartyCharacters(false);
     this.activeCharacterCount = this.party.filter(item => item.type !== CharacterEnum.None).length;
@@ -1052,10 +1055,20 @@ export class PartyComponent implements OnInit {
   }
 
   triggerDuo(character: Character) {
+    if (this.isMobile) {
+      this.clickCount += 1;
+      setTimeout(() => {
+        if (this.clickCount === 2) {
+          this.toggleDuoAuto(character);          
+        }        
+        this.clickCount = 0;
+      }, this.doubleClickTiming)
+    }
+
     if (!this.isDuoAvailable(character) || character.battleInfo.duoAbilityUsed || character.battleInfo.duoAbilityCooldown > 0)
       return;
 
-    this.battleService.useDuoAbility(character);
+    this.battleService.useDuoAbility(character);    
   }
 
   ngOnDestroy() {

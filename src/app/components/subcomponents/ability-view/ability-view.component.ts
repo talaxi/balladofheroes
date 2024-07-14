@@ -230,10 +230,13 @@ export class AbilityViewComponent implements OnInit {
 
     if (this.isMobile) {
       this.clickCount += 1;
+      //console.log("Click Count: " + this.clickCount);
       setTimeout(() => {
         if (this.clickCount === 2) {
           this.toggleAuto();
+          //console.log("Click 2");
         }
+        //console.log("Reset Click");
         this.clickCount = 0;
       }, this.doubleClickTiming)
     }
