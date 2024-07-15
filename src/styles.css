@@ -306,6 +306,7 @@
 
   /* Menu Buttons */
   --m1-size: 1.25rem;
+  --m1-size-mobile: 1.2rem;
   --m1-weight: 550;
   --m1-spacing: 0.1px;
 
@@ -1316,7 +1317,7 @@ button {
 
 button:disabled {
   color: var(--disabled-foreground-quaternary);
-  background-color: var(--disabled-button-background-color); 
+  background-color: var(--disabled-button-background-color);
 }
 
 .bold {
@@ -1389,8 +1390,12 @@ button:disabled {
   .storyCharacterName {
     font-size: 1.4rem;
   }
-  
+
   .storyBar .mdc-linear-progress__bar-inner {
     border-top-width: var(--mdc-linear-progress-track-height, .5rem);
+  }
+
+  .m1Heading {
+    font-size: var(--m1-size-mobile);
   }
 }

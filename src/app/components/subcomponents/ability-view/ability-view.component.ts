@@ -48,6 +48,8 @@ export class AbilityViewComponent implements OnInit {
     this.isMobile = this.deviceDetectorService.isMobile();
     this.verboseMode = this.globalService.globalVar.settings.get("verboseMode") ?? false;
     this.doubleClickTiming = this.globalService.globalVar.settings.get("doubleClickTiming") ?? this.utilityService.quickDoubleClickTiming;
+     if (this.doubleClickTiming < 250)
+      this.doubleClickTiming = 250;
     this.showPercents = this.globalService.globalVar.settings.get("showAbilityCooldownPercents") ?? true;    
 
     if (this.isMobile)

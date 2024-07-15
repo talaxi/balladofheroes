@@ -70,7 +70,9 @@ export class PartyComponent implements OnInit {
     this.showPartyHpAsPercent = this.globalService.globalVar.settings.get("showPartyHpAsPercent") ?? false;
     this.verboseMode = this.globalService.globalVar.settings.get("verboseMode") ?? false;
     this.doubleClickTiming = this.globalService.globalVar.settings.get("doubleClickTiming") ?? this.utilityService.quickDoubleClickTiming;
-
+    if (this.doubleClickTiming < 250)
+      this.doubleClickTiming = 250;
+    
     this.party = this.globalService.getActivePartyCharacters(false);
     this.activeCharacterCount = this.party.filter(item => item.type !== CharacterEnum.None).length;
 
