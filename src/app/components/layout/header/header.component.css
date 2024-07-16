@@ -138,4 +138,8 @@
     .globalHeaderItem {
         font-size: 1.5rem;
     }
+
+    .menuOverlay {
+        max-height: 96%;
+    }
 }
