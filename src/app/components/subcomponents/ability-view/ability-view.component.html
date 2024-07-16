@@ -64,8 +64,8 @@
         <span [innerHtml]="getAbilityDescription()"></span>
         <hr />
         <span *ngIf="!isMobile">Right click to toggle between Manual and Auto mode. Left click or press <span
-                [innerHtml]="getKeybind()"></span> to use ability in Manual mode.</span>
+                [innerHtml]="getKeybind()"></span> to use ability in Manual mode<span *ngIf="!linksAvailable">.</span> <span *ngIf="linksAvailable"> or to activate a Link in either mode.</span></span>
         <span *ngIf="isMobile">Double tap to toggle between Manual and Auto mode. Tap to use ability in Manual
-            mode.</span>
+            mode<span *ngIf="!linksAvailable">.</span> <span *ngIf="linksAvailable"> or to activate a Link in either mode.</span></span>
     </div>
 </ng-template>

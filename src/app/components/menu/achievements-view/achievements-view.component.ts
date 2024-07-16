@@ -352,7 +352,8 @@ export class AchievementsViewComponent implements OnInit {
   jumpToSubzone(type: SubZoneEnum) {  
     var subzone = this.balladService.findSubzone(type);  
     var zone = this.balladService.findZoneOfSubzone(type);
-    if (subzone !== undefined && zone !== undefined) {      
+    var ballad = this.balladService.findBalladOfSubzone(type);
+    if (subzone !== undefined && zone !== undefined && ballad !== undefined && ballad.isAvailable) {      
       this.balladService.selectSubZone(subzone, zone);
       this.layoutService.changeLayout(NavigationEnum.Default);
     }     

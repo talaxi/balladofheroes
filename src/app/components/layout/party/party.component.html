@@ -109,7 +109,7 @@
                 <div class="abilities">
                     <div *ngIf="getCharacterTotalLinks(character) > 0" class="smallCaps bold linkText">
                         {{getCharacterRemainingLinks(character)}}/{{getCharacterTotalLinks(character)}}
-                        Link{{getCharacterTotalLinks(character) > 1 ? "s" : ""}} - <span
+                        link{{getCharacterTotalLinks(character) > 1 ? "s" : ""}} - <span
                             *ngIf="!isLinkOffCooldown(character)">... {{getLinkCooldown(character)}} seconds</span><span
                             *ngIf="isLinkOffCooldown(character)">next ability
                             +{{getCharacterNextLinkDamage(character)}}%</span></div>

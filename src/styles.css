@@ -1362,6 +1362,12 @@ button:disabled {
   overflow: hidden;
 }
 
+.linkText {
+  font-size: .85rem;
+  text-align: center;
+  color: var(--linkText);
+}
+
 @keyframes fadingAnimation {
   0% {
     opacity: 100%;

@@ -40,6 +40,7 @@ export class AbilityViewComponent implements OnInit {
   animationSubscription: any;
   previousProgress: number = 0;
   showPercents: boolean;
+  linksAvailable = false;
 
   constructor(public lookupService: LookupService, private utilityService: UtilityService, private gameLoopService: GameLoopService,
     private globalService: GlobalService, private keybindService: KeybindService, private deviceDetectorService: DeviceDetectorService) { }
@@ -51,6 +52,8 @@ export class AbilityViewComponent implements OnInit {
      if (this.doubleClickTiming < 250)
       this.doubleClickTiming = 250;
     this.showPercents = this.globalService.globalVar.settings.get("showAbilityCooldownPercents") ?? true;    
+
+    this.linksAvailable = this.character.linkInfo.totalLinks > 0;
 
     if (this.isMobile)
       this.tooltipDirection = DirectionEnum.Up;
