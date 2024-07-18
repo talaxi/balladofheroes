@@ -8011,7 +8011,7 @@ export class BattleService {
       //if it's already active, don't reapply
       if (trigger === EffectTriggerEnum.AlwaysActive) {
         userGainsEffects.forEach(effect => {
-          if (user.battleInfo.statusEffects.some(existingEffect => existingEffect.caster === effect.caster)) {
+          if (user.battleInfo.statusEffects.some(existingEffect => existingEffect.caster === effect.caster)) {            
             effect.type = StatusEffectEnum.None;
           }
         });

@@ -63,7 +63,7 @@
             <input class="customNumberWidth" (focus)="inTextbox()" (blur)="outOfTextbox()" (change)="useCustomAmount()" type="text" maxlength="30" [(ngModel)]="customSellAmount" />
         </div>
         <br />
-        <button [disabled]="this.getTotalItemToSellAmount() < this.sellAmount" (click)="sellItem()">Sell</button>
+        <button class="buttonStyled" [disabled]="this.getTotalItemToSellAmount() < this.sellAmount" (click)="sellItem()">Sell</button>
       </div>
       <!--<div class="existingEffects">
         <span>Total gain from equipment:</span>

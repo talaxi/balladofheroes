@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CompletionStatusEnum } from 'src/app/models/enums/completion-status-enum.model';
+import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
 
@@ -17,6 +18,7 @@ export class AutoProgressOptionsComponent {
   removeAutoProgressOnDeath: boolean;
   progressFromCurrentSubzone: boolean;
   customAmount: number = 10;
+  tooltipDirection = DirectionEnum.DownRight;
 
   constructor(private globalService: GlobalService, private menuService: MenuService) {
 

@@ -82,7 +82,7 @@
             <div class="text storyOverflow" [ngClass]="{'storyTextAnimation': showStoryAnimation }"
                 [innerHtml]="this.displayStorySegment()"></div>
             <div class="skipButton">
-                <span *ngIf="showSkipButtonMessage"><i><strong>Click the arrow button to the right to skip to the next
+                <span *ngIf="showSkipButtonMessage"><i><strong>Click the arrow button on the right to skip to the next
                             page</strong></i></span>
                 <span *ngIf="showSkipButtonMessage2"><i><strong>Click the <span class="logColor">'LOG'</span> button on the top right to review story scenes</strong></i></span>
                 <button class="floatRight arrow buttonStyled" (click)="skipStory()">&#10145;</button>

@@ -12,23 +12,23 @@
               </mat-radio-group>
         </div>
         <div class="column2">            
-            <mat-checkbox customToolTip [contentTemplate]="includeSideQuestContentPopover" [(ngModel)]="includeSideQuests" (input)="includeSideQuestsToggle()">
+            <mat-checkbox customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="includeSideQuestContentPopover" [(ngModel)]="includeSideQuests" (input)="includeSideQuestsToggle()">
                 Include Side Quest Content
             </mat-checkbox>            
             <br/>
-            <mat-checkbox customToolTip [contentTemplate]="pauseOnStoryScenesPopover" [(ngModel)]="pauseStory" (input)="pauseStoryToggle()">
+            <mat-checkbox customToolTip  [tooltipDirection]="tooltipDirection" [contentTemplate]="pauseOnStoryScenesPopover" [(ngModel)]="pauseStory" (input)="pauseStoryToggle()">
                 Pause On Story Scenes
             </mat-checkbox>
             <br/>
-            <mat-checkbox customToolTip [contentTemplate]="onlyIncludeVictoryCountPopover" [(ngModel)]="includeAllAchievements" (input)="includeAllAchievementsToggle()">
+            <mat-checkbox customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="onlyIncludeVictoryCountPopover" [(ngModel)]="includeAllAchievements" (input)="includeAllAchievementsToggle()">
                 Only Include Victory Count Achievements
             </mat-checkbox>    
             <br/>
-            <mat-checkbox customToolTip [contentTemplate]="progressFromCurrentSubzonePopover" [(ngModel)]="progressFromCurrentSubzone" (input)="progressFromCurrentSubzoneToggle()">
+            <mat-checkbox customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="progressFromCurrentSubzonePopover" [(ngModel)]="progressFromCurrentSubzone" (input)="progressFromCurrentSubzoneToggle()">
                 Progress From Current Subzone
             </mat-checkbox>    
             <br/>
-            <mat-checkbox customToolTip [contentTemplate]="removeAutoProgressOnDeathPopover" [(ngModel)]="removeAutoProgressOnDeath" (input)="removeAutoProgressOnDeathToggle()">
+            <mat-checkbox customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="removeAutoProgressOnDeathPopover" [(ngModel)]="removeAutoProgressOnDeath" (input)="removeAutoProgressOnDeathToggle()">
                 Remove Auto Progress On Death
             </mat-checkbox>          
         </div>

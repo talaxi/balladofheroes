@@ -2652,7 +2652,7 @@ export class LookupService {
       var equipmentEffect = new UsableItemEffect();
       equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
       equipmentEffect.chance = .25;
-      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 1.25, false, true, false));
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 1.25, false, true, false, type.toString()));
       equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
     if (type === ItemsEnum.BoarskinArmor) {
@@ -2660,7 +2660,7 @@ export class LookupService {
       equipmentPiece.stats = new CharacterStats(900, 0, 215, 0, 0, 0);
       var equipmentEffect = new UsableItemEffect();
       equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
-      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceDirectDamage, -1, 50, false, true, false));
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceDirectDamage, -1, 50, false, true, false, type.toString()));
       equipmentEffect.userEffect[0].resolution = EffectResolutionEnum.AlwaysActiveEquipment;
       equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
@@ -2693,7 +2693,7 @@ export class LookupService {
 
       var equipmentEffect2 = new UsableItemEffect();
       equipmentEffect2.trigger = EffectTriggerEnum.AlwaysActive;
-      equipmentEffect2.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceDirectDamage, -1, 75, false, true, false));
+      equipmentEffect2.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceDirectDamage, -1, 75, false, true, false, type.toString()));
       equipmentEffect2.userEffect[0].resolution = EffectResolutionEnum.AlwaysActiveEquipment;
       equipmentPiece.equipmentEffects.push(equipmentEffect2);
     }
