@@ -2152,11 +2152,11 @@ export class GlobalService {
     var baseXp = 100;
     var factor = 1.333;
     if (level > 9) {
-      baseXp = 1025;
+      baseXp = 1075;
     }
     if (level > 49) {
       baseXp = 100000;
-      factor = 1.24375;
+      factor = 1.2425;
     }
     var additive = level > 4 ? 350 * (level) : 0;
     var exponential = (baseXp * (factor ** (level - 1)));
