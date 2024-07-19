@@ -197,10 +197,10 @@ export class FollowersService {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.VialOfTheLethe, 2));
       }
       if (rewardLevel >= 3) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.EssenceOfFire, 3));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Asphodelus, 4));
       }
       if (rewardLevel >= 4) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Asphodelus, 4));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.EssenceOfFire, 3));
       }
     }
     if (type === ZoneEnum.Elysium) {
