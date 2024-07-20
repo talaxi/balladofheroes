@@ -7259,7 +7259,7 @@ export class BattleService {
       this.battleItemInUse === ItemsEnum.PotentConcoction || this.battleItemInUse === ItemsEnum.PiercingPotion ||
       this.battleItemInUse === ItemsEnum.BouncingPotion || this.battleItemInUse === ItemsEnum.BurstingPotion ||
       this.battleItemInUse === ItemsEnum.EndlessPotion) {
-      if (character.battleStats.currentHp <= 0)
+      if (character.battleStats.currentHp <= 0 || character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Invulnerable))
         return;
 
       var elementalType = ElementalTypeEnum.None;
@@ -7315,7 +7315,7 @@ export class BattleService {
 
       var baseDamage = effect.trueDamageAmount;
 
-      party.forEach(member => {
+      party.filter(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Invulnerable)).forEach(member => {
         if (member.battleStats.currentHp > 0) {
           itemUsed = true;
 

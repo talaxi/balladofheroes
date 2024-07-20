@@ -59,7 +59,7 @@ export class GlobalService {
     private deviceDetectorService: DeviceDetectorService, private zodiacService: ZodiacService) { }
 
   getCurrentVersion() {
-    return 1.01;
+    return 1.02;
   }
 
   initializeGlobalVariables() {
@@ -2935,7 +2935,7 @@ export class GlobalService {
           stats.autoAttackCooldownReduction += godLevel / 100000; //should lead to +15% auto attack CD reduction
         }
         else if (god.type === GodEnum.Apollo) {
-          stats.hpRegen += godLevel / 250; //should lead to 60 hp per 5 sec
+          stats.hpRegen += godLevel / 25; //should lead to 600 hp per 5 sec
         }
         else if (god.type === GodEnum.Ares) {
           stats.overdriveGain += godLevel / 60000; //should lead to +25% overdrive gain
