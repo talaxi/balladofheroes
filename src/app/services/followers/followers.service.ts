@@ -287,13 +287,13 @@ export class FollowersService {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MetalScraps, 2));
       }
     }
-    if (type === ZoneEnum.Nemea) {
-      if (rewardLevel === 1 || rewardLevel === 2) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Honey, 2));
+    if (type === ZoneEnum.Nemea) {      
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Honey, 3));      
+      
+      if (rewardLevel >= 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.AnimalHide, 2));
       }
-      else if (rewardLevel >= 3) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Honey, 5));
-      }
+
       if (rewardLevel === 2 || rewardLevel === 3) {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.CoarseFur, 2));
       }
@@ -350,7 +350,7 @@ export class FollowersService {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RadiatingGemstone, 1));
       }
       if (rewardLevel >= 4) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.AnimalHide, 2));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.AnimalHide, 3));
       }
     }
     if (type === ZoneEnum.GardenOfTheHesperides) {
