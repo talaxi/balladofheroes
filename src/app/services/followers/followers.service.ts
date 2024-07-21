@@ -264,15 +264,15 @@ export class FollowersService {
       }
     }
     if (type === ZoneEnum.BlackSea) {
-      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.FishScales, 2));
-      if (rewardLevel >= 2) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Seashell, 3));
-      }
-      if (rewardLevel >= 3) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Seashell, 3));
+      if (rewardLevel === 2 || rewardLevel === 3) {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.VialOfTheBlackSea, 3));
       }
-      if (rewardLevel >= 4) {
+      if (rewardLevel >= 3) {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Sorrel, 4));
+      }
+      if (rewardLevel >= 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.VialOfTheBlackSea, 6));
       }
     }
     if (type === ZoneEnum.Colchis) {
@@ -280,7 +280,7 @@ export class FollowersService {
       if (rewardLevel >= 2) {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RoughEmeraldFragment, 2));
       }
-      if (rewardLevel === 4) {
+      if (rewardLevel >= 4) {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MetalScraps, 5));
       }
       if (rewardLevel === 3) {
@@ -357,13 +357,13 @@ export class FollowersService {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.CanineFang, 2));
 
       if (rewardLevel >= 2) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ToxicIchor, 3));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MagicTreeBark, 2));
       }
       if (rewardLevel >= 3) {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Honey, 3));
       }
       if (rewardLevel >= 4) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MagicTreeBark, 2));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ToxicIchor, 7));
       }
     }
     if (type === ZoneEnum.Erytheia) {

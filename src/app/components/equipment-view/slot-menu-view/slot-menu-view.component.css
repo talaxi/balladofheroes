@@ -1,5 +1,5 @@
 .slotOverview {
-    height: 100%;
+    height: 97%;
   }
   
   .flexHeaderBetween {
@@ -19,6 +19,11 @@
       "availableEquipment itemInfo";
   
     color: var(--foreground-default);
+  }
+
+  .mainPageSectionHeader {
+    margin: .75rem 0;
+    color: #FFF;
   }
 
 .vr {

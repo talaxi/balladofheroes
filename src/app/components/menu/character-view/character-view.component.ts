@@ -128,9 +128,9 @@ export class CharacterViewComponent implements OnInit {
 
   openEquipmentModal(content: any) {
     if (this.isMobile)
-      this.dialog.open(content, { width: '95%', height: '80%', panelClass: 'mat-dialog-no-scroll' });
+      this.dialog.open(content, { width: '95%', height: '80%', panelClass: 'mat-dialog-no-scroll', id: 'dialogNoUpperPadding' });
     else
-      this.dialog.open(content, { width: '60%', height: '75%', panelClass: 'mat-dialog-no-scroll' });
+      this.dialog.open(content, { width: '60%', height: '80%', panelClass: 'mat-dialog-no-scroll', id: 'dialogNoUpperPadding' });
   }
 
   getCharacterGodAbilities() {

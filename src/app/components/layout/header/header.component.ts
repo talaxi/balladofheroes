@@ -68,9 +68,9 @@ export class HeaderComponent implements OnInit {
 
   openZodiacPopover(content: any) {
     if (this.deviceDetectorService.isMobile())
-      this.dialog.open(content, { width: '95%', height: '80%' });
+      this.dialog.open(content, { width: '95%', height: '40%' });
     else
-      this.dialog.open(content, { width: '75%', height: '80%' });
+      this.dialog.open(content, { width: '75%', height: '40%' });
   }
 
   getZodiacSign() {

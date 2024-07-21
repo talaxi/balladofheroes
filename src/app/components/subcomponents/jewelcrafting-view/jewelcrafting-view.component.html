@@ -107,7 +107,7 @@
                     (change)="useCustomAmount()" type="text" maxlength="30" [(ngModel)]="customCreateAmount" />
             </div>
             <br />
-            <button [disabled]="!canCreateItem()" (click)="createSelectedRecipe()">Create</button>
+            <button class="buttonStyled" [disabled]="!canCreateItem()" (click)="createSelectedRecipe()">Create</button>
             <br />
             <span><i>{{getSelectedRecipeCurrentlyOwnedAmount()}} owned</i></span>
         </div>

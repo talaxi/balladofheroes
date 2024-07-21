@@ -19,7 +19,7 @@
   padding: 0 !important;
 }
 
-#dialogNoUpperPadding .mat-mdc-dialog-surface {
+#dialogNoUpperPadding .mat-mdc-dialog-surface, #dialogNoUpperPadding2 .mat-mdc-dialog-surface {
   padding-top: 0 !important;
 }
 
@@ -1126,6 +1126,10 @@ button {
 }
 
 #dialogNoUpperPadding {
+  padding-top: 0px;
+}
+
+#dialogNoUpperPadding2 {
   padding-top: 0px;
 }
 

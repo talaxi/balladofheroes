@@ -1,5 +1,5 @@
 .equipmentOverview {
-  height: 100%;
+  height: 97%;
 }
 
 .flexHeaderBetween {
@@ -99,6 +99,12 @@
 
 .sellItem {
   text-align: center;
+}
+
+
+.mainPageSectionHeader {
+  margin: .75rem 0;
+  color: #FFF;
 }
 
 .equipmentItemButton {
