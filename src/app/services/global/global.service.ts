@@ -3997,7 +3997,7 @@ export class GlobalService {
       this.calculateCharacterBattleStats(member);
       member.battleInfo.autoAttackTimer = 0;
       member.battleInfo.barrierValue = 0;
-      member.battleInfo.duoAbilityUsed = false;
+      member.battleInfo.duoAbilityUsed = false;      
       member.battleStats.currentHp = member.battleStats.maxHp;
       member.linkInfo.linkChain = 0;
       member.linkInfo.bonusChain = 0;
@@ -4028,6 +4028,10 @@ export class GlobalService {
       var relevantAltarEffect = this.getAltarEffectWithEffect(AltarEffectsEnum.AresMaxHpUp);
       if (relevantAltarEffect !== undefined)
         member.battleStats.currentHp *= relevantAltarEffect!.effectiveness;
+
+      var heroicElixir = member.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.HeroicElixir);
+      if (heroicElixir !== undefined)
+        member.battleStats.currentHp *= heroicElixir!.effectiveness;      
 
       var shapeshift = member.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Shapeshift);
       if (shapeshift !== undefined) {
