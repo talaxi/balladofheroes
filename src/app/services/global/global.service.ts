@@ -5162,7 +5162,7 @@ export class GlobalService {
     if (relevantAchievements.some(item => item.type === AchievementTypeEnum.TenThousandVictories))
       victoryCount = 2500;
     if (relevantAchievements.some(item => item.type === AchievementTypeEnum.FiveThousandVictories))
-      victoryCount = 5000;
+      victoryCount = 3000;
 
     return victoryCount;
   }

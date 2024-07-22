@@ -9826,7 +9826,7 @@ export class LookupService {
     if (type === AchievementTypeEnum.TenThousandVictories)
       description = "Reach 2,500 victories";
     if (type === AchievementTypeEnum.FiveThousandVictories)
-      description = "Reach 5,000 victories";
+      description = "Reach 3,000 victories";
     if (type === AchievementTypeEnum.FullHPClear)
       description = "Clear without losing HP";
     if (type === AchievementTypeEnum.TenSecondClear)
