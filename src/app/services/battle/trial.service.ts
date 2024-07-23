@@ -754,7 +754,7 @@ export class TrialService {
     var godLevelBeforeDamageReduction = 2350;
     var hpFactor = 42;
     var attackFactor = .65;
-    var defenseFactor = 3.6;
+    var defenseFactor = 3.5;
     var agilityFactor = 2.25;
     var luckFactor = 1.625;
     var resistanceFactor = 2.2;

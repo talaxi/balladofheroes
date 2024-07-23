@@ -7417,7 +7417,7 @@ export class LookupService {
     if (effect.type === AltarEffectsEnum.AresRareIncreaseDamageOverTimeDamage)
       description = "Increase damage over time effectiveness by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.AresRareDealHpDamage)
-      description = "When the duration expires, deal an amount equal to " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "% of the party's total current HP to all enemies.";
+      description = "When the duration expires, deal an amount equal to " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of the party's total current HP to all enemies.";
     if (effect.type === AltarEffectsEnum.HadesFireDamageUp)
       description = "Increase Fire Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.HadesEarthDamageUp)

@@ -518,9 +518,9 @@ export class BattleService {
     //console.log("Enemy options");
     //console.log(enemyOptions);
     var randomEnemyTeam = enemyOptions[this.utilityService.getRandomInteger(0, enemyOptions.length - 1)];
-    if (subZone.type === SubZoneEnum.AigosthenaUpperCoast && subZone.victoryCount < 2)
+    if (subZone.type === SubZoneEnum.AigosthenaUpperCoast && subZone.victoryCount < 1)
       this.battle.currentEnemies = enemyOptions[0];
-    else if (subZone.type === SubZoneEnum.AigosthenaUpperCoast && (subZone.victoryCount === 2 || subZone.victoryCount === 4))
+    else if (subZone.type === SubZoneEnum.AigosthenaUpperCoast && (subZone.victoryCount === 1 || subZone.victoryCount === 2 || subZone.victoryCount === 4))
       this.battle.currentEnemies = enemyOptions[1];
     else
       this.battle.currentEnemies = randomEnemyTeam;

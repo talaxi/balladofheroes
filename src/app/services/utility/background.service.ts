@@ -479,7 +479,7 @@ export class BackgroundService {
       var totalHp = 0;
       party.forEach(member => {
         totalHp += member.battleStats.currentHp * (effect.effectiveness - 1);
-      });
+      });      
 
       if (enemies !== undefined) {
         enemies.forEach(member => {
