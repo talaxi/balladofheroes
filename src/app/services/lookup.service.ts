@@ -71,6 +71,14 @@ export class LookupService {
     private equipmentService: EquipmentService, private dictionaryService: DictionaryService, private deviceDetectorService: DeviceDetectorService,
     private zodiacService: ZodiacService) { }
 
+  setMenuBlinkOpen(setter: boolean) {
+    this.globalService.globalVar.sidequestData.menuBlinkOpen = setter;
+  }
+  
+  setMenuBlinkClose(setter: boolean) {
+    this.globalService.globalVar.sidequestData.menuBlinkClose = setter;
+  }
+
   getSubZoneCompletionByType(type: SubZoneEnum) {
     var chosenSubzone = new SubZone();
 

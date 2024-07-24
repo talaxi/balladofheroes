@@ -73,9 +73,11 @@ export class TutorialService {
     }
     else if (type === TutorialTypeEnum.Equipment) {
       if (this.deviceDetectorService.isMobile())
-        text = "You've acquired your first equipment item. Equipment can be changed from the <b class='smallCaps linkForeground'>'menu'</b> located on the top left of your screen. For now, tap on <span class='smallCaps adventurerColor bold'>'Adventurer'</span> in the middle of the screen to quickly jump to the menu and view the Adventurer's character page. Use the <b>'Change'</b> button to update your equipment.";
+        text = "You've acquired your first equipment item. Equipment can be changed by tapping the <b class='smallCaps linkForeground'>'menu'</b> toggle located on the top left of your screen and then selecting 'Adventurer'. This will take you to your Class page, showing you every detail about your character. For now, use the <b>'Change'</b> button to update your equipment and then tap the <b class='smallCaps linkForeground'>'back'</b> button to toggle back to the main screen.";
       else
-        text = "You've acquired your first equipment item. Equipment can be changed from the <b class='smallCaps linkForeground'>'menu'</b> located on the top left of your screen. For now, click on <span class='smallCaps adventurerColor bold'>'Adventurer'</span> on the top left of the screen to quickly jump to the menu and view the character page. Use the <b>'Change Equipment'</b> button to update your equipment.";
+        text = "You've acquired your first equipment item. Equipment can be changed by clicking the <b class='smallCaps linkForeground'>'menu'</b> toggle located on the top left of your screen. This will take you to your Class page, showing you every detail about your character. For now, use the <b>'Change Equipment'</b> button to update your equipment and then press the <b class='smallCaps linkForeground'>'menu'</b> button again to toggle back to the main screen.";
+
+        this.lookupService.setMenuBlinkOpen(true);
     }
     else if (type === TutorialTypeEnum.Altars) {
       if (this.deviceDetectorService.isMobile())

@@ -85,6 +85,15 @@
     text-align: center;
 }
 
+.tutorialBlink {
+    animation: blinker 2s linear infinite;
+  }
+  
+  @keyframes blinker {
+    50% {
+      color: #13D001;
+    }
+  }
 
 .icon {
     height: 1.5rem;

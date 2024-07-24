@@ -32,7 +32,7 @@
         <div class="equipment">
             <span class="sectionHeaderText sectionHeading middleAlign">Equipment</span>
             <span>
-                <button class="changeButton buttonStyled buttonOffset"
+                <button class="changeButton buttonStyled buttonOffset" [ngClass]="{'tutorialBlink': blink}"
                     (click)="openEquipmentModal(equipmentModal)">Change <span
                         class='webVersion'>Equipment</span></button>
             </span>

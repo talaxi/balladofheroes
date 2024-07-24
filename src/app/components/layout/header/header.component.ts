@@ -288,6 +288,13 @@ export class HeaderComponent implements OnInit {
   }
 
   openMenu() {
+    if (this.globalService.globalVar.sidequestData.menuBlinkOpen) {
+      this.globalService.globalVar.sidequestData.menuBlinkOpen = false;
+      this.globalService.globalVar.sidequestData.changeEquipmentBlink = true;
+    }
+
+    this.globalService.globalVar.sidequestData.menuBlinkClose = false;
+
     if (this.isMobile) {
       if (this.layoutService.mobileMenuOpen)
         this.layoutService.mobileMenuOpen = false;
@@ -313,6 +320,10 @@ export class HeaderComponent implements OnInit {
   }
 
   backToMainView() {
+    this.globalService.globalVar.sidequestData.menuBlinkOpen = false;
+    this.globalService.globalVar.sidequestData.changeEquipmentBlink = false;
+    this.globalService.globalVar.sidequestData.menuBlinkClose = false;
+
     this.layoutService.mobileMenuOpen = false;
     this.menuService.setSelectedCharacter(CharacterEnum.None);
     this.menuService.setSelectedGod(GodEnum.None);
@@ -334,9 +345,9 @@ export class HeaderComponent implements OnInit {
     else
       this.logDialogRef = this.dialog.open(content, { width: '75%', height: '75%', id: 'dialogNoPadding' });
 
-      this.logDialogRef.afterClosed().subscribe(dialogResult => {
-        this.menuService.logDisplayed = false;
-      });
+    this.logDialogRef.afterClosed().subscribe(dialogResult => {
+      this.menuService.logDisplayed = false;
+    });
   }
 
   getPauseKeybindKey() {

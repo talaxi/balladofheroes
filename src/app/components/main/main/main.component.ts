@@ -87,6 +87,11 @@ export class MainComponent implements OnInit {
     factList.push("By default, inactive classes gain no XP and inactive gods gain 25% XP from battle.");
     factList.push("All classes can use any weapon type without any penalty or boost.");
 
+    if (this.isMobile)
+      factList.push("Tapping on a class or god's name is a shortcut straight to their stat page.");
+    else
+      factList.push("Clicking on a class or god's name is a shortcut straight to their stat page.");
+
     if (!this.isMobile)
       factList.push("You can purchase items from stores in bulk by using the CTRL, ALT, and SHIFT keys.");
 
@@ -96,9 +101,9 @@ export class MainComponent implements OnInit {
       factList.push("Hover over an enemy's name to see their stats, ability details, and possible loot.");
 
     if (this.isMobile)
-      factList.push("Tap on 'LOG' on the top right of your screen to review any Story scene.");
+      factList.push("Tap on 'LOG' on the top right of your screen to review any story scene or tutorial text.");
     else
-      factList.push("Click on 'LOG' on the top right of your screen to review any Story scene.");
+      factList.push("Click on 'LOG' on the top right of your screen to review any story scene or tutorial text.");
 
     if (this.isMobile)
       factList.push("When viewing a class or god in the menu, tap and hold their level to see a detailed breakdown of their XP modifiers.");

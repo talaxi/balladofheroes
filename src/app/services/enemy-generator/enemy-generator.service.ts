@@ -8304,7 +8304,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Mimon) {
       enemy.name = "Mimon";
-      enemy.battleStats = new CharacterStats(1012980, 8425, 17500, 15000, 19250, 23000);
+      enemy.battleStats = new CharacterStats(1012980, 7825, 17500, 15000, 19250, 23000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 5650;
@@ -8345,7 +8345,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Mimas) {
       enemy.name = "Mimas";
-      enemy.battleStats = new CharacterStats(1012980, 8425, 17000, 15000, 19250, 23000);
+      enemy.battleStats = new CharacterStats(1012980, 7825, 17000, 15000, 19250, 23000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 5650;
@@ -8420,7 +8420,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Gration) {
       enemy.name = "Gration";
-      enemy.battleStats = new CharacterStats(760250, 8200, 12500, 9500, 12500, 20000);
+      enemy.battleStats = new CharacterStats(760250, 7800, 12500, 9500, 12500, 20000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 5800;
@@ -8453,7 +8453,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Porphyrion) {
       enemy.name = "Porphyrion";
-      enemy.battleStats = new CharacterStats(1759650, 8300, 20950, 20500, 18500, 27500);
+      enemy.battleStats = new CharacterStats(1759650, 7900, 20950, 20500, 18500, 27500);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 11150;
@@ -9845,7 +9845,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.PoseidonsDolphin) {
       enemy.name = "Poseidon's Dolphin";
-      enemy.battleStats = new CharacterStats(1660493, 9520, 21650, 26500, 19500, 30000);
+      enemy.battleStats = new CharacterStats(1660493, 8920, 21650, 26500, 19500, 30000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 6250;
@@ -9867,7 +9867,7 @@ export class EnemyGeneratorService {
       vigorousCurrent = this.randomizeCooldown(vigorousCurrent);
       vigorousCurrent.dealsDirectDamage = false;
       vigorousCurrent.isAoe = true;
-      vigorousCurrent.targetEffect.push(this.globalService.createDamageOverTimeEffect(20, 5, .75, vigorousCurrent.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Water, true));
+      vigorousCurrent.targetEffect.push(this.globalService.createDamageOverTimeEffect(20, 5, .7, vigorousCurrent.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Water, true));
       enemy.abilityList.push(vigorousCurrent);
 
       var loudChirping = new Ability();

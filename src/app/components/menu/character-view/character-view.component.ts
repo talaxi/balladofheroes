@@ -35,12 +35,14 @@ export class CharacterViewComponent implements OnInit {
   assignedGod1: GodEnum;
   assignedGod2: GodEnum;
   duoAbility: Ability | undefined;
+  blink = false;
 
   constructor(public menuService: MenuService, public lookupService: LookupService, private globalService: GlobalService,
     private gameLoopService: GameLoopService, public dialog: MatDialog, private utilityService: UtilityService,
     private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
+    this.blink = this.globalService.globalVar.sidequestData.changeEquipmentBlink;
     this.otherClassesAvailable = this.globalService.globalVar.characters.filter(item => item.isAvailable).length > 2;
     this.changeGodsAvailable = this.globalService.globalVar.gods.filter(item => item.isAvailable).length >= 2;
 
@@ -127,6 +129,12 @@ export class CharacterViewComponent implements OnInit {
   }
 
   openEquipmentModal(content: any) {
+    if (this.globalService.globalVar.sidequestData.changeEquipmentBlink) {
+      this.globalService.globalVar.sidequestData.changeEquipmentBlink = false;
+      this.blink = false;
+      this.globalService.globalVar.sidequestData.menuBlinkClose = true;
+    }
+
     if (this.isMobile)
       this.dialog.open(content, { width: '95%', height: '80%', panelClass: 'mat-dialog-no-scroll', id: 'dialogNoUpperPadding' });
     else

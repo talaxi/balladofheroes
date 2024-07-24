@@ -19,6 +19,9 @@ export class SidequestData {
     trialStage: number;
     displayCirceAlchemyPayScene: boolean;
     circeAlchemyLevel: number;
+    menuBlinkOpen: boolean; //from beginning tutorial
+    changeEquipmentBlink: boolean; //from beginning tutorial
+    menuBlinkClose: boolean; //from beginning tutorial
 
     constructor() {       
         this.isAltarOfAsclepiusUnlocked = false; 
@@ -40,5 +43,8 @@ export class SidequestData {
         this.sparringMatchTimer = 0;
         this.trialStage = 1;
         this.circeAlchemyLevel = 0;
+        this.menuBlinkOpen = false;
+        this.changeEquipmentBlink = false;
+        this.menuBlinkClose = false;
     }
 }

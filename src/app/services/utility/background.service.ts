@@ -93,7 +93,7 @@ export class BackgroundService {
             partyMember.overdriveInfo.revengeTime -= deltaTime;
           }
         }
-        
+
         if (this.globalService.isDuoAvailable(partyMember.assignedGod1, partyMember.assignedGod2) && this.globalService.globalVar.activeBattle !== undefined && this.globalService.globalVar.activeBattle.currentEnemies !== undefined &&
           activeSubzone.type !== SubZoneEnum.CalydonAltarOfAsclepius && !(this.balladService.isSubzoneTown(activeSubzone.type) &&
             this.lookupService.userNotInTownBattle())) {
@@ -479,7 +479,7 @@ export class BackgroundService {
       var totalHp = 0;
       party.forEach(member => {
         totalHp += member.battleStats.currentHp * (effect.effectiveness - 1);
-      });      
+      });
 
       if (enemies !== undefined) {
         enemies.forEach(member => {
@@ -1021,6 +1021,17 @@ export class BackgroundService {
 
     if (clearRate < this.utilityService.timeFragmentClearRateMinimumSeconds)
       clearRate = this.utilityService.timeFragmentClearRateMinimumSeconds;
+
+    //cap out at the maximum length of specific trial
+    if (run.selectedTrial === TrialEnum.TrialOfSkill || run.selectedTrial === TrialEnum.TrialOfTheStarsNormal || run.selectedTrial === TrialEnum.TrialOfTheStarsHard) {
+      if (clearRate > 300)
+        clearRate = 300;
+    }
+
+    if (run.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard || run.selectedTrial === TrialEnum.TrialOfTheStarsUltimate) {
+      if (clearRate > 600)
+        clearRate = 600;
+    }
 
     return clearRate;
   }

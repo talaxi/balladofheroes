@@ -52,6 +52,17 @@
     display: inline-block;
 }
 
+
+.tutorialBlink {
+    animation: blinker 2s linear infinite;
+  }
+  
+  @keyframes blinker {
+    50% {
+      color: #13D001;
+    }
+  }
+
 .statContainer {
     display: grid;
     height: 100%;
