@@ -206,7 +206,7 @@ export class AltarViewComponent implements OnInit {
       if (this.altar.condition === AltarConditionEnum.OverdriveUse)
         conditionText += "Overdrives";
       if (this.altar.condition === AltarConditionEnum.Victories)
-        conditionText += "Victories";
+        conditionText += "Wins";
     }
 
     return conditionText;

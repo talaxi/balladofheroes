@@ -9883,7 +9883,7 @@ export class EnemyGeneratorService {
       var oceanRejuvenation = new Ability();
       oceanRejuvenation.name = "Ocean Rejuvenation";
       oceanRejuvenation.isAvailable = true;
-      oceanRejuvenation.cooldown = oceanRejuvenation.currentCooldown = 20;
+      oceanRejuvenation.cooldown = oceanRejuvenation.currentCooldown = 30;
       oceanRejuvenation = this.randomizeCooldown(oceanRejuvenation);
       oceanRejuvenation.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHealBasedOnMaxHpPercent, -1, .1, true, true));
       oceanRejuvenation.dealsDirectDamage = false;
@@ -10477,7 +10477,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.TheMinotaur) {
       enemy.name = "The Minotaur";
-      enemy.battleStats = new CharacterStats(3887491, 13150, 32850, 20500, 31500, 52500);
+      enemy.battleStats = new CharacterStats(3887491, 12450, 32850, 20500, 30500, 52500);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 15;
       enemy.xpGainFromDefeat = 13250;
@@ -10499,8 +10499,8 @@ export class EnemyGeneratorService {
       var rampage = new Ability();
       rampage.name = "Rampage";
       rampage.isAvailable = true;
-      rampage.effectiveness = 10.5;
-      rampage.cooldown = rampage.currentCooldown = 24;
+      rampage.effectiveness = 9.75;
+      rampage.cooldown = rampage.currentCooldown = 27;
       rampage = this.randomizeCooldown(rampage);
       rampage.dealsDirectDamage = true;
       rampage.isAoe = true;
@@ -13624,7 +13624,7 @@ export class EnemyGeneratorService {
       enemy.battleStats.elementResistance.lightning = .25;
       enemy.battleStats.elementIncrease.earth = .25;
       enemy.loot.push(new LootItem(ItemsEnum.Mandrake, ItemTypeEnum.CraftingMaterial, 1, .03));
-      enemy.loot.push(new LootItem(ItemsEnum.ColossalRoot, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.ColossalRoot, ItemTypeEnum.CraftingMaterial, 1, .04));
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenDown, -1, .75, false, true, false));
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageOverTimeTakenDown, -1, .75, false, true, false));
 
@@ -13697,7 +13697,7 @@ export class EnemyGeneratorService {
       enemy.battleStats.elementResistance.lightning = .25;
       enemy.battleStats.elementIncrease.earth = .25;
       enemy.loot.push(new LootItem(ItemsEnum.Peony, ItemTypeEnum.CraftingMaterial, 1, .03));
-      enemy.loot.push(new LootItem(ItemsEnum.ColossalRoot, ItemTypeEnum.CraftingMaterial, 1, .02));
+      enemy.loot.push(new LootItem(ItemsEnum.ColossalRoot, ItemTypeEnum.CraftingMaterial, 1, .04));
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenDown, -1, .75, false, true, false));
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageOverTimeTakenDown, -1, .75, false, true, false));
 
@@ -14250,7 +14250,7 @@ export class EnemyGeneratorService {
       vortexPull.name = "Vortex Pull";
       vortexPull.isAvailable = true;
       vortexPull.cooldown = 28;
-      vortexPull.currentCooldown = 10;
+      vortexPull.currentCooldown = 12;
       vortexPull.dealsDirectDamage = false;
       vortexPull.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.VortexPull, 20, .3, false, false, true));
       enemy.abilityList.push(vortexPull);

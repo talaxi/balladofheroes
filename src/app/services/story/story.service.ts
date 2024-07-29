@@ -6,6 +6,7 @@ import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { OptionalSceneEnum } from 'src/app/models/enums/optional-scene-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
+import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { TutorialTypeEnum } from 'src/app/models/enums/tutorial-type-enum.model';
 import { AchievementService } from '../achievements/achievement.service';
 import { BalladService } from '../ballad/ballad.service';
@@ -1213,6 +1214,39 @@ export class StoryService {
           poseidon.isAvailable = true;
           this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You have gained the powers of Poseidon, God of the Sea.", this.globalService.globalVar);
         }
+      }
+    }    
+    if (this.globalService.globalVar.currentStoryId === 46) {
+      var labyrinth = this.balladService.findZone(ZoneEnum.Labyrinth);
+      if (labyrinth !== undefined && !labyrinth.isAvailable) {
+        labyrinth.isAvailable = true;
+      }
+
+      var TheLabyrinthLeftPath = this.balladService.findSubzone(SubZoneEnum.TheLabyrinthLeftPath);
+      if (TheLabyrinthLeftPath !== undefined && !TheLabyrinthLeftPath.isAvailable) {
+        TheLabyrinthLeftPath.isAvailable = true;
+
+        this.achievementService.createDefaultAchievementsForSubzone(TheLabyrinthLeftPath.type).forEach(achievement => {
+          this.globalService.globalVar.achievements.push(achievement);
+        });
+      }
+      
+      var TheLabyrinthCenterPath = this.balladService.findSubzone(SubZoneEnum.TheLabyrinthCenterPath);
+      if (TheLabyrinthCenterPath !== undefined && !TheLabyrinthCenterPath.isAvailable) {
+        TheLabyrinthCenterPath.isAvailable = true;
+
+        this.achievementService.createDefaultAchievementsForSubzone(TheLabyrinthCenterPath.type).forEach(achievement => {
+          this.globalService.globalVar.achievements.push(achievement);
+        });
+      }
+      
+      var TheLabyrinthRightPath = this.balladService.findSubzone(SubZoneEnum.TheLabyrinthRightPath);
+      if (TheLabyrinthRightPath !== undefined && !TheLabyrinthRightPath.isAvailable) {
+        TheLabyrinthRightPath.isAvailable = true;
+
+        this.achievementService.createDefaultAchievementsForSubzone(TheLabyrinthRightPath.type).forEach(achievement => {
+          this.globalService.globalVar.achievements.push(achievement);
+        });
       }
     }
     if (this.globalService.globalVar.currentStoryId === 49) {

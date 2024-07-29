@@ -370,6 +370,9 @@ export class GodViewComponent implements OnInit {
           else
             rewards += (increaseAbilities.effectiveness * 100) + "% Effectiveness Increase to " + abilityName + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         }
+        if (increaseAbilities.secondaryEffectiveness > 0) {          
+            rewards += (increaseAbilities.secondaryEffectiveness * 100) + "% Secondary Effect Effectiveness Increase to " + abilityName + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        }
         if (userGainsEffect !== undefined && userGainsEffect.effectiveness > 0) {
           if (ability?.name === "Second Wind")
             rewards += (userGainsEffect.effectiveness) + " HP Increase to " + abilityName + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";

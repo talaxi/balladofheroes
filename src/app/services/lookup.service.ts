@@ -5640,7 +5640,7 @@ export class LookupService {
       abilityDescription = "Apply a damage over time effect to a target that deals <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "% of Attack</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Rampage") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target four times. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets four times. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Intimidate" && character.name === "The Minotaur") {
       abilityDescription = "Apply <strong>" + (secondaryRelatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> Stagger and Unsteady effects for <strong>" + secondaryRelatedTargetGainStatusEffectDuration + "</strong> seconds to all targets. " + cooldown + " second cooldown.";
@@ -9828,13 +9828,13 @@ export class LookupService {
     var description = "";
 
     if (type === AchievementTypeEnum.HundredVictories)
-      description = "Reach 100 victories";
+      description = "Reach 100 wins";
     if (type === AchievementTypeEnum.ThousandVictories)
-      description = "Reach 500 victories";
+      description = "Reach 500 wins";
     if (type === AchievementTypeEnum.TenThousandVictories)
-      description = "Reach 2,500 victories";
+      description = "Reach 2,500 wins";
     if (type === AchievementTypeEnum.FiveThousandVictories)
-      description = "Reach 3,000 victories";
+      description = "Reach 3,000 wins";
     if (type === AchievementTypeEnum.FullHPClear)
       description = "Clear without losing HP";
     if (type === AchievementTypeEnum.TenSecondClear)

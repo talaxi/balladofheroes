@@ -4628,9 +4628,9 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.WarForTheMountainThePeak) {
       zoneEnums.push(ZoneEnum.Crete);
     }
-    if (type === SubZoneEnum.CreteNorthernCretanCoast) {
+    /*if (type === SubZoneEnum.CreteNorthernCretanCoast) {
       zoneEnums.push(ZoneEnum.Labyrinth);
-    }
+    }*/
     if (type === SubZoneEnum.TheLabyrinthLabyrinthCenter) {
       zoneEnums.push(ZoneEnum.Aiaia);
     }
@@ -5090,9 +5090,9 @@ export class SubZoneGeneratorService {
     }
     if (type === SubZoneEnum.CreteNorthernCretanCoast) {
       subZoneEnums.push(SubZoneEnum.CreteKnossos);
-      subZoneEnums.push(SubZoneEnum.TheLabyrinthLeftPath);
+      /*subZoneEnums.push(SubZoneEnum.TheLabyrinthLeftPath);
       subZoneEnums.push(SubZoneEnum.TheLabyrinthCenterPath);
-      subZoneEnums.push(SubZoneEnum.TheLabyrinthRightPath);
+      subZoneEnums.push(SubZoneEnum.TheLabyrinthRightPath);*/
     }
     if (type === SubZoneEnum.TheLabyrinthLeftPath) {
       subZoneEnums.push(SubZoneEnum.TheLabyrinthColdHallway);

@@ -6717,7 +6717,7 @@ export class BattleService {
 
       var loot = this.getLoot(this.battle.currentEnemies);
       this.getCoinRewards(this.battle.currentEnemies);
-      if (loot !== undefined && loot.length > 0) {
+      if (loot !== undefined && loot.length > 0) {        
         loot.forEach(item => {
           var itemCopy = this.lookupService.makeResourceCopy(item);
           if (this.globalService.globalVar.gameLogSettings.get("battleItemsRewards")) {
@@ -6782,8 +6782,8 @@ export class BattleService {
             var existingUnique = this.globalService.globalVar.uniques.find(item => item.type === itemCopy.item);
             var originalAmount = itemCopy.amount;
 
-            if (!isItemUnique || existingUnique === undefined) {
-              itemCopy.amount = 1;
+            
+            if (!isItemUnique || existingUnique === undefined) {              
               this.addLootToResources(itemCopy);
             }
 
@@ -6793,6 +6793,7 @@ export class BattleService {
                 this.lookupService.giveUniqueXp(existingUnique, originalAmount);
               }
               else {
+                itemCopy.amount = 1;
                 this.globalService.globalVar.uniques.push(new Uniques(itemCopy.item));
 
                 if (!this.globalService.globalVar.logData.some(item => item.type === LogViewEnum.Tutorials && item.relevantEnumValue === TutorialTypeEnum.Uniques)) {

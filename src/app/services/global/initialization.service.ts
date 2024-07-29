@@ -892,9 +892,6 @@ export class InitializationService {
     if (resource !== undefined)
       this.lookupService.gainResource(resource);
 
-    resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.GlowingChokerUnique, 1);
-    if (resource !== undefined)
-      this.lookupService.gainResource(resource);
 
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus, 3));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfDionysus, 4));
@@ -1414,8 +1411,7 @@ export class InitializationService {
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.CarcanetOfTheCentaurUnique));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.HourglassRing));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.ScathingBeautyUnique));
-      this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.RainbowScaledPlatingUnique));
-      this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.GlowingChokerUnique));
+      this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.RainbowScaledPlatingUnique));      
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.BatteringMaceUnique));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.EnergyShieldUnique));      
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.AstralRingUnique));
@@ -1456,7 +1452,7 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AressNecklace);
       }
 
-      var chthonicResetCount = 1;
+      var chthonicResetCount = 3;
       var godLevel = 10;
 
       for (var j = 0; j < chthonicResetCount; j++) {
@@ -1471,9 +1467,9 @@ export class InitializationService {
         this.globalService.assignGodAbilityInfo(athena!);
 
         if (j < chthonicResetCount - 1)
-          godLevel = 500;
+          godLevel = 5000;
         else
-          godLevel = 500;
+          godLevel = 5000;
 
         for (var i = 0; i < godLevel; i++) {
           this.globalService.levelUpGod(athena!);
