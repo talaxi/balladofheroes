@@ -5487,9 +5487,12 @@ export class SubZoneGeneratorService {
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.LightShield, SubZoneEnum.ErytheiaCadiz));
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BloodyNecklace, SubZoneEnum.ErytheiaCadiz));
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.SafeRing, SubZoneEnum.ErytheiaCadiz));
+    availableOptionsTraveler.push(this.shopItemGenerator.generateShopItem(ItemsEnum.MonkClass, SubZoneEnum.ErytheiaCadiz));
+    availableOptionsTraveler.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ThaumaturgeClass, SubZoneEnum.ErytheiaCadiz));
 
     if (subzoneType === SubZoneEnum.ErytheiaCadiz && !returnAllShopOptions) {
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
+      shopOptions.push(new ShopOption(ShopTypeEnum.Traveler, availableOptionsTraveler));
 
       return shopOptions;
     }
@@ -5508,13 +5511,10 @@ export class SubZoneGeneratorService {
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.LesserFlawedOpal, SubZoneEnum.CreteKnossos));
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.LesserFlawedEmerald, SubZoneEnum.CreteKnossos));
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.LesserFlawedTopaz, SubZoneEnum.CreteKnossos));
-    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.LesserFlawedAquamarine, SubZoneEnum.CreteKnossos));
-    availableOptionsTraveler.push(this.shopItemGenerator.generateShopItem(ItemsEnum.MonkClass, SubZoneEnum.CreteKnossos));
-    availableOptionsTraveler.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ThaumaturgeClass, SubZoneEnum.CreteKnossos));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.LesserFlawedAquamarine, SubZoneEnum.CreteKnossos));    
 
     if (subzoneType === SubZoneEnum.CreteKnossos && !returnAllShopOptions) {
-      shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
-      shopOptions.push(new ShopOption(ShopTypeEnum.Traveler, availableOptionsTraveler));
+      shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));      
       shopOptions.push(new ShopOption(ShopTypeEnum.IslandOfNaxos, []));
 
       return shopOptions;

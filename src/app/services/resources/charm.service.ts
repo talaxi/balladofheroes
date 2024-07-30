@@ -28,11 +28,11 @@ export class CharmService {
   }
 
   getSmallCharmOfRejuvenationValue() {
-    return 1;
+    return 2;
   }
 
   getLargeCharmOfRejuvenationValue() {
-    return 3;
+    return 10;
   }
 
   getTotalCriticalMultiplierAdditionFromCharms(resources: ResourceValue[]) {
@@ -676,75 +676,75 @@ export class CharmService {
   }
 
   getSmallOrnateKantharosValue() {
-    return 30;
-  }
-
-  getSmallSilverKantharosValue() {
-    return 30;
-  }
-
-  getSmallBuccheroKantharosValue() {
-    return 30;
-  }
-
-  getSmallGildedKantharosValue() {
-    return 30;
-  }
-
-  getSmallCrackedKantharosValue() {
     return 150;
   }
 
+  getSmallSilverKantharosValue() {
+    return 150;
+  }
+
+  getSmallBuccheroKantharosValue() {
+    return 150;
+  }
+
+  getSmallGildedKantharosValue() {
+    return 150;
+  }
+
+  getSmallCrackedKantharosValue() {
+    return 750;
+  }
+
   getSmallBlackKantharosValue() {
-    return 30;
+    return 150;
   }
 
   getLargeOrnateKantharosValue() {
-    return 200;
+    return 1500;
   }
 
   getLargeSilverKantharosValue() {
-    return 200;
+    return 1500;
   }
 
   getLargeBuccheroKantharosValue() {
-    return 200;
+    return 1500;
   }
 
   getLargeGildedKantharosValue() {
-    return 200;
+    return 1500;
   }
 
   getLargeCrackedKantharosValue() {
-    return 1000;
+    return 7500;
   }
 
   getLargeBlackKantharosValue() {
-    return 200;
+    return 1500;
   }
 
   getPerfectOrnateKantharosValue() {
-    return 20000;
+    return 15000;
   }
 
   getPerfectSilverKantharosValue() {
-    return 20000;
+    return 15000;
   }
 
   getPerfectBuccheroKantharosValue() {
-    return 20000;
+    return 15000;
   }
 
   getPerfectGildedKantharosValue() {
-    return 20000;
+    return 15000;
   }
 
   getPerfectCrackedKantharosValue() {
-    return 100000;
+    return 75000;
   }
 
   getPerfectBlackKantharosValue() {
-    return 20000;
+    return 15000;
   }
 
   getTotalMaxHpAdditionFromCharms(resources: ResourceValue[]) {

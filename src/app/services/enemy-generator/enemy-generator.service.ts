@@ -16571,10 +16571,10 @@ export class EnemyGeneratorService {
       strangle.name = "Strangle";
       strangle.isAvailable = true;
       strangle.cooldown = 22;
-      strangle.currentCooldown = 4;
+      strangle.currentCooldown = 5;
       strangle.dealsDirectDamage = false;
       strangle.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.CastingImmobilize, -1, 1, false, true, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 2500000));
-      strangle.targetEffect.push(this.globalService.createDamageOverTimeEffect(1000, 3, 4, strangle.name, dotTypeEnum.BasedOnAttack));
+      strangle.targetEffect.push(this.globalService.createDamageOverTimeEffect(1000, 3, 3, strangle.name, dotTypeEnum.BasedOnAttack));
       strangle.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Immobilize, -1, 1, false, false));
       enemy.abilityList.push(strangle);
 

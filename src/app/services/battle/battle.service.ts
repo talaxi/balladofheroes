@@ -8163,7 +8163,7 @@ export class BattleService {
           if (enemyType !== undefined) {
             this.globalService.giveCharactersBonusExp(enemyType.xpGainFromDefeat * .2);
 
-            var gameLogEntry = "You steal <strong>" + Math.round(enemyType.xpGainFromDefeat * .2) + "</strong>" + " XP from <strong>" + target.name + "</strong>.";
+            var gameLogEntry = "You steal <strong>" + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, Math.round(enemyType.xpGainFromDefeat * .2)) + "</strong>" + " XP from <strong>" + target.name + "</strong>.";
 
             if (this.globalService.globalVar.gameLogSettings.get("partyStatusEffect")) {
               this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry, this.globalService.globalVar);

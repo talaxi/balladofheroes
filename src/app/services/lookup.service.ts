@@ -554,15 +554,15 @@ export class LookupService {
     else if (type === ItemsEnum.PiercingPotion)
       name = "Deal " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, effect.trueDamageAmount) + " damage + " + (effect.trueDamagePercent * 100) + "% of a target's HP up to " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, effect.maxThreshold) + " damage.";
     else if (type === ItemsEnum.BouncingPotion)
-      name = "Deal " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, effect.trueDamageAmount) + " damage + " + (effect.trueDamagePercent * 100) + "% of a target's HP up to " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, effect.maxThreshold) + " damage, twice.";
+      name = "Deal " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, effect.trueDamageAmount) + " damage + " + (effect.trueDamagePercent * 100) + "% of a target's HP up to " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, effect.maxThreshold) + " damage twice.";
     else if (type === ItemsEnum.WildPotion)
-      name = "Deal " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, effect.trueDamageAmount) + " damage + " + (effect.trueDamagePercent * 100) + "% of a target's HP up to " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, effect.maxThreshold) + " damage, to each enemy twice.";
+      name = "Deal " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, effect.trueDamageAmount) + " damage + " + (effect.trueDamagePercent * 100) + "% of a target's HP up to " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, effect.maxThreshold) + " damage to each enemy twice.";
     else if (type === ItemsEnum.BurstingPotion)
-      name = "Deal " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, effect.trueDamageAmount) + " damage + " + (effect.trueDamagePercent * 100) + "% of a target's HP up to " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, effect.maxThreshold) + " damage, three times.";
+      name = "Deal " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, effect.trueDamageAmount) + " damage + " + (effect.trueDamagePercent * 100) + "% of a target's HP up to " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, effect.maxThreshold) + " damage three times.";
     else if (type === ItemsEnum.ShatteringPotion)
-      name = "Deal " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, effect.trueDamageAmount) + " damage + " + (effect.trueDamagePercent * 100) + "% of a target's HP up to " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, effect.maxThreshold) + " damage, to each enemy three times.";
+      name = "Deal " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, effect.trueDamageAmount) + " damage + " + (effect.trueDamagePercent * 100) + "% of a target's HP up to " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, effect.maxThreshold) + " damage to each enemy three times.";
     else if (type === ItemsEnum.EndlessPotion)
-      name = "Deal " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, effect.trueDamageAmount) + " damage + " + (effect.trueDamagePercent * 100) + "% of a target's HP up to " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, effect.maxThreshold) + " damage, ten times.";
+      name = "Deal " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, effect.trueDamageAmount) + " damage + " + (effect.trueDamagePercent * 100) + "% of a target's HP up to " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, effect.maxThreshold) + " damage ten times.";
     else if (type === ItemsEnum.FirePotion)
       name = "Deal " + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, effect.trueDamageAmount) + " Fire damage to a target.";
     else if (type === ItemsEnum.PotentConcoction)
@@ -946,17 +946,17 @@ export class LookupService {
       description = "Increase parties' Attack by <span class='charmDescriptor'>" + (this.charmService.getSmallBlackKantharosValue()) + "</span>.";
 
     if (type === ItemsEnum.LargeOrnateKantharos)
-      description = "Increase parties' Luck by <span class='charmDescriptor'>" + (this.charmService.getLargeOrnateKantharosValue()) + "</span>.";
+      description = "Increase parties' Luck by <span class='charmDescriptor'>" + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false,(this.charmService.getLargeOrnateKantharosValue())) + "</span>.";
     if (type === ItemsEnum.LargeSilverKantharos)
-      description = "Increase parties' Resistance by <span class='charmDescriptor'>" + (this.charmService.getLargeSilverKantharosValue()) + "</span>.";
+      description = "Increase parties' Resistance by <span class='charmDescriptor'>" + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false,(this.charmService.getLargeSilverKantharosValue())) + "</span>.";
     if (type === ItemsEnum.LargeBuccheroKantharos)
-      description = "Increase parties' Agility by <span class='charmDescriptor'>" + (this.charmService.getLargeBuccheroKantharosValue()) + "</span>.";
+      description = "Increase parties' Agility by <span class='charmDescriptor'>" + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false,(this.charmService.getLargeBuccheroKantharosValue())) + "</span>.";
     if (type === ItemsEnum.LargeGildedKantharos)
-      description = "Increase parties' Defense by <span class='charmDescriptor'>" + (this.charmService.getLargeGildedKantharosValue()) + "</span>.";
+      description = "Increase parties' Defense by <span class='charmDescriptor'>" + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false,(this.charmService.getLargeGildedKantharosValue())) + "</span>.";
     if (type === ItemsEnum.LargeCrackedKantharos)
-      description = "Increase parties' Max HP by <span class='charmDescriptor'>" + (this.charmService.getLargeCrackedKantharosValue()) + "</span>.";
+      description = "Increase parties' Max HP by <span class='charmDescriptor'>" + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false,(this.charmService.getLargeCrackedKantharosValue())) + "</span>.";
     if (type === ItemsEnum.LargeBlackKantharos)
-      description = "Increase parties' Attack by <span class='charmDescriptor'>" + (this.charmService.getLargeBlackKantharosValue()) + "</span>.";
+      description = "Increase parties' Attack by <span class='charmDescriptor'>" + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false,(this.charmService.getLargeBlackKantharosValue())) + "</span>.";
 
     if (type === ItemsEnum.PerfectOrnateKantharos)
       description = "Increase parties' Luck by <span class='charmDescriptor'>" + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, (this.charmService.getPerfectOrnateKantharosValue())) + "</span>.";
@@ -4252,7 +4252,7 @@ export class LookupService {
       if (abilityName === "Nature's Fury")
         abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack Earth</strong> damage to all targets.  If critical, increase damage by <strong>" + this.utilityService.genericRound((secondaryEffectiveAmount - 1) * 100) + "%</strong>. Any criticals also stun the enemy for 5 seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Sickness")
-        abilityDescription = "Reduce all enemys' stats including Max HP by <strong>" + this.utilityService.genericRound((1 - relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
+        abilityDescription = "Reduce all enemies' stats including Max HP by <strong>" + this.utilityService.genericRound((1 - relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Binding Arrows")
         abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack Lightning</strong> damage to all targets. Stun all enemies for " + relatedTargetGainStatusEffectDuration + " seconds and Paralyze all enemies for " + relatedSecondaryTargetGainStatusEffectDuration + " seconds. Ability cooldown is reset between battles and can only be used once per battle.  " + baseCooldown + " second cooldown.";
       if (abilityName === "Uneasy Waters")

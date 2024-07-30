@@ -1467,9 +1467,9 @@ export class InitializationService {
         this.globalService.assignGodAbilityInfo(athena!);
 
         if (j < chthonicResetCount - 1)
-          godLevel = 5000;
+          godLevel = 1500;
         else
-          godLevel = 5000;
+          godLevel = 1500;
 
         for (var i = 0; i < godLevel; i++) {
           this.globalService.levelUpGod(athena!);
