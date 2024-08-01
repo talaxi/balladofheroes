@@ -6331,7 +6331,7 @@ export class LookupService {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack Lightning</strong> damage to all targets and Stun them for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Monstrous Aura") {
-      abilityDescription = "Paralyze all targets for <strong>" + secondaryRelatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Paralyze all targets for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Raging Fireball") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Fire damage to a target. Apply a damage over time effect that deals an additional <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. Reduce the cooldown of this ability by 2 seconds after every use. " + cooldown + " second cooldown.";
@@ -6381,7 +6381,7 @@ export class LookupService {
       abilityDescription = "Clear all debuffs from the user. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Titanic Glare") {
-      abilityDescription = "Apply a Focus effect on a target and reduce their Healing Received by <strong>" + (secondaryRelatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + secondaryRelatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Apply a Focus effect on a target and reduce their Healing Received by <strong>" + (100 - secondaryRelatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + secondaryRelatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Solar Flare") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack Fire</strong> damage to a target. After each ability use, future uses of this ability will deal damage an additional time. " + cooldown + " second cooldown.";

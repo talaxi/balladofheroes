@@ -541,7 +541,7 @@ export class ColiseumService {
       offensiveGrowthFactor = 1.175;
       expectedCharacterStats.maxHp *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 14);
       expectedCharacterStats.defense *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 5);
-      expectedCharacterStats.resistance *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 4.5);
+      expectedCharacterStats.resistance *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 4.35);
       expectedCharacterStats.attack *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 2.1);
       expectedCharacterStats.agility *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 5);
       expectedCharacterStats.luck *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 3);

@@ -1259,7 +1259,7 @@ export class StoryService {
         });
       }
     }
-    if (this.globalService.globalVar.currentStoryId === 60) {
+    if (this.globalService.globalVar.currentStoryId === 61) {
       var hera = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hera);
       if (hera !== undefined && !hera.isAvailable) {
         hera.isAvailable = true;
