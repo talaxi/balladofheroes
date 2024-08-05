@@ -431,13 +431,13 @@ export class ShopViewComponent implements OnInit {
     this.shopItems = this.shopItems.filter(item => this.balladService.findSubzone(item.originalStore)?.isAvailable);
     this.shopItems.sort((a, b) => this.sortFunction(a, b));
 
-    var filteredItems = this.filterItems(this.shopItems);
-
     var maxColumns = this.deviceDetectorService.isMobile() ? 2 : 4;
 
-    var resourceItems = filteredItems.filter(item => this.lookupService.getItemTypeFromItemEnum(item.shopItem) !== ItemTypeEnum.SlotItem && item.shopItem !== ItemsEnum.RutileRubyFragment &&
+    var resourceItems = this.shopItems.filter(item => this.lookupService.getItemTypeFromItemEnum(item.shopItem) !== ItemTypeEnum.SlotItem && item.shopItem !== ItemsEnum.RutileRubyFragment &&
       item.shopItem !== ItemsEnum.RutileOpalFragment && item.shopItem !== ItemsEnum.RutileAquamarineFragment && item.shopItem !== ItemsEnum.RutileTopazFragment &&
-      item.shopItem !== ItemsEnum.RutileAmethystFragment && item.shopItem !== ItemsEnum.RutileEmeraldFragment);
+      item.shopItem !== ItemsEnum.RutileAmethystFragment && item.shopItem !== ItemsEnum.RutileEmeraldFragment && item.shopItem !== ItemsEnum.PerfectRubyFragment &&
+      item.shopItem !== ItemsEnum.PerfectOpalFragment && item.shopItem !== ItemsEnum.PerfectAquamarineFragment && item.shopItem !== ItemsEnum.PerfectTopazFragment &&
+      item.shopItem !== ItemsEnum.PerfectAmethystFragment && item.shopItem !== ItemsEnum.PerfectEmeraldFragment);
 
     for (var i = 1; i <= resourceItems.length; i++) {
       this.shopItemCells.push(resourceItems[i - 1]);
@@ -451,9 +451,12 @@ export class ShopViewComponent implements OnInit {
       this.shopItemRows.push(this.shopItemCells);
 
 
-    var jewelcraftingItems = filteredItems.filter(item => this.lookupService.getItemTypeFromItemEnum(item.shopItem) === ItemTypeEnum.SlotItem || item.shopItem === ItemsEnum.RutileRubyFragment ||
+    var jewelcraftingItems = this.shopItems.filter(item => this.lookupService.getItemTypeFromItemEnum(item.shopItem) === ItemTypeEnum.SlotItem || item.shopItem === ItemsEnum.RutileRubyFragment ||
       item.shopItem === ItemsEnum.RutileOpalFragment || item.shopItem === ItemsEnum.RutileAquamarineFragment || item.shopItem === ItemsEnum.RutileTopazFragment ||
-      item.shopItem === ItemsEnum.RutileAmethystFragment || item.shopItem === ItemsEnum.RutileEmeraldFragment);
+      item.shopItem === ItemsEnum.RutileAmethystFragment || item.shopItem === ItemsEnum.RutileEmeraldFragment || item.shopItem === ItemsEnum.PerfectRubyFragment ||
+      item.shopItem === ItemsEnum.PerfectOpalFragment || item.shopItem === ItemsEnum.PerfectAquamarineFragment || item.shopItem === ItemsEnum.PerfectTopazFragment ||
+      item.shopItem === ItemsEnum.PerfectAmethystFragment || item.shopItem === ItemsEnum.PerfectEmeraldFragment);
+
 
     for (var i = 1; i <= jewelcraftingItems.length; i++) {
       traderJewelcraftingCells.push(jewelcraftingItems[i - 1]);

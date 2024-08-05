@@ -833,7 +833,7 @@ export class StoryService {
           "<div class='sceneDiv'>" + this.zosimeText("“When will you drink the potion?”") + " Zosime asks. She seems to be thinking the same thing.</div>" +
           "<div>" + this.thalesText("“Soon… but maybe not yet. Have any other names on your list you want to cross off first?”") + "</div>";      
           else if (pageCount === 3)
-            sceneText = "<div class='sceneDiv s4Heading'><i>End of Story</i></div>" +
+            sceneText = "<div class='sceneDiv s4Heading textCentered'><i>End of Story</i></div>" +
               "<div>Thank you for playing! Continue to enjoy post game content at the Trials of Mount Olympus and the Coliseum in Elysium.</div>";      
     }
 
@@ -1076,7 +1076,7 @@ export class StoryService {
       this.pageCount = 1;
     }
     if (this.globalService.globalVar.currentStoryId === 63) {
-      this.pageCount = 2;
+      this.pageCount = 3;
     }
 
     this.sceneText = this.getStoryText(this.globalService.globalVar.currentStoryId, this.currentPage);
