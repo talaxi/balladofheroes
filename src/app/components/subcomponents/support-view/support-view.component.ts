@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
+import { Platform } from '@ionic/angular';
+import { InAppPurchase2, IAPProduct } from '@awesome-cordova-plugins/in-app-purchase-2/ngx';
 
 @Component({
   selector: 'app-support-view',
@@ -12,9 +14,23 @@ export class SupportViewComponent {
   isMobile = false;
   isKongregate = false;
   isMainSite = false;
+  isAndroid = false;
 
-  constructor(private globalService: GlobalService, private deviceDetectorService: DeviceDetectorService, private utilityService: UtilityService) {
+  constructor(private globalService: GlobalService, private deviceDetectorService: DeviceDetectorService, private utilityService: UtilityService,
+    /*private plt: Platform, private store: InAppPurchase2,*/ private ref: ChangeDetectorRef) {
+    /*this.plt.ready().then(() => {
+      // Only for debugging!
+      this.store.verbosity = this.store.DEBUG;
 
+      this.registerProducts();
+      this.setupListeners();
+
+      // Get the real product information
+      this.store.ready(() => {
+        this.products = this.store.products;
+        this.ref.detectChanges();
+      });
+    });*/
   }
 
   ngOnInit() {  
@@ -25,5 +41,9 @@ export class SupportViewComponent {
 
   isSupporterAlreadyPurchased() {
     return this.globalService.globalVar.isSubscriber;
+  }
+
+  androidPurchase() {
+
   }
 }

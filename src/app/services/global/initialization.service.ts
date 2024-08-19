@@ -305,7 +305,7 @@ export class InitializationService {
     this.globalService.globalVar.settings.set("displayQuickViewTimeFragment", true);
 
     if (this.deviceDetectorService.isMobile()) {
-      this.globalService.globalVar.settings.set("displayOverlayTutorials", true);
+      this.globalService.globalVar.settings.set("displayOverlayTutorials", false);
       this.globalService.globalVar.settings.set("displayOverlayBattleRewards", true);
       this.globalService.globalVar.settings.set("displayOverlayPray", true);
     }

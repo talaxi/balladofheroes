@@ -61,12 +61,13 @@ export class AppComponent {
       }
     }
 
-    if (environment.staging) {
+    // TODO: Uncomment and discard changes to environment
+    /*if (environment.staging) {
       this.deploymentService.setStagingMode();
     }
-    else {
+    else {*/
       this.deploymentService.setProductionMode();
-    }
+    //}
 
     var forceNewGame = this.deploymentService.forceStartNewGame;
     var devMode = this.deploymentService.devModeActive;

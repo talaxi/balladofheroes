@@ -3,14 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
+  production: true,
   staging: false,
-  CODEREDEMPTIONSECRET: 'testsecret',
-  STRIPESECRET: 'teststripe',
-  PATREONCLIENTID: 'patreonclientid',
-  PATREONCLIENTSECRET: 'patreonclientsecret',
-  SQUARE_ETERNAL_MELEE_TICKETS: 'SQUARE_ETERNAL_MELEE_TICKETS',
-  SQUARE_SUPPORTER: 'SQUARE_SUPPORTER'
+  devEnvironment: false,
+  CODEREDEMPTIONSECRET: 'wnoOLpV1qUGGr8MGNAZmCJXc8hikD77y',
+  STRIPESECRET: 'sk_test_51LmnxHDINqQNy3RQvtGFiTEHhdWOFAGlF81JnRPXyyjJ7s33f2qmmp08a2hDKPRy6ig2z3pngmNIC3HXcLH3qZq000QyxyDIRw',
+  PATREONCLIENTID: 'Twq8Ur3aDNI9o2t2FOewFCbXwCIl41YSORM_jFaPYU5N2ZX5BXpJi0NxoEWIxYW3',
+  PATREONCLIENTSECRET: '0A3dtH07czRezrsaqsts5uu6_vO5liSDyGYl9b8rT8JCg1oAusV0Q1VgSQCl9vYg',
+  SQUARE_ETERNAL_MELEE_TICKETS: 'emticketssuccess',
+  SQUARE_SUPPORTER: 'prodsupportersuccess'
 };
 
 /*

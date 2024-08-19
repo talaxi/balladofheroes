@@ -74,7 +74,7 @@ export class ColiseumViewComponent implements OnInit {
     this.hermessStaffDescription = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.HermessStaff);
     this.shieldOfUnendingFlamesDescription = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShieldOfUnendingFlames);
     
-    if (!this.utilityService.isMainSite())
+    if (this.utilityService.isKongregate())
       this.transactionEnabled = false;
   }
 

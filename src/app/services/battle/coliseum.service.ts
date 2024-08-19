@@ -534,17 +534,17 @@ export class ColiseumService {
       expectedCharacterStats.luck *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 3);
     }
     else if (round > 30) {            
-      var expectedCharacterStats = new PrimaryStats(3350, 315, 405, 680, 600, 600);
+      var expectedCharacterStats = new PrimaryStats(3350, 315, 408, 680, 615, 440);
 
       var offsetRound = round - 9;
       defensiveGrowthFactor = 1.325;
       offensiveGrowthFactor = 1.175;
       expectedCharacterStats.maxHp *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 14);
       expectedCharacterStats.defense *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 5);
-      expectedCharacterStats.resistance *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 4.35);
+      expectedCharacterStats.resistance *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 3.5);
       expectedCharacterStats.attack *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 2.1);
       expectedCharacterStats.agility *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 5);
-      expectedCharacterStats.luck *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 3);
+      expectedCharacterStats.luck *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 3.25);
     }
 
     //console.log("Searching for: ");
@@ -590,9 +590,26 @@ export class ColiseumService {
         }
       }
       //eventually add round limiter here when you have more stuff
-      else {
+      else if (round <= 40) {
         if ((this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Olympus &&
           this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Labyrinth && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Witch)) {
+          continue;
+        }
+      }
+      else if (round <= 50) {
+        if ((this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Eagle &&
+          this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Redemption && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Witch)) {
+          continue;
+        }
+      }
+      else if (round <= 55) {
+        if ((this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Eagle &&
+          this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Redemption)) {
+          continue;
+        }
+      }
+      else {
+        if (this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Redemption && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Time) {
           continue;
         }
       }

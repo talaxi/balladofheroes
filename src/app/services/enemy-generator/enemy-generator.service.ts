@@ -10751,7 +10751,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.ThemisVeryHard) {
       enemy.name = "Themis";
-      enemy.battleStats = new CharacterStats(1592500000, 201500, 3002500, 425000, 190000, 475000);
+      enemy.battleStats = new CharacterStats(1492500000, 101500, 2602500, 425000, 170000, 455000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 500;
       enemy.xpGainFromDefeat = 80000;
@@ -10950,7 +10950,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.HardenedScorpionVeryHard) {
       enemy.name = "Hardened Scorpion";
-      enemy.battleStats = new CharacterStats(1421300000, 158500, 2950000, 500000, 170000, 435000);
+      enemy.battleStats = new CharacterStats(1321300000, 88500, 2750000, 500000, 170000, 405000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 500;
       enemy.xpGainFromDefeat = 80000;
@@ -11215,7 +11215,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.ChironVeryHard) {
       enemy.name = "Chiron";
-      enemy.battleStats = new CharacterStats(1413000000, 170250, 2231250, 550000, 275000, 415000);
+      enemy.battleStats = new CharacterStats(1303000000, 90250, 2111250, 550000, 265000, 395000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 500;
       enemy.xpGainFromDefeat = 80000;
@@ -11441,7 +11441,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.SeaGoatVeryHard) {
       enemy.name = "Sea-Goat";
-      enemy.battleStats = new CharacterStats(1382190000, 133750, 2447500, 750000, 182500, 422000);
+      enemy.battleStats = new CharacterStats(1262190000, 78750, 2407500, 750000, 180500, 400000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 500;
       enemy.xpGainFromDefeat = 80000;
@@ -11630,7 +11630,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.GanymedeVeryHard) {
       enemy.name = "Ganymede";
-      enemy.battleStats = new CharacterStats(1430170000, 145000, 2045500, 950000, 165000, 485000);
+      enemy.battleStats = new CharacterStats(1320170000, 88000, 2045500, 950000, 160000, 455000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 500;
       enemy.xpGainFromDefeat = 80000;
@@ -11849,7 +11849,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.RainbowScaledFishVeryHard) {
       enemy.name = "Rainbow-Scaled Fish";
-      enemy.battleStats = new CharacterStats(1632130000, 160100, 3055000, 550000, 175000, 445000);
+      enemy.battleStats = new CharacterStats(1482130000, 80100, 2755000, 550000, 170000, 405000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 500;
       enemy.xpGainFromDefeat = 80000;
@@ -12052,7 +12052,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.SoaringRamVeryHard) {
       enemy.name = "Soaring Ram";
-      enemy.battleStats = new CharacterStats(1409040000, 197125, 2405000, 450000, 262500, 415000);
+      enemy.battleStats = new CharacterStats(1289040000, 107125, 2005000, 450000, 232500, 405000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.battleStats.elementResistance.air = .25;
       enemy.battleStats.elementResistance.earth = .25;
@@ -12228,7 +12228,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.GreatBullVeryHard) {
       enemy.name = "Great Bull";
-      enemy.battleStats = new CharacterStats(1506460000, 171250, 2681300, 600000, 232500, 419000);
+      enemy.battleStats = new CharacterStats(1326460000, 83250, 2481300, 600000, 232500, 409000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 500;
       enemy.xpGainFromDefeat = 80000;
@@ -12498,7 +12498,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.CastorVeryHard) {
       enemy.name = "Castor";
-      enemy.battleStats = new CharacterStats(703900000, 153750, 2471200, 675000, 201250, 460000);
+      enemy.battleStats = new CharacterStats(643900000, 73750, 2271200, 675000, 201250, 440000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.battleStats.elementResistance.lightning = .25;
       enemy.battleStats.elementResistance.air = .25;
@@ -12555,7 +12555,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.PolluxVeryHard) {
       enemy.name = "Pollux";
-      enemy.battleStats = new CharacterStats(786700000, 200750, 2357500, 380000, 197500, 530000);
+      enemy.battleStats = new CharacterStats(686700000, 100750, 2057500, 380000, 197500, 500000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.battleStats.elementResistance.lightning = .25;
       enemy.battleStats.elementResistance.air = .25;
@@ -12739,7 +12739,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.GargantuanCrabVeryHard) {
       enemy.name = "Gargantuan Crab";
-      enemy.battleStats = new CharacterStats(1551360000, 214750, 2862500, 325000, 180000, 432500);
+      enemy.battleStats = new CharacterStats(1421360000, 104750, 2562500, 325000, 180000, 402500);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 500;
       enemy.xpGainFromDefeat = 80000;
@@ -12925,7 +12925,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.MajesticLionVeryHard) {
       enemy.name = "Majestic Lion";
-      enemy.battleStats = new CharacterStats(1394630000, 128000, 2617500, 900000, 171000, 425000);
+      enemy.battleStats = new CharacterStats(1264630000, 70000, 2317500, 900000, 171000, 405000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.battleStats.elementResistance.fire = .25;
       enemy.coinGainFromDefeat = 500;
@@ -13116,7 +13116,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.AstraeaVeryHard) {
       enemy.name = "Astraea";
-      enemy.battleStats = new CharacterStats(1491110000, 163850, 2912800, 585000, 203000, 450000);
+      enemy.battleStats = new CharacterStats(1331110000, 83850, 2712800, 585000, 183000, 425000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 500;
       enemy.xpGainFromDefeat = 80000;

@@ -4,10 +4,10 @@
     <div>Thank you for considering supporting Ballad of Heroes! As a solo developer, your support means everything to me and helps me to continue making games for you to enjoy.</div>
     <br />
     <div>
-        <span *ngIf="!isMainSite">
+        <span *ngIf="isKongregate">
             When signing up for any tier of Patreon, you will gain immediate access to:
         </span>
-        <span *ngIf="isMainSite">
+        <span *ngIf="!isKongregate">
             For a $3 one time purchase or when signing up for any tier of Patreon, you will gain immediate access to:
         </span>
         <br />
@@ -39,11 +39,14 @@
         •100,000 <span class='coinKeyword smallCaps'>coins</span>
     </div>
     <br />
-    <div *ngIf="isMainSite">
+    <div *ngIf="!isKongregate">
         <span *ngIf="isSupporterAlreadyPurchased()"><i>You are already a Supporter, thank you so much!</i></span>
         <div *ngIf="!isSupporterAlreadyPurchased()" class="textCentered">
-            <button class="buttonStyled transactionButton largeButtons"
+            <!--TODO: does this work with galaxy and incrementaldb?-->
+            <button class="buttonStyled transactionButton largeButtons" *ngIf="isMainSite || !isMobile"
                 onclick="location.href='https://square.link/u/d09fIrid';">Purchase Supporter Benefits</button>
+            <button class="buttonStyled transactionButton largeButtons" *ngIf="!isMainSite && isMobile"
+                onclick="androidPurchase()">Purchase Supporter Benefits</button>
         </div>
         <br />
         <div>
@@ -62,7 +65,7 @@
         <div>
             <strong>
                 If you have any issues with receiving your benefits after purchase, please reach out to me via email at
-                balladofheroes@gmail.com or via Discord.
+                balladofheroes&#64;gmail.com or via Discord.
             </strong>
         </div>
         <br />
@@ -72,7 +75,7 @@
                 href="https://ko-fi.com/balladofheroes">Ko-Fi</a>. Thank you!
         </div>
     </div>
-    <div class="smallcaps bold s4Heading accentColor" *ngIf="!isMainSite">
+    <div class="smallcaps bold s4Heading accentColor" *ngIf="isKongregate">
         <i>Ballad of Heroes is not set up to handle direct payments outside of the main site the game is hosted on. To access these benefits on this site, please use <a class="link" href='https://www.patreon.com/BalladOfHeroes'>the patreon for Ballad of Heroes</a> to obtain a redemption code. 
             <br/><br/>
         You may also play on the main site (<a class="link" href='https://talaxi.github.io/balladofheroes/'>https://talaxi.github.io/balladofheroes</a>) for a more seamless gameplay experience. Simply export your data from this site (Menu -> Settings -> 'Export' or 'Export to File') and import your data on the main site.</i>
