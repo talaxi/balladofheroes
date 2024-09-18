@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { IonicModule } from '@ionic/angular';
+import { HttpClientModule } from '@angular/common/http';
 
+import { InAppPurchase2 } from '@awesome-cordova-plugins/in-app-purchase-2/ngx';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MainComponent } from './components/main/main/main.component';
@@ -217,6 +220,8 @@ import { TimeFragmentViewComponent } from './components/subcomponents/time-fragm
   imports: [
     BrowserModule,
     FormsModule,
+    IonicModule,
+    HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatAutocompleteModule,
@@ -255,7 +260,7 @@ import { TimeFragmentViewComponent } from './components/subcomponents/time-fragm
     MatTooltipModule,
     MatTreeModule,
   ],
-  providers: [],
+  providers: [InAppPurchase2],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

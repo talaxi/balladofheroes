@@ -157,12 +157,15 @@ export class UtilityService {
   public timeFragmentEfficiency = .2;
   public supporterTimeFragmentEfficiency = .3;
 
+  public SUPPORTER_KEY = 'supporter';
+  public ETERNAL_MELEE_KEY = 'eternal_melee_tickets';
+
   constructor(public sanitizer: DomSanitizer, public dialog: MatDialog) { }
 
   isMainSite() {
     var isMainSite = false;
     var url = (window.location != window.parent.location) ? document.referrer : document.location.href;
-    if (url.toLowerCase().includes("talaxi.github")) {
+    if (url.toLowerCase().includes("talaxi.github") || url.toLowerCase().includes("galaxy.click") || url.toLowerCase().includes("incrementaldb")) {
       isMainSite = true;
     }
 

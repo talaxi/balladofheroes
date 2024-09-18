@@ -61,13 +61,13 @@ export class AppComponent {
       }
     }
 
-    // TODO: Uncomment and discard changes to environment
-    /*if (environment.staging) {
+    // TODO: For android, comment everything except for setProductionMode() and make changes to environment for prod
+    if (environment.staging) {
       this.deploymentService.setStagingMode();
     }
-    else {*/
+    else {
       this.deploymentService.setProductionMode();
-    //}
+    }
 
     var forceNewGame = this.deploymentService.forceStartNewGame;
     var devMode = this.deploymentService.devModeActive;

@@ -64,6 +64,12 @@
             <mat-checkbox class="example-margin" [(ngModel)]="showGameLogTimeStamps"
                 (input)="showGameLogTimeStampsToggle()">Show Game Log Time Stamps
             </mat-checkbox>
+        </span>        
+        <br *ngIf="duoAbilitiesAvailable()" />
+        <span *ngIf="duoAbilitiesAvailable()">
+            <mat-checkbox class="example-margin" [(ngModel)]="showDuoAbilityProgressBars"
+                (input)="showDuoAbilityProgressBarsToggle()">Show Duo Ability Progress Bar
+            </mat-checkbox>
         </span> 
         <br />
         <span>

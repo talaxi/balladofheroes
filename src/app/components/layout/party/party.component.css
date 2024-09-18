@@ -22,6 +22,10 @@
     grid-area: dps;
 }
 
+.duoAbilityBar {
+    height: .4rem;
+}
+
 .dpsChecks {
     display: flex;
     justify-content: space-around;
