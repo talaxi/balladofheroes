@@ -37,6 +37,7 @@
     </div>
 
     <div *ngIf="!isKongregate">
+        <br/>
         <span *ngIf="isSupporterAlreadyPurchased()"><i>You are already a Supporter, thank you so much!</i></span>
         <div *ngIf="!isSupporterAlreadyPurchased()" class="textCentered">
             <!--TODO: does this work with galaxy and incrementaldb?-->            
@@ -46,7 +47,7 @@
                 (click)="androidPurchase()">Purchase Supporter Benefits</button>
         </div>
         <br />
-        <div>
+        <div *ngIf="!isSupporterAlreadyPurchased()">
             You can also purchase these benefits using the Patreon link below.
             <br />
             <br />
