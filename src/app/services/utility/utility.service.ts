@@ -473,9 +473,9 @@ export class UtilityService {
       }
 
       if (includeSpan)
-        reducedNumber += "<span class='abNumber'>AB</span>";
+        reducedNumber += "<span class='abNumber'>BB</span>";
       else
-        reducedNumber += "AB";
+        reducedNumber += "BB";
     }
     else if (this.getDigitCount(originalAmount) <= 24) {
       var leadingNumberCount = this.getDigitCount(originalAmount) - 21;
@@ -486,9 +486,9 @@ export class UtilityService {
       }
 
       if (includeSpan)
-        reducedNumber += "<span class='abNumber'>AC</span>";
+        reducedNumber += "<span class='abNumber'>CC</span>";
       else
-        reducedNumber += "AC";
+        reducedNumber += "CC";
     }
     else if (this.getDigitCount(originalAmount) <= 27) {
       var leadingNumberCount = this.getDigitCount(originalAmount) - 24;
@@ -499,9 +499,9 @@ export class UtilityService {
       }
 
       if (includeSpan)
-        reducedNumber += "<span class='abNumber'>AD</span>";
+        reducedNumber += "<span class='abNumber'>DD</span>";
       else
-        reducedNumber += "AD";
+        reducedNumber += "DD";
     }
     else if (this.getDigitCount(originalAmount) <= 30) {
       var leadingNumberCount = this.getDigitCount(originalAmount) - 27;
@@ -512,9 +512,9 @@ export class UtilityService {
       }
 
       if (includeSpan)
-        reducedNumber += "<span class='abNumber'>AE</span>";
+        reducedNumber += "<span class='abNumber'>EE</span>";
       else
-        reducedNumber += "AE";
+        reducedNumber += "EE";
     }
     else if (this.getDigitCount(originalAmount) <= 33) {
       var leadingNumberCount = this.getDigitCount(originalAmount) - 30;
@@ -525,9 +525,9 @@ export class UtilityService {
       }
 
       if (includeSpan)
-        reducedNumber += "<span class='abNumber'>AF</span>";
+        reducedNumber += "<span class='abNumber'>FF</span>";
       else
-        reducedNumber += "AF";
+        reducedNumber += "FF";
     }
     else if (this.getDigitCount(originalAmount) <= 36) {
       var leadingNumberCount = this.getDigitCount(originalAmount) - 33;
@@ -538,9 +538,9 @@ export class UtilityService {
       }
 
       if (includeSpan)
-        reducedNumber += "<span class='abNumber'>AG</span>";
+        reducedNumber += "<span class='abNumber'>GG</span>";
       else
-        reducedNumber += "AG";
+        reducedNumber += "GG";
     }
     //gg you beat the game
 
