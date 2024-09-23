@@ -5302,7 +5302,7 @@ export class BattleService {
     var BucklerOfPerfectHarmony = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.BucklerOfPerfectHarmonyAttack);
     if (BucklerOfPerfectHarmony !== undefined) {
       BucklerOfPerfectHarmony.count -= 1;
-      if (BucklerOfPerfectHarmony.count <= 0 && partyMembers !== undefined) {
+      if (BucklerOfPerfectHarmony.count <= 0 && partyMembers !== undefined && partyMembers.some(item => item.type === CharacterEnum.Enemy)) {
         partyMembers.forEach(member => {
           var damage = this.dealTrueDamage(true, member, this.lookupService.getAdjustedDefense(target) * (this.lookupService.getAdjustedDefense(target) * BucklerOfPerfectHarmony!.effectiveness), undefined, undefined, true);
 
@@ -5319,7 +5319,7 @@ export class BattleService {
     var BucklerOfPerfectHarmony = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.BucklerOfPerfectHarmonyAttackUnique);
     if (BucklerOfPerfectHarmony !== undefined) {
       BucklerOfPerfectHarmony.count -= 1;
-      if (BucklerOfPerfectHarmony.count <= 0 && partyMembers !== undefined) {
+      if (BucklerOfPerfectHarmony.count <= 0 && partyMembers !== undefined && partyMembers.some(item => item.type === CharacterEnum.Enemy)) {
         var uniqueEffect = this.globalService.globalVar.uniques.find(item => item.type === ItemsEnum.BucklerOfPerfectHarmonyUnique);
 
         if (uniqueEffect !== undefined) {
