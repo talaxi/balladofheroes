@@ -61,6 +61,7 @@ export class AppComponent {
       }
     }
 
+    // TODO: For android, comment everything except for setProductionMode() and make changes to environment for prod
     if (environment.staging) {
       this.deploymentService.setStagingMode();
     }

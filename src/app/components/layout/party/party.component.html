@@ -81,7 +81,13 @@
                         </div>
                         <div *ngIf="isDuoAvailable(character)" class="duoAbility" customToolTip
                             [contentTemplate]="duoAbilityPopover" (click)="triggerDuo(character)" (contextmenu)="toggleAutoWeb(character)">                           
-                            <img class="duoAbilityImage" [ngClass]="{'manualOverdriveMode': isDuoCooldownReady(character)}" [src]="getDuoSource(character)">
+                            <img class="duoAbilityImage" [ngClass]="{'manualOverdriveMode': !character.battleInfo.duoAbilityAutoMode}" [src]="getDuoSource(character)">
+                            <mat-progress-bar *ngIf="notLowPerformanceMode() && showDuoProgressBars" mode="determinate" [value]="getCharacterDuoAbilityPercent(character)"
+                                class="duoAbilityBar highBar removeTransition"
+                                [ngClass]="{'manualOverdriveMode': !character.battleInfo.duoAbilityAutoMode, 'adventurer-progress': isAdventurer(character), 'archer-progress': isArcher(character),
+                                    'warrior-progress': isWarrior(character), 'priest-progress': isPriest(character), 'monk-progress': isMonk(character),
+                                    'thaumaturge-progress': isThaumaturge(character)}">
+                            </mat-progress-bar>
                             <span *ngIf="!character.battleInfo.duoAbilityAutoMode" class="manualModeText"><strong>OFF</strong></span>
                         </div>
 

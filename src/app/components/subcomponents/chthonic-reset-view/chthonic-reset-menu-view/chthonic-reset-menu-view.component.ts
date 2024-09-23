@@ -59,7 +59,7 @@ export class ChthonicResetMenuViewComponent implements OnInit {
       this.bonusGodText = "You ever wake up with an unquenchable thirst for violence? Just me? Maybe I've been down here too long. Bring me a little favor from Ares so I can get a little taste.";
     }
     if (this.bonusGod === GodEnum.Nemesis) {
-      this.bonusGodText = "Come up with some <i>creative interpretion</i> of the rules of dice? Here comes Nemesis to set you straight. Get a little too frisky with the farmer's daughter? Ten lashes from Nemesis. Collect money from the villagers to buy a sacrifice to the gods and blow it on wine and women? Guess who's here to ruin the fun, Nemesis! I'm hoping with a little favor, she might look the other way the next time me and the boys are playing a game of dice...";
+      this.bonusGodText = "Come up with some <i>creative interpretion</i> of the rules of dice? Here comes Nemesis to set you straight. Get a little too frisky with the farmer's daughter? Ten lashes from Nemesis. Collect money from the villagers to buy a sacrifice to the gods and blow it on wine and women? Guess who's here to ruin the fun, Nemesis! I'm hoping with a little favor, she might look the other way the next time me and the boys get together...";
     }
     if (this.bonusGod === GodEnum.Dionysus) {
       this.bonusGodText = "Now <b>HERE'S</b> someone that knows how to have a little fun! They oughtta start a cult or something for Dionysus, I'll be the first one to sign up!";

@@ -239,6 +239,7 @@ export class InitializationService {
     this.globalService.globalVar.settings.set("changeClassSwapGods", true);
     this.globalService.globalVar.settings.set("showEnemyHpAsPercent", false);
     this.globalService.globalVar.settings.set("showPartyHpAsPercent", false);
+    this.globalService.globalVar.settings.set("showDuoAbilityProgressBars", true);    
     this.globalService.globalVar.settings.set("autoExportOnUpdate", false);
     this.globalService.globalVar.settings.set("showPauseMessage", true);
     this.globalService.globalVar.settings.set("fps", this.utilityService.averageFps);
@@ -305,7 +306,7 @@ export class InitializationService {
     this.globalService.globalVar.settings.set("displayQuickViewTimeFragment", true);
 
     if (this.deviceDetectorService.isMobile()) {
-      this.globalService.globalVar.settings.set("displayOverlayTutorials", true);
+      this.globalService.globalVar.settings.set("displayOverlayTutorials", false);
       this.globalService.globalVar.settings.set("displayOverlayBattleRewards", true);
       this.globalService.globalVar.settings.set("displayOverlayPray", true);
     }
@@ -729,7 +730,7 @@ export class InitializationService {
     }
 
     this.globalService.globalVar.ballads.forEach(ballad => {
-      //if (ballad.type !== BalladEnum.Redemption && ballad.type !== BalladEnum.Time) {
+      if (ballad.type === BalladEnum.Champion || ballad.type === BalladEnum.Gorgon || ballad.type === BalladEnum.Underworld) {
       ballad.isAvailable = true;
       ballad.notify = true;
       ballad.zones.forEach(zone => {
@@ -755,7 +756,7 @@ export class InitializationService {
         })
         //}
       });
-      //}
+      }
     });
 
     //set up ballad for original testing          
@@ -1298,7 +1299,7 @@ export class InitializationService {
 
       this.globalService.globalVar.loadouts.push(balancedLoadout);
 
-      this.lookupService.gainResource(new ResourceValue(ItemsEnum.AthenasSigil, 1));
+      /*this.lookupService.gainResource(new ResourceValue(ItemsEnum.AthenasSigil, 1));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.ArtemissSigil, 1));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.HermessSigil, 1));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.ApollosSigil, 1));
@@ -1309,7 +1310,7 @@ export class InitializationService {
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.ZeussSigil, 1));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.PoseidonsSigil, 1));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.AphroditesSigil, 1));
-      this.lookupService.gainResource(new ResourceValue(ItemsEnum.HerasSigil, 1));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.HerasSigil, 1));*/
 
       var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.FendingMace, 1);
       if (resource !== undefined)
@@ -1452,7 +1453,7 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AressNecklace);
       }
 
-      var chthonicResetCount = 3;
+      var chthonicResetCount = 5;
       var godLevel = 10;
 
       for (var j = 0; j < chthonicResetCount; j++) {
@@ -1467,9 +1468,9 @@ export class InitializationService {
         this.globalService.assignGodAbilityInfo(athena!);
 
         if (j < chthonicResetCount - 1)
-          godLevel = 1500;
+          godLevel = 499;
         else
-          godLevel = 1500;
+          godLevel = 499;
 
         for (var i = 0; i < godLevel; i++) {
           this.globalService.levelUpGod(athena!);
@@ -1644,18 +1645,21 @@ export class InitializationService {
         aphrodite!.affinityLevel = 15;
       }
 
-      for (var j = 0; j < 25; j++) {
-        var characterLevel = 25;
+      for (var j = 0; j < 1; j++) {
+        var characterLevel = 24;
         this.globalService.globalVar.characters.forEach(character => {
           for (var i = 0; i < characterLevel; i++) {
             this.globalService.levelUpPartyMember(character);
           }
-          character.level = 1;
+          //character.level = 1;
           character.exp = 0;
+          character.maxLevel = 100;          
+          character.linkInfo.totalLinks = 0;
+          character.linkInfo.remainingLinks = 0;
           character.baseStats = this.globalService.getCharacterBaseStats(character.type);
         });
 
-        var characterLevel = 1;
+        /*var characterLevel = 1;
         this.globalService.globalVar.characters.forEach(character => {
           for (var i = 0; i < characterLevel; i++) {
             this.globalService.levelUpPartyMember(character);
@@ -1663,9 +1667,9 @@ export class InitializationService {
           character.level = 1;
           character.exp = 0;
           character.baseStats = this.globalService.getCharacterBaseStats(character.type);
-        });
+        });*/
       }
-
+/*
       var characterLevel = 39;
       this.globalService.globalVar.characters.forEach(character => {
         for (var i = 0; i < characterLevel; i++) {
@@ -1747,7 +1751,7 @@ export class InitializationService {
         //character.linkInfo.remainingLinks = 0;
         character.baseStats = this.globalService.getCharacterBaseStats(character.type);
         character.maxLevel = 100;
-      });
+      });*/
       /*
       var characterLevel = 64;
       this.globalService.globalVar.characters.forEach(character => {

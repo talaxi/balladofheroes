@@ -1,1 +1,0 @@
-(()=>{"use strict";addEventListener("message",({data:s})=>{importScripts("assets/js/lz-string.js");var e=JSON.stringify(s),a=LZString.compressToBase64(e);postMessage(a)})})();

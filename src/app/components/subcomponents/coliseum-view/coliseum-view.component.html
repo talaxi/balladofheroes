@@ -119,8 +119,10 @@
                     <button class="buttonStyled" [disabled]="!canEnterWeeklyMelee()" (click)="startTournament()">Start
                         Tournament</button>
                     <br />
-                    <button *ngIf="!canEnterWeeklyMelee() && transactionEnabled" class="buttonStyled transactionButton"
+                    <button *ngIf="!canEnterWeeklyMelee() && transactionEnabled && !isAndroid" class="buttonStyled transactionButton"
                         (click)="openTransactionModal()">Purchase Eternal Melee Tickets</button>
+                    <button *ngIf="!canEnterWeeklyMelee() && transactionEnabled && isAndroid" class="buttonStyled transactionButton"
+                        (click)="androidPurchase()">Purchase Eternal Melee Tickets</button>
                     <br />
                     <div [ngClass]="{'flexAround': !isMobile()}">
                         <mat-checkbox [(ngModel)]="repeatColiseumFight" (input)="repeatColiseumFightToggle()">

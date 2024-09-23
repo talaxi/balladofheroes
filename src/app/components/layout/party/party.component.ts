@@ -55,6 +55,7 @@ export class PartyComponent implements OnInit {
   longPressStartTime = 0;
   clickCount = 0;
   doubleClickTiming = 250;
+  showDuoProgressBars = true;
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -68,6 +69,10 @@ export class PartyComponent implements OnInit {
 
   ngOnInit(): void {
     this.showPartyHpAsPercent = this.globalService.globalVar.settings.get("showPartyHpAsPercent") ?? false;
+    this.showDuoProgressBars = this.globalService.globalVar.settings.get("showDuoAbilityProgressBars");
+    if (this.showDuoProgressBars === undefined || this.showDuoProgressBars.toString() === "" || this.showDuoProgressBars.toString() === " ")
+      this.showDuoProgressBars = true;
+
     this.verboseMode = this.globalService.globalVar.settings.get("verboseMode") ?? false;
     this.doubleClickTiming = this.globalService.globalVar.settings.get("doubleClickTiming") ?? this.utilityService.quickDoubleClickTiming;
     if (this.doubleClickTiming < 250)
@@ -151,6 +156,16 @@ export class PartyComponent implements OnInit {
 
   getCharacterOverdrivePercent(character: Character) {
     return (character.overdriveInfo.gaugeAmount / character.overdriveInfo.gaugeTotal) * 100;
+  }
+
+  getCharacterDuoAbilityPercent(character: Character) {
+    var gods = [];
+    gods.push(character.assignedGod1);
+    gods.push(character.assignedGod2);
+
+    var abilityCooldown = this.globalService.getDuoAbilityCooldown(gods);
+
+    return (1 - (character.battleInfo.duoAbilityCooldown / abilityCooldown)) * 100;
   }
 
   getCharacterGodName(character: Character, whichGod: number) {
@@ -1014,6 +1029,30 @@ export class PartyComponent implements OnInit {
     }*/
 
     return "athenaColor";
+  }
+
+  isAdventurer(character: Character) {
+    return character.type === CharacterEnum.Adventurer;
+  }
+
+  isArcher(character: Character) {
+    return character.type === CharacterEnum.Archer;
+  }
+  
+  isPriest(character: Character) {
+    return character.type === CharacterEnum.Priest;
+  }
+  
+  isWarrior(character: Character) {
+    return character.type === CharacterEnum.Warrior;
+  }
+  
+  isMonk(character: Character) {
+    return character.type === CharacterEnum.Monk;
+  }
+  
+  isThaumaturge(character: Character) {
+    return character.type === CharacterEnum.Thaumaturge;
   }
 
   getCharacterBarrierPercent(character: Character) {

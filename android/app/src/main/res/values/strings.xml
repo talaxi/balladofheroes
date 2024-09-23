@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Ballad of Heroes</string>
+    <string name="title_activity_main">Ballad of Heroes</string>
+    <string name="package_name">ballad.talaxi</string>
+    <string name="custom_url_scheme">ballad.talaxi</string>
+</resources>

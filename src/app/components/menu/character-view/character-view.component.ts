@@ -1075,6 +1075,8 @@ export class CharacterViewComponent implements OnInit {
       statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.holy * 100) + "% Holy Damage Increase, ";
     if (upgradedStats.elementIncrease.fire > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.fire * 100) + "% Fire Damage Increase, ";
+    if (upgradedStats.elementIncrease.air > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.air * 100) + "% Air Damage Increase, ";
     if (upgradedStats.elementIncrease.lightning > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.lightning * 100) + "% Lightning Damage Increase, ";
     if (upgradedStats.elementIncrease.water > 0)

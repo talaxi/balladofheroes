@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { MatDialog as MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
@@ -16,6 +16,9 @@ import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { MenuService } from 'src/app/services/menu/menu.service';
 import { Equipment } from 'src/app/models/resources/equipment.model';
 declare var LZString: any;
+import { Platform } from '@ionic/angular';
+import 'cordova-plugin-purchase';
+import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 
 @Component({
   selector: 'app-coliseum-view',
@@ -39,6 +42,9 @@ export class ColiseumViewComponent implements OnInit {
   file: any;
   hermessStaffDescription: Equipment | undefined;
   shieldOfUnendingFlamesDescription: Equipment | undefined;
+  isAndroid = false;  
+  store = CdvPurchase.store;
+  products: CdvPurchase.Product[];
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -60,9 +66,21 @@ export class ColiseumViewComponent implements OnInit {
   constructor(private coliseumService: ColiseumService, private globalService: GlobalService, public dialog: MatDialog,
     private lookupService: LookupService, private utilityService: UtilityService, private dictionaryService: DictionaryService,
     private deviceDetectorService: DeviceDetectorService, private keybindService: KeybindService, private dpsCalculatorService: DpsCalculatorService,
-    private gameLogService: GameLogService, private menuService: MenuService) { }
+    private gameLogService: GameLogService, private menuService: MenuService, private plt: Platform, private ref: ChangeDetectorRef) { 
+      this.plt.ready().then(() => {      
+        this.registerProducts();
+        this.setupListeners();
+        this.store.verbosity = CdvPurchase.LogLevel.DEBUG;
+  
+        // Get the real product information
+        this.store.ready(() => {
+          this.ref.detectChanges();
+        });
+      });
+    }
 
   ngOnInit(): void {
+    this.isAndroid = this.deviceDetectorService.isMobile() && !this.utilityService.isMainSite() && !this.utilityService.isKongregate();    
     this.rewardsText = this.setRewardsText();
     this.repeatColiseumFight = this.globalService.globalVar.settings.get("repeatColiseumFight") ?? false;
     this.automateEternalMelee = this.globalService.globalVar.settings.get("automateEternalMelee") ?? false;
@@ -74,7 +92,7 @@ export class ColiseumViewComponent implements OnInit {
     this.hermessStaffDescription = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.HermessStaff);
     this.shieldOfUnendingFlamesDescription = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShieldOfUnendingFlames);
     
-    if (!this.utilityService.isMainSite())
+    if (this.utilityService.isKongregate())
       this.transactionEnabled = false;
   }
 
@@ -471,4 +489,53 @@ export class ColiseumViewComponent implements OnInit {
   fileChanged(e: any) {
     this.file = e.target.files[0];
   }
+
+  
+  registerProducts() {
+    const { ProductType, Platform, LogLevel, Product, VerifiedReceipt } = CdvPurchase; // shortcuts
+
+    this.store.register({
+      id: this.utilityService.ETERNAL_MELEE_KEY,
+      type: ProductType.CONSUMABLE,
+      platform: Platform.GOOGLE_PLAY,      
+    });
+    
+    this.store.initialize([Platform.GOOGLE_PLAY]);
+
+    this.products = this.store.products;
+
+    this.store.update();
+  }
+
+  setupListeners() {
+    // General query to all products
+    this.store.when()    
+    .approved(transaction => {
+      var ticketMultiplier = 1;
+        if (this.globalService.globalVar.isSubscriber)
+          ticketMultiplier = 2;
+
+        var additionalTickets = this.utilityService.weeklyMeleeEntryCap * ticketMultiplier;
+
+        this.lookupService.gainResource(new ResourceValue(ItemsEnum.EternalMeleeTicket, additionalTickets));
+      // verify approved transactions
+      //this.store.verify(transaction);
+    })
+    /*.verified(receipt => {
+      // finish transactions from verified receipts
+      //this.store.finish(receipt);      
+    });*/
+  }
+
+  androidPurchase() {
+    const store = CdvPurchase.store;
+    const subscriber = store.products.find(p => p.id === this.utilityService.ETERNAL_MELEE_KEY);
+
+    if (subscriber === undefined)
+      return;
+
+    const offer = store.get(subscriber.id, subscriber.platform)?.getOffer();
+
+    if (offer) store.order(offer);
+  }   
 }

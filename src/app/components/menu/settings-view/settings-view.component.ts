@@ -4,6 +4,7 @@ import { plainToInstance } from 'class-transformer';
 import { StoryStyleSettingEnum } from 'src/app/models/enums/story-style-setting-enum.model';
 import { GlobalVariables } from 'src/app/models/global/global-variables.model';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
+import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { DeploymentService } from 'src/app/services/deployment/deployment.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { StoryService } from 'src/app/services/story/story.service';
@@ -34,6 +35,7 @@ export class SettingsViewComponent implements OnInit {
   storyStyleEnum = StoryStyleSettingEnum;
   tooltipTheme: boolean;
   quickViewOverlayFlipped: boolean = false;
+  showDuoAbilityProgressBars: boolean = false;
   showPartyHpAsPercent: boolean = false;
   showEnemyHpAsPercent: boolean = false;
   autoExportOnUpdate: boolean = false;
@@ -98,7 +100,8 @@ export class SettingsViewComponent implements OnInit {
     this.loadingTime = this.globalService.globalVar.settings.get("loadingTime") ?? this.utilityService.lowActiveTimeLimit;
     this.quickViewOverlayFlipped = this.globalService.globalVar.settings.get("quickViewOverlayFlipped") ?? false;
     this.showPartyHpAsPercent = this.globalService.globalVar.settings.get("showPartyHpAsPercent") ?? false;
-    this.showEnemyHpAsPercent = this.globalService.globalVar.settings.get("showEnemyHpAsPercent") ?? false;
+    this.showEnemyHpAsPercent = this.globalService.globalVar.settings.get("showEnemyHpAsPercent") ?? false;    
+    this.showDuoAbilityProgressBars = this.globalService.globalVar.settings.get("showDuoAbilityProgressBars") ?? true;
     this.autoExportOnUpdate = this.globalService.globalVar.settings.get("autoExportOnUpdate") ?? false;
     this.showTutorialsAsModals = this.globalService.globalVar.settings.get("showTutorialsAsModals") ?? false;
     this.verboseMode = this.globalService.globalVar.settings.get("verboseMode") ?? false;
@@ -255,7 +258,10 @@ export class SettingsViewComponent implements OnInit {
   }
   showPartyHpAsPercentToggle() {
     this.globalService.globalVar.settings.set("showPartyHpAsPercent", this.showPartyHpAsPercent);
-  }
+  }  
+  showDuoAbilityProgressBarsToggle() {
+    this.globalService.globalVar.settings.set("showDuoAbilityProgressBars", this.showDuoAbilityProgressBars);
+  }  
   autoExportOnUpdateToggle() {
     this.globalService.globalVar.settings.set("autoExportOnUpdate", this.autoExportOnUpdate);
   }
@@ -279,6 +285,10 @@ export class SettingsViewComponent implements OnInit {
   }
   showPauseMessageToggle() {
     this.globalService.globalVar.settings.set("showPauseMessage", this.showPauseMessage);
+  }
+
+  duoAbilitiesAvailable() {
+    return this.globalService.globalVar.gods.find(item => item.type === GodEnum.Poseidon)?.isAvailable;
   }
 
   ngOnDestroy() {

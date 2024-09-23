@@ -157,12 +157,15 @@ export class UtilityService {
   public timeFragmentEfficiency = .2;
   public supporterTimeFragmentEfficiency = .3;
 
+  public SUPPORTER_KEY = 'supporter';
+  public ETERNAL_MELEE_KEY = 'eternal_melee_tickets';
+
   constructor(public sanitizer: DomSanitizer, public dialog: MatDialog) { }
 
   isMainSite() {
     var isMainSite = false;
     var url = (window.location != window.parent.location) ? document.referrer : document.location.href;
-    if (url.toLowerCase().includes("talaxi.github")) {
+    if (url.toLowerCase().includes("talaxi.github") || url.toLowerCase().includes("galaxy.click") || url.toLowerCase().includes("incrementaldb")) {
       isMainSite = true;
     }
 
@@ -470,9 +473,9 @@ export class UtilityService {
       }
 
       if (includeSpan)
-        reducedNumber += "<span class='abNumber'>AB</span>";
+        reducedNumber += "<span class='abNumber'>BB</span>";
       else
-        reducedNumber += "AB";
+        reducedNumber += "BB";
     }
     else if (this.getDigitCount(originalAmount) <= 24) {
       var leadingNumberCount = this.getDigitCount(originalAmount) - 21;
@@ -483,9 +486,9 @@ export class UtilityService {
       }
 
       if (includeSpan)
-        reducedNumber += "<span class='abNumber'>AC</span>";
+        reducedNumber += "<span class='abNumber'>CC</span>";
       else
-        reducedNumber += "AC";
+        reducedNumber += "CC";
     }
     else if (this.getDigitCount(originalAmount) <= 27) {
       var leadingNumberCount = this.getDigitCount(originalAmount) - 24;
@@ -496,9 +499,9 @@ export class UtilityService {
       }
 
       if (includeSpan)
-        reducedNumber += "<span class='abNumber'>AD</span>";
+        reducedNumber += "<span class='abNumber'>DD</span>";
       else
-        reducedNumber += "AD";
+        reducedNumber += "DD";
     }
     else if (this.getDigitCount(originalAmount) <= 30) {
       var leadingNumberCount = this.getDigitCount(originalAmount) - 27;
@@ -509,9 +512,9 @@ export class UtilityService {
       }
 
       if (includeSpan)
-        reducedNumber += "<span class='abNumber'>AE</span>";
+        reducedNumber += "<span class='abNumber'>EE</span>";
       else
-        reducedNumber += "AE";
+        reducedNumber += "EE";
     }
     else if (this.getDigitCount(originalAmount) <= 33) {
       var leadingNumberCount = this.getDigitCount(originalAmount) - 30;
@@ -522,9 +525,9 @@ export class UtilityService {
       }
 
       if (includeSpan)
-        reducedNumber += "<span class='abNumber'>AF</span>";
+        reducedNumber += "<span class='abNumber'>FF</span>";
       else
-        reducedNumber += "AF";
+        reducedNumber += "FF";
     }
     else if (this.getDigitCount(originalAmount) <= 36) {
       var leadingNumberCount = this.getDigitCount(originalAmount) - 33;
@@ -535,9 +538,9 @@ export class UtilityService {
       }
 
       if (includeSpan)
-        reducedNumber += "<span class='abNumber'>AG</span>";
+        reducedNumber += "<span class='abNumber'>GG</span>";
       else
-        reducedNumber += "AG";
+        reducedNumber += "GG";
     }
     //gg you beat the game
 

@@ -88,6 +88,56 @@
   display: none;
 }
 
+
+.adventurer-progress {
+  --mdc-linear-progress-active-indicator-color: var(--adventurerColor) !important;
+}
+
+.adventurer-progress .mdc-linear-progress__buffer-bar {
+  background-color: #290609 !important;
+}
+
+.archer-progress {
+  --mdc-linear-progress-active-indicator-color: var(--archerColor) !important;
+}
+
+.archer-progress .mdc-linear-progress__buffer-bar {
+  background-color: #290609 !important;
+}
+
+.warrior-progress {
+  --mdc-linear-progress-active-indicator-color: var(--warriorColor) !important;
+}
+
+.warrior-progress .mdc-linear-progress__buffer-bar {
+  background-color: #290609 !important;
+}
+
+.priest-progress {
+  --mdc-linear-progress-active-indicator-color: var(--priestColor) !important;
+}
+
+.priest-progress .mdc-linear-progress__buffer-bar {
+  background-color: #290609 !important;
+}
+
+.monk-progress {
+  --mdc-linear-progress-active-indicator-color: var(--monkColor) !important;
+}
+
+.monk-progress .mdc-linear-progress__buffer-bar {
+  background-color: #290609 !important;
+}
+
+.thaumaturge-progress {
+  --mdc-linear-progress-active-indicator-color: var(--thaumaturgeColor) !important;
+}
+
+.thaumaturge-progress .mdc-linear-progress__buffer-bar {
+  background-color: #290609 !important;
+}
+
+
 .highBar .mdc-linear-progress__bar-inner {
   border-top-width: var(--mdc-linear-progress-track-height, 1rem);
 }

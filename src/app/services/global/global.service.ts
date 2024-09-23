@@ -3646,6 +3646,8 @@ export class GlobalService {
       statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.holy * 100) + "% Holy Damage Increase, ";
     if (upgradedStats.elementIncrease.fire > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.fire * 100) + "% Fire Damage Increase, ";
+    if (upgradedStats.elementIncrease.air > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.air * 100) + "% Air Damage Increase, ";
     if (upgradedStats.elementIncrease.lightning > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.lightning * 100) + "% Lightning Damage Increase, ";
     if (upgradedStats.elementIncrease.water > 0)
@@ -4024,6 +4026,11 @@ export class GlobalService {
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.InstantHealAfterAutoAttack);
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.AutoAttackDealsElementalDamage);
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.MaxHpDown);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.ResistanceDown);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.AgilityDown);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.LuckDown);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DefenseDown);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.AttackDown);
 
       var relevantAltarEffect = this.getAltarEffectWithEffect(AltarEffectsEnum.AresMaxHpUp);
       if (relevantAltarEffect !== undefined)
@@ -5214,6 +5221,53 @@ export class GlobalService {
       return this.dialog.open(TutorialBoxComponent, { width: '80%', height: 'auto' });
     else
       return this.dialog.open(TutorialBoxComponent, { width: '40%', height: 'auto' });
+  }
+
+  getDuoAbilityCooldown(gods: GodEnum[]) {
+    var ability: Ability = new Ability();
+    if (gods.length < 2)
+      return 10;
+
+    ability.requiredLevel = this.utilityService.duoAbilityLevel;
+
+    var god1 = this.globalVar.gods.find(item => item.type === gods[0]);
+    var god2 = this.globalVar.gods.find(item => item.type === gods[1]);
+    if (god1 === undefined || god2 === undefined)
+      return 10;
+
+    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Apollo)) {
+      return 15;
+    }
+
+    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Ares)) {
+      return 5;
+    }
+
+    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Dionysus)) {
+      return 5;
+    }
+
+    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Hera)) {
+      return 15;
+    }
+
+    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Ares)) {
+     return 15;
+    }
+
+    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Dionysus)) {
+      return 15;
+    }
+
+    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Nemesis)) {
+      return 5;
+    }
+
+    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Aphrodite)) {
+      return 15;
+    }
+
+    return 10;
   }
 
   getDuoAbility(gods: GodEnum[], defaultValues: boolean = false) {
