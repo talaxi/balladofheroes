@@ -46,7 +46,7 @@
                 (click)="androidPurchase()">Purchase Supporter Benefits</button>
         </div>
         <br />
-        <div>
+        <div *ngIf="!isSupporterAlreadyPurchased()">
             You can also purchase these benefits using the Patreon link below.
             <br />
             <br />
