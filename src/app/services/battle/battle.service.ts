@@ -5344,7 +5344,7 @@ export class BattleService {
         var uniqueEffect = this.globalService.globalVar.uniques.find(item => item.type === ItemsEnum.SwordOfOlympus);
 
         if (uniqueEffect !== undefined) {
-          targets.forEach(member => {
+          targets.filter(item => item.type === CharacterEnum.Enemy).forEach(member => {
             var damage = this.dealTrueDamage(true, member, this.lookupService.getAdjustedAttack(attacker, undefined, true) * (swordOfOlympus!.effectiveness), undefined, undefined, true);
 
             if (this.globalService.globalVar.gameLogSettings.get("partyEquipmentEffect")) {
@@ -5364,7 +5364,7 @@ export class BattleService {
         var uniqueEffect = this.globalService.globalVar.uniques.find(item => item.type === ItemsEnum.ArmorOfOlympus);
 
         if (uniqueEffect !== undefined) {
-          targets.forEach(member => {
+          targets.filter(item => item.type === CharacterEnum.Enemy).forEach(member => {
             var damage = this.dealTrueDamage(true, member, armorOfOlympus!.count, undefined, undefined, true);
 
             if (this.globalService.globalVar.gameLogSettings.get("partyEquipmentEffect")) {
