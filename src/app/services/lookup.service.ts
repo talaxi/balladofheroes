@@ -8942,7 +8942,7 @@ export class LookupService {
             else if (equipment.itemType === ItemsEnum.ScorpionStingerUnique) {
               var unique = this.globalService.globalVar.uniques.find(item => item.type === equipment.itemType);
               if (unique !== undefined)
-                equipmentEffects += "Poison your target, dealing <strong>" + (unique.getMinorEffectLevel() * .1).toString() + "% of your Max HP</strong> in damage every " + effect.tickFrequency + " seconds for " + effect.duration + " seconds. Every time this effect triggers against the same enemy, the damage is increased by " + (10 * unique.getMajorEffectLevel()).toString() + "%.<br/>";
+                equipmentEffects += "Poison your target, dealing <strong>" + this.utilityService.genericRound(unique.getMinorEffectLevel() * .1).toString() + "% of your Max HP</strong> in damage every " + effect.tickFrequency + " seconds for " + effect.duration + " seconds. Every time this effect triggers against the same enemy, the damage is increased by " + (10 * unique.getMajorEffectLevel()).toString() + "%.<br/>";
             }
           }
 
