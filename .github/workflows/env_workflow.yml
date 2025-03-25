@@ -28,7 +28,7 @@ jobs:
         SQUARE_SUPPORTER: ${{ secrets.SQUARE_SUPPORTER }}
     
     - name: Upload Artifact
-      uses: actions/upload-pages-artifact@v2.0.0
+      uses: actions/upload-pages-artifact@v3.0.0
       with:
         path: ./docs/
         retention-days: 1
