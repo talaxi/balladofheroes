@@ -2,40 +2,43 @@ name: CI
 
 on: push
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    permissions: write-all
-    environment: 
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build
+        run: |
+          npm install
+          npm run-script deploy
+        env:
+          CODEREDEMPTIONSECRET: ${{ secrets.CODEREDEMPTIONSECRET }}
+          STRIPESECRET: ${{ secrets.STRIPESECRET }}
+          PATREONCLIENTID: ${{ secrets.PATREONCLIENTID }}
+          PATREONCLIENTSECRET: ${{ secrets.PATREONCLIENTSECRET }}
+          SQUARE_ETERNAL_MELEE_TICKETS: ${{ secrets.SQUARE_ETERNAL_MELEE_TICKETS }}
+          SQUARE_SUPPORTER: ${{ secrets.SQUARE_SUPPORTER }}
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./docs/
+          retention-days: 1
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-    
-    - name: Checkout
-      uses: actions/checkout@v3
-
-    - name: Build
-      run: |
-        npm install
-        npm run-script deploy
-      env:
-        CODEREDEMPTIONSECRET: ${{ secrets.CODEREDEMPTIONSECRET }}
-        STRIPESECRET: ${{ secrets.STRIPESECRET }}
-        PATREONCLIENTID: ${{ secrets.PATREONCLIENTID }}
-        PATREONCLIENTSECRET: ${{ secrets.PATREONCLIENTSECRET }}
-        SQUARE_ETERNAL_MELEE_TICKETS: ${{ secrets.SQUARE_ETERNAL_MELEE_TICKETS }}
-        SQUARE_SUPPORTER: ${{ secrets.SQUARE_SUPPORTER }}
-    
-    - name: Upload Artifact
-      uses: actions/upload-pages-artifact@v3.0.0
-      with:
-        path: ./docs/
-        retention-days: 1
-
-    - name: Deploy
-      uses: actions/deploy-pages@v3
-      id: deployment
-      with:
-        emit_telemetry: false
-        token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
