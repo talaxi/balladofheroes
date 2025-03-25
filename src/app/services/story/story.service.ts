@@ -590,7 +590,7 @@ export class StoryService {
     else if (storyId === 41) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>You take a moment to catch your breath and scan the battlefield. Some giants had pushed forward into the main courtyard of Olympus, but had not made much success beyond that. Ares remained near the gates, a one god army drawing blood from every giant who attempted to enter. You catch sight of Apollo bringing a giant down with an arrow to the skull and Poseidon doing battle with two giants himself.</div>" +
-          "<div>You were correct to be weary of the titans. Shortly after the giants pushed through the gates, they made their move. Zeus quickly engaged the massive Hyperion while Athena and Hermes were doing battle with Coeus between palaces.</div>";
+          "<div>You were correct to be wary of the titans. Shortly after the giants pushed through the gates, they made their move. Zeus quickly engaged the massive Hyperion while Athena and Hermes were doing battle with Coeus between palaces.</div>";
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>Between all of the battling, you notice two giants splitting from the main group. One was heading towards Zeus's palace, the other towards the royal stables.</div>" +
           "<div>" + this.zosimeText("“Thales! Take the stables, I've got the palace!”") + " Zosime shouts, heading after the giant going to the palace. You in turn make for the stables. </div>";
