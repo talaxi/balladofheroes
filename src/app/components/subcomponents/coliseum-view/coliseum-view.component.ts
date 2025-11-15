@@ -519,12 +519,12 @@ export class ColiseumViewComponent implements OnInit {
 
         this.lookupService.gainResource(new ResourceValue(ItemsEnum.EternalMeleeTicket, additionalTickets));
       // verify approved transactions
-      //this.store.verify(transaction);
+      transaction.verify();
     })
-    /*.verified(receipt => {
+    .verified(receipt => {
       // finish transactions from verified receipts
-      //this.store.finish(receipt);      
-    });*/
+      receipt.finish();      
+    });
   }
 
   androidPurchase() {

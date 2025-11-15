@@ -166,6 +166,8 @@
 
   /* 797C80 */
   --background-default: #41474D;
+  --party-panel-background: #2d3237;
+  --nav-panel-background: #31363c;
   /*--background-default: #;*/
   --background-header: #08090A;
   --kod-character: #08090A;
@@ -389,7 +391,7 @@
 }
 
 body {
-  background: var(--background-default);
+  background: var(--background-default);  
 }
 
 html,
@@ -399,6 +401,10 @@ body {
   font-family: "Candara", sans-serif;
   font-size: 2.2vmin;
   cursor: default;
+}
+
+* {
+  text-shadow: 0 1px 3px rgba(0,0,0,0.65);
 }
 
 .xpColor {

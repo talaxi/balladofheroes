@@ -48,7 +48,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [1.02, 1.01, 1, 0.85, 0.82, 0.81, 0.8, 0.76, 0.75, 0.71, 0.7, 0.65, 0.64, 0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [1.1, 1.02, 1.01, 1, 0.85, 0.82, 0.81, 0.8, 0.76, 0.75, 0.71, 0.7, 0.65, 0.64, 0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -1947,7 +1947,7 @@ export class VersionControlService {
             }
           }
         }
-        if (version === 1) {          
+        if (version === 1) {
           if (this.globalService.globalVar.sidequestData.highestWeeklyMeleeRound >= 40) {
             var rng = 25;
             if (this.globalService.globalVar.followerData.numberOfFollowersGainedFromColiseum === undefined)
@@ -1956,13 +1956,13 @@ export class VersionControlService {
             this.globalService.globalVar.followerData.availableFollowers += rng;
             for (var i = 0; i < rng; i++) {
               this.globalService.globalVar.followerData.followers.push(new IndividualFollower());
-            }            
+            }
           }
 
           if (this.globalService.globalVar.sidequestData.highestWeeklyMeleeRound >= 50) {
             var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
             if (alchemy !== undefined) {
-              alchemy.maxLevel += 25;              
+              alchemy.maxLevel += 25;
             }
           }
 
@@ -1970,7 +1970,7 @@ export class VersionControlService {
             var rng = 1;
             var gainedItem = ItemsEnum.ShieldOfUnendingFlames;
 
-            this.globalService.globalVar.uniques.push(new Uniques(gainedItem));            
+            this.globalService.globalVar.uniques.push(new Uniques(gainedItem));
             this.globalService.gainResource(new ResourceValue(gainedItem, rng));
           }
 
@@ -2013,10 +2013,17 @@ export class VersionControlService {
             }
           }
         }
-        if (version === 1.02) {          
+        if (version === 1.02) {
           var apollo = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo);
           if (apollo !== undefined) {
             apollo.permanentStatGain.hpRegen *= 10;
+          }
+        }
+        if (version === 1.1) {
+          var khronosAchieve = this.globalService.globalVar.achievements.find(item => item.subzone === SubZoneEnum.MountOthrysCavernOfTime);
+          if (khronosAchieve !== undefined && khronosAchieve.completed) {
+            this.globalService.globalVar.sidequestData.seasonShifterUnlocked = true;
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.SeasonShifter, 1));
           }
         }
 

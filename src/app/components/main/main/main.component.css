@@ -18,7 +18,7 @@
   display: grid;
   width: 100%;
   height: 100%;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1.1fr 1fr; /* TODO: was 1fr 1fr 1fr, need to make sure you didn't break anything */
   grid-template-rows: auto;
   justify-content: stretch;
   grid-template-areas:
@@ -72,6 +72,30 @@
 
   background-color: var(--background-default);
   color: var(--foreground-default);
+}
+
+.navPanel {
+  background: var(--nav-panel-background);  
+  padding: .3rem;
+  padding-left: 0;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+}
+
+.battlePanel {
+  /*background: #2f353a;*/  
+  padding: .3rem;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+  text-shadow:
+    1px 1px 0px black,
+    0px 0px 2px black,
+    1px 1px 2px black;
+}
+
+.partyPanel {
+  background: var(--party-panel-background);  
+  padding: .3rem;
+  padding-right: 0;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
 }
 
 .footerArea {

@@ -15,7 +15,7 @@ import { TrialService } from 'src/app/services/battle/trial.service';
 import { ZodiacService } from 'src/app/services/global/zodiac.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 import { TimeFragmentRun } from 'src/app/models/utility/time-fragment-run.model';
-import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
+import { ZodiacEnum } from 'src/app/models/enums/zodiac-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { SubZoneGeneratorService } from 'src/app/services/sub-zone-generator/sub-zone-generator.service';
 import { AchievementService } from 'src/app/services/achievements/achievement.service';
@@ -286,11 +286,18 @@ export class TimeFragmentViewComponent {
           item.godType === this.trialService.getGodEnumFromTrialOfSkillBattle());
       }
       else if (this.selectedTrial === TrialEnum.TrialOfTheStarsNormal || this.selectedTrial === TrialEnum.TrialOfTheStarsHard || this.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard || this.selectedTrial === TrialEnum.TrialOfTheStarsUltimate) {
+        var zodiacEnum = ZodiacEnum.None;
+
+        if (this.globalService.globalVar.sidequestData.seasonShifterUnlocked && this.globalService.globalVar.sidequestData.selectedZodiac)
+          zodiacEnum = this.globalService.globalVar.sidequestData.selectedZodiac;
+        else
+          zodiacEnum = this.zodiacService.getCurrentZodiac();
+
         trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === this.selectedTrial &&
-          item.zodiacType === this.zodiacService.getCurrentZodiac());
+          item.zodiacType === zodiacEnum);
       }
       else {
-        trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === this.selectedTrial);        
+        trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === this.selectedTrial);
       }
 
       if (trialType === undefined)
@@ -334,9 +341,17 @@ export class TimeFragmentViewComponent {
         trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
           item.godType === this.trialService.getGodEnumFromTrialOfSkillBattle());
       }
-      else if (run.selectedTrial === TrialEnum.TrialOfTheStarsNormal || run.selectedTrial === TrialEnum.TrialOfTheStarsHard || run.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard  || run.selectedTrial === TrialEnum.TrialOfTheStarsUltimate) {
+      else if (run.selectedTrial === TrialEnum.TrialOfTheStarsNormal || run.selectedTrial === TrialEnum.TrialOfTheStarsHard || run.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard || run.selectedTrial === TrialEnum.TrialOfTheStarsUltimate) {
+        var zodiacEnum = ZodiacEnum.None;
+
+        if (this.globalService.globalVar.sidequestData.seasonShifterUnlocked && this.globalService.globalVar.sidequestData.selectedZodiac)
+          zodiacEnum = this.globalService.globalVar.sidequestData.selectedZodiac;
+        else
+          zodiacEnum = this.zodiacService.getCurrentZodiac();
+
+
         trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
-          item.zodiacType === this.zodiacService.getCurrentZodiac());
+          item.zodiacType === zodiacEnum);
       }
       else {
         trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial);
@@ -356,8 +371,8 @@ export class TimeFragmentViewComponent {
 
     clearRate = Math.round(this.getClearTime(run));
     rewards += "<span>" + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, xpGained) + "</span>" + " XP" + (oneLine ? ", " : "<br/>");
-  
-    if (trialType !== undefined && trialType.type === TrialEnum.TrialOfSkill) {    
+
+    if (trialType !== undefined && trialType.type === TrialEnum.TrialOfSkill) {
       var efficiency = this.globalService.globalVar.isSubscriber ? this.utilityService.supporterTimeFragmentEfficiency : this.utilityService.timeFragmentEfficiency;
       rewards += (efficiency * this.utilityService.trialAffinityXpGain) + " " + this.lookupService.getGodNameByType(trialType.godType) + " Affinity XP, "
     }

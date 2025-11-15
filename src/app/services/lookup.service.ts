@@ -714,6 +714,8 @@ export class LookupService {
       name = "A vial full of magical potential. Increase max Alchemy level by 25. Can only obtain one from Khronos.";
     else if (type === ItemsEnum.TimeFragment)
       name = "Each Time Fragment allows you to automatically run any completed subzone or certain battles in the background. You will gain their rewards, including Coins and XP, at a reduced rate. Open the Time Fragment overview option in the Quick View section for more information.";
+    else if (type === ItemsEnum.SeasonShifter)
+      name = "Shift the stars for the Trial of the Stars in Olympus. This allows you to battle any Zodiac boss of your choosing regardless of the date.";
     else if (type === ItemsEnum.OlympicCommendation)
       name = "Increase unequipped god XP gain by 5%. Current total is " + (this.globalService.getInactiveGodXpRate() * 100) + "%. Can only obtain 5 Olympic Commendations.";
     else if (type === ItemsEnum.BlazingSunPendantUniqueUpgrade || type === ItemsEnum.DarkMoonPendantUniqueUpgrade || type === ItemsEnum.SwordOfOlympusUpgrade || type === ItemsEnum.ArmorOfOlympusUpgrade)

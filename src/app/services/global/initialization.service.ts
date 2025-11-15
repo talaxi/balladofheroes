@@ -720,7 +720,7 @@ export class InitializationService {
       }
     }
 
-    var allAchievementsComplete = true;
+    var allAchievementsComplete = false;
 
     if (allAchievementsComplete) {
       this.globalService.globalVar.followerData.numberOfFollowersGainedFromAchievements = 100;
@@ -730,7 +730,7 @@ export class InitializationService {
     }
 
     this.globalService.globalVar.ballads.forEach(ballad => {
-      if (ballad.type === BalladEnum.Champion || ballad.type === BalladEnum.Gorgon || ballad.type === BalladEnum.Underworld) {
+      //if (ballad.type === BalladEnum.Champion || ballad.type === BalladEnum.Gorgon || ballad.type === BalladEnum.Underworld) {
       ballad.isAvailable = true;
       ballad.notify = true;
       ballad.zones.forEach(zone => {
@@ -756,7 +756,7 @@ export class InitializationService {
         })
         //}
       });
-      }
+      //}
     });
 
     //set up ballad for original testing          
@@ -1453,7 +1453,7 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AressNecklace);
       }
 
-      var chthonicResetCount = 5;
+      var chthonicResetCount = 1;
       var godLevel = 10;
 
       for (var j = 0; j < chthonicResetCount; j++) {
@@ -1468,9 +1468,9 @@ export class InitializationService {
         this.globalService.assignGodAbilityInfo(athena!);
 
         if (j < chthonicResetCount - 1)
-          godLevel = 499;
+          godLevel = 2499;
         else
-          godLevel = 499;
+          godLevel = 999;
 
         for (var i = 0; i < godLevel; i++) {
           this.globalService.levelUpGod(athena!);

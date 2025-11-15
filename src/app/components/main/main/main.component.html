@@ -4,16 +4,15 @@
     <div class="headerArea">
         <app-header [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }"></app-header>
     </div>
-    <div class="mainArea"
-        [ngClass]="{'screenMargin': navigation !== navigationEnum.Menu && !storyService.triggerFirstTimeUnderworldScene && !storyService.endFirstTimeUnderworldScene }">
+    <div class="mainArea">
         <div class="mainContainer"
             [ngClass]="{ 'hide': lookupService.isUIHidden, 'darken': storyService.triggerFirstTimeUnderworldScene, 'lighten': storyService.endFirstTimeUnderworldScene }">
             <div class="defaultDisplayGrid" *ngIf="navigation === navigationEnum.Default">
-                <app-party class="partyArea"
+                <app-party class="partyArea partyPanel"
                     [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene || storyService.endFirstTimeUnderworldScene }"></app-party>
-                <app-battle class="battleArea"
+                <app-battle class="battleArea battlePanel"
                     [ngClass]="{ 'hide': (storyService.triggerFirstTimeUnderworldScene && !storyService.showFirstTimeUnderworldStory) || storyService.endFirstTimeUnderworldScene, 'dark': storyService.showFirstTimeUnderworldStory }"></app-battle>
-                <app-zone-navigation class="navArea"
+                <app-zone-navigation class="navArea navPanel"
                     [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene || storyService.endFirstTimeUnderworldScene }"></app-zone-navigation>
             </div>
             <div class="defaultMenuGrid" *ngIf="navigation === navigationEnum.Menu">

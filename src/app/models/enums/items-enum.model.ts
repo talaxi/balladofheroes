@@ -638,5 +638,6 @@ export enum ItemsEnum {
   ShieldOfUnendingFlames,
   PerfectGemstone,
   MagicalVial,
-  HourglassRing
+  HourglassRing,
+  SeasonShifter
 } 
