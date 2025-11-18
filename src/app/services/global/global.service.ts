@@ -1783,6 +1783,10 @@ export class GlobalService {
       previousXp = god.exp;
       this.levelUpGod(god);
     }
+    
+    this.globalVar.characters.filter(item => item.isAvailable).forEach(character => {
+      this.calculateCharacterBattleStats(character);
+    });
   }
 
 
@@ -2188,10 +2192,6 @@ export class GlobalService {
       this.checkForNewGodPermanentStats(god);
 
     god.expToNextLevel = this.getGodXpToNextLevel(god.level);
-
-    this.globalVar.characters.filter(item => item.isAvailable).forEach(character => {
-      this.calculateCharacterBattleStats(character);
-    });
   }
 
   //certain levels give something other than stat increases -- new abilities, permanent upgrades, etc
