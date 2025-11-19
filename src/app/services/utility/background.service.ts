@@ -441,10 +441,10 @@ export class BackgroundService {
       });
     }
 
-    if (effect.type === AltarEffectsEnum.AthenaRareBlind) {
+    if (effect.type === AltarEffectsEnum.AthenaRareBlind) {      
       if (enemies !== undefined) {
         enemies.forEach(member => {
-          this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.Blind, 6, effect.effectiveness, false, false), member, enemies);
+          this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.Blind, 8, effect.effectiveness - 1, false, false), member, enemies);
         });
       }
     }

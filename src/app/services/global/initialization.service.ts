@@ -1453,7 +1453,7 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AressNecklace);
       }
 
-      var chthonicResetCount = 1;
+      var chthonicResetCount = 6;
       var godLevel = 10;
 
       for (var j = 0; j < chthonicResetCount; j++) {
@@ -1470,7 +1470,7 @@ export class InitializationService {
         if (j < chthonicResetCount - 1)
           godLevel = 2499;
         else
-          godLevel = 999;
+          godLevel = 2999;
 
         for (var i = 0; i < godLevel; i++) {
           this.globalService.levelUpGod(athena!);
