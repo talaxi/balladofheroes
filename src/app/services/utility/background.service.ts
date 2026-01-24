@@ -39,6 +39,7 @@ import { AffinityLevelRewardEnum } from 'src/app/models/enums/affinity-level-rew
 import { ZodiacService } from 'src/app/services/global/zodiac.service';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { EffectResolutionEnum } from 'src/app/models/enums/effect-resolution-enum.model';
+import { ZodiacEnum } from 'src/app/models/enums/zodiac-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -440,10 +441,10 @@ export class BackgroundService {
       });
     }
 
-    if (effect.type === AltarEffectsEnum.AthenaRareBlind) {
+    if (effect.type === AltarEffectsEnum.AthenaRareBlind) {      
       if (enemies !== undefined) {
         enemies.forEach(member => {
-          this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.Blind, 6, effect.effectiveness, false, false), member, enemies);
+          this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.Blind, 8, effect.effectiveness - 1, false, false), member, enemies);
         });
       }
     }
@@ -883,8 +884,15 @@ export class BackgroundService {
       }
 
       if (run.selectedTrial === TrialEnum.TrialOfTheStarsNormal || run.selectedTrial === TrialEnum.TrialOfTheStarsHard || run.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard || run.selectedTrial === TrialEnum.TrialOfTheStarsUltimate) {
+        var zodiacEnum = ZodiacEnum.None;
+
+        if (this.globalService.globalVar.sidequestData.seasonShifterUnlocked && this.globalService.globalVar.sidequestData.selectedZodiac)
+          zodiacEnum = this.globalService.globalVar.sidequestData.selectedZodiac;
+        else
+          zodiacEnum = this.zodiacService.getCurrentZodiac();
+
         var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
-          item.zodiacType === this.zodiacService.getCurrentZodiac());
+          item.zodiacType === zodiacEnum);
 
         if (trialType === undefined || trialType.count === 0)
           return;

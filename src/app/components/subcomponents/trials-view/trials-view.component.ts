@@ -5,10 +5,12 @@ import { Trial } from 'src/app/models/battle/trial.model';
 import { Enemy } from 'src/app/models/character/enemy.model';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
+import { ZodiacEnum } from 'src/app/models/enums/zodiac-enum.model';
 import { DpsCalculatorService } from 'src/app/services/battle/dps-calculator.service';
 import { TrialService } from 'src/app/services/battle/trial.service';
 import { EnemyGeneratorService } from 'src/app/services/enemy-generator/enemy-generator.service';
 import { GlobalService } from 'src/app/services/global/global.service';
+import { ZodiacService } from 'src/app/services/global/zodiac.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { KeybindService } from 'src/app/services/utility/keybind.service';
@@ -29,6 +31,7 @@ export class TrialsViewComponent {
   starsEnemies: Enemy[] = [];
   trials: TrialEnum[] = [];
   trialEnum = TrialEnum;
+  isSeasonShifterUnlocked = false;
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -53,9 +56,9 @@ export class TrialsViewComponent {
   }
 
   constructor(private trialService: TrialService, private globalService: GlobalService, public dialog: MatDialog,
-    private lookupService: LookupService, private utilityService: UtilityService, private dictionaryService: DictionaryService,
+    private utilityService: UtilityService, private dictionaryService: DictionaryService,
     private enemyGeneratorService: EnemyGeneratorService, private deviceDetectorService: DeviceDetectorService,
-    private keybindService: KeybindService, private dpsCalculatorService: DpsCalculatorService) { }
+    private keybindService: KeybindService, private dpsCalculatorService: DpsCalculatorService, private zodiacService: ZodiacService) { }
 
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
@@ -65,6 +68,7 @@ export class TrialsViewComponent {
     this.trials = this.getStandardTrials();
     if (this.trials.length > 0)
       this.selectedTrial = this.dictionaryService.getTrialInfoFromType(this.trials[0]);
+    this.isSeasonShifterUnlocked = this.globalService.globalVar.sidequestData.seasonShifterUnlocked;
   }
 
   getStandardTrials() {
@@ -167,6 +171,43 @@ export class TrialsViewComponent {
       'aphroditeColor': name === "Aphrodite",
       'heraColor': name === "Hera"
     };
+  }
+
+  toggleZodiac() {
+    if (this.globalService.globalVar.sidequestData.selectedZodiac === ZodiacEnum.None)
+      this.globalService.globalVar.sidequestData.selectedZodiac = this.zodiacService.getCurrentZodiac();  
+          
+    if (this.globalService.globalVar.sidequestData.selectedZodiac === ZodiacEnum.Capricorn)
+      this.globalService.globalVar.sidequestData.selectedZodiac = ZodiacEnum.Aquarius;
+    else if (this.globalService.globalVar.sidequestData.selectedZodiac === ZodiacEnum.Aquarius)
+      this.globalService.globalVar.sidequestData.selectedZodiac = ZodiacEnum.Pisces;
+    else if (this.globalService.globalVar.sidequestData.selectedZodiac === ZodiacEnum.Pisces)
+      this.globalService.globalVar.sidequestData.selectedZodiac = ZodiacEnum.Aries;
+    else if (this.globalService.globalVar.sidequestData.selectedZodiac === ZodiacEnum.Aries)
+      this.globalService.globalVar.sidequestData.selectedZodiac = ZodiacEnum.Taurus;
+    else if (this.globalService.globalVar.sidequestData.selectedZodiac === ZodiacEnum.Taurus)
+      this.globalService.globalVar.sidequestData.selectedZodiac = ZodiacEnum.Gemini;
+    else if (this.globalService.globalVar.sidequestData.selectedZodiac === ZodiacEnum.Gemini)
+      this.globalService.globalVar.sidequestData.selectedZodiac = ZodiacEnum.Cancer;
+    else if (this.globalService.globalVar.sidequestData.selectedZodiac === ZodiacEnum.Cancer)
+      this.globalService.globalVar.sidequestData.selectedZodiac = ZodiacEnum.Leo;
+    else if (this.globalService.globalVar.sidequestData.selectedZodiac === ZodiacEnum.Leo)
+      this.globalService.globalVar.sidequestData.selectedZodiac = ZodiacEnum.Virgo;
+    else if (this.globalService.globalVar.sidequestData.selectedZodiac === ZodiacEnum.Virgo)
+      this.globalService.globalVar.sidequestData.selectedZodiac = ZodiacEnum.Libra;
+    else if (this.globalService.globalVar.sidequestData.selectedZodiac === ZodiacEnum.Libra)
+      this.globalService.globalVar.sidequestData.selectedZodiac = ZodiacEnum.Scorpio;
+    else if (this.globalService.globalVar.sidequestData.selectedZodiac === ZodiacEnum.Scorpio)
+      this.globalService.globalVar.sidequestData.selectedZodiac = ZodiacEnum.Sagittarius;
+    else if (this.globalService.globalVar.sidequestData.selectedZodiac === ZodiacEnum.Sagittarius)
+      this.globalService.globalVar.sidequestData.selectedZodiac = ZodiacEnum.Capricorn;
+
+    this.starsEnemies = this.getTrialOfTheStarsEnemies();
+  }
+
+  resetZodiac() {
+    this.globalService.globalVar.sidequestData.selectedZodiac = ZodiacEnum.None;
+    this.starsEnemies = this.getTrialOfTheStarsEnemies();
   }
 
   startTrial() {

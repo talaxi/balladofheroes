@@ -552,6 +552,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.TimeFragment) {
       return new ResourceValue(ItemsEnum.TimeFragment, amount);
     }
+    if (type === ItemsEnum.SeasonShifter) {
+      return new ResourceValue(ItemsEnum.SeasonShifter, amount);
+    }
     if (type === ItemsEnum.AthenasCrest) {
       return new ResourceValue(ItemsEnum.AthenasCrest, amount);
     }

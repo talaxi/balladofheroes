@@ -66,7 +66,7 @@ export class FollowerSearchViewComponent {
   }
 
   getBalladName(ballad: BalladEnum) {
-      return "<span>" + (this.isMobile ? this.balladService.getShortBalladName(ballad) : this.balladService.getBalladName(ballad)) +  " (" + this.followerService.getFollowerCountForBallad(ballad) + ")</span>";
+      return "<span>" + (this.balladService.getShortBalladName(ballad)) +  " (" + this.followerService.getFollowerCountForBallad(ballad) + ")</span>";
   }
 
   showZonesForBallad(ballad: BalladEnum) {

@@ -19,19 +19,19 @@
                 [tooltipDirection]="tooltipDirectionDown">
                     <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading bold" [disabled]="true"
                             [ngClass]="getBalladClass(ballad)"
-                            (click)="balladService.selectBallad(ballad)">{{balladService.getBalladName(ballad.type)}}</button>
+                            (click)="balladService.selectBallad(ballad)">{{balladService.getShortBalladName(ballad.type)}}</button>
                 </div>
                 <div class="eachBallad" *ngFor="let ballad of availableBallads">
                     <div *ngIf="!ballad.isSelected">
                         <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading bold"
                             [ngClass]="getBalladClass(ballad)"
-                            (click)="balladService.selectBallad(ballad)">{{balladService.getBalladName(ballad.type)}}
+                            (click)="balladService.selectBallad(ballad)">{{balladService.getShortBalladName(ballad.type)}}
                             <app-notification-icon *ngIf="ballad.notify"></app-notification-icon>
                         </button>
                     </div>
                     <div *ngIf="ballad.isSelected" [ngClass]="{'flexBetween': !isMobile}">
                         <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading selected bold"><strong
-                                [ngClass]="getBalladClass(ballad)">{{balladService.getBalladName(ballad.type)}}</strong></button>
+                                [ngClass]="getBalladClass(ballad)">{{balladService.getShortBalladName(ballad.type)}}</strong></button>
                         <span *ngIf="!isMobile" class="selectedArrow textRightAligned">
                             <strong class="selected">&#8594;</strong>
                         </span>

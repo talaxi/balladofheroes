@@ -1,7 +1,7 @@
 .gridContainer {
     display: grid;
     height: 100%;
-    margin-right: .5rem;
+    margin-right: .25rem;
     grid-template-columns: auto;
     grid-template-rows: 40% 40% 5.5% 14.5%;
     justify-content: stretch;
@@ -74,7 +74,7 @@
     height: 95%;
 
     /* needs to match item target size and location */
-    border: 2px solid var(--background-default);
+    border: 2px solid #0000;
 }
 
 .hpMpText {
@@ -386,7 +386,7 @@ table tr td:nth-child(4n-3) {
     z-index: 5;
     opacity: 1;
     text-align: center;
-    width: 73.55%;
+    width: 72%;
     /* needs to match .characterBar */
     bottom: .1rem;
     height: 1rem;
@@ -397,13 +397,13 @@ table tr td:nth-child(4n-3) {
 }
 
 .overdriveProgressBar {
-    width: 73.55%;
+    width: 72%;
     margin-right: .5rem;
 }
 
 .characterHp {
     display: grid;
-    grid-template-columns: 73.55% 1fr;
+    grid-template-columns: 72% 1fr;
     column-gap: .3rem;
     justify-content: stretch;
     grid-template-areas:

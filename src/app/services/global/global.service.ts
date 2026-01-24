@@ -59,7 +59,7 @@ export class GlobalService {
     private deviceDetectorService: DeviceDetectorService, private zodiacService: ZodiacService) { }
 
   getCurrentVersion() {
-    return 1.02;
+    return 1.1;
   }
 
   initializeGlobalVariables() {
@@ -1637,6 +1637,9 @@ export class GlobalService {
         if (partyMember.level === partyMember.maxLevel)
           partyMember.exp = 0;
       }
+
+      this.calculateCharacterBattleStats(partyMember);
+      partyMember.battleStats.currentHp = partyMember.battleStats.maxHp;
     });
   }
 
@@ -1672,6 +1675,9 @@ export class GlobalService {
           if (partyMember.level === partyMember.maxLevel)
             partyMember.exp = 0;
         }
+
+        this.calculateCharacterBattleStats(partyMember);
+        partyMember.battleStats.currentHp = partyMember.battleStats.maxHp;
       });
     });
   }
@@ -1707,6 +1713,9 @@ export class GlobalService {
         if (partyMember.level === partyMember.maxLevel)
           partyMember.exp = 0;
       }
+
+      this.calculateCharacterBattleStats(partyMember);
+      partyMember.battleStats.currentHp = partyMember.battleStats.maxHp;
     });
   }
 
@@ -1783,6 +1792,10 @@ export class GlobalService {
       previousXp = god.exp;
       this.levelUpGod(god);
     }
+
+    this.globalVar.characters.filter(item => item.isAvailable).forEach(character => {
+      this.calculateCharacterBattleStats(character);
+    });
   }
 
 
@@ -1799,9 +1812,6 @@ export class GlobalService {
     this.checkForNewCharacterAbilities(character);
     this.checkForNewCharacterLinks(character);
     this.checkForNewCharacterOverdrives(character);
-
-    this.calculateCharacterBattleStats(character);
-    character.battleStats.currentHp = character.battleStats.maxHp;
 
     character.expToNextLevel = this.getCharacterXpToNextLevel(character.level);
   }
@@ -2188,10 +2198,6 @@ export class GlobalService {
       this.checkForNewGodPermanentStats(god);
 
     god.expToNextLevel = this.getGodXpToNextLevel(god.level);
-
-    this.globalVar.characters.filter(item => item.isAvailable).forEach(character => {
-      this.calculateCharacterBattleStats(character);
-    });
   }
 
   //certain levels give something other than stat increases -- new abilities, permanent upgrades, etc
@@ -3999,7 +4005,7 @@ export class GlobalService {
       this.calculateCharacterBattleStats(member);
       member.battleInfo.autoAttackTimer = 0;
       member.battleInfo.barrierValue = 0;
-      member.battleInfo.duoAbilityUsed = false;      
+      member.battleInfo.duoAbilityUsed = false;
       member.battleStats.currentHp = member.battleStats.maxHp;
       member.linkInfo.linkChain = 0;
       member.linkInfo.bonusChain = 0;
@@ -4038,7 +4044,7 @@ export class GlobalService {
 
       var heroicElixir = member.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.HeroicElixir);
       if (heroicElixir !== undefined)
-        member.battleStats.currentHp *= heroicElixir!.effectiveness;      
+        member.battleStats.currentHp *= heroicElixir!.effectiveness;
 
       var shapeshift = member.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Shapeshift);
       if (shapeshift !== undefined) {
@@ -5252,7 +5258,7 @@ export class GlobalService {
     }
 
     if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Ares)) {
-     return 15;
+      return 15;
     }
 
     if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Dionysus)) {

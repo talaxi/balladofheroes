@@ -309,6 +309,8 @@ export class DictionaryService {
       name = "Armor of Olympus Unique XP";
     else if (type === ItemsEnum.TimeFragment)
       name = "Time Fragment";
+    else if (type === ItemsEnum.SeasonShifter)
+      name = "Star Shifter";
     else if (type === ItemsEnum.TokenOfFavor)
       name = "Token of Favor";
     else if (type === ItemsEnum.TokenOfSupport)

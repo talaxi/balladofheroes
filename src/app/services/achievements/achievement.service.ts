@@ -1130,7 +1130,7 @@ export class AchievementService {
       else if (subzoneType === SubZoneEnum.MountOthrysFracturedWall)
         rewards.push(new ResourceValue(ItemsEnum.PerfectOrnateKantharos, 1));
       else if (subzoneType === SubZoneEnum.MountOthrysCavernOfTime)
-        rewards.push(new ResourceValue(ItemsEnum.HourglassRing, 2500));
+        rewards.push(new ResourceValue(ItemsEnum.SeasonShifter, 1));
     }
 
     if (achievementType === AchievementTypeEnum.ThirtySecondClear) {
@@ -1401,9 +1401,9 @@ export class AchievementService {
         completedAchievement.push(hundredVictories);
         hundredVictories.completed = true;
         rewards.forEach(bonus => {
-          if (bonus.item === ItemsEnum.HourglassRing) {            
+          if (bonus.item === ItemsEnum.HourglassRing) {
             var existingUnique = this.globalService.globalVar.uniques.find(item => item.type === bonus.item);
-            if (existingUnique !== undefined) {              
+            if (existingUnique !== undefined) {
               this.lookupService.giveUniqueXp(existingUnique, bonus.amount);
             }
           }
@@ -1424,18 +1424,22 @@ export class AchievementService {
 
       var tenThousandVictories = subzoneRelatedAchievements.find(item => item.type === AchievementTypeEnum.TenThousandVictories);
       var rewards = this.getAchievementReward(subzoneType, AchievementTypeEnum.TenThousandVictories);
-      if (tenThousandVictories !== undefined && subzone.victoryCount >= 2500 && !tenThousandVictories.completed && rewards !== undefined) {
+      if (tenThousandVictories !== undefined && subzone.victoryCount >= 1 && !tenThousandVictories.completed && rewards !== undefined) { //TODO: 2500
         completedAchievement.push(tenThousandVictories);
         tenThousandVictories.completed = true;
         rewards.forEach(bonus => {
-          if (bonus.item === ItemsEnum.HourglassRing) {
+          if (bonus.item === ItemsEnum.HourglassRing) {            
             var existingUnique = this.globalService.globalVar.uniques.find(item => item.type === bonus.item);
             if (existingUnique !== undefined) {
               this.lookupService.giveUniqueXp(existingUnique, bonus.amount);
             }
           }
+          if (bonus.item === ItemsEnum.SeasonShifter) {               
+            this.globalService.globalVar.sidequestData.seasonShifterUnlocked = true;            
+            this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
+          }
           else
-          this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
+            this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
         });
       }
 
@@ -1626,7 +1630,7 @@ export class AchievementService {
             }
           }
           else
-          this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
+            this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
         });
       }
 

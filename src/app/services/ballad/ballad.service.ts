@@ -53,6 +53,8 @@ export class BalladService {
       name = "Ballad of Redemption";
     if (type === BalladEnum.Time)
       name = "Ballad of Time";
+    if (type === BalladEnum.Time)
+      name = "Ballad of Time";
 
     return name;
   }
@@ -61,25 +63,25 @@ export class BalladService {
     var name = "";
 
     if (type === BalladEnum.Champion)
-      name = "Champion";
+      name = "A Champion";
     if (type === BalladEnum.Gorgon)
-      name = "Gorgon";
+      name = "The Gorgon";
     if (type === BalladEnum.Labors)
-      name = "Labors";
+      name = "The Labors";
     if (type === BalladEnum.Underworld)
-      name = "Underworld";
+      name = "The Underworld";
     if (type === BalladEnum.Boar)
-      name = "Boar";
+      name = "The Boar";
     if (type === BalladEnum.Argo)
-      name = "Argo";
+      name = "The Argo";
     if (type === BalladEnum.Olympus)
       name = "Olympus";
     if (type === BalladEnum.Labyrinth)
-      name = "Labyrinth";
+      name = "The Labyrinth";
     if (type === BalladEnum.Witch)
-      name = "Witch";
+      name = "The Witch";
     if (type === BalladEnum.Eagle)
-      name = "Eagle";
+      name = "The Eagle";
     if (type === BalladEnum.Redemption)
       name = "Redemption";
     if (type === BalladEnum.Time)

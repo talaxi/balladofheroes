@@ -6396,7 +6396,7 @@ export class BattleService {
           }
         }
 
-        if (character.name === "Ladon" || character.name === "Heracles") {
+        if (character.name === "Ladon" || character.name === "Heracles" || character.name === "Guardian of the Grove") {          
           this.globalService.getActivePartyCharacters(true).forEach(character => {
             character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Immobilize);
             character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DamageOverTime && item.abilityName !== "Strangle");

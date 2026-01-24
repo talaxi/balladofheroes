@@ -198,7 +198,7 @@ export class ChthonicResetMenuViewComponent implements OnInit {
       while (god.exp >= god.expToNextLevel && (previousXp === undefined || god.exp < previousXp)) {
         previousXp = god.exp;
         this.globalService.levelUpGod(god);
-      }
+      }      
     }
 
     this.globalService.getActivePartyCharacters(true).forEach(member => {      

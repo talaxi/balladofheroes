@@ -16,6 +16,7 @@ import { SubZoneGeneratorService } from 'src/app/services/sub-zone-generator/sub
 import { BackgroundService } from 'src/app/services/utility/background.service';
 import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
+import { ZodiacEnum } from 'src/app/models/enums/zodiac-enum.model';
 
 @Component({
   selector: 'app-time-fragment-overview',
@@ -28,7 +29,7 @@ export class TimeFragmentOverviewComponent {
   subscription: any;
 
   constructor(private deviceDetectorService: DeviceDetectorService, public dialog: MatDialog, private lookupService: LookupService,
-    private globalService: GlobalService, private gameLoopService: GameLoopService, private trialService: TrialService, 
+    private globalService: GlobalService, private gameLoopService: GameLoopService, private trialService: TrialService,
     private dictionaryService: DictionaryService, private balladService: BalladService, private subzoneGeneratorService: SubZoneGeneratorService,
     private utilityService: UtilityService, private backgroundService: BackgroundService, private zodiacService: ZodiacService) {
 
@@ -63,14 +64,21 @@ export class TimeFragmentOverviewComponent {
     var maxDps = 0;
     var trialType: TrialDefeatCount | undefined;
 
-    if (run.selectedTrial !== undefined) {      
+    if (run.selectedTrial !== undefined) {
       if (run.selectedTrial === TrialEnum.TrialOfSkill) {
         trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
           item.godType === this.trialService.getGodEnumFromTrialOfSkillBattle());
       }
-      else if (run.selectedTrial === TrialEnum.TrialOfTheStarsNormal || run.selectedTrial === TrialEnum.TrialOfTheStarsHard || run.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard  || run.selectedTrial === TrialEnum.TrialOfTheStarsUltimate) {
+      else if (run.selectedTrial === TrialEnum.TrialOfTheStarsNormal || run.selectedTrial === TrialEnum.TrialOfTheStarsHard || run.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard || run.selectedTrial === TrialEnum.TrialOfTheStarsUltimate) {
+        var zodiacEnum = ZodiacEnum.None;
+
+        if (this.globalService.globalVar.sidequestData.seasonShifterUnlocked && this.globalService.globalVar.sidequestData.selectedZodiac)
+          zodiacEnum = this.globalService.globalVar.sidequestData.selectedZodiac;
+        else
+          zodiacEnum = this.zodiacService.getCurrentZodiac();
+
         trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
-          item.zodiacType === this.zodiacService.getCurrentZodiac());
+          item.zodiacType === zodiacEnum);
       }
       else {
         trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial);
@@ -90,8 +98,8 @@ export class TimeFragmentOverviewComponent {
 
     clearRate = Math.round(this.getClearTime(run));
     rewards += "<span>" + this.utilityService.bigNumberReducer(this.globalService.globalVar.settings.get("showBigNumberColors") ?? false, xpGained) + "</span>" + " XP" + (oneLine ? ", " : "<br/>");
-    
-    if (trialType !== undefined && trialType.type === TrialEnum.TrialOfSkill) {      
+
+    if (trialType !== undefined && trialType.type === TrialEnum.TrialOfSkill) {
       var efficiency = this.globalService.globalVar.isSubscriber ? this.utilityService.supporterTimeFragmentEfficiency : this.utilityService.timeFragmentEfficiency;
       rewards += (efficiency * this.utilityService.trialAffinityXpGain) + " " + this.lookupService.getGodNameByType(trialType.godType) + " Affinity XP, "
     }
@@ -101,9 +109,9 @@ export class TimeFragmentOverviewComponent {
 
     if (oneLine && coinsGained === 0 && finalLootOptions.length === 0)
       rewards = rewards.substring(0, rewards.length - 2);
-      
+
     if (finalLootOptions.length > 0)
-    rewards += finalLootOptions.length + " Items ";    
+      rewards += finalLootOptions.length + " Items ";
 
     if (rewards !== "") {
       if (oneLine)

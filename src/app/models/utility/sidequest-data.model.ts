@@ -1,5 +1,6 @@
 import { Character } from "../character/character.model";
 import { BestiaryEnum } from "../enums/bestiary-enum.model";
+import { ZodiacEnum } from "../enums/zodiac-enum.model";
 
 export class SidequestData {
     isAltarOfAsclepiusUnlocked: boolean;
@@ -19,6 +20,8 @@ export class SidequestData {
     trialStage: number;
     displayCirceAlchemyPayScene: boolean;
     circeAlchemyLevel: number;
+    seasonShifterUnlocked: boolean;
+    selectedZodiac = ZodiacEnum.None;
     menuBlinkOpen: boolean; //from beginning tutorial
     changeEquipmentBlink: boolean; //from beginning tutorial
     menuBlinkClose: boolean; //from beginning tutorial
@@ -46,5 +49,6 @@ export class SidequestData {
         this.menuBlinkOpen = false;
         this.changeEquipmentBlink = false;
         this.menuBlinkClose = false;
+        this.seasonShifterUnlocked = false;
     }
 }

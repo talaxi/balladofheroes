@@ -364,7 +364,7 @@ export class TrialService {
     if (stage === 50) {
       enemyTeam.isBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineVulture));
-    }    
+    }
     if (stage === 51) {
       enemyTeam.isDoubleBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Sphinx));
@@ -415,46 +415,46 @@ export class TrialService {
     }
     if (stage === 61) {
       enemyTeam.isBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Briareus));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Briareus));
     }
     if (stage === 62) {
       enemyTeam.isBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Gyges));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Gyges));
     }
     if (stage === 63) {
       enemyTeam.isBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Cottus));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Cottus));
     }
     if (stage === 64) {
       enemyTeam.isBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Hecatoncheires));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Hecatoncheires));
     }
     if (stage === 65) {
       enemyTeam.isDoubleBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineTiger));      
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineTiger));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineTiger));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineTiger));
     }
     if (stage === 66) {
       enemyTeam.isBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Hecate));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Hecate));
     }
     if (stage === 67) {
       enemyTeam.isBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Mnemosyne));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Mnemosyne));
     }
     if (stage === 68) {
       enemyTeam.isBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Metis));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Metis));
     }
     if (stage === 69) {
       enemyTeam.isBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Helios));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Helios));
     }
     if (stage === 70) {
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineWolf));      
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineWolf));      
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineWolf));      
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineWolf));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineWolf));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineWolf));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineWolf));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineWolf));
     }
 
     return enemyTeam;
@@ -463,7 +463,13 @@ export class TrialService {
   //1 = normal, 2 = hard, 3 = very hard, 4 = ultimate
   getTrialOfTheStarsBattle(level: number) {
     var enemyTeam: EnemyTeam = new EnemyTeam();
-    var zodiac = this.zodiacService.getCurrentZodiac();
+
+    var zodiac = ZodiacEnum.None;
+
+    if (this.globalService.globalVar.sidequestData.seasonShifterUnlocked && this.globalService.globalVar.sidequestData.selectedZodiac)
+      zodiac = this.globalService.globalVar.sidequestData.selectedZodiac;
+    else
+      zodiac = this.zodiacService.getCurrentZodiac();
 
     if (zodiac === ZodiacEnum.Libra) {
       enemyTeam.isBossFight = true;
@@ -975,7 +981,14 @@ export class TrialService {
     else {
       var xps = this.lookupService.isUIHidden ? 1 : this.dpsCalculatorService.calculateXps();
       var dps = this.lookupService.isUIHidden ? 1 : this.dpsCalculatorService.calculatePartyDps();
-      var zodiacEnum = this.zodiacService.getCurrentZodiac();
+      //var zodiacEnum = this.zodiacService.getCurrentZodiac();
+      var zodiacEnum = ZodiacEnum.None;
+
+      if (this.globalService.globalVar.sidequestData.seasonShifterUnlocked && this.globalService.globalVar.sidequestData.selectedZodiac)
+        zodiacEnum = this.globalService.globalVar.sidequestData.selectedZodiac;
+      else
+        zodiacEnum = this.zodiacService.getCurrentZodiac();
+
       var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === type && item.zodiacType === zodiacEnum);
       if (trialType !== undefined) {
         trialType.count += 1;
@@ -1089,7 +1102,7 @@ export class TrialService {
           this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry, this.globalService.globalVar);
         }
       }
-    }    
+    }
     else if (stage === 70) {
       var itemCount = 1;
       var gainedItem = ItemsEnum.ArmorOfOlympus;

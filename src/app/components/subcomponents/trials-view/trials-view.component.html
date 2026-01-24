@@ -72,6 +72,10 @@
                             </ng-template>
                         </span>
                     </div>
+                    <div *ngIf="isSeasonShifterUnlocked">
+                    <button class="buttonStyled" (click)="toggleZodiac()">Shift the Stars</button>
+                    <button class="buttonStyled" (click)="resetZodiac()">Reset the Stars</button>
+                    </div>
                     <hr />
                     <div>
                         <br />
