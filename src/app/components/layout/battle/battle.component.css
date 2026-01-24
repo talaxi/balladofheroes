@@ -315,6 +315,7 @@
 .storyOverflow {
     max-height: 100%;
     overflow: auto;
+    font-size: 1.125rem;
 }
 
 .subzoneName {

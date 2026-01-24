@@ -19,7 +19,7 @@
     margin-top: auto;
     margin-bottom: auto;
     margin-right: .65rem;
-    width: 42%; /* matches .zoneGrid below */
+    width: 38%; /* matches .zoneGrid below */
     font-variant: small-caps;
 }
 
@@ -125,7 +125,7 @@
 .zoneGrid {
     display: grid;
     height: 100%;    
-    grid-template-columns: 42% 1fr;
+    grid-template-columns: 38% 1fr;
     gap: 0.65rem;
     grid-template-rows: auto;
     justify-content: stretch;

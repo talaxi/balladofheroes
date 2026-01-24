@@ -13061,7 +13061,8 @@ export class LookupService {
       description = "With the power of Moly in hand, you return to Mount Olympus. With the might of the Olympic gods behind you, you try to take back the mountain.";
     else if (type === BalladEnum.Time)
       description = "Conspicuously missing from the battle on Olympus was Khronos. You search high and low for the Titan of Time to ensure his scheming comes to an end.";
-    
+    /*else if (type === BalladEnum.War)
+      description = "TODO";    */
 
     return description;
   }
