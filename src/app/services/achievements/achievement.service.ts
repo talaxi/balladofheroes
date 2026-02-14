@@ -1424,7 +1424,7 @@ export class AchievementService {
 
       var tenThousandVictories = subzoneRelatedAchievements.find(item => item.type === AchievementTypeEnum.TenThousandVictories);
       var rewards = this.getAchievementReward(subzoneType, AchievementTypeEnum.TenThousandVictories);
-      if (tenThousandVictories !== undefined && subzone.victoryCount >= 1 && !tenThousandVictories.completed && rewards !== undefined) { //TODO: 2500
+      if (tenThousandVictories !== undefined && subzone.victoryCount >= 2500 && !tenThousandVictories.completed && rewards !== undefined) { 
         completedAchievement.push(tenThousandVictories);
         tenThousandVictories.completed = true;
         rewards.forEach(bonus => {
