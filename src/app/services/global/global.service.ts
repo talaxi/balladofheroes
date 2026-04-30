@@ -1631,15 +1631,19 @@ export class GlobalService {
 
     this.globalVar.characters.filter(partyMember => partyMember.isAvailable).forEach(partyMember => {
       var previousXp: number | undefined = undefined;
+      var characterLeveledUp = false;
       while (partyMember.exp >= partyMember.expToNextLevel && partyMember.level < partyMember.maxLevel && (previousXp === undefined || partyMember.exp < previousXp)) {
         previousXp = partyMember.exp;
+        characterLeveledUp = true;
         this.levelUpPartyMember(partyMember);
         if (partyMember.level === partyMember.maxLevel)
           partyMember.exp = 0;
       }
 
-      this.calculateCharacterBattleStats(partyMember);
-      partyMember.battleStats.currentHp = partyMember.battleStats.maxHp;
+      if (characterLeveledUp) {
+        this.calculateCharacterBattleStats(partyMember);
+        partyMember.battleStats.currentHp = partyMember.battleStats.maxHp;
+      }
     });
   }
 
@@ -1669,15 +1673,19 @@ export class GlobalService {
 
       party.forEach(partyMember => {
         var previousXp: number | undefined = undefined;
+        var characterLeveledUp = false;
         while (partyMember.exp >= partyMember.expToNextLevel && partyMember.level < partyMember.maxLevel && (previousXp === undefined || partyMember.exp < previousXp)) {
           previousXp = partyMember.exp;
           this.levelUpPartyMember(partyMember);
+          characterLeveledUp = true;
           if (partyMember.level === partyMember.maxLevel)
             partyMember.exp = 0;
         }
 
-        this.calculateCharacterBattleStats(partyMember);
-        partyMember.battleStats.currentHp = partyMember.battleStats.maxHp;
+        if (characterLeveledUp) {
+          this.calculateCharacterBattleStats(partyMember);
+          partyMember.battleStats.currentHp = partyMember.battleStats.maxHp;
+        }
       });
     });
   }
@@ -1707,15 +1715,20 @@ export class GlobalService {
 
     party.forEach(partyMember => {
       var previousXp: number | undefined = undefined;
+      var characterLeveledUp = false;
       while (partyMember.exp >= partyMember.expToNextLevel && partyMember.level < partyMember.maxLevel && (previousXp === undefined || partyMember.exp < previousXp)) {
         previousXp = partyMember.exp;
+        characterLeveledUp = true;
         this.levelUpPartyMember(partyMember);
         if (partyMember.level === partyMember.maxLevel)
           partyMember.exp = 0;
       }
 
-      this.calculateCharacterBattleStats(partyMember);
-      partyMember.battleStats.currentHp = partyMember.battleStats.maxHp;
+
+      if (characterLeveledUp) {
+        this.calculateCharacterBattleStats(partyMember);
+        partyMember.battleStats.currentHp = partyMember.battleStats.maxHp;
+      }
     });
   }
 
